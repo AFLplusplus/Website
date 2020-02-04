@@ -3,160 +3,160 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://example.org/docs/example/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/example/</loc>
   </url>
   
   <url>
-    <loc>http://example.org/docs/example/table-of-contents/with-toc/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/example/table-of-contents/with-toc/</loc>
   </url>
   
   <url>
-    <loc>http://example.org/docs/example/table-of-contents/without-toc/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/example/table-of-contents/without-toc/</loc>
   </url>
   
   <url>
-    <loc>http://example.org/posts/creating-a-new-theme/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/posts/creating-a-new-theme/</loc>
     <lastmod>2014-09-28T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/posts/migrate-from-jekyll/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/posts/migrate-from-jekyll/</loc>
     <lastmod>2014-03-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/docs/example/table-of-contents/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/example/table-of-contents/</loc>
   </url>
   
   <url>
-    <loc>http://example.org/docs/example/2nd/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/example/2nd/</loc>
   </url>
   
   <url>
-    <loc>http://example.org/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/</loc>
     <lastmod>2014-09-28T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/posts/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/posts/</loc>
     <lastmod>2014-09-28T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/posts/goisforlovers/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/posts/goisforlovers/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/categories/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/categories/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/categories/development/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/categories/development/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/tags/development/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/tags/development/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/posts/hugoisforlovers/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/posts/hugoisforlovers/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/tags/go/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/tags/go/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/tags/golang/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/tags/golang/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/categories/golang/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/categories/golang/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/tags/hugo/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/tags/hugo/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/tags/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/tags/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/tags/templates/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/tags/templates/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/tags/themes/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/tags/themes/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/docs/example/2nd/3rd/4th/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/example/2nd/3rd/4th/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/docs/example/2nd/3rd/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/example/2nd/3rd/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/docs/example/hidden/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/example/hidden/</loc>
   </url>
   
   <url>
-    <loc>http://example.org/docs/shortcodes/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/shortcodes/</loc>
   </url>
   
   <url>
-    <loc>http://example.org/docs/shortcodes/buttons/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/shortcodes/buttons/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/docs/shortcodes/columns/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/shortcodes/columns/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/docs/shortcodes/expand/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/shortcodes/expand/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/docs/shortcodes/hints/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/shortcodes/hints/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/docs/shortcodes/katex/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/shortcodes/katex/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/docs/shortcodes/mermaid/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/shortcodes/mermaid/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/docs/shortcodes/tabs/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/shortcodes/tabs/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/docs/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/</loc>
   </url>
   
 </urlset>

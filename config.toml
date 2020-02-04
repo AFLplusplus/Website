@@ -1,5 +1,4 @@
-baseURL = "http://example.org/"
+baseURL = "https://andreafioraldi.github.io/AFLplusplus-website/"
 languageCode = "en-us"
-title = "My New Hugo Site"
-
+title = "AFLplusplus"
 publishDir = "docs"
