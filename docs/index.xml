@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>The AFL&#43;&#43; fuzzing framework on AFLplusplus</title>
+    <title>AFLplusplus</title>
     <link>https://andreafioraldi.github.io/AFLplusplus-website/</link>
-    <description>Recent content in The AFL&#43;&#43; fuzzing framework on AFLplusplus</description>
+    <description>Recent content on AFLplusplus</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
@@ -11,12 +11,13 @@
     
     
     <item>
-      <title></title>
-      <link>https://andreafioraldi.github.io/AFLplusplus-website/docs/features/</link>
+      <title>The AFL&#43;&#43; fuzzing framework</title>
+      <link>https://andreafioraldi.github.io/AFLplusplus-website/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://andreafioraldi.github.io/AFLplusplus-website/docs/features/</guid>
-      <description>AFL++ Features TODO</description>
+      <guid>https://andreafioraldi.github.io/AFLplusplus-website/</guid>
+      <description>AFL++ Overview The AFL++ fuzzing framework includes the following:
+ A fuzzer with many mutators and configurations: afl-fuzz. Different source code instrumentation modules: LLVM mode, afl-as, GCC plugin. Different binary code instrumentation modules: QEMU mode, Unicorn mode, QBDI mode. Utilities for testcase/corpus minimization: afl-tmin, afl-cmin. Helper libraries: libtokencap, libdislocator, libcompcov.  What is AFL++ AFLplusplus is the son of the American Fuzzy Lop fuzzer and was created initially to incorporate all the best features developed in the years for the fuzzers in the AFL family and not merged in AFL cause it is not updated since November 2017.</description>
     </item>
     
   </channel>

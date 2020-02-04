@@ -3,5 +3,6 @@ headless: true
 bookMenuLevels: 1
 ---
 
- - [Overview]({{< relref "/_index" >}})
+ - [Overview]({{< relref "/" >}})
  - [Features]({{< relref "/docs/features" >}})
+ - [Blog]({{< relref "/posts/" >}})
