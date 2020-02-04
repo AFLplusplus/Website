@@ -6,64 +6,9 @@
     <description>Recent content in Tags on AFLplusplus</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 02 Apr 2014 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://andreafioraldi.github.io/AFLplusplus-website/tags/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>development</title>
-      <link>https://andreafioraldi.github.io/AFLplusplus-website/tags/development/</link>
-      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://andreafioraldi.github.io/AFLplusplus-website/tags/development/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>go</title>
-      <link>https://andreafioraldi.github.io/AFLplusplus-website/tags/go/</link>
-      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://andreafioraldi.github.io/AFLplusplus-website/tags/go/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>golang</title>
-      <link>https://andreafioraldi.github.io/AFLplusplus-website/tags/golang/</link>
-      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://andreafioraldi.github.io/AFLplusplus-website/tags/golang/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>hugo</title>
-      <link>https://andreafioraldi.github.io/AFLplusplus-website/tags/hugo/</link>
-      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://andreafioraldi.github.io/AFLplusplus-website/tags/hugo/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>templates</title>
-      <link>https://andreafioraldi.github.io/AFLplusplus-website/tags/templates/</link>
-      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://andreafioraldi.github.io/AFLplusplus-website/tags/templates/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>themes</title>
-      <link>https://andreafioraldi.github.io/AFLplusplus-website/tags/themes/</link>
-      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://andreafioraldi.github.io/AFLplusplus-website/tags/themes/</guid>
-      <description></description>
-    </item>
     
   </channel>
 </rss>
