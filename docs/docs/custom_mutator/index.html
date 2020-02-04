@@ -4,12 +4,15 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Tags"><meta property="og:title" content="Tags" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://andreafioraldi.github.io/AFLplusplus-website/tags/" />
+<meta name="description" content="Custom Mutator"><meta property="og:title" content="" />
+<meta property="og:description" content="Adding custom mutators to AFL This file describes how you can implement custom mutations to be used in AFL.
+Implemented by Khaled Yakdan from Code Intelligence yakdan@code-intelligence.de
+1) Description Custom mutator libraries can be passed to afl-fuzz to perform custom mutations on test cases beyond those available in AFL - for example, to enable structure-aware fuzzing by using libraries that perform mutations according to a given grammar.
+The custom mutator library is passed to afl-fuzz via the AFL_CUSTOM_MUTATOR_LIBRARY environment variable." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://andreafioraldi.github.io/AFLplusplus-website/docs/custom_mutator/" />
 
-<title>Tags | AFLplusplus</title>
+<title>Custom Mutator | AFLplusplus</title>
 <link rel="icon" href="/AFLplusplus-website/favicon.png" type="image/x-icon">
 
 
@@ -18,7 +21,6 @@
 
 <script defer src="/AFLplusplus-website/en.search.min.8a14b1acdb625fa945e0683c0cf6f11655d43e41f711767eb76fae21645815a5.js" integrity="sha256-ihSxrNtiX6lF4Gg8DPbxFlXUPkH3EXZ&#43;t2&#43;uIWRYFaU="></script>
 
-<link rel="alternate" type="application/rss+xml" href="https://andreafioraldi.github.io/AFLplusplus-website/tags/index.xml" title="AFLplusplus" />
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -80,7 +82,7 @@ https://github.com/alex-shpak/hugo-book
       
         <li>
 
-  <a href="/AFLplusplus-website/docs/custom_mutator/" >
+  <a href="/AFLplusplus-website/docs/custom_mutator/"  class="active">
       Custom Mutator
   </a>
 
@@ -248,7 +250,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="/AFLplusplus-website/svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <strong>Tags</strong>
+  <strong>Custom Mutator</strong>
 
   <label for="toc-control">
     <img src="/AFLplusplus-website/svg/toc.svg" class="book-icon" alt="Table of Contents" />
@@ -260,27 +262,10 @@ https://github.com/alex-shpak/hugo-book
     <input type="checkbox" class="hidden" id="toc-control" />
     <aside class="hidden clearfix">
       
-  <nav>
+  <nav id="TableOfContents">
   <ul>
-  
-    
-    <li class="book-section-flat">
-      <strong>Categories</strong>
-      <ul>
-      
-      </ul>
-    </li>
-    
-  
-    
-    <li class="book-section-flat">
-      <strong>Tags</strong>
-      <ul>
-      
-      </ul>
-    </li>
-    
-  
+    <li><a href="#1-description">1) Description</a></li>
+    <li><a href="#2-example">2) Example</a></li>
   </ul>
 </nav>
 
@@ -291,10 +276,32 @@ https://github.com/alex-shpak/hugo-book
       </header>
 
       
-<article class="markdown">
-  <h1>Tags</h1>
-  
-  
+<article class="markdown"><h1 id="adding-custom-mutators-to-afl">Adding custom mutators to AFL</h1>
+<p>This file describes how you can implement custom mutations to be used in AFL.</p>
+<p>Implemented by Khaled Yakdan from Code Intelligence <a href="mailto:yakdan@code-intelligence.de">yakdan@code-intelligence.de</a></p>
+<h2 id="1-description">1) Description</h2>
+<p>Custom mutator libraries can be passed to afl-fuzz to perform custom mutations
+on test cases beyond those available in AFL - for example, to enable structure-aware
+fuzzing by using libraries that perform mutations according to a given grammar.</p>
+<p>The custom mutator library is passed to afl-fuzz via the AFL_CUSTOM_MUTATOR_LIBRARY
+environment variable. The library must export the afl_custom_mutator() function and
+must be compiled as a shared object. For example:
+$CC -shared -Wall -O3 <!-- raw HTML omitted -->.c -o <!-- raw HTML omitted -->.so</p>
+<p>Note: unless AFL_CUSTOM_MUTATOR_ONLY is set, its state mutator like any others,
+so it will be used for some test cases, and other mutators for others.</p>
+<p>Only if AFL_CUSTOM_MUTATOR_ONLY is set the afl_custom_mutator() function will
+be called every time it needs to mutate test case!</p>
+<p>For some cases, the format of the mutated data returned from
+the custom mutator is not suitable to directly execute the target with this input.
+For example, when using libprotobuf-mutator, the data returned is in a protobuf
+format which corresponds to a given grammar. In order to execute the target,
+the protobuf data must be converted to the plain-text format expected by the target.
+In such scenarios, the user can define the afl_pre_save_handler() function. This function
+is then transforms the data into the format expected by the API before executing the target.
+afl_pre_save_handler is optional and does not have to be implemented if its functionality
+is not needed.</p>
+<h2 id="2-example">2) Example</h2>
+<p>A simple example is provided in ../examples/custom_mutators/</p>
 </article>
  
 
@@ -311,6 +318,10 @@ https://github.com/alex-shpak/hugo-book
  
         
   
+  <div class="book-comments">
+
+</div>
+  
  
       </footer>
       
@@ -319,27 +330,10 @@ https://github.com/alex-shpak/hugo-book
     
     <aside class="book-toc">
       
-  <nav>
+  <nav id="TableOfContents">
   <ul>
-  
-    
-    <li class="book-section-flat">
-      <strong>Categories</strong>
-      <ul>
-      
-      </ul>
-    </li>
-    
-  
-    
-    <li class="book-section-flat">
-      <strong>Tags</strong>
-      <ul>
-      
-      </ul>
-    </li>
-    
-  
+    <li><a href="#1-description">1) Description</a></li>
+    <li><a href="#2-example">2) Example</a></li>
   </ul>
 </nav>
 

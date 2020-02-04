@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Sister Projects"><meta property="og:title" content="" />
+<meta property="og:description" content="Sister projects This doc lists some of the projects that are inspired by, derived from, designed for, or meant to integrate with AFL. See README for the general instruction manual.
+!!! !!! This list is outdated and needs an update, missing: e.g. Angora, FairFuzz !!!
+Support for other languages / environments: Python AFL (Jakub Wilk) Allows fuzz-testing of Python programs. Uses custom instrumentation and its own forkserver.
+http://jwilk.net/software/python-afl
+Go-fuzz (Dmitry Vyukov) AFL-inspired guided fuzzing approach for Go targets:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://andreafioraldi.github.io/AFLplusplus-website/docs/sister_projects/" />
+
+<title>Sister Projects | AFLplusplus</title>
+<link rel="icon" href="/AFLplusplus-website/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/AFLplusplus-website/book.min.b7fe34b8a4c4da05b2690b4aacfa71ddce0668cc6da3abb67dd3946844125444.css" integrity="sha256-t/40uKTE2gWyaQtKrPpx3c4GaMxto6u2fdOUaEQSVEQ=">
+
+
+<script defer src="/AFLplusplus-website/en.search.min.8a14b1acdb625fa945e0683c0cf6f11655d43e41f711767eb76fae21645815a5.js" integrity="sha256-ihSxrNtiX6lF4Gg8DPbxFlXUPkH3EXZ&#43;t2&#43;uIWRYFaU="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/AFLplusplus-website"><span>AFLplusplus</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+  
+
+  
+
+
+
+
+
+ 
+  
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/binaryonly_fuzzing/" >
+      Binaryonly Fuzzing
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/custom_mutator/" >
+      Custom Mutator
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/env_variables/" >
+      Env Variables
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/features/" >
+      Features
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/historical_notes/" >
+      Historical Notes
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/ideas/" >
+      Ideas
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/notes_for_asan/" >
+      Notes for Asan
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/parallel_fuzzing/" >
+      Parallel Fuzzing
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/perf_tips/" >
+      Perf Tips
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/power_schedules/" >
+      Power Schedules
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/python_mutators/" >
+      Python Mutators
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/sister_projects/"  class="active">
+      Sister Projects
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/status_screen/" >
+      Status Screen
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/technical_details/" >
+      Technical Details
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/AFLplusplus-website/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Sister Projects</strong>
+
+  <label for="toc-control">
+    <img src="/AFLplusplus-website/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#support-for-other-languages--environments">Support for other languages / environments:</a>
+      <ul>
+        <li><a href="#python-afl-jakub-wilk">Python AFL (Jakub Wilk)</a></li>
+        <li><a href="#go-fuzz-dmitry-vyukov">Go-fuzz (Dmitry Vyukov)</a></li>
+        <li><a href="#aflrs-keegan-mcallister">afl.rs (Keegan McAllister)</a></li>
+        <li><a href="#ocaml-support-kc-sivaramakrishnan">OCaml support (KC Sivaramakrishnan)</a></li>
+        <li><a href="#afl-for-gcj-java-and-other-gcc-frontends--">AFL for GCJ Java and other GCC frontends (-)</a></li>
+      </ul>
+    </li>
+    <li><a href="#afl-style-in-process-fuzzer-for-llvm-kostya-serebryany">AFL-style in-process fuzzer for LLVM (Kostya Serebryany)</a></li>
+    <li><a href="#afl-fixup-shim-ben-nagy">AFL fixup shim (Ben Nagy)</a></li>
+    <li><a href="#triforceafl-tim-newsham-and-jesse-hertz">TriforceAFL (Tim Newsham and Jesse Hertz)</a></li>
+    <li><a href="#winafl-ivan-fratric">WinAFL (Ivan Fratric)</a></li>
+    <li><a href="#network-fuzzing">Network fuzzing</a>
+      <ul>
+        <li><a href="#preeny-yan-shoshitaishvili">Preeny (Yan Shoshitaishvili)</a></li>
+      </ul>
+    </li>
+    <li><a href="#distributed-fuzzing-and-related-automation">Distributed fuzzing and related automation</a>
+      <ul>
+        <li><a href="#roving-richo-healey">roving (Richo Healey)</a></li>
+        <li><a href="#distfuzz-afl-martijn-bogaard">Distfuzz-AFL (Martijn Bogaard)</a></li>
+        <li><a href="#afldff-quantumvm">AFLDFF (quantumvm)</a></li>
+        <li><a href="#afl-launch-ben-nagy">afl-launch (Ben Nagy)</a></li>
+        <li><a href="#afl-utils-rc0r">AFL Utils (rc0r)</a></li>
+        <li><a href="#afl-fuzzing-scripts-tobias-ospelt">afl-fuzzing-scripts (Tobias Ospelt)</a></li>
+        <li><a href="#afl-sid-jacek-wielemborek">afl-sid (Jacek Wielemborek)</a></li>
+        <li><a href="#afl-monitor-paul-s-ziegler">afl-monitor (Paul S. Ziegler)</a></li>
+        <li><a href="#fexm-security-in-telecommunications">FEXM (Security in Telecommunications)</a></li>
+      </ul>
+    </li>
+    <li><a href="#crash-triage-coverage-analysis-and-other-companion-tools">Crash triage, coverage analysis, and other companion tools:</a>
+      <ul>
+        <li><a href="#afl-crash-analyzer-tobias-ospelt">afl-crash-analyzer (Tobias Ospelt)</a></li>
+        <li><a href="#crashwalk-ben-nagy">Crashwalk (Ben Nagy)</a></li>
+        <li><a href="#afl-cov-michael-rash">afl-cov (Michael Rash)</a></li>
+        <li><a href="#afl-sancov-bhargava-shastry">afl-sancov (Bhargava Shastry)</a></li>
+        <li><a href="#recidivm-jakub-wilk">RecidiVM (Jakub Wilk)</a></li>
+        <li><a href="#aflize-jacek-wielemborek">aflize (Jacek Wielemborek)</a></li>
+        <li><a href="#afl-ddmin-mod-markus-teufelberger">afl-ddmin-mod (Markus Teufelberger)</a></li>
+        <li><a href="#afl-kit-kuang-che-wu">afl-kit (Kuang-che Wu)</a></li>
+      </ul>
+    </li>
+    <li><a href="#narrow-purpose-or-experimental">Narrow-purpose or experimental:</a>
+      <ul>
+        <li><a href="#cygwin-support-ali-rizvi-santiago">Cygwin support (Ali Rizvi-Santiago)</a></li>
+        <li><a href="#pause-and-resume-scripts-ben-nagy">Pause and resume scripts (Ben Nagy)</a></li>
+        <li><a href="#static-binary-only-instrumentation-aleksandar-nikolich">Static binary-only instrumentation (Aleksandar Nikolich)</a></li>
+        <li><a href="#afl-pin-parker-thompson">AFL PIN (Parker Thompson)</a></li>
+        <li><a href="#afl-style-instrumentation-in-llvm-kostya-serebryany">AFL-style instrumentation in llvm (Kostya Serebryany)</a></li>
+        <li><a href="#afl-js-han-choongwoo">AFL JS (Han Choongwoo)</a></li>
+        <li><a href="#afl-harness-for-fwknop-michael-rash">AFL harness for fwknop (Michael Rash)</a></li>
+        <li><a href="#building-harnesses-for-dns-servers-jonathan-foote-ron-bowes">Building harnesses for DNS servers (Jonathan Foote, Ron Bowes)</a></li>
+        <li><a href="#fuzzer-shell-for-sqlite-richard-hipp">Fuzzer shell for SQLite (Richard Hipp)</a></li>
+        <li><a href="#support-for-python-mutation-modules-christian-holler">Support for Python mutation modules (Christian Holler)</a></li>
+        <li><a href="#support-for-selective-instrumentation-christian-holler">Support for selective instrumentation (Christian Holler)</a></li>
+        <li><a href="#syzkaller-dmitry-vyukov">Syzkaller (Dmitry Vyukov)</a></li>
+        <li><a href="#kernel-snapshot-fuzzing-using-unicornafl-security-in-telecommunications">Kernel Snapshot Fuzzing using Unicornafl (Security in Telecommunications)</a></li>
+        <li><a href="#android-support-ele7enxxh">Android support (ele7enxxh)</a></li>
+        <li><a href="#cgi-wrapper-floyd">CGI wrapper (floyd)</a></li>
+        <li><a href="#fuzzing-difficulty-estimation-marcel-boehme">Fuzzing difficulty estimation (Marcel Boehme)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+<article class="markdown"><h1 id="sister-projects">Sister projects</h1>
+<p>This doc lists some of the projects that are inspired by, derived from,
+designed for, or meant to integrate with AFL. See README for the general
+instruction manual.</p>
+<p>!!!
+!!! This list is outdated and needs an update, missing: e.g. Angora, FairFuzz
+!!!</p>
+<h2 id="support-for-other-languages--environments">Support for other languages / environments:</h2>
+<h3 id="python-afl-jakub-wilk">Python AFL (Jakub Wilk)</h3>
+<p>Allows fuzz-testing of Python programs. Uses custom instrumentation and its
+own forkserver.</p>
+<p><a href="http://jwilk.net/software/python-afl">http://jwilk.net/software/python-afl</a></p>
+<h3 id="go-fuzz-dmitry-vyukov">Go-fuzz (Dmitry Vyukov)</h3>
+<p>AFL-inspired guided fuzzing approach for Go targets:</p>
+<p><a href="https://github.com/dvyukov/go-fuzz">https://github.com/dvyukov/go-fuzz</a></p>
+<h3 id="aflrs-keegan-mcallister">afl.rs (Keegan McAllister)</h3>
+<p>Allows Rust features to be easily fuzzed with AFL (using the LLVM mode).</p>
+<p><a href="https://github.com/kmcallister/afl.rs">https://github.com/kmcallister/afl.rs</a></p>
+<h3 id="ocaml-support-kc-sivaramakrishnan">OCaml support (KC Sivaramakrishnan)</h3>
+<p>Adds AFL-compatible instrumentation to OCaml programs.</p>
+<p><a href="https://github.com/ocamllabs/opam-repo-dev/pull/23">https://github.com/ocamllabs/opam-repo-dev/pull/23</a>
+<a href="http://canopy.mirage.io/Posts/Fuzzing">http://canopy.mirage.io/Posts/Fuzzing</a></p>
+<h3 id="afl-for-gcj-java-and-other-gcc-frontends--">AFL for GCJ Java and other GCC frontends (-)</h3>
+<p>GCC Java programs are actually supported out of the box - simply rename
+afl-gcc to afl-gcj. Unfortunately, by default, unhandled exceptions in GCJ do
+not result in abort() being called, so you will need to manually add a
+top-level exception handler that exits with SIGABRT or something equivalent.</p>
+<p>Other GCC-supported languages should be fairly easy to get working, but may
+face similar problems. See <a href="https://gcc.gnu.org/frontends.html">https://gcc.gnu.org/frontends.html</a> for a list of
+options.</p>
+<h2 id="afl-style-in-process-fuzzer-for-llvm-kostya-serebryany">AFL-style in-process fuzzer for LLVM (Kostya Serebryany)</h2>
+<p>Provides an evolutionary instrumentation-guided fuzzing harness that allows
+some programs to be fuzzed without the fork / execve overhead. (Similar
+functionality is now available as the &ldquo;persistent&rdquo; feature described in
+<a href="../llvm_mode/README.md">the llvm_mode readme</a>)</p>
+<p><a href="http://llvm.org/docs/LibFuzzer.html">http://llvm.org/docs/LibFuzzer.html</a></p>
+<h2 id="afl-fixup-shim-ben-nagy">AFL fixup shim (Ben Nagy)</h2>
+<p>Allows AFL_POST_LIBRARY postprocessors to be written in arbitrary languages
+that don&rsquo;t have C / .so bindings. Includes examples in Go.</p>
+<p><a href="https://github.com/bnagy/aflfix">https://github.com/bnagy/aflfix</a></p>
+<h2 id="triforceafl-tim-newsham-and-jesse-hertz">TriforceAFL (Tim Newsham and Jesse Hertz)</h2>
+<p>Leverages QEMU full system emulation mode to allow AFL to target operating
+systems and other alien worlds:</p>
+<p><a href="https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2016/june/project-triforce-run-afl-on-everything/">https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2016/june/project-triforce-run-afl-on-everything/</a></p>
+<h2 id="winafl-ivan-fratric">WinAFL (Ivan Fratric)</h2>
+<p>As the name implies, allows you to fuzz Windows binaries (using DynamoRio).</p>
+<p><a href="https://github.com/ivanfratric/winafl">https://github.com/ivanfratric/winafl</a></p>
+<p>Another Windows alternative may be:</p>
+<p><a href="https://github.com/carlosgprado/BrundleFuzz/">https://github.com/carlosgprado/BrundleFuzz/</a></p>
+<h2 id="network-fuzzing">Network fuzzing</h2>
+<h3 id="preeny-yan-shoshitaishvili">Preeny (Yan Shoshitaishvili)</h3>
+<p>Provides a fairly simple way to convince dynamically linked network-centric
+programs to read from a file or not fork. Not AFL-specific, but described as
+useful by many users. Some assembly required.</p>
+<p><a href="https://github.com/zardus/preeny">https://github.com/zardus/preeny</a></p>
+<h2 id="distributed-fuzzing-and-related-automation">Distributed fuzzing and related automation</h2>
+<h3 id="roving-richo-healey">roving (Richo Healey)</h3>
+<p>A client-server architecture for effortlessly orchestrating AFL runs across
+a fleet of machines. You don&rsquo;t want to use this on systems that face the
+Internet or live in other untrusted environments.</p>
+<p><a href="https://github.com/richo/roving">https://github.com/richo/roving</a></p>
+<h3 id="distfuzz-afl-martijn-bogaard">Distfuzz-AFL (Martijn Bogaard)</h3>
+<p>Simplifies the management of afl-fuzz instances on remote machines. The
+author notes that the current implementation isn&rsquo;t secure and should not
+be exposed on the Internet.</p>
+<p><a href="https://github.com/MartijnB/disfuzz-afl">https://github.com/MartijnB/disfuzz-afl</a></p>
+<h3 id="afldff-quantumvm">AFLDFF (quantumvm)</h3>
+<p>A nice GUI for managing AFL jobs.</p>
+<p><a href="https://github.com/quantumvm/AFLDFF">https://github.com/quantumvm/AFLDFF</a></p>
+<h3 id="afl-launch-ben-nagy">afl-launch (Ben Nagy)</h3>
+<p>Batch AFL launcher utility with a simple CLI.</p>
+<p><a href="https://github.com/bnagy/afl-launch">https://github.com/bnagy/afl-launch</a></p>
+<h3 id="afl-utils-rc0r">AFL Utils (rc0r)</h3>
+<p>Simplifies the triage of discovered crashes, start parallel instances, etc.</p>
+<p><a href="https://github.com/rc0r/afl-utils">https://github.com/rc0r/afl-utils</a></p>
+<p>Another crash triage tool:</p>
+<p><a href="https://github.com/floyd-fuh/afl-crash-analyzer">https://github.com/floyd-fuh/afl-crash-analyzer</a></p>
+<h3 id="afl-fuzzing-scripts-tobias-ospelt">afl-fuzzing-scripts (Tobias Ospelt)</h3>
+<p>Simplifies starting up multiple parallel AFL jobs.</p>
+<p><a href="https://github.com/floyd-fuh/afl-fuzzing-scripts/">https://github.com/floyd-fuh/afl-fuzzing-scripts/</a></p>
+<h3 id="afl-sid-jacek-wielemborek">afl-sid (Jacek Wielemborek)</h3>
+<p>Allows users to more conveniently build and deploy AFL via Docker.</p>
+<p><a href="https://github.com/d33tah/afl-sid">https://github.com/d33tah/afl-sid</a></p>
+<p>Another Docker-related project:</p>
+<p><a href="https://github.com/ozzyjohnson/docker-afl">https://github.com/ozzyjohnson/docker-afl</a></p>
+<h3 id="afl-monitor-paul-s-ziegler">afl-monitor (Paul S. Ziegler)</h3>
+<p>Provides more detailed and versatile statistics about your running AFL jobs.</p>
+<p><a href="https://github.com/reflare/afl-monitor">https://github.com/reflare/afl-monitor</a></p>
+<h3 id="fexm-security-in-telecommunications">FEXM (Security in Telecommunications)</h3>
+<p>Fully automated fuzzing framework, based on AFL</p>
+<p><a href="https://github.com/fgsect/fexm">https://github.com/fgsect/fexm</a></p>
+<h2 id="crash-triage-coverage-analysis-and-other-companion-tools">Crash triage, coverage analysis, and other companion tools:</h2>
+<h3 id="afl-crash-analyzer-tobias-ospelt">afl-crash-analyzer (Tobias Ospelt)</h3>
+<p>Makes it easier to navigate and annotate crashing test cases.</p>
+<p><a href="https://github.com/floyd-fuh/afl-crash-analyzer/">https://github.com/floyd-fuh/afl-crash-analyzer/</a></p>
+<h3 id="crashwalk-ben-nagy">Crashwalk (Ben Nagy)</h3>
+<p>AFL-aware tool to annotate and sort through crashing test cases.</p>
+<p><a href="https://github.com/bnagy/crashwalk">https://github.com/bnagy/crashwalk</a></p>
+<h3 id="afl-cov-michael-rash">afl-cov (Michael Rash)</h3>
+<p>Produces human-readable coverage data based on the output queue of afl-fuzz.</p>
+<p><a href="https://github.com/mrash/afl-cov">https://github.com/mrash/afl-cov</a></p>
+<h3 id="afl-sancov-bhargava-shastry">afl-sancov (Bhargava Shastry)</h3>
+<p>Similar to afl-cov, but uses clang sanitizer instrumentation.</p>
+<p><a href="https://github.com/bshastry/afl-sancov">https://github.com/bshastry/afl-sancov</a></p>
+<h3 id="recidivm-jakub-wilk">RecidiVM (Jakub Wilk)</h3>
+<p>Makes it easy to estimate memory usage limits when fuzzing with ASAN or MSAN.</p>
+<p><a href="http://jwilk.net/software/recidivm">http://jwilk.net/software/recidivm</a></p>
+<h3 id="aflize-jacek-wielemborek">aflize (Jacek Wielemborek)</h3>
+<p>Automatically build AFL-enabled versions of Debian packages.</p>
+<p><a href="https://github.com/d33tah/aflize">https://github.com/d33tah/aflize</a></p>
+<h3 id="afl-ddmin-mod-markus-teufelberger">afl-ddmin-mod (Markus Teufelberger)</h3>
+<p>A variant of afl-tmin that uses a more sophisticated (but slower)
+minimization algorithm.</p>
+<p><a href="https://github.com/MarkusTeufelberger/afl-ddmin-mod">https://github.com/MarkusTeufelberger/afl-ddmin-mod</a></p>
+<h3 id="afl-kit-kuang-che-wu">afl-kit (Kuang-che Wu)</h3>
+<p>Replacements for afl-cmin and afl-tmin with additional features, such
+as the ability to filter crashes based on stderr patterns.</p>
+<p><a href="https://github.com/kcwu/afl-kit">https://github.com/kcwu/afl-kit</a></p>
+<h2 id="narrow-purpose-or-experimental">Narrow-purpose or experimental:</h2>
+<h3 id="cygwin-support-ali-rizvi-santiago">Cygwin support (Ali Rizvi-Santiago)</h3>
+<p>Pretty self-explanatory. As per the author, this &ldquo;mostly&rdquo; ports AFL to
+Windows. Field reports welcome!</p>
+<p><a href="https://github.com/arizvisa/afl-cygwin">https://github.com/arizvisa/afl-cygwin</a></p>
+<h3 id="pause-and-resume-scripts-ben-nagy">Pause and resume scripts (Ben Nagy)</h3>
+<p>Simple automation to suspend and resume groups of fuzzing jobs.</p>
+<p><a href="https://github.com/bnagy/afl-trivia">https://github.com/bnagy/afl-trivia</a></p>
+<h3 id="static-binary-only-instrumentation-aleksandar-nikolich">Static binary-only instrumentation (Aleksandar Nikolich)</h3>
+<p>Allows black-box binaries to be instrumented statically (i.e., by modifying
+the binary ahead of the time, rather than translating it on the run). Author
+reports better performance compared to QEMU, but occasional translation
+errors with stripped binaries.</p>
+<p><a href="https://github.com/vanhauser-thc/afl-dyninst">https://github.com/vanhauser-thc/afl-dyninst</a></p>
+<h3 id="afl-pin-parker-thompson">AFL PIN (Parker Thompson)</h3>
+<p>Early-stage Intel PIN instrumentation support (from before we settled on
+faster-running QEMU).</p>
+<p><a href="https://github.com/mothran/aflpin">https://github.com/mothran/aflpin</a></p>
+<h3 id="afl-style-instrumentation-in-llvm-kostya-serebryany">AFL-style instrumentation in llvm (Kostya Serebryany)</h3>
+<p>Allows AFL-equivalent instrumentation to be injected at compiler level.
+This is currently not supported by AFL as-is, but may be useful in other
+projects.</p>
+<p><a href="https://code.google.com/p/address-sanitizer/wiki/AsanCoverage#Coverage_counters">https://code.google.com/p/address-sanitizer/wiki/AsanCoverage#Coverage_counters</a></p>
+<h3 id="afl-js-han-choongwoo">AFL JS (Han Choongwoo)</h3>
+<p>One-off optimizations to speed up the fuzzing of JavaScriptCore (now likely
+superseded by LLVM deferred forkserver init - see llvm_mode/README.llvm).</p>
+<p><a href="https://github.com/tunz/afl-fuzz-js">https://github.com/tunz/afl-fuzz-js</a></p>
+<h3 id="afl-harness-for-fwknop-michael-rash">AFL harness for fwknop (Michael Rash)</h3>
+<p>An example of a fairly involved integration with AFL.</p>
+<p><a href="https://github.com/mrash/fwknop/tree/master/test/afl">https://github.com/mrash/fwknop/tree/master/test/afl</a></p>
+<h3 id="building-harnesses-for-dns-servers-jonathan-foote-ron-bowes">Building harnesses for DNS servers (Jonathan Foote, Ron Bowes)</h3>
+<p>Two articles outlining the general principles and showing some example code.</p>
+<p><a href="https://www.fastly.com/blog/how-to-fuzz-server-american-fuzzy-lop">https://www.fastly.com/blog/how-to-fuzz-server-american-fuzzy-lop</a>
+<a href="https://goo.gl/j9EgFf">https://goo.gl/j9EgFf</a></p>
+<h3 id="fuzzer-shell-for-sqlite-richard-hipp">Fuzzer shell for SQLite (Richard Hipp)</h3>
+<p>A simple SQL shell designed specifically for fuzzing the underlying library.</p>
+<p><a href="http://www.sqlite.org/src/artifact/9e7e273da2030371">http://www.sqlite.org/src/artifact/9e7e273da2030371</a></p>
+<h3 id="support-for-python-mutation-modules-christian-holler">Support for Python mutation modules (Christian Holler)</h3>
+<p>now integrated in AFL++, originally from here
+<a href="https://github.com/choller/afl/blob/master/docs/mozilla/python_modules.txt">https://github.com/choller/afl/blob/master/docs/mozilla/python_modules.txt</a></p>
+<h3 id="support-for-selective-instrumentation-christian-holler">Support for selective instrumentation (Christian Holler)</h3>
+<p>now integrated in AFL++, originally from here
+<a href="https://github.com/choller/afl/blob/master/docs/mozilla/partial_instrumentation.txt">https://github.com/choller/afl/blob/master/docs/mozilla/partial_instrumentation.txt</a></p>
+<h3 id="syzkaller-dmitry-vyukov">Syzkaller (Dmitry Vyukov)</h3>
+<p>A similar guided approach as applied to fuzzing syscalls:</p>
+<p><a href="https://github.com/google/syzkaller/wiki/Found-Bugs">https://github.com/google/syzkaller/wiki/Found-Bugs</a>
+<a href="https://github.com/dvyukov/linux/commit/33787098ffaaa83b8a7ccf519913ac5fd6125931">https://github.com/dvyukov/linux/commit/33787098ffaaa83b8a7ccf519913ac5fd6125931</a>
+<a href="http://events.linuxfoundation.org/sites/events/files/slides/AFL%20filesystem%20fuzzing%2C%20Vault%202016_0.pdf">http://events.linuxfoundation.org/sites/events/files/slides/AFL%20filesystem%20fuzzing%2C%20Vault%202016_0.pdf</a></p>
+<h3 id="kernel-snapshot-fuzzing-using-unicornafl-security-in-telecommunications">Kernel Snapshot Fuzzing using Unicornafl (Security in Telecommunications)</h3>
+<p><a href="https://github.com/fgsect/unicorefuzz">https://github.com/fgsect/unicorefuzz</a></p>
+<h3 id="android-support-ele7enxxh">Android support (ele7enxxh)</h3>
+<p>Based on a somewhat dated version of AFL:</p>
+<p><a href="https://github.com/ele7enxxh/android-afl">https://github.com/ele7enxxh/android-afl</a></p>
+<h3 id="cgi-wrapper-floyd">CGI wrapper (floyd)</h3>
+<p>Facilitates the testing of CGI scripts.</p>
+<p><a href="https://github.com/floyd-fuh/afl-cgi-wrapper">https://github.com/floyd-fuh/afl-cgi-wrapper</a></p>
+<h3 id="fuzzing-difficulty-estimation-marcel-boehme">Fuzzing difficulty estimation (Marcel Boehme)</h3>
+<p>A fork of AFL that tries to quantify the likelihood of finding additional
+paths or crashes at any point in a fuzzing job.</p>
+<p><a href="https://github.com/mboehme/pythia">https://github.com/mboehme/pythia</a></p>
+</article>
+ 
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+      </footer>
+      
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#support-for-other-languages--environments">Support for other languages / environments:</a>
+      <ul>
+        <li><a href="#python-afl-jakub-wilk">Python AFL (Jakub Wilk)</a></li>
+        <li><a href="#go-fuzz-dmitry-vyukov">Go-fuzz (Dmitry Vyukov)</a></li>
+        <li><a href="#aflrs-keegan-mcallister">afl.rs (Keegan McAllister)</a></li>
+        <li><a href="#ocaml-support-kc-sivaramakrishnan">OCaml support (KC Sivaramakrishnan)</a></li>
+        <li><a href="#afl-for-gcj-java-and-other-gcc-frontends--">AFL for GCJ Java and other GCC frontends (-)</a></li>
+      </ul>
+    </li>
+    <li><a href="#afl-style-in-process-fuzzer-for-llvm-kostya-serebryany">AFL-style in-process fuzzer for LLVM (Kostya Serebryany)</a></li>
+    <li><a href="#afl-fixup-shim-ben-nagy">AFL fixup shim (Ben Nagy)</a></li>
+    <li><a href="#triforceafl-tim-newsham-and-jesse-hertz">TriforceAFL (Tim Newsham and Jesse Hertz)</a></li>
+    <li><a href="#winafl-ivan-fratric">WinAFL (Ivan Fratric)</a></li>
+    <li><a href="#network-fuzzing">Network fuzzing</a>
+      <ul>
+        <li><a href="#preeny-yan-shoshitaishvili">Preeny (Yan Shoshitaishvili)</a></li>
+      </ul>
+    </li>
+    <li><a href="#distributed-fuzzing-and-related-automation">Distributed fuzzing and related automation</a>
+      <ul>
+        <li><a href="#roving-richo-healey">roving (Richo Healey)</a></li>
+        <li><a href="#distfuzz-afl-martijn-bogaard">Distfuzz-AFL (Martijn Bogaard)</a></li>
+        <li><a href="#afldff-quantumvm">AFLDFF (quantumvm)</a></li>
+        <li><a href="#afl-launch-ben-nagy">afl-launch (Ben Nagy)</a></li>
+        <li><a href="#afl-utils-rc0r">AFL Utils (rc0r)</a></li>
+        <li><a href="#afl-fuzzing-scripts-tobias-ospelt">afl-fuzzing-scripts (Tobias Ospelt)</a></li>
+        <li><a href="#afl-sid-jacek-wielemborek">afl-sid (Jacek Wielemborek)</a></li>
+        <li><a href="#afl-monitor-paul-s-ziegler">afl-monitor (Paul S. Ziegler)</a></li>
+        <li><a href="#fexm-security-in-telecommunications">FEXM (Security in Telecommunications)</a></li>
+      </ul>
+    </li>
+    <li><a href="#crash-triage-coverage-analysis-and-other-companion-tools">Crash triage, coverage analysis, and other companion tools:</a>
+      <ul>
+        <li><a href="#afl-crash-analyzer-tobias-ospelt">afl-crash-analyzer (Tobias Ospelt)</a></li>
+        <li><a href="#crashwalk-ben-nagy">Crashwalk (Ben Nagy)</a></li>
+        <li><a href="#afl-cov-michael-rash">afl-cov (Michael Rash)</a></li>
+        <li><a href="#afl-sancov-bhargava-shastry">afl-sancov (Bhargava Shastry)</a></li>
+        <li><a href="#recidivm-jakub-wilk">RecidiVM (Jakub Wilk)</a></li>
+        <li><a href="#aflize-jacek-wielemborek">aflize (Jacek Wielemborek)</a></li>
+        <li><a href="#afl-ddmin-mod-markus-teufelberger">afl-ddmin-mod (Markus Teufelberger)</a></li>
+        <li><a href="#afl-kit-kuang-che-wu">afl-kit (Kuang-che Wu)</a></li>
+      </ul>
+    </li>
+    <li><a href="#narrow-purpose-or-experimental">Narrow-purpose or experimental:</a>
+      <ul>
+        <li><a href="#cygwin-support-ali-rizvi-santiago">Cygwin support (Ali Rizvi-Santiago)</a></li>
+        <li><a href="#pause-and-resume-scripts-ben-nagy">Pause and resume scripts (Ben Nagy)</a></li>
+        <li><a href="#static-binary-only-instrumentation-aleksandar-nikolich">Static binary-only instrumentation (Aleksandar Nikolich)</a></li>
+        <li><a href="#afl-pin-parker-thompson">AFL PIN (Parker Thompson)</a></li>
+        <li><a href="#afl-style-instrumentation-in-llvm-kostya-serebryany">AFL-style instrumentation in llvm (Kostya Serebryany)</a></li>
+        <li><a href="#afl-js-han-choongwoo">AFL JS (Han Choongwoo)</a></li>
+        <li><a href="#afl-harness-for-fwknop-michael-rash">AFL harness for fwknop (Michael Rash)</a></li>
+        <li><a href="#building-harnesses-for-dns-servers-jonathan-foote-ron-bowes">Building harnesses for DNS servers (Jonathan Foote, Ron Bowes)</a></li>
+        <li><a href="#fuzzer-shell-for-sqlite-richard-hipp">Fuzzer shell for SQLite (Richard Hipp)</a></li>
+        <li><a href="#support-for-python-mutation-modules-christian-holler">Support for Python mutation modules (Christian Holler)</a></li>
+        <li><a href="#support-for-selective-instrumentation-christian-holler">Support for selective instrumentation (Christian Holler)</a></li>
+        <li><a href="#syzkaller-dmitry-vyukov">Syzkaller (Dmitry Vyukov)</a></li>
+        <li><a href="#kernel-snapshot-fuzzing-using-unicornafl-security-in-telecommunications">Kernel Snapshot Fuzzing using Unicornafl (Security in Telecommunications)</a></li>
+        <li><a href="#android-support-ele7enxxh">Android support (ele7enxxh)</a></li>
+        <li><a href="#cgi-wrapper-floyd">CGI wrapper (floyd)</a></li>
+        <li><a href="#fuzzing-difficulty-estimation-marcel-boehme">Fuzzing difficulty estimation (Marcel Boehme)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

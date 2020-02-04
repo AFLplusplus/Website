@@ -1,7 +1,7 @@
 ---
 bookCollapseSection: true
 weight: 20
-bookToc: false
+type: docs
 ---
 
 # AFL++ Features

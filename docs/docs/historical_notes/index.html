@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Historical Notes"><meta property="og:title" content="" />
+<meta property="og:description" content="Historical notes This doc talks about the rationale of some of the high-level design decisions for American Fuzzy Lop. It&rsquo;s adopted from a discussion with Rob Graham. See README.md for the general instruction manual, and technical_details.md for additional implementation-level insights.
+1) Influences In short, afl-fuzz is inspired chiefly by the work done by Tavis Ormandy back in 2007. Tavis did some very persuasive experiments using gcov block coverage to select optimal test cases out of a large corpus of data, and then using them as a starting point for traditional fuzzing workflows." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://andreafioraldi.github.io/AFLplusplus-website/docs/historical_notes/" />
+
+<title>Historical Notes | AFLplusplus</title>
+<link rel="icon" href="/AFLplusplus-website/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/AFLplusplus-website/book.min.b7fe34b8a4c4da05b2690b4aacfa71ddce0668cc6da3abb67dd3946844125444.css" integrity="sha256-t/40uKTE2gWyaQtKrPpx3c4GaMxto6u2fdOUaEQSVEQ=">
+
+
+<script defer src="/AFLplusplus-website/en.search.min.8a14b1acdb625fa945e0683c0cf6f11655d43e41f711767eb76fae21645815a5.js" integrity="sha256-ihSxrNtiX6lF4Gg8DPbxFlXUPkH3EXZ&#43;t2&#43;uIWRYFaU="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/AFLplusplus-website"><span>AFLplusplus</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+  
+
+  
+
+
+
+
+
+ 
+  
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/binaryonly_fuzzing/" >
+      Binaryonly Fuzzing
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/custom_mutator/" >
+      Custom Mutator
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/env_variables/" >
+      Env Variables
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/features/" >
+      Features
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/historical_notes/"  class="active">
+      Historical Notes
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/ideas/" >
+      Ideas
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/notes_for_asan/" >
+      Notes for Asan
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/parallel_fuzzing/" >
+      Parallel Fuzzing
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/perf_tips/" >
+      Perf Tips
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/power_schedules/" >
+      Power Schedules
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/python_mutators/" >
+      Python Mutators
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/sister_projects/" >
+      Sister Projects
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/status_screen/" >
+      Status Screen
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/technical_details/" >
+      Technical Details
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/AFLplusplus-website/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Historical Notes</strong>
+
+  <label for="toc-control">
+    <img src="/AFLplusplus-website/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-influences">1) Influences</a></li>
+    <li><a href="#2-design-goals-for-afl-fuzz">2. Design goals for afl-fuzz</a></li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+<article class="markdown"><h1 id="historical-notes">Historical notes</h1>
+<p>This doc talks about the rationale of some of the high-level design decisions
+for American Fuzzy Lop. It&rsquo;s adopted from a discussion with Rob Graham.
+See README.md for the general instruction manual, and technical_details.md for
+additional implementation-level insights.</p>
+<h2 id="1-influences">1) Influences</h2>
+<p>In short, <code>afl-fuzz</code> is inspired chiefly by the work done by Tavis Ormandy back
+in 2007. Tavis did some very persuasive experiments using <code>gcov</code> block coverage
+to select optimal test cases out of a large corpus of data, and then using
+them as a starting point for traditional fuzzing workflows.</p>
+<p>(By &ldquo;persuasive&rdquo;, I mean: netting a significant number of interesting
+vulnerabilities.)</p>
+<p>In parallel to this, both Tavis and I were interested in evolutionary fuzzing.
+Tavis had his experiments, and I was working on a tool called bunny-the-fuzzer,
+released somewhere in 2007.</p>
+<p>Bunny used a generational algorithm not much different from <code>afl-fuzz</code>, but
+also tried to reason about the relationship between various input bits and
+the internal state of the program, with hopes of deriving some additional value
+from that. The reasoning / correlation part was probably in part inspired by
+other projects done around the same time by Will Drewry and Chris Evans.</p>
+<p>The state correlation approach sounded very sexy on paper, but ultimately, made
+the fuzzer complicated, brittle, and cumbersome to use; every other target
+program would require a tweak or two. Because Bunny didn&rsquo;t fare a whole lot
+better than less sophisticated brute-force tools, I eventually decided to write
+it off. You can still find its original documentation at:</p>
+<p><a href="https://code.google.com/p/bunny-the-fuzzer/wiki/BunnyDoc">https://code.google.com/p/bunny-the-fuzzer/wiki/BunnyDoc</a></p>
+<p>There has been a fair amount of independent work, too. Most notably, a few
+weeks earlier that year, Jared DeMott had a Defcon presentation about a
+coverage-driven fuzzer that relied on coverage as a fitness function.</p>
+<p>Jared&rsquo;s approach was by no means identical to what afl-fuzz does, but it was in
+the same ballpark. His fuzzer tried to explicitly solve for the maximum coverage
+with a single input file; in comparison, afl simply selects for cases that do
+something new (which yields better results - see <a href="technical_details.md">technical_details.md</a>).</p>
+<p>A few years later, Gabriel Campana released fuzzgrind, a tool that relied purely
+on Valgrind and a constraint solver to maximize coverage without any brute-force
+bits; and Microsoft Research folks talked extensively about their still
+non-public, solver-based SAGE framework.</p>
+<p>In the past six years or so, I&rsquo;ve also seen a fair number of academic papers
+that dealt with smart fuzzing (focusing chiefly on symbolic execution) and a
+couple papers that discussed proof-of-concept applications of genetic
+algorithms with the same goals in mind. I&rsquo;m unconvinced how practical most of
+these experiments were; I suspect that many of them suffer from the
+bunny-the-fuzzer&rsquo;s curse of being cool on paper and in carefully designed
+experiments, but failing the ultimate test of being able to find new,
+worthwhile security bugs in otherwise well-fuzzed, real-world software.</p>
+<p>In some ways, the baseline that the &ldquo;cool&rdquo; solutions have to compete against is
+a lot more impressive than it may seem, making it difficult for competitors to
+stand out. For a singular example, check out the work by Gynvael and Mateusz
+Jurczyk, applying &ldquo;dumb&rdquo; fuzzing to ffmpeg, a prominent and security-critical
+component of modern browsers and media players:</p>
+<p><a href="http://googleonlinesecurity.blogspot.com/2014/01/ffmpeg-and-thousand-fixes.html">http://googleonlinesecurity.blogspot.com/2014/01/ffmpeg-and-thousand-fixes.html</a></p>
+<p>Effortlessly getting comparable results with state-of-the-art symbolic execution
+in equally complex software still seems fairly unlikely, and hasn&rsquo;t been
+demonstrated in practice so far.</p>
+<p>But I digress; ultimately, attribution is hard, and glorying the fundamental
+concepts behind AFL is probably a waste of time. The devil is very much in the
+often-overlooked details, which brings us to&hellip;</p>
+<h2 id="2-design-goals-for-afl-fuzz">2. Design goals for afl-fuzz</h2>
+<p>In short, I believe that the current implementation of afl-fuzz takes care of
+several itches that seemed impossible to scratch with other tools:</p>
+<ol>
+<li>
+<p>Speed. It&rsquo;s genuinely hard to compete with brute force when your &ldquo;smart&rdquo;
+approach is resource-intensive. If your instrumentation makes it 10x more
+likely to find a bug, but runs 100x slower, your users are getting a bad
+deal.</p>
+<p>To avoid starting with a handicap, <code>afl-fuzz</code> is meant to let you fuzz most of
+the intended targets at roughly their native speed - so even if it doesn&rsquo;t
+add value, you do not lose much.</p>
+<p>On top of this, the tool leverages instrumentation to actually reduce the
+amount of work in a couple of ways: for example, by carefully trimming the
+corpus or skipping non-functional but non-trimmable regions in the input
+files.</p>
+</li>
+<li>
+<p>Rock-solid reliability. It&rsquo;s hard to compete with brute force if your
+approach is brittle and fails unexpectedly. Automated testing is attractive
+because it&rsquo;s simple to use and scalable; anything that goes against these
+principles is an unwelcome trade-off and means that your tool will be used
+less often and with less consistent results.</p>
+<p>Most of the approaches based on symbolic execution, taint tracking, or
+complex syntax-aware instrumentation are currently fairly unreliable with
+real-world targets. Perhaps more importantly, their failure modes can render
+them strictly worse than &ldquo;dumb&rdquo; tools, and such degradation can be difficult
+for less experienced users to notice and correct.</p>
+<p>In contrast, <code>afl-fuzz</code> is designed to be rock solid, chiefly by keeping it
+simple. In fact, at its core, it&rsquo;s designed to be just a very good
+traditional fuzzer with a wide range of interesting, well-researched
+strategies to go by. The fancy parts just help it focus the effort in
+places where it matters the most.</p>
+</li>
+<li>
+<p>Simplicity. The author of a testing framework is probably the only person
+who truly understands the impact of all the settings offered by the tool -
+and who can dial them in just right. Yet, even the most rudimentary fuzzer
+frameworks often come with countless knobs and fuzzing ratios that need to
+be guessed by the operator ahead of the time. This can do more harm than
+good.</p>
+<p>AFL is designed to avoid this as much as possible. The three knobs you
+can play with are the output file, the memory limit, and the ability to
+override the default, auto-calibrated timeout. The rest is just supposed to
+work. When it doesn&rsquo;t, user-friendly error messages outline the probable
+causes and workarounds, and get you back on track right away.</p>
+</li>
+<li>
+<p>Chainability. Most general-purpose fuzzers can&rsquo;t be easily employed
+against resource-hungry or interaction-heavy tools, necessitating the
+creation of custom in-process fuzzers or the investment of massive CPU
+power (most of which is wasted on tasks not directly related to the code
+we actually want to test).</p>
+<p>AFL tries to scratch this itch by allowing users to use more lightweight
+targets (e.g., standalone image parsing libraries) to create small
+corpora of interesting test cases that can be fed into a manual testing
+process or a UI harness later on.</p>
+</li>
+</ol>
+<p>As mentioned in <a href="technical_details.md">technical_details.md</a>, AFL does all this not by systematically
+applying a single overarching CS concept, but by experimenting with a variety
+of small, complementary methods that were shown to reliably yields results
+better than chance. The use of instrumentation is a part of that toolkit, but is
+far from being the most important one.</p>
+<p>Ultimately, what matters is that <code>afl-fuzz</code> is designed to find cool bugs - and
+has a pretty robust track record of doing just that.</p>
+</article>
+ 
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+      </footer>
+      
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-influences">1) Influences</a></li>
+    <li><a href="#2-design-goals-for-afl-fuzz">2. Design goals for afl-fuzz</a></li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

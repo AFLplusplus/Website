@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Notes for Asan"><meta property="og:title" content="" />
+<meta property="og:description" content="Notes for using ASAN with afl-fuzz This file discusses some of the caveats for fuzzing under ASAN, and suggests a handful of alternatives. See README for the general instruction manual.
+1) Short version ASAN on 64-bit systems requests a lot of memory in a way that can&rsquo;t be easily distinguished from a misbehaving program bent on crashing your system.
+Because of this, fuzzing with ASAN is recommended only in four scenarios:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://andreafioraldi.github.io/AFLplusplus-website/docs/notes_for_asan/" />
+
+<title>Notes for Asan | AFLplusplus</title>
+<link rel="icon" href="/AFLplusplus-website/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/AFLplusplus-website/book.min.b7fe34b8a4c4da05b2690b4aacfa71ddce0668cc6da3abb67dd3946844125444.css" integrity="sha256-t/40uKTE2gWyaQtKrPpx3c4GaMxto6u2fdOUaEQSVEQ=">
+
+
+<script defer src="/AFLplusplus-website/en.search.min.8a14b1acdb625fa945e0683c0cf6f11655d43e41f711767eb76fae21645815a5.js" integrity="sha256-ihSxrNtiX6lF4Gg8DPbxFlXUPkH3EXZ&#43;t2&#43;uIWRYFaU="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/AFLplusplus-website"><span>AFLplusplus</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+  
+
+  
+
+
+
+
+
+ 
+  
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/binaryonly_fuzzing/" >
+      Binaryonly Fuzzing
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/custom_mutator/" >
+      Custom Mutator
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/env_variables/" >
+      Env Variables
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/features/" >
+      Features
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/historical_notes/" >
+      Historical Notes
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/ideas/" >
+      Ideas
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/notes_for_asan/"  class="active">
+      Notes for Asan
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/parallel_fuzzing/" >
+      Parallel Fuzzing
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/perf_tips/" >
+      Perf Tips
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/power_schedules/" >
+      Power Schedules
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/python_mutators/" >
+      Python Mutators
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/sister_projects/" >
+      Sister Projects
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/status_screen/" >
+      Status Screen
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/technical_details/" >
+      Technical Details
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/AFLplusplus-website/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Notes for Asan</strong>
+
+  <label for="toc-control">
+    <img src="/AFLplusplus-website/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-short-version">1) Short version</a></li>
+    <li><a href="#2-long-version">2) Long version</a></li>
+    <li><a href="#3-interactions-with-the-qemu-mode">3) Interactions with the QEMU mode</a></li>
+    <li><a href="#4-asan-and-oom-crashes">4) ASAN and OOM crashes</a></li>
+    <li><a href="#5-what-about-ubsan">5) What about UBSAN?</a></li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+<article class="markdown"><h1 id="notes-for-using-asan-with-afl-fuzz">Notes for using ASAN with afl-fuzz</h1>
+<p>This file discusses some of the caveats for fuzzing under ASAN, and suggests
+a handful of alternatives. See README for the general instruction manual.</p>
+<h2 id="1-short-version">1) Short version</h2>
+<p>ASAN on 64-bit systems requests a lot of memory in a way that can&rsquo;t be easily
+distinguished from a misbehaving program bent on crashing your system.</p>
+<p>Because of this, fuzzing with ASAN is recommended only in four scenarios:</p>
+<ul>
+<li>
+<p>On 32-bit systems, where we can always enforce a reasonable memory limit
+(-m 800 or so is a good starting point),</p>
+</li>
+<li>
+<p>On 64-bit systems only if you can do one of the following:</p>
+<ul>
+<li>
+<p>Compile the binary in 32-bit mode (gcc -m32),</p>
+</li>
+<li>
+<p>Precisely gauge memory needs using <a href="http://jwilk.net/software/recidivm">http://jwilk.net/software/recidivm</a> .</p>
+</li>
+<li>
+<p>Limit the memory available to process using cgroups on Linux (see
+examples/asan_cgroups).</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>To compile with ASAN, set AFL_USE_ASAN=1 before calling &lsquo;make clean all&rsquo;. The
+afl-gcc / afl-clang wrappers will pick that up and add the appropriate flags.
+Note that ASAN is incompatible with -static, so be mindful of that.</p>
+<p>(You can also use AFL_USE_MSAN=1 to enable MSAN instead.)</p>
+<p>There is also the option of generating a corpus using a non-ASAN binary, and
+then feeding it to an ASAN-instrumented one to check for bugs. This is faster,
+and can give you somewhat comparable results. You can also try using
+libdislocator (see libdislocator/README.dislocator.md in the parent directory) as a
+lightweight and hassle-free (but less thorough) alternative.</p>
+<h2 id="2-long-version">2) Long version</h2>
+<p>ASAN allocates a huge region of virtual address space for bookkeeping purposes.
+Most of this is never actually accessed, so the OS never has to allocate any
+real pages of memory for the process, and the VM grabbed by ASAN is essentially
+&ldquo;free&rdquo; - but the mapping counts against the standard OS-enforced limit
+(RLIMIT_AS, aka ulimit -v).</p>
+<p>On our end, afl-fuzz tries to protect you from processes that go off-rails
+and start consuming all the available memory in a vain attempt to parse a
+malformed input file. This happens surprisingly often, so enforcing such a limit
+is important for almost any fuzzer: the alternative is for the kernel OOM
+handler to step in and start killing random processes to free up resources.
+Needless to say, that&rsquo;s not a very nice prospect to live with.</p>
+<p>Unfortunately, un*x systems offer no portable way to limit the amount of
+pages actually given to a process in a way that distinguishes between that
+and the harmless &ldquo;land grab&rdquo; done by ASAN. In principle, there are three standard
+ways to limit the size of the heap:</p>
+<ul>
+<li>
+<p>The RLIMIT_AS mechanism (ulimit -v) caps the size of the virtual space -
+but as noted, this pays no attention to the number of pages actually
+in use by the process, and doesn&rsquo;t help us here.</p>
+</li>
+<li>
+<p>The RLIMIT_DATA mechanism (ulimit -d) seems like a good fit, but it applies
+only to the traditional sbrk() / brk() methods of requesting heap space;
+modern allocators, including the one in glibc, routinely rely on mmap()
+instead, and circumvent this limit completely.</p>
+</li>
+<li>
+<p>Finally, the RLIMIT_RSS limit (ulimit -m) sounds like what we need, but
+doesn&rsquo;t work on Linux - mostly because nobody felt like implementing it.</p>
+</li>
+</ul>
+<p>There are also cgroups, but they are Linux-specific, not universally available
+even on Linux systems, and they require root permissions to set up; I&rsquo;m a bit
+hesitant to make afl-fuzz require root permissions just for that. That said,
+if you are on Linux and want to use cgroups, check out the contributed script
+that ships in examples/asan_cgroups/.</p>
+<p>In settings where cgroups aren&rsquo;t available, we have no nice, portable way to
+avoid counting the ASAN allocation toward the limit. On 32-bit systems, or for
+binaries compiled in 32-bit mode (-m32), this is not a big deal: ASAN needs
+around 600-800 MB or so, depending on the compiler - so all you need to do is
+to specify -m that is a bit higher than that.</p>
+<p>On 64-bit systems, the situation is more murky, because the ASAN allocation
+is completely outlandish - around 17.5 TB in older versions, and closer to
+20 TB with newest ones. The actual amount of memory on your system is
+(probably!) just a tiny fraction of that - so unless you dial the limit
+with surgical precision, you will get no protection from OOM bugs.</p>
+<p>On my system, the amount of memory grabbed by ASAN with a slightly older
+version of gcc is around 17,825,850 MB; for newest clang, it&rsquo;s 20,971,600.
+But there is no guarantee that these numbers are stable, and if you get them
+wrong by &ldquo;just&rdquo; a couple gigs or so, you will be at risk.</p>
+<p>To get the precise number, you can use the recidivm tool developed by Jakub
+Wilk (<a href="http://jwilk.net/software/recidivm)">http://jwilk.net/software/recidivm)</a>. In absence of this, ASAN is <em>not</em>
+recommended when fuzzing 64-bit binaries, unless you are confident that they
+are robust and enforce reasonable memory limits (in which case, you can
+specify &lsquo;-m none&rsquo; when calling afl-fuzz).</p>
+<p>Using recidivm or running with no limits aside, there are two other decent
+alternatives: build a corpus of test cases using a non-ASAN binary, and then
+examine them with ASAN, Valgrind, or other heavy-duty tools in a more
+controlled setting; or compile the target program with -m32 (32-bit mode)
+if your system supports that.</p>
+<h2 id="3-interactions-with-the-qemu-mode">3) Interactions with the QEMU mode</h2>
+<p>ASAN, MSAN, and other sanitizers appear to be incompatible with QEMU user
+emulation, so please do not try to use them with the -Q option; QEMU doesn&rsquo;t
+seem to appreciate the shadow VM trick used by these tools, and will likely
+just allocate all your physical memory, then crash.</p>
+<p>You can, however, use QASan to run binaries that are not instrumented with ASan
+under QEMU with the AFL++ instrumentation.</p>
+<p><a href="https://github.com/andreafioraldi/qasan">https://github.com/andreafioraldi/qasan</a></p>
+<h2 id="4-asan-and-oom-crashes">4) ASAN and OOM crashes</h2>
+<p>By default, ASAN treats memory allocation failures as fatal errors, immediately
+causing the program to crash. Since this is a departure from normal POSIX
+semantics (and creates the appearance of security issues in otherwise
+properly-behaving programs), we try to disable this by specifying
+allocator_may_return_null=1 in ASAN_OPTIONS.</p>
+<p>Unfortunately, it&rsquo;s been reported that this setting still causes ASAN to
+trigger phantom crashes in situations where the standard allocator would
+simply return NULL. If this is interfering with your fuzzing jobs, you may
+want to cc: yourself on this bug:</p>
+<p><a href="https://bugs.llvm.org/show_bug.cgi?id=22026">https://bugs.llvm.org/show_bug.cgi?id=22026</a></p>
+<h2 id="5-what-about-ubsan">5) What about UBSAN?</h2>
+<p>New versions of UndefinedBehaviorSanitizer offers the
+-fsanitize=undefined-trap-on-error compiler flag that tells UBSan to insert an
+istruction that will cause SIGILL (ud2 on x86) when an undefined behaviour
+is detected. This is the option that you want to use when combining AFL++
+and UBSan.</p>
+<p>AFL_USE_UBSAN=1 env var will add this compiler flag to afl-clang-fast for you.</p>
+<p>Old versions of UBSAN don&rsquo;t offer a consistent way
+to abort() on fault conditions or to terminate with a distinctive exit code
+but there are some versions of the library can be binary-patched to address this
+issue. You can also preload a shared library that substitute all the UBSan
+routines used to report errors with abort().</p>
+</article>
+ 
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+      </footer>
+      
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-short-version">1) Short version</a></li>
+    <li><a href="#2-long-version">2) Long version</a></li>
+    <li><a href="#3-interactions-with-the-qemu-mode">3) Interactions with the QEMU mode</a></li>
+    <li><a href="#4-asan-and-oom-crashes">4) ASAN and OOM crashes</a></li>
+    <li><a href="#5-what-about-ubsan">5) What about UBSAN?</a></li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

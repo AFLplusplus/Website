@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Python Mutators"><meta property="og:title" content="" />
+<meta property="og:description" content="Adding custom mutators to AFL using Python modules This file describes how you can utilize the external Python API to write your own custom mutation routines.
+Note: This feature is highly experimental. Use at your own risk.
+Implemented by Christian Holler (:decoder) choller@mozilla.com.
+NOTE: Only cPython 2.7, 3.7 and above are supported, although others may work. Depending on with which version afl-fuzz was compiled against, you must use python2 or python3 syntax in your scripts!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://andreafioraldi.github.io/AFLplusplus-website/docs/python_mutators/" />
+
+<title>Python Mutators | AFLplusplus</title>
+<link rel="icon" href="/AFLplusplus-website/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/AFLplusplus-website/book.min.b7fe34b8a4c4da05b2690b4aacfa71ddce0668cc6da3abb67dd3946844125444.css" integrity="sha256-t/40uKTE2gWyaQtKrPpx3c4GaMxto6u2fdOUaEQSVEQ=">
+
+
+<script defer src="/AFLplusplus-website/en.search.min.8a14b1acdb625fa945e0683c0cf6f11655d43e41f711767eb76fae21645815a5.js" integrity="sha256-ihSxrNtiX6lF4Gg8DPbxFlXUPkH3EXZ&#43;t2&#43;uIWRYFaU="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/AFLplusplus-website"><span>AFLplusplus</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+  
+
+  
+
+
+
+
+
+ 
+  
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/binaryonly_fuzzing/" >
+      Binaryonly Fuzzing
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/custom_mutator/" >
+      Custom Mutator
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/env_variables/" >
+      Env Variables
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/features/" >
+      Features
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/historical_notes/" >
+      Historical Notes
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/ideas/" >
+      Ideas
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/notes_for_asan/" >
+      Notes for Asan
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/parallel_fuzzing/" >
+      Parallel Fuzzing
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/perf_tips/" >
+      Perf Tips
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/power_schedules/" >
+      Power Schedules
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/python_mutators/"  class="active">
+      Python Mutators
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/sister_projects/" >
+      Sister Projects
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/status_screen/" >
+      Status Screen
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/technical_details/" >
+      Technical Details
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/AFLplusplus-website/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Python Mutators</strong>
+
+  <label for="toc-control">
+    <img src="/AFLplusplus-website/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-description-and-purpose">1) Description and purpose</a></li>
+    <li><a href="#2-how-the-python-module-looks-like">2) How the Python module looks like</a></li>
+    <li><a href="#3-how-to-compile-aflfuzz-with-python-support">3) How to compile AFLFuzz with Python support</a></li>
+    <li><a href="#4-how-to-run-aflfuzz-with-your-custom-module">4) How to run AFLFuzz with your custom module</a></li>
+    <li><a href="#5-order-and-statistics">5) Order and statistics</a></li>
+    <li><a href="#6-trimming-support">6) Trimming support</a></li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+<article class="markdown"><h1 id="adding-custom-mutators-to-afl-using-python-modules">Adding custom mutators to AFL using Python modules</h1>
+<p>This file describes how you can utilize the external Python API to write
+your own custom mutation routines.</p>
+<p>Note: This feature is highly experimental. Use at your own risk.</p>
+<p>Implemented by Christian Holler (:decoder) <a href="mailto:choller@mozilla.com">choller@mozilla.com</a>.</p>
+<p>NOTE: Only cPython 2.7, 3.7 and above are supported, although others may work.
+Depending on with which version afl-fuzz was compiled against, you must use
+python2 or python3 syntax in your scripts!
+After a major version upgrade (e.g. 3.7 -&gt; 3.8), a recompilation of afl-fuzz may be needed.</p>
+<p>For an example and a template see ../examples/python_mutators/</p>
+<h2 id="1-description-and-purpose">1) Description and purpose</h2>
+<p>While AFLFuzz comes with a good selection of generic deterministic and
+non-deterministic mutation operations, it sometimes might make sense to extend
+these to implement strategies more specific to the target you are fuzzing.</p>
+<p>For simplicity and in order to allow people without C knowledge to extend
+AFLFuzz, I implemented a &ldquo;Python&rdquo; stage that can make use of an external
+module (written in Python) that implements a custom mutation stage.</p>
+<p>The main motivation behind this is to lower the barrier for people
+experimenting with this tool. Hopefully, someone will be able to do useful
+things with this extension.</p>
+<p>If you find it useful, have questions or need additional features added to the
+interface, feel free to send a mail to <a href="mailto:choller@mozilla.com">choller@mozilla.com</a>.</p>
+<p>See the following information to get a better pictures:
+<a href="https://www.agarri.fr/docs/XML_Fuzzing-NullCon2017-PUBLIC.pdf">https://www.agarri.fr/docs/XML_Fuzzing-NullCon2017-PUBLIC.pdf</a>
+<a href="https://bugs.chromium.org/p/chromium/issues/detail?id=930663">https://bugs.chromium.org/p/chromium/issues/detail?id=930663</a></p>
+<h2 id="2-how-the-python-module-looks-like">2) How the Python module looks like</h2>
+<p>You can find a simple example in pymodules/example.py including documentation
+explaining each function. In the same directory, you can find another simple
+module that performs simple mutations.</p>
+<p>Right now, &ldquo;init&rdquo; is called at program startup and can be used to perform any
+kinds of one-time initializations while &ldquo;fuzz&rdquo; is called each time a mutation
+is requested.</p>
+<p>There is also optional support for a trimming API, see the section below for
+further information about this feature.</p>
+<h2 id="3-how-to-compile-aflfuzz-with-python-support">3) How to compile AFLFuzz with Python support</h2>
+<p>You must install the python 3 or 2 development package of your Linux
+distribution before this will work. On Debian/Ubuntu/Kali this can be done
+with either:
+apt install python3-dev
+or
+apt install python-dev
+Note that for some distributions you might also need the package python[23]-apt</p>
+<p>A prerequisite for using this mode is to compile AFLFuzz with Python support.</p>
+<p>The AFL++ Makefile detects Python 3 and 2 through <code>python-config</code> if is is in the PATH
+and compiles afl-fuzz with the feature if available.</p>
+<p>In case your setup is different set the necessary variables like this:
+PYTHON_INCLUDE=/path/to/python/include LDFLAGS=-L/path/to/python/lib make</p>
+<h2 id="4-how-to-run-aflfuzz-with-your-custom-module">4) How to run AFLFuzz with your custom module</h2>
+<p>You must pass the module name inside the env variable AFL_PYTHON_MODULE.</p>
+<p>In addition, if you are trying to load the module from the local directory,
+you must adjust your PYTHONPATH to reflect this circumstance. The following
+command should work if you are inside the aflfuzz directory:</p>
+<p>$ AFL_PYTHON_MODULE=&quot;pymodules.test&rdquo; PYTHONPATH=. ./afl-fuzz</p>
+<p>Optionally, the following environment variables are supported:</p>
+<p>AFL_PYTHON_ONLY - Disable all other mutation stages. This can prevent broken
+testcases (those that your Python module can&rsquo;t work with
+anymore) to fill up your queue. Best combined with a custom
+trimming routine (see below) because trimming can cause the
+same test breakage like havoc and splice.</p>
+<p>AFL_DEBUG       - When combined with AFL_NO_UI, this causes the C trimming code
+to emit additional messages about the performance and actions
+of your custom Python trimmer. Use this to see if it works :)</p>
+<h2 id="5-order-and-statistics">5) Order and statistics</h2>
+<p>The Python stage is set to be the first non-deterministic stage (right before
+the havoc stage). In the statistics however, it shows up as the third number
+under &ldquo;havoc&rdquo;. That&rsquo;s because I&rsquo;m lazy and I didn&rsquo;t want to mess with the UI
+too much ;)</p>
+<h2 id="6-trimming-support">6) Trimming support</h2>
+<p>The generic trimming routines implemented in AFLFuzz can easily destroy the
+structure of complex formats, possibly leading to a point where you have a lot
+of testcases in the queue that your Python module cannot process anymore but
+your target application still accepts. This is especially the case when your
+target can process a part of the input (causing coverage) and then errors out
+on the remaining input.</p>
+<p>In such cases, it makes sense to implement a custom trimming routine in Python.
+The API consists of multiple methods because after each trimming step, we have
+to go back into the C code to check if the coverage bitmap is still the same
+for the trimmed input. Here&rsquo;s a quick API description:</p>
+<p>init_trim: This method is called at the start of each trimming operation
+and receives the initial buffer. It should return the amount
+of iteration steps possible on this input (e.g. if your input
+has n elements and you want to remove them one by one, return n,
+if you do a binary search, return log(n), and so on&hellip;).</p>
+<pre><code>       If your trimming algorithm doesn't allow you to determine the
+       amount of (remaining) steps easily (esp. while running), then you
+       can alternatively return 1 here and always return 0 in post_trim
+       until you are finished and no steps remain. In that case,
+       returning 1 in post_trim will end the trimming routine. The whole
+       current index/max iterations stuff is only used to show progress.
+</code></pre>
+<p>trim:      This method is called for each trimming operation. It doesn&rsquo;t
+have any arguments because we already have the initial buffer
+from init_trim and we can memorize the current state in global
+variables. This can also save reparsing steps for each iteration.
+It should return the trimmed input buffer, where the returned data
+must not exceed the initial input data in length. Returning anything
+that is larger than the original data (passed to init_trim) will
+result in a fatal abort of AFLFuzz.</p>
+<p>post_trim: This method is called after each trim operation to inform you
+if your trimming step was successful or not (in terms of coverage).
+If you receive a failure here, you should reset your input to the
+last known good state.
+In any case, this method must return the next trim iteration index
+(from 0 to the maximum amount of steps you returned in init_trim).</p>
+<p>Omitting any of the methods will cause Python trimming to be disabled and
+trigger a fallback to the builtin default trimming routine.</p>
+</article>
+ 
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+      </footer>
+      
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-description-and-purpose">1) Description and purpose</a></li>
+    <li><a href="#2-how-the-python-module-looks-like">2) How the Python module looks like</a></li>
+    <li><a href="#3-how-to-compile-aflfuzz-with-python-support">3) How to compile AFLFuzz with Python support</a></li>
+    <li><a href="#4-how-to-run-aflfuzz-with-your-custom-module">4) How to run AFLFuzz with your custom module</a></li>
+    <li><a href="#5-order-and-statistics">5) Order and statistics</a></li>
+    <li><a href="#6-trimming-support">6) Trimming support</a></li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

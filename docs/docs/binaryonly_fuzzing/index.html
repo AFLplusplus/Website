@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Binaryonly Fuzzing"><meta property="og:title" content="" />
+<meta property="og:description" content="Fuzzing binary-only programs with afl&#43;&#43; afl&#43;&#43;, libfuzzer and others are great if you have the source code, and it allows for very fast and coverage guided fuzzing.
+However, if there is only the binary program and no source code available, then standard afl-fuzz -n (dumb mode) is not effective.
+The following is a description of how these binaries can be fuzzed with afl&#43;&#43;
+!!!!! TL;DR: try DYNINST with afl-dyninst. If it produces too many crashes then use afl -Q qemu_mode, or better: use both in parallel." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://andreafioraldi.github.io/AFLplusplus-website/docs/binaryonly_fuzzing/" />
+
+<title>Binaryonly Fuzzing | AFLplusplus</title>
+<link rel="icon" href="/AFLplusplus-website/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/AFLplusplus-website/book.min.b7fe34b8a4c4da05b2690b4aacfa71ddce0668cc6da3abb67dd3946844125444.css" integrity="sha256-t/40uKTE2gWyaQtKrPpx3c4GaMxto6u2fdOUaEQSVEQ=">
+
+
+<script defer src="/AFLplusplus-website/en.search.min.8a14b1acdb625fa945e0683c0cf6f11655d43e41f711767eb76fae21645815a5.js" integrity="sha256-ihSxrNtiX6lF4Gg8DPbxFlXUPkH3EXZ&#43;t2&#43;uIWRYFaU="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/AFLplusplus-website"><span>AFLplusplus</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+  
+
+  
+
+
+
+
+
+ 
+  
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/binaryonly_fuzzing/"  class="active">
+      Binaryonly Fuzzing
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/custom_mutator/" >
+      Custom Mutator
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/env_variables/" >
+      Env Variables
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/features/" >
+      Features
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/historical_notes/" >
+      Historical Notes
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/ideas/" >
+      Ideas
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/notes_for_asan/" >
+      Notes for Asan
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/parallel_fuzzing/" >
+      Parallel Fuzzing
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/perf_tips/" >
+      Perf Tips
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/power_schedules/" >
+      Power Schedules
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/python_mutators/" >
+      Python Mutators
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/sister_projects/" >
+      Sister Projects
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/status_screen/" >
+      Status Screen
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/AFLplusplus-website/docs/technical_details/" >
+      Technical Details
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/AFLplusplus-website/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Binaryonly Fuzzing</strong>
+
+  <label for="toc-control">
+    <img src="/AFLplusplus-website/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#qemu">QEMU</a></li>
+    <li><a href="#wineqemu">WINE+QEMU</a></li>
+    <li><a href="#unicorn">UNICORN</a></li>
+    <li><a href="#dyninst">DYNINST</a></li>
+    <li><a href="#intel-pt">INTEL-PT</a></li>
+    <li><a href="#coresight">CORESIGHT</a></li>
+    <li><a href="#frida">FRIDA</a></li>
+    <li><a href="#pin--dynamorio">PIN & DYNAMORIO</a></li>
+    <li><a href="#non-afl-solutions">Non-AFL solutions</a></li>
+    <li><a href="#closing-words">Closing words</a></li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+<article class="markdown"><h1 id="fuzzing-binary-only-programs-with-afl">Fuzzing binary-only programs with afl++</h1>
+<p>afl++, libfuzzer and others are great if you have the source code, and
+it allows for very fast and coverage guided fuzzing.</p>
+<p>However, if there is only the binary program and no source code available,
+then standard <code>afl-fuzz -n</code> (dumb mode) is not effective.</p>
+<p>The following is a description of how these binaries can be fuzzed with afl++</p>
+<p>!!!!!
+TL;DR: try DYNINST with afl-dyninst. If it produces too many crashes then
+use afl -Q qemu_mode, or better: use both in parallel.
+!!!!!</p>
+<h2 id="qemu">QEMU</h2>
+<p>Qemu is the &ldquo;native&rdquo; solution to the program.
+It is available in the ./qemu_mode/ directory and once compiled it can
+be accessed by the afl-fuzz -Q command line option.
+The speed decrease is at about 50%.
+It is the easiest to use alternative and even works for cross-platform binaries.</p>
+<p>Note that there is also honggfuzz: <a href="https://github.com/google/honggfuzz">https://github.com/google/honggfuzz</a>
+which now has a qemu_mode, but its performance is just 1.5%!</p>
+<p>As it is included in afl++ this needs no URL.</p>
+<h2 id="wineqemu">WINE+QEMU</h2>
+<p>Wine mode can run Win32 PE binaries with the QEMU instrumentation.
+It needs Wine, python3 and the pefile python package installed.</p>
+<p>As it is included in afl++ this needs no URL.</p>
+<h2 id="unicorn">UNICORN</h2>
+<p>Unicorn is a fork of QEMU. The instrumentation is, therefore, very similar.
+In contrast to QEMU, Unicorn does not offer a full system or even userland
+emulation. Runtime environment and/or loaders have to be written from scratch,
+if needed. On top, block chaining has been removed. This means the speed boost
+introduced in  the patched QEMU Mode of afl++ cannot simply be ported over to
+Unicorn. For further information, check out <a href="../unicorn_mode/README.md">unicorn_mode/README.md</a>.</p>
+<p>As it is included in afl++ this needs no URL.</p>
+<h2 id="dyninst">DYNINST</h2>
+<p>Dyninst is a binary instrumentation framework similar to Pintool and
+Dynamorio (see far below). However whereas Pintool and Dynamorio work at
+runtime, dyninst instruments the target at load time, and then let it run -
+or save the  binary with the changes.
+This is great for some things, e.g. fuzzing, and not so effective for others,
+e.g. malware analysis.</p>
+<p>So what we can do with dyninst is taking every basic block, and put afl&rsquo;s
+instrumention code in there - and then save the binary.
+Afterwards we can just fuzz the newly saved target binary with afl-fuzz.
+Sounds great? It is. The issue though - it is a non-trivial problem to
+insert instructions, which change addresses in the process space, so that
+everything is still working afterwards. Hence more often than not binaries
+crash when they are run.</p>
+<p>The speed decrease is about 15-35%, depending on the optimization options
+used with afl-dyninst.</p>
+<p>So if Dyninst works, it is the best option available. Otherwise it just
+doesn&rsquo;t work well.</p>
+<p><a href="https://github.com/vanhauser-thc/afl-dyninst">https://github.com/vanhauser-thc/afl-dyninst</a></p>
+<h2 id="intel-pt">INTEL-PT</h2>
+<p>If you have a newer Intel CPU, you can make use of Intels processor trace.
+The big issue with Intel&rsquo;s PT is the small buffer size and the complex
+encoding of the debug information collected through PT.
+This makes the decoding very CPU intensive and hence slow.
+As a result, the overall speed decrease is about 70-90% (depending on
+the implementation and other factors).</p>
+<p>There are two afl intel-pt implementations:</p>
+<ol>
+<li>
+<p><a href="https://github.com/junxzm1990/afl-pt">https://github.com/junxzm1990/afl-pt</a>
+=&gt; this needs Ubuntu 14.04.05 without any updates and the 4.4 kernel.</p>
+</li>
+<li>
+<p><a href="https://github.com/hunter-ht-2018/ptfuzzer">https://github.com/hunter-ht-2018/ptfuzzer</a>
+=&gt; this needs a 4.14 or 4.15 kernel. the &ldquo;nopti&rdquo; kernel boot option must
+be used. This one is faster than the other.</p>
+</li>
+</ol>
+<p>Note that there is also honggfuzz: <a href="https://github.com/google/honggfuzz">https://github.com/google/honggfuzz</a>
+But its IPT performance is just 6%!</p>
+<h2 id="coresight">CORESIGHT</h2>
+<p>Coresight is ARM&rsquo;s answer to Intel&rsquo;s PT.
+There is no implementation so far which handle coresight and getting
+it working on an ARM Linux is very difficult due to custom kernel building
+on embedded systems is difficult. And finding one that has coresight in
+the ARM chip is difficult too.
+My guess is that it is slower than Qemu, but faster than Intel PT.</p>
+<p>If anyone finds any coresight implementation for afl please ping me: <a href="mailto:vh@thc.org">vh@thc.org</a></p>
+<h2 id="frida">FRIDA</h2>
+<p>Frida is a dynamic instrumentation engine like Pintool, Dyninst and Dynamorio.
+What is special is that it is written Python, and scripted with Javascript.
+It is mostly used to reverse binaries on mobile phones however can be used
+everywhere.</p>
+<p>There is a WIP fuzzer available at <a href="https://github.com/andreafioraldi/frida-fuzzer">https://github.com/andreafioraldi/frida-fuzzer</a></p>
+<h2 id="pin--dynamorio">PIN &amp; DYNAMORIO</h2>
+<p>Pintool and Dynamorio are dynamic instrumentation engines, and they can be
+used for getting basic block information at runtime.
+Pintool is only available for Intel x32/x64 on Linux, Mac OS and Windows
+whereas Dynamorio is additionally available for ARM and AARCH64.
+Dynamorio is also 10x faster than Pintool.</p>
+<p>The big issue with Dynamorio (and therefore Pintool too) is speed.
+Dynamorio has a speed decrease of 98-99%
+Pintool has a speed decrease of 99.5%</p>
+<p>Hence Dynamorio is the option to go for if everything fails, and Pintool
+only if Dynamorio fails too.</p>
+<p>Dynamorio solutions:</p>
+<ul>
+<li><a href="https://github.com/vanhauser-thc/afl-dynamorio">https://github.com/vanhauser-thc/afl-dynamorio</a></li>
+<li><a href="https://github.com/mxmssh/drAFL">https://github.com/mxmssh/drAFL</a></li>
+<li><a href="https://github.com/googleprojectzero/winafl/">https://github.com/googleprojectzero/winafl/</a> &lt;= very good but windows only</li>
+</ul>
+<p>Pintool solutions:</p>
+<ul>
+<li><a href="https://github.com/vanhauser-thc/afl-pin">https://github.com/vanhauser-thc/afl-pin</a></li>
+<li><a href="https://github.com/mothran/aflpin">https://github.com/mothran/aflpin</a></li>
+<li><a href="https://github.com/spinpx/afl_pin_mode">https://github.com/spinpx/afl_pin_mode</a> &lt;= only old Pintool version supported</li>
+</ul>
+<h2 id="non-afl-solutions">Non-AFL solutions</h2>
+<p>There are many binary-only fuzzing frameworks.
+Some are great for CTFs but don&rsquo;t work with large binaries, others are very
+slow but have good path discovery, some are very hard to set-up &hellip;</p>
+<ul>
+<li>QSYM: <a href="https://github.com/sslab-gatech/qsym">https://github.com/sslab-gatech/qsym</a></li>
+<li>Manticore: <a href="https://github.com/trailofbits/manticore">https://github.com/trailofbits/manticore</a></li>
+<li>S2E: <a href="https://github.com/S2E">https://github.com/S2E</a></li>
+<li>&hellip; please send me any missing that are good</li>
+</ul>
+<h2 id="closing-words">Closing words</h2>
+<p>That&rsquo;s it! News, corrections, updates? Send an email to <a href="mailto:vh@thc.org">vh@thc.org</a></p>
+</article>
+ 
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+      </footer>
+      
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#qemu">QEMU</a></li>
+    <li><a href="#wineqemu">WINE+QEMU</a></li>
+    <li><a href="#unicorn">UNICORN</a></li>
+    <li><a href="#dyninst">DYNINST</a></li>
+    <li><a href="#intel-pt">INTEL-PT</a></li>
+    <li><a href="#coresight">CORESIGHT</a></li>
+    <li><a href="#frida">FRIDA</a></li>
+    <li><a href="#pin--dynamorio">PIN & DYNAMORIO</a></li>
+    <li><a href="#non-afl-solutions">Non-AFL solutions</a></li>
+    <li><a href="#closing-words">Closing words</a></li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

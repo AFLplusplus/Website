@@ -3,11 +3,67 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://andreafioraldi.github.io/AFLplusplus-website/</loc>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/binaryonly_fuzzing/</loc>
+  </url>
+  
+  <url>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/custom_mutator/</loc>
+  </url>
+  
+  <url>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/env_variables/</loc>
+  </url>
+  
+  <url>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/features/</loc>
+  </url>
+  
+  <url>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/historical_notes/</loc>
+  </url>
+  
+  <url>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/ideas/</loc>
+  </url>
+  
+  <url>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/notes_for_asan/</loc>
+  </url>
+  
+  <url>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/parallel_fuzzing/</loc>
+  </url>
+  
+  <url>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/perf_tips/</loc>
+  </url>
+  
+  <url>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/power_schedules/</loc>
+  </url>
+  
+  <url>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/python_mutators/</loc>
+  </url>
+  
+  <url>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/sister_projects/</loc>
+  </url>
+  
+  <url>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/status_screen/</loc>
+  </url>
+  
+  <url>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/technical_details/</loc>
   </url>
   
   <url>
     <loc>https://andreafioraldi.github.io/AFLplusplus-website/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>https://andreafioraldi.github.io/AFLplusplus-website/docs/</loc>
   </url>
   
   <url>

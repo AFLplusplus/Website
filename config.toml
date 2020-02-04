@@ -2,3 +2,6 @@ baseURL = "https://andreafioraldi.github.io/AFLplusplus-website/"
 languageCode = "en-us"
 title = "AFLplusplus"
 publishDir = "docs"
+
+[params]
+  BookSection = "*"
