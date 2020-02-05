@@ -21,7 +21,7 @@
 <meta name="twitter:url" content="{{ .Permalink }}" /> 
 <meta property="og:url" content="{{ .Permalink }}" />
 
-{{ with .Params.image }} 
+{{ with .Site.Params.image }} 
   <meta itemprop="image" content="{{ . | absURL }}" />
   <meta property="og:image" content="{{ . | absURL }}" /> 
   <meta name="twitter:image" content="{{ . | absURL }}" />
