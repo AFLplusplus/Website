@@ -15,7 +15,7 @@ bookMenuLevels: 2
  - **Download**
    - [Release 2.60c](https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.60c)
    - [All releases](https://github.com/vanhauser-thc/AFLplusplus/releases)
-   - [Current devel](https://github.com/vanhauser-thc/AFLplusplus)
+   - [Current devel](https://github.com/vanhauser-thc/AFLplusplus/archive/master.zip)
    - [License](https://raw.githubusercontent.com/vanhauser-thc/AFLplusplus/master/docs/COPYING)
  - **Links**
    - [Repo (GitHub)](https://github.com/vanhauser-thc/AFLplusplus)
