@@ -1,4 +1,4 @@
-baseURL = "https://andreafioraldi.github.io/AFLplusplus-website/"
+baseURL = "https://aflplus.plus/"
 languageCode = "en-us"
 title = "AFLplusplus"
 publishDir = "docs"
