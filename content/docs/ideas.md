@@ -1,8 +1,3 @@
----
-bookCollapseSection: true
-weight: 20
----
-
 # Ideas for afl++
 
 In the following, we describe a variety of ideas that could be implemented for further AFL++ versions.

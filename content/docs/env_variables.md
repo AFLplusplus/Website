@@ -1,8 +1,3 @@
----
-bookCollapseSection: true
-weight: 2
----
-
 # Environmental variables
 
   This document discusses the environment variables used by American Fuzzy Lop++
@@ -387,14 +382,12 @@ optimal values if not already present in the environment:
 
   - By default, ASAN_OPTIONS are set to:
 
-    ```
     abort_on_error=1
     detect_leaks=0
     malloc_context_size=0
     symbolize=0
     allocator_may_return_null=1
-    ```
-    
+
     If you want to set your own options, be sure to include abort_on_error=1 -
     otherwise, the fuzzer will not be able to detect crashes in the tested
     app. Similarly, include symbolize=0, since without it, AFL may have
@@ -402,14 +395,12 @@ optimal values if not already present in the environment:
 
   - In the same vein, by default, MSAN_OPTIONS are set to:
 
-    ```
-    exit_code=86 (required for legacy reasons)
+    exit_code=86 (required for legacy reasons)    
     abort_on_error=1
     symbolize=0
     msan_track_origins=0
     allocator_may_return_null=1
-    ```
-    
+
     Be sure to include the first one when customizing anything, since some
     MSAN versions don't call abort() on error, and we need a way to detect
     faults.

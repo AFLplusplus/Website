@@ -1,8 +1,3 @@
----
-bookCollapseSection: true
-weight: 1
----
-
 # Fuzzing binary-only programs with afl++
 
   afl++, libfuzzer and others are great if you have the source code, and

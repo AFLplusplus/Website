@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="P a T C H E S"><meta property="og:title" content="" />
+<meta property="og:description" content="Applied Patches The following patches from https://github.com/vanhauser-thc/afl-patches have been installed or not installed:
+INSTALLED afl-llvm-fix.diff	by kcwu(at)csie(dot)org afl-sort-all_uniq-fix.diff	by legarrec(dot)vincent(at)gmail(dot)com laf-intel.diff	by heiko(dot)eissfeldt(at)hexco(dot)de afl-llvm-optimize.diff	by mh(at)mh-sec(dot)de afl-fuzz-tmpdir.diff	by mh(at)mh-sec(dot)de afl-fuzz-79x24.diff	by heiko(dot)eissfeldt(at)hexco(dot)de afl-fuzz-fileextensionopt.diff	tbd afl-as-AFL_INST_RATIO.diff	by legarrec(dot)vincent(at)gmail(dot)com afl-qemu-ppc64.diff	by william(dot)barsse(at)airbus(dot)com afl-qemu-optimize-entrypoint.diff	by mh(at)mh-sec(dot)de afl-qemu-speed.diff	by abiondo on github afl-qemu-optimize-map.diff	by mh(at)mh-sec(dot)de  Custom mutator (native library) (by kyakdan) unicorn_mode (modernized and updated by domenukk) instrim (https://github.com/csienslab/instrim) was integrated MOpt (github.com/puppet-meteor/MOpt-AFL) was imported AFLfast additions (github." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://aflplus.plus/docs/patches/" />
+
+<title>P a T C H E S | AFLplusplus</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/book.min.e53848e224cf3db8b91fc4e9630b458654dc85c9534c67336ae371f462372d88.css" integrity="sha256-5ThI4iTPPbi5H8TpYwtFhlTchclTTGczauNx9GI3LYg=">
+
+
+<script defer src="/en.search.min.c8169aed24dfbc302f93652f6182067794b7e73a51070ebced2374e6bfe4be16.js" integrity="sha256-yBaa7STfvDAvk2UvYYIGd5S35zpRBw687SN05r/kvhY="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>AFLplusplus</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+  <ul>
+<li><strong>Site map</strong>
+<ul>
+<li><a href="/features/">Features</a></li>
+<li><a href="/building/">Build &amp; Install</a></li>
+<li><a href="/docs/">Documentation</a></li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<ul>
+<li><strong>Download</strong>
+<ul>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.60c">Release 2.60c</a></li>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases">All releases</a></li>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus/archive/master.zip">Current devel</a></li>
+<li><a href="https://raw.githubusercontent.com/vanhauser-thc/AFLplusplus/master/docs/COPYING">License</a></li>
+</ul>
+</li>
+<li><strong>Links</strong>
+<ul>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus">Repo (GitHub)</a></li>
+<li><a href="https://groups.google.com/group/afl-users">Mailing list</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>P a T C H E S</strong>
+
+  <label for="toc-control">
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#installed">INSTALLED</a></li>
+    <li><a href="#not-installed">NOT INSTALLED</a></li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+<article class="markdown"><h1 id="applied-patches">Applied Patches</h1>
+<p>The following patches from <a href="https://github.com/vanhauser-thc/afl-patches">https://github.com/vanhauser-thc/afl-patches</a>
+have been installed or not installed:</p>
+<h2 id="installed">INSTALLED</h2>
+<pre><code>afl-llvm-fix.diff			by kcwu(at)csie(dot)org
+afl-sort-all_uniq-fix.diff		by legarrec(dot)vincent(at)gmail(dot)com
+laf-intel.diff				by heiko(dot)eissfeldt(at)hexco(dot)de
+afl-llvm-optimize.diff			by mh(at)mh-sec(dot)de
+afl-fuzz-tmpdir.diff			by mh(at)mh-sec(dot)de
+afl-fuzz-79x24.diff			by heiko(dot)eissfeldt(at)hexco(dot)de
+afl-fuzz-fileextensionopt.diff		tbd
+afl-as-AFL_INST_RATIO.diff		by legarrec(dot)vincent(at)gmail(dot)com
+afl-qemu-ppc64.diff			by william(dot)barsse(at)airbus(dot)com
+afl-qemu-optimize-entrypoint.diff	by mh(at)mh-sec(dot)de
+afl-qemu-speed.diff			by abiondo on github
+afl-qemu-optimize-map.diff		by mh(at)mh-sec(dot)de
+</code></pre><ul>
+<li>Custom mutator (native library) (by kyakdan)</li>
+<li>unicorn_mode (modernized and updated by domenukk)</li>
+<li>instrim (<a href="https://github.com/csienslab/instrim">https://github.com/csienslab/instrim</a>) was integrated</li>
+<li>MOpt (github.com/puppet-meteor/MOpt-AFL) was imported</li>
+<li>AFLfast additions (github.com/mboehme/aflfast) were incorporated.</li>
+<li>Qemu 3.1 upgrade with enhancement patches (github.com/andreafioraldi/afl)</li>
+<li>Python mutator modules support (github.com/choller/afl)</li>
+<li>Whitelisting in LLVM mode (github.com/choller/afl)</li>
+<li>forkserver patch for afl-tmin (github.com/nccgroup/TriforceAFL)</li>
+</ul>
+<h2 id="not-installed">NOT INSTALLED</h2>
+<pre><code>afl-fuzz-context_sensitive.diff	- changes too much of the behaviour
+afl-tmpfs.diff - same as afl-fuzz-tmpdir.diff but more complex
+afl-cmin-reduce-dataset.diff - unsure of the impact
+afl-llvm-fix2.diff - not needed with the other patches
+</code></pre></article>
+ 
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+      </footer>
+      
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#installed">INSTALLED</a></li>
+    <li><a href="#not-installed">NOT INSTALLED</a></li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

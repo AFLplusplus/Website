@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="R E a D M E. M Opt"><meta property="og:title" content="" />
+<meta property="og:description" content="MOpt(imized) AFL by puppet@zju.edu.cn 1. Description MOpt-AFL is a AFL-based fuzzer that utilizes a customized Particle Swarm Optimization (PSO) algorithm to find the optimal selection probability distribution of operators with respect to fuzzing effectiveness. More details can be found in the technical report.
+2. Cite Information Chenyang Lyu, Shouling Ji, Chao Zhang, Yuwei Li, Wei-Han Lee, Yu Song and Raheem Beyah, MOPT: Optimized Mutation Scheduling for Fuzzers, USENIX Security 2019." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://aflplus.plus/docs/readme.mopt/" />
+
+<title>R E a D M E. M Opt | AFLplusplus</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/book.min.e53848e224cf3db8b91fc4e9630b458654dc85c9534c67336ae371f462372d88.css" integrity="sha256-5ThI4iTPPbi5H8TpYwtFhlTchclTTGczauNx9GI3LYg=">
+
+
+<script defer src="/en.search.min.c8169aed24dfbc302f93652f6182067794b7e73a51070ebced2374e6bfe4be16.js" integrity="sha256-yBaa7STfvDAvk2UvYYIGd5S35zpRBw687SN05r/kvhY="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>AFLplusplus</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+  <ul>
+<li><strong>Site map</strong>
+<ul>
+<li><a href="/features/">Features</a></li>
+<li><a href="/building/">Build &amp; Install</a></li>
+<li><a href="/docs/">Documentation</a></li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<ul>
+<li><strong>Download</strong>
+<ul>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.60c">Release 2.60c</a></li>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases">All releases</a></li>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus/archive/master.zip">Current devel</a></li>
+<li><a href="https://raw.githubusercontent.com/vanhauser-thc/AFLplusplus/master/docs/COPYING">License</a></li>
+</ul>
+</li>
+<li><strong>Links</strong>
+<ul>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus">Repo (GitHub)</a></li>
+<li><a href="https://groups.google.com/group/afl-users">Mailing list</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>R E a D M E. M Opt</strong>
+
+  <label for="toc-control">
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1-description">1. Description</a></li>
+        <li><a href="#2-cite-information">2. Cite Information</a></li>
+        <li><a href="#3-seed-sets">3. Seed Sets</a></li>
+        <li><a href="#4-experiment-results">4. Experiment Results</a></li>
+        <li><a href="#5-technical-report">5. Technical Report</a></li>
+        <li><a href="#6-parameter-introduction">6. Parameter Introduction</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+<article class="markdown"><h1 id="moptimized-afl-by-puppetzjueducn">MOpt(imized) AFL by <a href="mailto:puppet@zju.edu.cn">puppet@zju.edu.cn</a></h1>
+<h3 id="1-description">1. Description</h3>
+<p>MOpt-AFL is a AFL-based fuzzer that utilizes a customized Particle Swarm
+Optimization (PSO) algorithm to find the optimal selection probability
+distribution of operators with respect to fuzzing effectiveness.
+More details can be found in the technical report.</p>
+<h3 id="2-cite-information">2. Cite Information</h3>
+<p>Chenyang Lyu, Shouling Ji, Chao Zhang, Yuwei Li, Wei-Han Lee, Yu Song and
+Raheem Beyah, MOPT: Optimized Mutation Scheduling for Fuzzers,
+USENIX Security 2019.</p>
+<h3 id="3-seed-sets">3. Seed Sets</h3>
+<p>We open source all the seed sets used in the paper
+&ldquo;MOPT: Optimized Mutation Scheduling for Fuzzers&rdquo;.</p>
+<h3 id="4-experiment-results">4. Experiment Results</h3>
+<p>The experiment results can be found in
+<a href="https://drive.google.com/drive/folders/184GOzkZGls1H2NuLuUfSp9gfqp1E2-lL?usp=sharing">https://drive.google.com/drive/folders/184GOzkZGls1H2NuLuUfSp9gfqp1E2-lL?usp=sharing</a>.
+We only open source the crash files since the space is limited.</p>
+<h3 id="5-technical-report">5. Technical Report</h3>
+<p>MOpt_TechReport.pdf is the technical report of the paper
+&ldquo;MOPT: Optimized Mutation Scheduling for Fuzzers&rdquo;, which contains more deatails.</p>
+<h3 id="6-parameter-introduction">6. Parameter Introduction</h3>
+<p>Most important, you must add the parameter <code>-L</code> (e.g., <code>-L 0</code>) to launch the
+MOpt scheme.</p>
+<p>Option &lsquo;-L&rsquo; controls the time to move on to the pacemaker fuzzing mode.
+&lsquo;-L t&rsquo;: when MOpt-AFL finishes the mutation of one input, if it has not
+discovered any new unique crash or path for more than t minutes, MOpt-AFL will
+enter the pacemaker fuzzing mode.</p>
+<p>Setting 0 will enter the pacemaker fuzzing mode at first, which is
+recommended in a short time-scale evaluation.</p>
+<p>Other important parameters can be found in afl-fuzz.c, for instance,</p>
+<p>&lsquo;swarm_num&rsquo;: the number of the PSO swarms used in the fuzzing process.
+&lsquo;period_pilot&rsquo;: how many times MOpt-AFL will execute the target program
+in the pilot fuzzing module, then it will enter the core fuzzing module.
+&lsquo;period_core&rsquo;: how many times MOpt-AFL will execute the target program in the
+core fuzzing module, then it will enter the PSO updating module.
+&lsquo;limit_time_bound&rsquo;: control how many interesting test cases need to be found
+before MOpt-AFL quits the pacemaker fuzzing mode and reuses the deterministic stage.
+0 &lt; &lsquo;limit_time_bound&rsquo; &lt; 1, MOpt-AFL-tmp.
+&lsquo;limit_time_bound&rsquo; &gt;= 1, MOpt-AFL-ever.</p>
+<p>Have fun with MOpt in AFL!</p>
+</article>
+ 
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+      </footer>
+      
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1-description">1. Description</a></li>
+        <li><a href="#2-cite-information">2. Cite Information</a></li>
+        <li><a href="#3-seed-sets">3. Seed Sets</a></li>
+        <li><a href="#4-experiment-results">4. Experiment Results</a></li>
+        <li><a href="#5-technical-report">5. Technical Report</a></li>
+        <li><a href="#6-parameter-introduction">6. Parameter Introduction</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

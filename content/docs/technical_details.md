@@ -1,8 +1,3 @@
----
-bookCollapseSection: true
-weight: 3
----
-
 # Technical "whitepaper" for afl-fuzz
 
 This document provides a quick overview of the guts of American Fuzzy Lop.

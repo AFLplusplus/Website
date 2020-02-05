@@ -1,9 +1,3 @@
----
-bookCollapseSection: true
-weight: 20
-type: docs
----
-
 # Adding custom mutators to AFL using Python modules
 
   This file describes how you can utilize the external Python API to write

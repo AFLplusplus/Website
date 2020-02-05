@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Quick Start Guide"><meta property="og:title" content="" />
+<meta property="og:description" content="AFL quick start guide You should read README.md - it&rsquo;s pretty short. If you really can&rsquo;t, here&rsquo;s how to hit the ground running:
+  Compile AFL with &lsquo;make&rsquo;. If build fails, see INSTALL.md for tips.
+  Find or write a reasonably fast and simple program that takes data from a file or stdin, processes it in a test-worthy way, then exits cleanly. If testing a network service, modify it to run in the foreground and read from stdin." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://aflplus.plus/docs/quickstartguide/" />
+
+<title>Quick Start Guide | AFLplusplus</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/book.min.e53848e224cf3db8b91fc4e9630b458654dc85c9534c67336ae371f462372d88.css" integrity="sha256-5ThI4iTPPbi5H8TpYwtFhlTchclTTGczauNx9GI3LYg=">
+
+
+<script defer src="/en.search.min.c8169aed24dfbc302f93652f6182067794b7e73a51070ebced2374e6bfe4be16.js" integrity="sha256-yBaa7STfvDAvk2UvYYIGd5S35zpRBw687SN05r/kvhY="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><span>AFLplusplus</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+  <ul>
+<li><strong>Site map</strong>
+<ul>
+<li><a href="/features/">Features</a></li>
+<li><a href="/building/">Build &amp; Install</a></li>
+<li><a href="/docs/">Documentation</a></li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<ul>
+<li><strong>Download</strong>
+<ul>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.60c">Release 2.60c</a></li>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases">All releases</a></li>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus/archive/master.zip">Current devel</a></li>
+<li><a href="https://raw.githubusercontent.com/vanhauser-thc/AFLplusplus/master/docs/COPYING">License</a></li>
+</ul>
+</li>
+<li><strong>Links</strong>
+<ul>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus">Repo (GitHub)</a></li>
+<li><a href="https://groups.google.com/group/afl-users">Mailing list</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Quick Start Guide</strong>
+
+  <label for="toc-control">
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents"></nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+<article class="markdown"><h1 id="afl-quick-start-guide">AFL quick start guide</h1>
+<p>You should read <a href="README.md">README.md</a> - it&rsquo;s pretty short. If you really can&rsquo;t, here&rsquo;s
+how to hit the ground running:</p>
+<ol>
+<li>
+<p>Compile AFL with &lsquo;make&rsquo;. If build fails, see <a href="INSTALL.md">INSTALL.md</a> for tips.</p>
+</li>
+<li>
+<p>Find or write a reasonably fast and simple program that takes data from
+a file or stdin, processes it in a test-worthy way, then exits cleanly.
+If testing a network service, modify it to run in the foreground and read
+from stdin. When fuzzing a format that uses checksums, comment out the
+checksum verification code, too.
+If this is not possible (e.g. in -Q(emu) mode) then use AFL_POST_LIBRARY
+to calculate the values with your own library.</p>
+<p>The program must crash properly when a fault is encountered. Watch out for
+custom SIGSEGV or SIGABRT handlers and background processes. For tips on
+detecting non-crashing flaws, see section 11 in <a href="README.md">README.md</a> .</p>
+</li>
+<li>
+<p>Compile the program / library to be fuzzed using afl-gcc. A common way to
+do this would be:</p>
+<p>CC=/path/to/afl-gcc CXX=/path/to/afl-g++ ./configure &ndash;disable-shared
+make clean all</p>
+<p>If program build fails, ping <a href="mailto:afl-users@googlegroups.com">afl-users@googlegroups.com</a>.</p>
+</li>
+<li>
+<p>Get a small but valid input file that makes sense to the program. When
+fuzzing verbose syntax (SQL, HTTP, etc), create a dictionary as described in
+dictionaries/README.dictionaries, too.</p>
+</li>
+<li>
+<p>If the program reads from stdin, run &lsquo;afl-fuzz&rsquo; like so:</p>
+<p>./afl-fuzz -i testcase_dir -o findings_dir &ndash;<br>
+/path/to/tested/program [&hellip;program&rsquo;s cmdline&hellip;]</p>
+<p>If the program takes input from a file, you can put @@ in the program&rsquo;s
+command line; AFL will put an auto-generated file name in there for you.</p>
+</li>
+<li>
+<p>Investigate anything shown in red in the fuzzer UI by promptly consulting
+<a href="status_screen.md">status_screen.md</a>.</p>
+</li>
+<li>
+<p>compile and use llvm_mode (afl-clang-fast/afl-clang-fast++) as it is way
+faster and has a few cool features</p>
+</li>
+<li>
+<p>There is a basic docker build with &lsquo;docker build -t aflplusplus .&rsquo;</p>
+</li>
+</ol>
+<p>That&rsquo;s it. Sit back, relax, and - time permitting - try to skim through the
+following files:</p>
+<ul>
+<li>README.md                 - A general introduction to AFL,</li>
+<li>docs/perf_tips.md         - Simple tips on how to fuzz more quickly,</li>
+<li>docs/status_screen.md     - An explanation of the tidbits shown in the UI,</li>
+<li>docs/parallel_fuzzing.md  - Advice on running AFL on multiple cores.</li>
+</ul>
+</article>
+ 
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+      </footer>
+      
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents"></nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

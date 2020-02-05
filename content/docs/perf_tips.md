@@ -1,9 +1,3 @@
----
-bookCollapseSection: true
-weight: 20
-type: docs
----
-
 ## Tips for performance optimization
 
   This file provides tips for troubleshooting slow or wasteful fuzzing jobs.

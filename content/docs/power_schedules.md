@@ -1,9 +1,3 @@
----
-bookCollapseSection: true
-weight: 20
-type: docs
----
-
 # afl++'s power schedules based on AFLfast
 
 <a href="https://mboehme.github.io/paper/CCS16.pdf"><img src="https://mboehme.github.io/paper/CCS16.png" align="right" width="250"></a>

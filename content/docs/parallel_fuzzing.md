@@ -1,8 +1,3 @@
----
-bookCollapseSection: true
-weight: 20
----
-
 # Tips for parallel fuzzing
 
   This document talks about synchronizing afl-fuzz jobs on a single machine

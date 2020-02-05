@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Historical Notes"><meta property="og:title" content="" />
-<meta property="og:description" content="Historical notes This doc talks about the rationale of some of the high-level design decisions for American Fuzzy Lop. It&rsquo;s adopted from a discussion with Rob Graham. See README.md for the general instruction manual, and Technical Details for additional implementation-level insights.
+<meta property="og:description" content="Historical notes This doc talks about the rationale of some of the high-level design decisions for American Fuzzy Lop. It&rsquo;s adopted from a discussion with Rob Graham. See README.md for the general instruction manual, and technical_details.md for additional implementation-level insights.
 1) Influences In short, afl-fuzz is inspired chiefly by the work done by Tavis Ormandy back in 2007. Tavis did some very persuasive experiments using gcov block coverage to select optimal test cases out of a large corpus of data, and then using them as a starting point for traditional fuzzing workflows." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://aflplus.plus/docs/historical_notes/" />
@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="/book.min.e53848e224cf3db8b91fc4e9630b458654dc85c9534c67336ae371f462372d88.css" integrity="sha256-5ThI4iTPPbi5H8TpYwtFhlTchclTTGczauNx9GI3LYg=">
 
 
-<script defer src="/en.search.min.0f88330bf730d21bf178b6466b29c19e65b5c163411175f2db5cc20bde02f630.js" integrity="sha256-D4gzC/cw0hvxeLZGaynBnmW1wWNBEXXy21zCC94C9jA="></script>
+<script defer src="/en.search.min.c8169aed24dfbc302f93652f6182067794b7e73a51070ebced2374e6bfe4be16.js" integrity="sha256-yBaa7STfvDAvk2UvYYIGd5S35zpRBw687SN05r/kvhY="></script>
 
 <!--
 Made with Book Theme
@@ -135,7 +135,7 @@ https://github.com/alex-shpak/hugo-book
 <article class="markdown"><h1 id="historical-notes">Historical notes</h1>
 <p>This doc talks about the rationale of some of the high-level design decisions
 for American Fuzzy Lop. It&rsquo;s adopted from a discussion with Rob Graham.
-See README.md for the general instruction manual, and <a href="https://aflplus.plus/docs/technical_details/">Technical Details</a> for
+See README.md for the general instruction manual, and technical_details.md for
 additional implementation-level insights.</p>
 <h2 id="1-influences">1) Influences</h2>
 <p>In short, <code>afl-fuzz</code> is inspired chiefly by the work done by Tavis Ormandy back
@@ -164,7 +164,7 @@ coverage-driven fuzzer that relied on coverage as a fitness function.</p>
 <p>Jared&rsquo;s approach was by no means identical to what afl-fuzz does, but it was in
 the same ballpark. His fuzzer tried to explicitly solve for the maximum coverage
 with a single input file; in comparison, afl simply selects for cases that do
-something new (which yields better results - see <a href="https://aflplus.plus/docs/technical_details/">Technical Details</a>.</p>
+something new (which yields better results - see <a href="technical_details.md">technical_details.md</a>).</p>
 <p>A few years later, Gabriel Campana released fuzzgrind, a tool that relied purely
 on Valgrind and a constraint solver to maximize coverage without any brute-force
 bits; and Microsoft Research folks talked extensively about their still
@@ -248,7 +248,7 @@ corpora of interesting test cases that can be fed into a manual testing
 process or a UI harness later on.</p>
 </li>
 </ol>
-<p>As mentioned in <a href="https://aflplus.plus/docs/technical_details/">Technical Details</a>, AFL does all this not by systematically
+<p>As mentioned in <a href="technical_details.md">technical_details.md</a>, AFL does all this not by systematically
 applying a single overarching CS concept, but by experimenting with a variety
 of small, complementary methods that were shown to reliably yields results
 better than chance. The use of instrumentation is a part of that toolkit, but is

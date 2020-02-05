@@ -1,9 +1,3 @@
----
-bookCollapseSection: true
-weight: 20
-type: docs
----
-
 # Adding custom mutators to AFL
 
 This file describes how you can implement custom mutations to be used in AFL.

@@ -1,9 +1,3 @@
----
-bookCollapseSection: true
-weight: 20
-type: docs
----
-
 # Notes for using ASAN with afl-fuzz
 
   This file discusses some of the caveats for fuzzing under ASAN, and suggests

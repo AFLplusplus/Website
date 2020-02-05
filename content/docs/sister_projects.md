@@ -1,9 +1,3 @@
----
-bookCollapseSection: true
-weight: 20
-type: docs
----
-
 # Sister projects
 
 This doc lists some of the projects that are inspired by, derived from,

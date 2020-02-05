@@ -1,8 +1,3 @@
----
-bookCollapseSection: true
-weight: 20
----
-
 # Understanding the status screen
 
 This document provides an overview of the status screen - plus tips for
