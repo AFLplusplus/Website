@@ -1,6 +1,6 @@
 ---
 bookCollapseSection: true
-weight: 20
+weight: 3
 ---
 
 # Technical "whitepaper" for afl-fuzz

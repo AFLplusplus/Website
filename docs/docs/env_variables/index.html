@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="/book.min.e53848e224cf3db8b91fc4e9630b458654dc85c9534c67336ae371f462372d88.css" integrity="sha256-5ThI4iTPPbi5H8TpYwtFhlTchclTTGczauNx9GI3LYg=">
 
 
-<script defer src="/en.search.min.9ab24ad03ff8d70d5ca9189ec38cbac8a8c2561f9f466875d673108f0b454bf4.js" integrity="sha256-mrJK0D/41w1cqRiew4y6yKjCVh&#43;fRmh11nMQjwtFS/Q="></script>
+<script defer src="/en.search.min.0f88330bf730d21bf178b6466b29c19e65b5c163411175f2db5cc20bde02f630.js" integrity="sha256-D4gzC/cw0hvxeLZGaynBnmW1wWNBEXXy21zCC94C9jA="></script>
 
 <!--
 Made with Book Theme
@@ -54,14 +54,12 @@ https://github.com/alex-shpak/hugo-book
 <li><strong>Site map</strong>
 <ul>
 <li><a href="/features/">Features</a></li>
-<li><a href="/docs/">Documentation</a>
-<ul>
-<li><a href="/docs/technical_details/">Technical Details</a></li>
+<li><a href="/building/">Build &amp; Install</a></li>
+<li><a href="/docs/">Documentation</a></li>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
+<!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <ul>
@@ -575,24 +573,24 @@ certainly pointless.</p>
 </li>
 <li>
 <p>By default, ASAN_OPTIONS are set to:</p>
-<p>abort_on_error=1
+<pre><code>abort_on_error=1
 detect_leaks=0
 malloc_context_size=0
 symbolize=0
-allocator_may_return_null=1</p>
-<p>If you want to set your own options, be sure to include abort_on_error=1 -
+allocator_may_return_null=1
+</code></pre><p>If you want to set your own options, be sure to include abort_on_error=1 -
 otherwise, the fuzzer will not be able to detect crashes in the tested
 app. Similarly, include symbolize=0, since without it, AFL may have
 difficulty telling crashes and hangs apart.</p>
 </li>
 <li>
 <p>In the same vein, by default, MSAN_OPTIONS are set to:</p>
-<p>exit_code=86 (required for legacy reasons) <br>
+<pre><code>exit_code=86 (required for legacy reasons)
 abort_on_error=1
 symbolize=0
 msan_track_origins=0
-allocator_may_return_null=1</p>
-<p>Be sure to include the first one when customizing anything, since some
+allocator_may_return_null=1
+</code></pre><p>Be sure to include the first one when customizing anything, since some
 MSAN versions don&rsquo;t call abort() on error, and we need a way to detect
 faults.</p>
 </li>

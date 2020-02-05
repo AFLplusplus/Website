@@ -1,6 +1,6 @@
 ---
 bookCollapseSection: true
-weight: 20
+weight: 1
 ---
 
 # Fuzzing binary-only programs with afl++

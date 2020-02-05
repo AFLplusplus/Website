@@ -5,7 +5,10 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Features"><meta property="og:title" content="" />
-<meta property="og:description" content="AFL&#43;&#43; Features TODO" />
+<meta property="og:description" content="AFL&#43;&#43; Features Many improvements were made over the official afl release - which did not get any feature improvements since November 2017.
+Among other changes afl&#43;&#43; has a more performant llvm_mode, supports llvm up to version 11, QEMU 3.1, more speed and crashfixes for QEMU, better *BSD and Android support and much, much more.
+Additionally the following features and patches have been integrated:
+  AFLfast&rsquo;s power schedules by Marcel Böhme: https://github." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://aflplus.plus/features/" />
 
@@ -16,7 +19,7 @@
 <link rel="stylesheet" href="/book.min.e53848e224cf3db8b91fc4e9630b458654dc85c9534c67336ae371f462372d88.css" integrity="sha256-5ThI4iTPPbi5H8TpYwtFhlTchclTTGczauNx9GI3LYg=">
 
 
-<script defer src="/en.search.min.9ab24ad03ff8d70d5ca9189ec38cbac8a8c2561f9f466875d673108f0b454bf4.js" integrity="sha256-mrJK0D/41w1cqRiew4y6yKjCVh&#43;fRmh11nMQjwtFS/Q="></script>
+<script defer src="/en.search.min.0f88330bf730d21bf178b6466b29c19e65b5c163411175f2db5cc20bde02f630.js" integrity="sha256-D4gzC/cw0hvxeLZGaynBnmW1wWNBEXXy21zCC94C9jA="></script>
 
 <!--
 Made with Book Theme
@@ -52,14 +55,12 @@ https://github.com/alex-shpak/hugo-book
 <li><strong>Site map</strong>
 <ul>
 <li><a href="/features/"class=active>Features</a></li>
-<li><a href="/docs/">Documentation</a>
-<ul>
-<li><a href="/docs/technical_details/">Technical Details</a></li>
+<li><a href="/building/">Build &amp; Install</a></li>
+<li><a href="/docs/">Documentation</a></li>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
+<!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <ul>
@@ -129,7 +130,112 @@ https://github.com/alex-shpak/hugo-book
 
       
 <article class="markdown"><h1 id="afl-features">AFL++ Features</h1>
-<p>TODO</p>
+<p>Many improvements were made over the official afl release - which did not
+get any feature improvements since November 2017.</p>
+<p>Among other changes afl++ has a more performant llvm_mode, supports
+llvm up to version 11, QEMU 3.1, more speed and crashfixes for QEMU,
+better *BSD and Android support and much, much more.</p>
+<p>Additionally the following features and patches have been integrated:</p>
+<ul>
+<li>
+<p>AFLfast&rsquo;s power schedules by Marcel Böhme: <a href="https://github.com/mboehme/aflfast">https://github.com/mboehme/aflfast</a></p>
+</li>
+<li>
+<p>The new excellent MOpt mutator: <a href="https://github.com/puppet-meteor/MOpt-AFL">https://github.com/puppet-meteor/MOpt-AFL</a></p>
+</li>
+<li>
+<p>InsTrim, a very effective CFG llvm_mode instrumentation implementation for large targets: <a href="https://github.com/csienslab/instrim">https://github.com/csienslab/instrim</a></p>
+</li>
+<li>
+<p>C. Holler&rsquo;s afl-fuzz Python mutator module and llvm_mode whitelist support: <a href="https://github.com/choller/afl">https://github.com/choller/afl</a></p>
+</li>
+<li>
+<p>Custom mutator by a library (instead of Python) by kyakdan</p>
+</li>
+<li>
+<p>unicorn_mode which allows fuzzing of binaries from completely different platforms (integration provided by domenukk)</p>
+</li>
+<li>
+<p>laf-intel or CompCov support for llvm_mode, qemu_mode and unicorn_mode</p>
+</li>
+<li>
+<p>NeverZero patch for afl-gcc, llvm_mode, qemu_mode and unicorn_mode which prevents a wrapping map value to zero, increases coverage</p>
+</li>
+<li>
+<p>Persistent mode and deferred forkserver for qemu_mode</p>
+</li>
+<li>
+<p>Win32 PE binary-only fuzzing with QEMU and Wine</p>
+</li>
+<li>
+<p>Radamsa mutator (enable with <code>-R</code> to add or <code>-RR</code> to run it exclusivly).</p>
+</li>
+<li>
+<p>qbdi_mode: fuzz android native libraries via QBDI framework</p>
+</li>
+<li>
+<p>The new CmpLog instrumentation for LLVM inspired by <a href="https://www.syssec.ruhr-uni-bochum.de/media/emma/veroeffentlichungen/2018/12/17/NDSS19-Redqueen.pdf">Redqueen</a></p>
+</li>
+</ul>
+<p>A more thorough list is available in the PATCHES file.</p>
+<table>
+<thead>
+<tr>
+<th>Feature/Instrumentation</th>
+<th align="center">afl-gcc</th>
+<th align="center">llvm_mode</th>
+<th align="center">gcc_plugin</th>
+<th align="center">qemu_mode</th>
+<th align="center">unicorn_mode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>laf-intel / CompCov</td>
+<td align="center"></td>
+<td align="center">x</td>
+<td align="center"></td>
+<td align="center">x86/arm</td>
+<td align="center">x86/arm</td>
+</tr>
+<tr>
+<td>NeverZero</td>
+<td align="center">x</td>
+<td align="center">x(1)</td>
+<td align="center">(2)</td>
+<td align="center">x</td>
+<td align="center">x</td>
+</tr>
+<tr>
+<td>Persistent mode</td>
+<td align="center"></td>
+<td align="center">x</td>
+<td align="center">x</td>
+<td align="center">x86</td>
+<td align="center">x</td>
+</tr>
+<tr>
+<td>Whitelist</td>
+<td align="center"></td>
+<td align="center">x</td>
+<td align="center">x</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>InsTrim</td>
+<td align="center"></td>
+<td align="center">x</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+<p>NeverZero:</p>
+<p>(1) only in LLVM &gt;= 9.0 due to a bug in llvm in previous versions</p>
+<p>(2) gcc creates non-performant code, hence it is disabled in gcc_plugin</p>
+<p>So all in all this is the best-of afl that is currently out there :-)</p>
 </article>
  
 

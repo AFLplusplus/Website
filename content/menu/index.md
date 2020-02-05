@@ -5,9 +5,12 @@ bookMenuLevels: 2
 
  - **Site map**
    - [Features]({{< relref "/features" >}})
+   - [Build & Install]({{< relref "/building" >}})
    - [Documentation]({{< relref "/docs/_index.md" >}})
+<!---      - [Binary-only fuzzing]({{< relref "/docs/binaryonly_fuzzing.md" >}})
+     - [Environmant variables]({{< relref "/docs/env_variables.md" >}})
      - [Technical Details]({{< relref "/docs/technical_details.md" >}})
-  <!--   - [Without ToC](< relref "/docs/example/table-of-contents/without-toc" >)-->
+     - [Historical Notes]({{< relref "/docs/historical_notes.md" >}}) -->
 <!--- [Blog](< relref "/posts" >)-->
  - **Download**
    - [Release 2.60c](https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.60c)

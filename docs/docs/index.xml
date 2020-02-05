@@ -24,18 +24,6 @@ The following is a description of how these binaries can be fuzzed with afl++
     
     <item>
       <title></title>
-      <link>https://aflplus.plus/docs/custom_mutator/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://aflplus.plus/docs/custom_mutator/</guid>
-      <description>Adding custom mutators to AFL This file describes how you can implement custom mutations to be used in AFL.
-Implemented by Khaled Yakdan from Code Intelligence yakdan@code-intelligence.de
-1) Description Custom mutator libraries can be passed to afl-fuzz to perform custom mutations on test cases beyond those available in AFL - for example, to enable structure-aware fuzzing by using libraries that perform mutations according to a given grammar.
-The custom mutator library is passed to afl-fuzz via the AFL_CUSTOM_MUTATOR_LIBRARY environment variable.</description>
-    </item>
-    
-    <item>
-      <title></title>
       <link>https://aflplus.plus/docs/env_variables/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
@@ -47,12 +35,34 @@ The custom mutator library is passed to afl-fuzz via the AFL_CUSTOM_MUTATOR_LIBR
     
     <item>
       <title></title>
+      <link>https://aflplus.plus/docs/technical_details/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://aflplus.plus/docs/technical_details/</guid>
+      <description>Technical &amp;ldquo;whitepaper&amp;rdquo; for afl-fuzz This document provides a quick overview of the guts of American Fuzzy Lop. See README for the general instruction manual; and for a discussion of motivations and design goals behind AFL, see historical_notes.md.
+0. Design statement American Fuzzy Lop does its best not to focus on any singular principle of operation and not be a proof-of-concept for any specific theory. The tool can be thought of as a collection of hacks that have been tested in practice, found to be surprisingly effective, and have been implemented in the simplest, most robust way I could think of at the time.</description>
+    </item>
+    
+    <item>
+      <title></title>
       <link>https://aflplus.plus/docs/historical_notes/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/historical_notes/</guid>
-      <description>Historical notes This doc talks about the rationale of some of the high-level design decisions for American Fuzzy Lop. It&amp;rsquo;s adopted from a discussion with Rob Graham. See README.md for the general instruction manual, and technical_details.md for additional implementation-level insights.
+      <description>Historical notes This doc talks about the rationale of some of the high-level design decisions for American Fuzzy Lop. It&amp;rsquo;s adopted from a discussion with Rob Graham. See README.md for the general instruction manual, and Technical Details for additional implementation-level insights.
 1) Influences In short, afl-fuzz is inspired chiefly by the work done by Tavis Ormandy back in 2007. Tavis did some very persuasive experiments using gcov block coverage to select optimal test cases out of a large corpus of data, and then using them as a starting point for traditional fuzzing workflows.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://aflplus.plus/docs/custom_mutator/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://aflplus.plus/docs/custom_mutator/</guid>
+      <description>Adding custom mutators to AFL This file describes how you can implement custom mutations to be used in AFL.
+Implemented by Khaled Yakdan from Code Intelligence yakdan@code-intelligence.de
+1) Description Custom mutator libraries can be passed to afl-fuzz to perform custom mutations on test cases beyond those available in AFL - for example, to enable structure-aware fuzzing by using libraries that perform mutations according to a given grammar.
+The custom mutator library is passed to afl-fuzz via the AFL_CUSTOM_MUTATOR_LIBRARY environment variable.</description>
     </item>
     
     <item>
@@ -141,16 +151,6 @@ Go-fuzz (Dmitry Vyukov) AFL-inspired guided fuzzing approach for Go targets:</de
       <description>Understanding the status screen This document provides an overview of the status screen - plus tips for troubleshooting any warnings and red text shown in the UI. See README for the general instruction manual.
 A note about colors The status screen and error messages use colors to keep things readable and attract your attention to the most important details. For example, red almost always means &amp;ldquo;consult this doc&amp;rdquo; :-)
 Unfortunately, the UI will render correctly only if your terminal is using traditional un*x palette (white text on black background) or something close to that.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://aflplus.plus/docs/technical_details/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://aflplus.plus/docs/technical_details/</guid>
-      <description>Technical &amp;ldquo;whitepaper&amp;rdquo; for afl-fuzz This document provides a quick overview of the guts of American Fuzzy Lop. See README for the general instruction manual; and for a discussion of motivations and design goals behind AFL, see historical_notes.md.
-0. Design statement American Fuzzy Lop does its best not to focus on any singular principle of operation and not be a proof-of-concept for any specific theory. The tool can be thought of as a collection of hacks that have been tested in practice, found to be surprisingly effective, and have been implemented in the simplest, most robust way I could think of at the time.</description>
     </item>
     
   </channel>

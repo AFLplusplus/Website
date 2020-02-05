@@ -3,15 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://aflplus.plus/docs/</loc>
-  </url>
-  
-  <url>
     <loc>https://aflplus.plus/docs/binaryonly_fuzzing/</loc>
-  </url>
-  
-  <url>
-    <loc>https://aflplus.plus/docs/custom_mutator/</loc>
   </url>
   
   <url>
@@ -19,7 +11,23 @@
   </url>
   
   <url>
+    <loc>https://aflplus.plus/docs/technical_details/</loc>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/historical_notes/</loc>
+  </url>
+  
+  <url>
+    <loc>https://aflplus.plus/building/</loc>
+  </url>
+  
+  <url>
+    <loc>https://aflplus.plus/docs/</loc>
+  </url>
+  
+  <url>
+    <loc>https://aflplus.plus/docs/custom_mutator/</loc>
   </url>
   
   <url>
@@ -52,10 +60,6 @@
   
   <url>
     <loc>https://aflplus.plus/docs/status_screen/</loc>
-  </url>
-  
-  <url>
-    <loc>https://aflplus.plus/docs/technical_details/</loc>
   </url>
   
   <url>
