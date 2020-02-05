@@ -4,9 +4,9 @@
 
 Requirement: hugo extended installed.
 
-## Update doc from main repo
+## Update doc from main repo and vars in config
 
-`./update_docs.sh
+`./update.py`
 
 ## Local test
 

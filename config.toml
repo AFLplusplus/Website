@@ -1,3 +1,4 @@
+
 baseURL = "https://aflplus.plus/"
 languageCode = "en-us"
 title = "AFLplusplus"
@@ -6,3 +7,5 @@ publishDir = "docs"
 [params]
   BookMenuBundle = "/menu"
   BookLogo = 'logo_256x256.png'
+  ReleaseName = "2.60c"
+  ReleaseURL = "https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.60c"
