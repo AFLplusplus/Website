@@ -6,6 +6,23 @@
 <title>{{ partial "docs/title" . }} | {{ .Site.Title -}}</title>
 <link rel="icon" href="{{ "favicon.png" | relURL }}" type="image/x-icon">
 
+<meta property="og:title" content="{{ partial "docs/title" . }} | {{ .Site.Title -}}" />
+<meta name="twitter:title" content="{{ partial "docs/title" . }} | {{ .Site.Title -}}" />
+<meta itemprop="name" content="{{ partial "docs/title" . }} | {{ .Site.Title -}}" />
+<meta name="application-name" content="{{ partial "docs/title" . }} | {{ .Site.Title -}}" />
+<meta property="og:site_name" content="{{ .Site.Params.sitename }}" />
+
+<meta name="description" content="{{ .Params.description }}" />
+<meta itemprop="description" content="{{ .Params.description }}" />
+<meta property="og:description" content="{{ .Params.description }}" />
+<meta name="twitter:description" content="{{ .Params.description }}" />
+
+<base href="{{ .Permalink }}">
+<link rel="canonical" href="{{ .Permalink }}" itemprop="url" /> 
+<meta name="url" content="{{ .Permalink }}" />
+<meta name="twitter:url" content="{{ .Permalink }}" /> 
+<meta property="og:url" content="{{ .Permalink }}" />
+
 <!-- Theme stylesheet, you can customize scss by creating `assets/custom.scss` in your website -->
 {{- $styles := resources.Get "book.scss" | resources.ExecuteAsTemplate "book.scss" . | resources.ToCSS | resources.Minify | resources.Fingerprint }}
 <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}">
