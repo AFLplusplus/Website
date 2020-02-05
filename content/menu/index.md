@@ -8,8 +8,7 @@ bookMenuLevels: 2
    - [Build & Install]({{< relref "/building" >}})
    - [Documentation]({{< relref "/docs/_index.md" >}})
 <!--- [Blog](< relref "/posts" >)-->
- - **Download**
-<!--   - [Release 2.60c](https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.60c)-->
+ - **Downloads**
    - {{< release_link >}}
    - [All releases](https://github.com/vanhauser-thc/AFLplusplus/releases)
    - [Current devel](https://github.com/vanhauser-thc/AFLplusplus/archive/master.zip)
