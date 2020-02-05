@@ -47,15 +47,6 @@ The custom mutator library is passed to afl-fuzz via the AFL_CUSTOM_MUTATOR_LIBR
     
     <item>
       <title></title>
-      <link>https://andreafioraldi.github.io/AFLplusplus-website/docs/features/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://andreafioraldi.github.io/AFLplusplus-website/docs/features/</guid>
-      <description>AFL++ Features TODO</description>
-    </item>
-    
-    <item>
-      <title></title>
       <link>https://andreafioraldi.github.io/AFLplusplus-website/docs/historical_notes/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
@@ -160,6 +151,15 @@ Unfortunately, the UI will render correctly only if your terminal is using tradi
       <guid>https://andreafioraldi.github.io/AFLplusplus-website/docs/technical_details/</guid>
       <description>Technical &amp;ldquo;whitepaper&amp;rdquo; for afl-fuzz This document provides a quick overview of the guts of American Fuzzy Lop. See README for the general instruction manual; and for a discussion of motivations and design goals behind AFL, see historical_notes.md.
 0. Design statement American Fuzzy Lop does its best not to focus on any singular principle of operation and not be a proof-of-concept for any specific theory. The tool can be thought of as a collection of hacks that have been tested in practice, found to be surprisingly effective, and have been implemented in the simplest, most robust way I could think of at the time.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://andreafioraldi.github.io/AFLplusplus-website/features/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://andreafioraldi.github.io/AFLplusplus-website/features/</guid>
+      <description>AFL++ Features TODO</description>
     </item>
     
   </channel>

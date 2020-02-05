@@ -2,7 +2,7 @@
 const characterPressed=String.fromCharCode(e.charCode);if(!isHotkey(characterPressed)){return;}
 input.focus();e.preventDefault();}
 function isHotkey(character){const dataHotkeys=input.getAttribute('data-hotkeys')||'';return dataHotkeys.indexOf(character)>=0;}
-function init(){input.removeEventListener('focus',init);input.required=true;loadScript('/AFLplusplus-website/flexsearch.min.js');loadScript('/AFLplusplus-website/en.search-data.min.8135ae20935e1ae3e41545dd0c757eb00206768e869f4486b4d5f04f75bf3b19.js',function(){input.required=false;search();});}
+function init(){input.removeEventListener('focus',init);input.required=true;loadScript('/AFLplusplus-website/flexsearch.min.js');loadScript('/AFLplusplus-website/en.search-data.min.373e3be70b8339e7ccc90fe4b5f695fbc9464e8d046db493612a98cf343edc8b.js',function(){input.required=false;search();});}
 function search(){while(results.firstChild){results.removeChild(results.firstChild);}
 if(!input.value){return;}
 const searchHits=window.bookSearchIndex.search(input.value,10);searchHits.forEach(function(page){const li=document.createElement('li'),a=li.appendChild(document.createElement('a'));a.href=page.href;a.textContent=page.title;results.appendChild(li);});}

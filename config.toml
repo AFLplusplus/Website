@@ -4,4 +4,4 @@ title = "AFLplusplus"
 publishDir = "docs"
 
 [params]
-  BookSection = "*"
+  BookMenuBundle = "/menu"
