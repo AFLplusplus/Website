@@ -5,3 +5,4 @@ publishDir = "docs"
 
 [params]
   BookMenuBundle = "/menu"
+  BookLogo = 'logo_256x256.png'
