@@ -15,7 +15,8 @@ publishDir = "docs"
 [params]
   sitename = "AFLplusplus"
   description = "The AFLplusplus website"
-  image = "social_preview.png"
+  image = "ogimage.png"
+  ogimage = "ogimage.png"
   BookMenuBundle = "/menu"
   BookLogo = 'logo_256x256.png'
   ReleaseName = "__REL_NAME__"
