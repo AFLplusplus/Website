@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.e53848e224cf3db8b91fc4e9630b458654dc85c9534c67336ae371f462372d88.css" integrity="sha256-5ThI4iTPPbi5H8TpYwtFhlTchclTTGczauNx9GI3LYg=">
 
 
-<script defer src="/en.search.min.353062c5f1be62ac3bfa1b734a19f55c185925085273f6d4292177f291b23ad6.js" integrity="sha256-NTBixfG&#43;Yqw7&#43;htzShn1XBhZJQhSc/bUKSF38pGyOtY="></script>
+<script defer src="/en.search.min.d401b17eae8a93b0961d977ae9c89a827b00d3e4e81a10ea5c85be807a74012f.js" integrity="sha256-1AGxfq6Kk7CWHZd66ciagnsA0&#43;ToGhDqXIW&#43;gHp0AS8="></script>
 
 <!--
 Made with Book Theme
@@ -190,7 +190,7 @@ better *BSD and Android support and much, much more.</p>
 <p>qbdi_mode: fuzz android native libraries via QBDI framework</p>
 </li>
 <li>
-<p>The new CmpLog instrumentation for LLVM inspired by <a href="https://www.syssec.ruhr-uni-bochum.de/media/emma/veroeffentlichungen/2018/12/17/NDSS19-Redqueen.pdf">Redqueen</a></p>
+<p>The new CmpLog instrumentation for LLVM and QEMU inspired by <a href="https://www.syssec.ruhr-uni-bochum.de/media/emma/veroeffentlichungen/2018/12/17/NDSS19-Redqueen.pdf">Redqueen</a></p>
 </li>
 </ul>
 <p>A more thorough list is available in the PATCHES file.</p>
@@ -207,14 +207,6 @@ better *BSD and Android support and much, much more.</p>
 </thead>
 <tbody>
 <tr>
-<td>laf-intel / CompCov</td>
-<td align="center"></td>
-<td align="center">x</td>
-<td align="center"></td>
-<td align="center">x86/arm</td>
-<td align="center">x86/arm</td>
-</tr>
-<tr>
 <td>NeverZero</td>
 <td align="center">x</td>
 <td align="center">x(1)</td>
@@ -227,8 +219,24 @@ better *BSD and Android support and much, much more.</p>
 <td align="center"></td>
 <td align="center">x</td>
 <td align="center">x</td>
-<td align="center">x86</td>
+<td align="center">x86[_64]/arm[64]</td>
 <td align="center">x</td>
+</tr>
+<tr>
+<td>laf-intel / CompCov</td>
+<td align="center"></td>
+<td align="center">x</td>
+<td align="center"></td>
+<td align="center">x86[_64]/arm[64]</td>
+<td align="center">x86[_64]/arm</td>
+</tr>
+<tr>
+<td>CmpLog</td>
+<td align="center"></td>
+<td align="center">x</td>
+<td align="center"></td>
+<td align="center">x86[_64]/arm[64]</td>
+<td align="center"></td>
 </tr>
 <tr>
 <td>Whitelist</td>
