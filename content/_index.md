@@ -20,7 +20,7 @@ The AFL++ fuzzing framework includes the following:
 
 It includes a lot of changes, optimizations and new features respect to AFL like the AFLfast power schedules, QEMU 3.1 upgrade with CompareCoverage, MOpt mutators, InsTrim instrumentation and a lot more.
 
-See the [Fetures]({{< relref "/features" >}}) page.
+See the [Features]({{< relref "/features" >}}) page.
 
 It is maintained by Marc "van Hauser" Heuse <mh@mh-sec.de>, Heiko "hexcoder-" Eißfeldt <heiko.eissfeldt@hexco.de>, Andrea Fioraldi <andreafioraldi@gmail.com> and Dominik Maier <mail@dmnk.co>.
 
