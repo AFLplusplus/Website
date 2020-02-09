@@ -39,17 +39,18 @@ Additionally the following features and patches have been integrated:
 
 * qbdi_mode: fuzz android native libraries via QBDI framework
 
-* The new CmpLog instrumentation for LLVM inspired by [Redqueen](https://www.syssec.ruhr-uni-bochum.de/media/emma/veroeffentlichungen/2018/12/17/NDSS19-Redqueen.pdf)
+* The new CmpLog instrumentation for LLVM and QEMU inspired by [Redqueen](https://www.syssec.ruhr-uni-bochum.de/media/emma/veroeffentlichungen/2018/12/17/NDSS19-Redqueen.pdf)
 
 A more thorough list is available in the PATCHES file.
 
-| Feature/Instrumentation | afl-gcc | llvm_mode | gcc_plugin | qemu_mode | unicorn_mode |
-| ----------------------- |:-------:|:---------:|:----------:|:---------:|:------------:|
-| laf-intel / CompCov     |         |     x     |            |  x86/arm  |   x86/arm    |
-| NeverZero               |    x    |     x(1)  |      (2)   |     x     |      x       |
-| Persistent mode         |         |     x     |     x      |    x86    |      x       |
-| Whitelist               |         |     x     |     x      |           |              |
-| InsTrim                 |         |     x     |            |           |              |
+  | Feature/Instrumentation | afl-gcc | llvm_mode | gcc_plugin | qemu_mode        | unicorn_mode |
+  | ----------------------- |:-------:|:---------:|:----------:|:----------------:|:------------:|
+  | NeverZero               |    x    |     x(1)  |      (2)   |          x       |       x      |
+  | Persistent mode         |         |     x     |     x      | x86[_64]/arm[64] |       x      |
+  | laf-intel / CompCov     |         |     x     |            | x86[_64]/arm[64] | x86[_64]/arm |
+  | CmpLog                  |         |     x     |            | x86[_64]/arm[64] |              |
+  | Whitelist               |         |     x     |     x      |                  |              |
+  | InsTrim                 |         |     x     |            |                  |              |
 
 NeverZero:
 
