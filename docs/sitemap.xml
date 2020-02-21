@@ -15,6 +15,10 @@
   </url>
   
   <url>
+    <loc>https://aflplus.plus/tutorials/</loc>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/binaryonly_fuzzing/</loc>
     <priority>0</priority>
   </url>
@@ -111,6 +115,11 @@
   
   <url>
     <loc>https://aflplus.plus/docs/technical_details/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://aflplus.plus/tutorials/libxml2_tutorial/</loc>
     <priority>0</priority>
   </url>
   

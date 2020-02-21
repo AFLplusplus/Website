@@ -260,5 +260,19 @@ Unfortunately, the UI will render correctly only if your terminal is using tradi
 0. Design statement American Fuzzy Lop does its best not to focus on any singular principle of operation and not be a proof-of-concept for any specific theory. The tool can be thought of as a collection of hacks that have been tested in practice, found to be surprisingly effective, and have been implemented in the simplest, most robust way I could think of at the time.</description>
     </item>
     
+    <item>
+      <title></title>
+      <link>https://aflplus.plus/tutorials/libxml2_tutorial/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://aflplus.plus/tutorials/libxml2_tutorial/</guid>
+      <description>Fuzzing libxml2 with AFL++ Before starting, build AFL++ LLVM mode and QEMU mode.
+I assume that the path to AFL++ is ~/AFLplusplus, change it in the commands if your installation path is different.
+Download the source of libxml2 with
+git clone https://gitlab.gnome.org/GNOME/libxml2.git cd libxml2 Now confgure it disabling the sahred libraries
+./autogen.sh ./configure --enable-shared=no If you want to enable the sanitizers, use the proper env var.
+In this tutorial we will enable ASan and UBSan.</description>
+    </item>
+    
   </channel>
 </rss>

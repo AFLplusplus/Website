@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>AFLplusplus</title>
+    <link>https://aflplus.plus/tutorials/</link>
+    <description>Recent content on AFLplusplus</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://aflplus.plus/tutorials/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>https://aflplus.plus/tutorials/libxml2_tutorial/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://aflplus.plus/tutorials/libxml2_tutorial/</guid>
+      <description>Fuzzing libxml2 with AFL++ Before starting, build AFL++ LLVM mode and QEMU mode.
+I assume that the path to AFL++ is ~/AFLplusplus, change it in the commands if your installation path is different.
+Download the source of libxml2 with
+git clone https://gitlab.gnome.org/GNOME/libxml2.git cd libxml2 Now confgure it disabling the sahred libraries
+./autogen.sh ./configure --enable-shared=no If you want to enable the sanitizers, use the proper env var.
+In this tutorial we will enable ASan and UBSan.</description>
+    </item>
+    
+  </channel>
+</rss>
