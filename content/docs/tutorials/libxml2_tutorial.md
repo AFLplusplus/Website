@@ -11,7 +11,7 @@ $ git clone https://gitlab.gnome.org/GNOME/libxml2.git
 $ cd libxml2
 ```
 
-Now confgure it disabling the sahred libraries
+Now configure it disabling the shared libraries
 
 ```shell
 $ ./autogen.sh
@@ -20,7 +20,7 @@ $ ./configure --enable-shared=no
 
 If you want to enable the sanitizers, use the proper env var.
 
-In this tutorial we will enable ASan and UBSan.
+In this tutorial, we will enable ASan and UBSan.
 
 ```shell
 $ export AFL_USE_UBSAN=1
@@ -57,17 +57,17 @@ Here we are!
 $ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -- ./xmllint_cov @@
 ```
 
-Beware of the `-m none`. We built it using AddressSanitizer that maps a lot of pages for the shasdow memory so we have to remove the memory limit in order to have it up and running.
+Beware of the `-m none`. We built it using AddressSanitizer that maps a lot of pages for the shadow memory so we have to remove the memory limit to have it up and running.
 
-XML is an higly structured input so `-d` is a good choice. It enables FidgetyAFL, a modality that skips the deterministic stages (that are well suited for binary formats) in favour of the randomic stages.
+XML is a highly structured input so `-d` is a good choice. It enables FidgetyAFL, a modality that skips the deterministic stages (that are well suited for binary formats) in favor of the random stages.
 
 ![screen1]({{% rel %}}libxml_screen1.png{{% /rel %}})
 
 Now, knowing that libxml2 is a library and so the code is reentrant, we can speedup out fuzzing process using persistent mode.
 
-Persistent mode avoid the overhead of forking and give a lot of speedup.
+Persistent mode avoids the overhead of forking and gives a lot of speedup.
 
-To enable it, we have to choose a reentrant routine and setup a persistent loop patching the code.
+To enable it, we have to choose a reentrant routine and set up a persistent loop patching the code.
 
 ```diff
 diff --git a/xmllint.c b/xmllint.c
@@ -97,9 +97,9 @@ index 735d951d..64725e9c 100644
      int version = 0;
 ```
 
-In this case I choose parseAndPrintFile, the main parsing routine called from the xmllint main. As you can see, I created a new main function that loops around that function.
+In this case, I choose parseAndPrintFile, the main parsing routine called from the xmllint main. As you can see, I created a new main function that loops around that function.
 
-`__AFL_LOOP` is the way that we have to tell AFL++ that we want persistent mode. Each fuzzing iteration, instead to fork and reexecute the target with a different input, is just an execution of this lopp.
+`__AFL_LOOP` is the way that we have to tell AFL++ that we want persistent mode. Each fuzzing iteration, instead of to fork and re-execute the target with a different input, is just an execution of this loop.
 
 The number 10000 tells that after 10000 the harness has to fork and reset the state of the target. This is useful when the fuzzed routine is reentrant but, for example, has memory leaks and so we want to restore the target after a fixed number of executions to avoid to fill the heap with useless allocated memory.
 
@@ -127,7 +127,7 @@ Now will fuzz xmllint using the binary-only instrumentation with QEMU.
 
 We will act as if we don't have the source code and therefore we will not patch anything in the source.
 
-Firstly, build a uninstrumented binary. Remind to revert the applied patch for LLVM persistent before proceed.
+Firstly, build an uninstrumented binary. Remind to revert the applied patch for LLVM persistent before proceed.
 
 ```shell
 $ cd ...
@@ -145,7 +145,7 @@ $ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -Q -- ./xmllint @@
 
 ![screen1]({{% rel %}}libxml_screen3.png{{% /rel %}})
 
-You've probably noticed that the speed is faster than the LLVM fork-based fuzzing. This is due to the fact that we used ASan+UBSan in the previous steps based on LLVM (so a 2x slodown in average).
+You've probably noticed that the speed is faster than the LLVM fork-based fuzzing. This is because we used ASan+UBSan in the previous steps based on LLVM (so a 2x slowdown in average).
 
 Note that so the slowdown of QEMU is circa 2x in this specific case, quite good.
 
@@ -153,7 +153,7 @@ But if we want the speed of persistent mode for a closed source binary?
 
 No pain, there is QEMU persistent mode, a new feature introduced in AFL++.
 
-There are two possibilities in persistent QEMU, loop around a function (like WinAFL) or loop around specific protion of code.
+There are two possibilities in persistent QEMU, loop around a function (like WinAFL) or loop around a specific portion of code.
 
 In this tutorial, we will go for the easy path, we will loop around `parseAndPrintFile`.
 
@@ -186,9 +186,9 @@ $ export AFL_QEMU_PERSISTENT_ADDR=0x4000019be0
 ```
 
 We are on x86_64 and the parameters are passed in the registers.
-When, at the end of the function, we return to the starting address, the registers are clobbered so we don't have anymore the pointer to filename in rdi.
+When, at the end of the function, we return to the starting address, the registers are clobbered so we don't have anymore the pointer to the filename in rdi.
 
-To avoid that, we can save and restore the state of the general purpose registers at each iteration setting AFL_QEMU_PERSISTENT_GPR.
+To avoid that, we can save and restore the state of the general-purpose registers at each iteration setting AFL_QEMU_PERSISTENT_GPR.
 
 ```shell
 $ export AFL_QEMU_PERSISTENT_GPR=1
@@ -205,5 +205,6 @@ $ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -Q -- ./xmllint @@
 As for persistent LLVM, the speedup is incredible.
 
 Enjoy AFL++, stay tuned for other beginners tutorial of this kind in the future.
+
 Andrea.
 

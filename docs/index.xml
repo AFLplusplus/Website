@@ -269,7 +269,7 @@ Unfortunately, the UI will render correctly only if your terminal is using tradi
       <description>Fuzzing libxml2 with AFL++ Before starting, build AFL++ LLVM mode and QEMU mode.
 I assume that the path to AFL++ is ~/AFLplusplus, change it in the commands if your installation path is different.
 Download the source of libxml2 with
-$ git clone https://gitlab.gnome.org/GNOME/libxml2.git $ cd libxml2 Now confgure it disabling the sahred libraries
+$ git clone https://gitlab.gnome.org/GNOME/libxml2.git $ cd libxml2 Now configure it disabling the shared libraries
 $ ./autogen.sh $ ./configure --enable-shared=no If you want to enable the sanitizers, use the proper env var.</description>
     </item>
     

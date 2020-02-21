@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.6f767f9bbb943d8ed2dce53270a62e21bc3d1e48427f6f40c46c6f35397a1909.js" integrity="sha256-b3Z/m7uUPY7S3OUycKYuIbw9HkhCf29AxGxvNTl6GQk="></script>
+<script defer src="/en.search.min.a7d8f51f2b68d4ffde69d2b63857126de7f7e502f930c9646eb11acdf97e9d5c.js" integrity="sha256-p9j1Hyto1P/eadK2OFcSbef35QL5MMlkbrEazfl&#43;nVw="></script>
 
 <!--
 Made with Book Theme
@@ -152,11 +152,11 @@ https://github.com/alex-shpak/hugo-book
 <p>Download the source of libxml2 with</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git clone https://gitlab.gnome.org/GNOME/libxml2.git
 $ cd libxml2
-</code></pre></div><p>Now confgure it disabling the sahred libraries</p>
+</code></pre></div><p>Now configure it disabling the shared libraries</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ./autogen.sh
 $ ./configure --enable-shared<span style="color:#f92672">=</span>no
 </code></pre></div><p>If you want to enable the sanitizers, use the proper env var.</p>
-<p>In this tutorial we will enable ASan and UBSan.</p>
+<p>In this tutorial, we will enable ASan and UBSan.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ export AFL_USE_UBSAN<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
 $ export AFL_USE_ASAN<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
 </code></pre></div><p>Build the library using the clang wappers</p>
@@ -173,12 +173,12 @@ $ cd fuzz
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo ~/AFLplusplus/afl-system-config
 </code></pre></div><p>Here we are!</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -- ./xmllint_cov @@
-</code></pre></div><p>Beware of the <code>-m none</code>. We built it using AddressSanitizer that maps a lot of pages for the shasdow memory so we have to remove the memory limit in order to have it up and running.</p>
-<p>XML is an higly structured input so <code>-d</code> is a good choice. It enables FidgetyAFL, a modality that skips the deterministic stages (that are well suited for binary formats) in favour of the randomic stages.</p>
+</code></pre></div><p>Beware of the <code>-m none</code>. We built it using AddressSanitizer that maps a lot of pages for the shadow memory so we have to remove the memory limit to have it up and running.</p>
+<p>XML is a highly structured input so <code>-d</code> is a good choice. It enables FidgetyAFL, a modality that skips the deterministic stages (that are well suited for binary formats) in favor of the random stages.</p>
 <p><img src="https://aflplus.plus//libxml_screen1.png" alt="screen1"></p>
 <p>Now, knowing that libxml2 is a library and so the code is reentrant, we can speedup out fuzzing process using persistent mode.</p>
-<p>Persistent mode avoid the overhead of forking and give a lot of speedup.</p>
-<p>To enable it, we have to choose a reentrant routine and setup a persistent loop patching the code.</p>
+<p>Persistent mode avoids the overhead of forking and gives a lot of speedup.</p>
+<p>To enable it, we have to choose a reentrant routine and set up a persistent loop patching the code.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">diff --git a/xmllint.c b/xmllint.c
 index 735d951d..64725e9c 100644
 <span style="color:#f92672">--- a/xmllint.c
@@ -204,8 +204,8 @@ index 735d951d..64725e9c 100644
 </span><span style="color:#a6e22e"></span>     int i, acount;
      int files = 0;
      int version = 0;
-</code></pre></div><p>In this case I choose parseAndPrintFile, the main parsing routine called from the xmllint main. As you can see, I created a new main function that loops around that function.</p>
-<p><code>__AFL_LOOP</code> is the way that we have to tell AFL++ that we want persistent mode. Each fuzzing iteration, instead to fork and reexecute the target with a different input, is just an execution of this lopp.</p>
+</code></pre></div><p>In this case, I choose parseAndPrintFile, the main parsing routine called from the xmllint main. As you can see, I created a new main function that loops around that function.</p>
+<p><code>__AFL_LOOP</code> is the way that we have to tell AFL++ that we want persistent mode. Each fuzzing iteration, instead of to fork and re-execute the target with a different input, is just an execution of this loop.</p>
 <p>The number 10000 tells that after 10000 the harness has to fork and reset the state of the target. This is useful when the fuzzed routine is reentrant but, for example, has memory leaks and so we want to restore the target after a fixed number of executions to avoid to fill the heap with useless allocated memory.</p>
 <p>To build it, just remove the previously compile xmllint and recompile it.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd ..
@@ -219,7 +219,7 @@ $ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -- ./xmllint_persistent @@
 <p>As you can see, the speedup is impressive.</p>
 <p>Now will fuzz xmllint using the binary-only instrumentation with QEMU.</p>
 <p>We will act as if we don&rsquo;t have the source code and therefore we will not patch anything in the source.</p>
-<p>Firstly, build a uninstrumented binary. Remind to revert the applied patch for LLVM persistent before proceed.</p>
+<p>Firstly, build an uninstrumented binary. Remind to revert the applied patch for LLVM persistent before proceed.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd ...
 $ make clean
 $ make
@@ -228,11 +228,11 @@ $ cp xmllint fuzz/
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd fuzz
 $ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -Q -- ./xmllint @@
 </code></pre></div><p><img src="https://aflplus.plus//libxml_screen3.png" alt="screen1"></p>
-<p>You&rsquo;ve probably noticed that the speed is faster than the LLVM fork-based fuzzing. This is due to the fact that we used ASan+UBSan in the previous steps based on LLVM (so a 2x slodown in average).</p>
+<p>You&rsquo;ve probably noticed that the speed is faster than the LLVM fork-based fuzzing. This is because we used ASan+UBSan in the previous steps based on LLVM (so a 2x slowdown in average).</p>
 <p>Note that so the slowdown of QEMU is circa 2x in this specific case, quite good.</p>
 <p>But if we want the speed of persistent mode for a closed source binary?</p>
 <p>No pain, there is QEMU persistent mode, a new feature introduced in AFL++.</p>
-<p>There are two possibilities in persistent QEMU, loop around a function (like WinAFL) or loop around specific protion of code.</p>
+<p>There are two possibilities in persistent QEMU, loop around a function (like WinAFL) or loop around a specific portion of code.</p>
 <p>In this tutorial, we will go for the easy path, we will loop around <code>parseAndPrintFile</code>.</p>
 <p>Firstly, locate the address of the function:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ nm xmllint | grep parseAndPrintFile
@@ -250,15 +250,15 @@ Fortunately, QEMU loads PIE executables at a fixed address, 0x4000000000 for x86
 </code></pre></div><p>Now, we set the address of the function that has to loop</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ export AFL_QEMU_PERSISTENT_ADDR<span style="color:#f92672">=</span>0x4000019be0
 </code></pre></div><p>We are on x86_64 and the parameters are passed in the registers.
-When, at the end of the function, we return to the starting address, the registers are clobbered so we don&rsquo;t have anymore the pointer to filename in rdi.</p>
-<p>To avoid that, we can save and restore the state of the general purpose registers at each iteration setting AFL_QEMU_PERSISTENT_GPR.</p>
+When, at the end of the function, we return to the starting address, the registers are clobbered so we don&rsquo;t have anymore the pointer to the filename in rdi.</p>
+<p>To avoid that, we can save and restore the state of the general-purpose registers at each iteration setting AFL_QEMU_PERSISTENT_GPR.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ export AFL_QEMU_PERSISTENT_GPR<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
 </code></pre></div><p>Here we go, rerun the previous afl-fuzz command:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -Q -- ./xmllint @@
 </code></pre></div><p><img src="https://aflplus.plus//libxml_screen4.png" alt="screen1"></p>
 <p>As for persistent LLVM, the speedup is incredible.</p>
-<p>Enjoy AFL++, stay tuned for other beginners tutorial of this kind in the future.
-Andrea.</p>
+<p>Enjoy AFL++, stay tuned for other beginners tutorial of this kind in the future.</p>
+<p>Andrea.</p>
 </article>
  
 
