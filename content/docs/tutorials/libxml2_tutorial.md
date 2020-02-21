@@ -33,7 +33,7 @@ Build the library using the clang wappers
 make CC=~/AFLplusplus/afl-clang-fast CXX=~/AFLplusplus/afl-clang-fast++ LD=~/AFLplusplus/afl-clang-fast
 ```
 
-When the job is completed, we start to fuzz libxml2 using the tool xmllint as harness.
+When the job is completed, we start to fuzz libxml2 using the tool xmllint as harness and take some testcases from the test folder as initial seeds.
 
 ```shell
 mkdir fuzz
