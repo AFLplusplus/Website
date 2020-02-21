@@ -170,7 +170,7 @@ Fortunately, QEMU loads PIE executables at a fixed address, 0x4000000000 for x86
 We can check it using AFL_QEMU_DEBUG_MAPS. You don't need this step if your binary is not PIE.
 
 ```shell
- AFL_QEMU_DEBUG_MAPS=1 ~/Videos/AFLplusplus/afl-qemu-trace ./xmllint -
+$ AFL_QEMU_DEBUG_MAPS=1 ~/AFLplusplus/afl-qemu-trace ./xmllint -
 4000000000-400013e000 r-xp 00000000 103:06 18676576                      /home/andrea/libxml2/fuzz/xmllint
 400013e000-400033e000 ---p 00000000 00:00 0 
 400033e000-4000346000 r--p 0013e000 103:06 18676576                      /home/andrea/libxml2/fuzz/xmllint

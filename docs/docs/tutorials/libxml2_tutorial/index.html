@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.a7d8f51f2b68d4ffde69d2b63857126de7f7e502f930c9646eb11acdf97e9d5c.js" integrity="sha256-p9j1Hyto1P/eadK2OFcSbef35QL5MMlkbrEazfl&#43;nVw="></script>
+<script defer src="/en.search.min.fb72a40088aab25d631c6878b2fa43b595a45a9de2fb12a10393460ee16b78ef.js" integrity="sha256-&#43;3KkAIiqsl1jHGh4svpDtZWkWp3i&#43;xKhA5NGDuFreO8="></script>
 
 <!--
 Made with Book Theme
@@ -240,7 +240,7 @@ $ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -Q -- ./xmllint @@
 </code></pre></div><p>The binary is position independent and QEMU persistent needs the real addresses, not the offsets.
 Fortunately, QEMU loads PIE executables at a fixed address, 0x4000000000 for x86_64.</p>
 <p>We can check it using AFL_QEMU_DEBUG_MAPS. You don&rsquo;t need this step if your binary is not PIE.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"> AFL_QEMU_DEBUG_MAPS<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> ~/Videos/AFLplusplus/afl-qemu-trace ./xmllint -
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ AFL_QEMU_DEBUG_MAPS<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> ~/AFLplusplus/afl-qemu-trace ./xmllint -
 4000000000-400013e000 r-xp <span style="color:#ae81ff">00000000</span> 103:06 <span style="color:#ae81ff">18676576</span>                      /home/andrea/libxml2/fuzz/xmllint
 400013e000-400033e000 ---p <span style="color:#ae81ff">00000000</span> 00:00 <span style="color:#ae81ff">0</span> 
 400033e000-4000346000 r--p 0013e000 103:06 <span style="color:#ae81ff">18676576</span>                      /home/andrea/libxml2/fuzz/xmllint
