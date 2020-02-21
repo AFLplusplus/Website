@@ -6,14 +6,14 @@ I assume that the path to AFL++ is `~/AFLplusplus`, change it in the commands if
 
 Download the source of libxml2 with
 
-```
+```shell
 git clone https://gitlab.gnome.org/GNOME/libxml2.git
 cd libxml2
 ```
 
 Now confgure it disabling the sahred libraries
 
-```
+```shell
 ./autogen.sh
 ./configure --enable-shared=no
 ```
@@ -22,20 +22,20 @@ If you want to enable the sanitizers, use the proper env var.
 
 In this tutorial we will enable ASan and UBSan.
 
-```
+```shell
 export AFL_USE_UBSAN=1
 export AFL_USE_ASAN=1
 ```
 
 Build the library using the clang wappers
 
-```
+```shell
 make CC=~/AFLplusplus/afl-clang-fast CXX=~/AFLplusplus/afl-clang-fast++ LD=~/AFLplusplus/afl-clang-fast
 ```
 
 When the job is completed, we start to fuzz libxml2 using the tool xmllint as harness.
 
-```
+```shell
 mkdir fuzz
 cp xmllint fuzz/xmllint_cov
 
@@ -47,13 +47,13 @@ cd fuzz
 
 Make sure to configure your system with our script before start afl-fuzz
 
-```
+```shell
 sudo ~/AFLplusplus/afl-system-config
 ```
 
 Here we are!
 
-```
+```shell
 ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -- ./xmllint_cov @@
 ```
 
@@ -105,7 +105,7 @@ The number 10000 tells that after 10000 the harness has to fork and reset the st
 
 To build it, just remove the previously compile xmllint and recompile it.
 
-```
+```shell
 cd ..
 rm xmllint
 make CC=~/AFLplusplus/afl-clang-fast CXX=~/AFLplusplus/afl-clang-fast++ LD=~/AFLplusplus/afl-clang-fast
@@ -114,7 +114,7 @@ cp xmllint fuzz/xmllint_persistent
 
 Now restart the fuzzer
 
-```
+```shell
 cd fuzz
 ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -- ./xmllint_persistent @@
 ```

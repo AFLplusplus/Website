@@ -150,30 +150,30 @@ https://github.com/alex-shpak/hugo-book
 <p>Before starting, build AFL++ LLVM mode and QEMU mode.</p>
 <p>I assume that the path to AFL++ is <code>~/AFLplusplus</code>, change it in the commands if your installation path is different.</p>
 <p>Download the source of libxml2 with</p>
-<pre><code>git clone https://gitlab.gnome.org/GNOME/libxml2.git
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">git clone https://gitlab.gnome.org/GNOME/libxml2.git
 cd libxml2
-</code></pre><p>Now confgure it disabling the sahred libraries</p>
-<pre><code>./autogen.sh
-./configure --enable-shared=no
-</code></pre><p>If you want to enable the sanitizers, use the proper env var.</p>
+</code></pre></div><p>Now confgure it disabling the sahred libraries</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./autogen.sh
+./configure --enable-shared<span style="color:#f92672">=</span>no
+</code></pre></div><p>If you want to enable the sanitizers, use the proper env var.</p>
 <p>In this tutorial we will enable ASan and UBSan.</p>
-<pre><code>export AFL_USE_UBSAN=1
-export AFL_USE_ASAN=1
-</code></pre><p>Build the library using the clang wappers</p>
-<pre><code>make CC=~/AFLplusplus/afl-clang-fast CXX=~/AFLplusplus/afl-clang-fast++ LD=~/AFLplusplus/afl-clang-fast
-</code></pre><p>When the job is completed, we start to fuzz libxml2 using the tool xmllint as harness.</p>
-<pre><code>mkdir fuzz
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export AFL_USE_UBSAN<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+export AFL_USE_ASAN<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</code></pre></div><p>Build the library using the clang wappers</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">make CC<span style="color:#f92672">=</span>~/AFLplusplus/afl-clang-fast CXX<span style="color:#f92672">=</span>~/AFLplusplus/afl-clang-fast++ LD<span style="color:#f92672">=</span>~/AFLplusplus/afl-clang-fast
+</code></pre></div><p>When the job is completed, we start to fuzz libxml2 using the tool xmllint as harness.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mkdir fuzz
 cp xmllint fuzz/xmllint_cov
 
 mkdir fuzz/in
 cp test/*.xml fuzz/in/
 
 cd fuzz
-</code></pre><p>Make sure to configure your system with our script before start afl-fuzz</p>
-<pre><code>sudo ~/AFLplusplus/afl-system-config
-</code></pre><p>Here we are!</p>
-<pre><code>~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -- ./xmllint_cov @@
-</code></pre><p>Beware of the <code>-m none</code>. We built it using AddressSanitizer that maps a lot of pages for the shasdow memory so we have to remove the memory limit in order to have it up and running.</p>
+</code></pre></div><p>Make sure to configure your system with our script before start afl-fuzz</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo ~/AFLplusplus/afl-system-config
+</code></pre></div><p>Here we are!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -- ./xmllint_cov @@
+</code></pre></div><p>Beware of the <code>-m none</code>. We built it using AddressSanitizer that maps a lot of pages for the shasdow memory so we have to remove the memory limit in order to have it up and running.</p>
 <p>XML is an higly structured input so <code>-d</code> is a good choice. It enables FidgetyAFL, a modality that skips the deterministic stages (that are well suited for binary formats) in favour of the randomic stages.</p>
 <p><img src="https://aflplus.plus//libxml_screen1.png" alt="screen1"></p>
 <p>Now, knowing that libxml2 is a library and so the code is reentrant, we can speedup out fuzzing process using persistent mode.</p>
@@ -208,14 +208,14 @@ index 735d951d..64725e9c 100644
 <p><code>__AFL_LOOP</code> is the way that we have to tell AFL++ that we want persistent mode. Each fuzzing iteration, instead to fork and reexecute the target with a different input, is just an execution of this lopp.</p>
 <p>The number 10000 tells that after 10000 the harness has to fork and reset the state of the target. This is useful when the fuzzed routine is reentrant but, for example, has memory leaks and so we want to restore the target after a fixed number of executions to avoid to fill the heap with useless allocated memory.</p>
 <p>To build it, just remove the previously compile xmllint and recompile it.</p>
-<pre><code>cd ..
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd ..
 rm xmllint
-make CC=~/AFLplusplus/afl-clang-fast CXX=~/AFLplusplus/afl-clang-fast++ LD=~/AFLplusplus/afl-clang-fast
+make CC<span style="color:#f92672">=</span>~/AFLplusplus/afl-clang-fast CXX<span style="color:#f92672">=</span>~/AFLplusplus/afl-clang-fast++ LD<span style="color:#f92672">=</span>~/AFLplusplus/afl-clang-fast
 cp xmllint fuzz/xmllint_persistent
-</code></pre><p>Now restart the fuzzer</p>
-<pre><code>cd fuzz
+</code></pre></div><p>Now restart the fuzzer</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd fuzz
 ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -- ./xmllint_persistent @@
-</code></pre><p><img src="https://aflplus.plus//libxml_screen2.png" alt="screen1"></p>
+</code></pre></div><p><img src="https://aflplus.plus//libxml_screen2.png" alt="screen1"></p>
 <p>As you can see, the speedup is impressive.</p>
 <p>Stay tuned for an update of this tutorial about QEMU and QEMU persistent to show how to use do binary only fuzzing.</p>
 </article>
