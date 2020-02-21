@@ -7,15 +7,15 @@ I assume that the path to AFL++ is `~/AFLplusplus`, change it in the commands if
 Download the source of libxml2 with
 
 ```shell
-git clone https://gitlab.gnome.org/GNOME/libxml2.git
-cd libxml2
+$ git clone https://gitlab.gnome.org/GNOME/libxml2.git
+$ cd libxml2
 ```
 
 Now confgure it disabling the sahred libraries
 
 ```shell
-./autogen.sh
-./configure --enable-shared=no
+$ ./autogen.sh
+$ ./configure --enable-shared=no
 ```
 
 If you want to enable the sanitizers, use the proper env var.
@@ -23,38 +23,38 @@ If you want to enable the sanitizers, use the proper env var.
 In this tutorial we will enable ASan and UBSan.
 
 ```shell
-export AFL_USE_UBSAN=1
-export AFL_USE_ASAN=1
+$ export AFL_USE_UBSAN=1
+$ export AFL_USE_ASAN=1
 ```
 
 Build the library using the clang wappers
 
 ```shell
-make CC=~/AFLplusplus/afl-clang-fast CXX=~/AFLplusplus/afl-clang-fast++ LD=~/AFLplusplus/afl-clang-fast
+$ make CC=~/AFLplusplus/afl-clang-fast CXX=~/AFLplusplus/afl-clang-fast++ LD=~/AFLplusplus/afl-clang-fast
 ```
 
 When the job is completed, we start to fuzz libxml2 using the tool xmllint as harness and take some testcases from the test folder as initial seeds.
 
 ```shell
-mkdir fuzz
-cp xmllint fuzz/xmllint_cov
+$ mkdir fuzz
+$ cp xmllint fuzz/xmllint_cov
 
-mkdir fuzz/in
-cp test/*.xml fuzz/in/
+$ mkdir fuzz/in
+$ cp test/*.xml fuzz/in/
 
-cd fuzz
+$ cd fuzz
 ```
 
 Make sure to configure your system with our script before start afl-fuzz
 
 ```shell
-sudo ~/AFLplusplus/afl-system-config
+$ sudo ~/AFLplusplus/afl-system-config
 ```
 
 Here we are!
 
 ```shell
-~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -- ./xmllint_cov @@
+$ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -- ./xmllint_cov @@
 ```
 
 Beware of the `-m none`. We built it using AddressSanitizer that maps a lot of pages for the shasdow memory so we have to remove the memory limit in order to have it up and running.
@@ -106,22 +106,104 @@ The number 10000 tells that after 10000 the harness has to fork and reset the st
 To build it, just remove the previously compile xmllint and recompile it.
 
 ```shell
-cd ..
-rm xmllint
-make CC=~/AFLplusplus/afl-clang-fast CXX=~/AFLplusplus/afl-clang-fast++ LD=~/AFLplusplus/afl-clang-fast
-cp xmllint fuzz/xmllint_persistent
+$ cd ..
+$ rm xmllint
+$ make CC=~/AFLplusplus/afl-clang-fast CXX=~/AFLplusplus/afl-clang-fast++ LD=~/AFLplusplus/afl-clang-fast
+$ cp xmllint fuzz/xmllint_persistent
 ```
 
 Now restart the fuzzer
 
 ```shell
-cd fuzz
-~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -- ./xmllint_persistent @@
+$ cd fuzz
+$ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -- ./xmllint_persistent @@
 ```
 
 ![screen1]({{% rel %}}libxml_screen2.png{{% /rel %}})
 
 As you can see, the speedup is impressive.
 
-Stay tuned for an update of this tutorial about QEMU and QEMU persistent to show how to use do binary only fuzzing.
+Now will fuzz xmllint using the binary-only instrumentation with QEMU.
+
+We will act as if we don't have the source code and therefore we will not patch anything in the source.
+
+Firstly, build a uninstrumented binary. Remind to revert the applied patch for LLVM persistent before proceed.
+
+```shell
+$ cd ...
+$ make clean
+$ make
+$ cp xmllint fuzz/
+```
+
+To fuzz it in the simple fork-based fashion under QEMU, just add the `-Q` flag to afl-fuzz.
+
+```shell
+$ cd fuzz
+$ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -Q -- ./xmllint @@
+```
+
+![screen1]({{% rel %}}libxml_screen3.png{{% /rel %}})
+
+You've probably noticed that the speed is faster than the LLVM fork-based fuzzing. This is due to the fact that we used ASan+UBSan in the previous steps based on LLVM (so a 2x slodown in average).
+
+Note that so the slowdown of QEMU is circa 2x in this specific case, quite good.
+
+But if we want the speed of persistent mode for a closed source binary?
+
+No pain, there is QEMU persistent mode, a new feature introduced in AFL++.
+
+There are two possibilities in persistent QEMU, loop around a function (like WinAFL) or loop around specific protion of code.
+
+In this tutorial, we will go for the easy path, we will loop around `parseAndPrintFile`.
+
+Firstly, locate the address of the function:
+
+```shell
+$ nm xmllint | grep parseAndPrintFile
+0000000000019be0 t parseAndPrintFile
+```
+
+The binary is position independent and QEMU persistent needs the real addresses, not the offsets.
+Fortunately, QEMU loads PIE executables at a fixed address, 0x4000000000 for x86_64.
+
+We can check it using AFL_QEMU_DEBUG_MAPS. You don't need this step if your binary is not PIE.
+
+```shell
+ AFL_QEMU_DEBUG_MAPS=1 ~/Videos/AFLplusplus/afl-qemu-trace ./xmllint -
+4000000000-400013e000 r-xp 00000000 103:06 18676576                      /home/andrea/libxml2/fuzz/xmllint
+400013e000-400033e000 ---p 00000000 00:00 0 
+400033e000-4000346000 r--p 0013e000 103:06 18676576                      /home/andrea/libxml2/fuzz/xmllint
+4000346000-4000347000 rw-p 00146000 103:06 18676576                      /home/andrea/libxml2/fuzz/xmllint
+4000347000-4000355000 rw-p 00000000 00:00 0 
+...
+```
+
+Now, we set the address of the function that has to loop
+
+```shell
+$ export AFL_QEMU_PERSISTENT_ADDR=0x4000019be0
+```
+
+We are on x86_64 and the parameters are passed in the registers.
+When, at the end of the function, we return to the starting address, the registers are clobbered so we don't have anymore the pointer to filename in rdi.
+
+To avoid that, we can save and restore the state of the general purpose registers at each iteration setting AFL_QEMU_PERSISTENT_GPR.
+
+```shell
+$ export AFL_QEMU_PERSISTENT_GPR=1
+```
+
+Here we go, rerun the previous afl-fuzz command:
+
+```shell
+$ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -Q -- ./xmllint @@
+```
+
+![screen1]({{% rel %}}libxml_screen4.png{{% /rel %}})
+
+As for persistent LLVM, the speedup is incredible.
+
+Enjoy AFL++, stay tuned for other beginners tutorial of this kind in the future.
+Andrea.
 
