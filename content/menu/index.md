@@ -6,7 +6,7 @@ bookMenuLevels: 2
  - **Site map**
    - [Features]({{< relref "/features" >}})
    - [Build & Install]({{< relref "/building" >}})
-   - [Tutorials]({{< relref "/tutorials/_index.md" >}})
+   - [Tutorials]({{< relref "/docs/tutorials/_index.md" >}})
    - [Documentation]({{< relref "/docs/_index.md" >}})
 <!--- [Blog](< relref "/posts" >)-->
  - **Downloads**

@@ -262,10 +262,10 @@ Unfortunately, the UI will render correctly only if your terminal is using tradi
     
     <item>
       <title></title>
-      <link>https://aflplus.plus/tutorials/libxml2_tutorial/</link>
+      <link>https://aflplus.plus/docs/tutorials/libxml2_tutorial/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://aflplus.plus/tutorials/libxml2_tutorial/</guid>
+      <guid>https://aflplus.plus/docs/tutorials/libxml2_tutorial/</guid>
       <description>Fuzzing libxml2 with AFL++ Before starting, build AFL++ LLVM mode and QEMU mode.
 I assume that the path to AFL++ is ~/AFLplusplus, change it in the commands if your installation path is different.
 Download the source of libxml2 with

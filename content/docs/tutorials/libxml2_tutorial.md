@@ -69,7 +69,7 @@ Persistent mode avoid the overhead of forking and give a lot of speedup.
 
 To enable it, we have to choose a reentrant routine and setup a persistent loop patching the code.
 
-```
+```diff
 diff --git a/xmllint.c b/xmllint.c
 index 735d951d..64725e9c 100644
 --- a/xmllint.c

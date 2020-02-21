@@ -11,11 +11,11 @@
   </url>
   
   <url>
-    <loc>https://aflplus.plus/features/</loc>
+    <loc>https://aflplus.plus/docs/tutorials/</loc>
   </url>
   
   <url>
-    <loc>https://aflplus.plus/tutorials/</loc>
+    <loc>https://aflplus.plus/features/</loc>
   </url>
   
   <url>
@@ -119,7 +119,7 @@
   </url>
   
   <url>
-    <loc>https://aflplus.plus/tutorials/libxml2_tutorial/</loc>
+    <loc>https://aflplus.plus/docs/tutorials/libxml2_tutorial/</loc>
     <priority>0</priority>
   </url>
   
