@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.fb72a40088aab25d631c6878b2fa43b595a45a9de2fb12a10393460ee16b78ef.js" integrity="sha256-&#43;3KkAIiqsl1jHGh4svpDtZWkWp3i&#43;xKhA5NGDuFreO8="></script>
+<script defer src="/en.search.min.a84062fc6c02e211f822898ee7b8ebe1479e67e26ecebe7be99fead096e993bd.js" integrity="sha256-qEBi/GwC4hH4IomO57jr4UeeZ&#43;Juzr576Z/q0Jbpk70="></script>
 
 <!--
 Made with Book Theme
@@ -82,7 +82,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.60c">Release 2.60c</a>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.61c">Release 2.61c</a>
 </li>
 <li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/vanhauser-thc/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -139,10 +139,13 @@ https://github.com/alex-shpak/hugo-book
       
   <nav id="TableOfContents">
   <ul>
+    <li><a href="#tldr">TL;DR:</a></li>
     <li><a href="#qemu">QEMU</a></li>
     <li><a href="#wineqemu">WINE+QEMU</a></li>
     <li><a href="#unicorn">UNICORN</a></li>
     <li><a href="#dyninst">DYNINST</a></li>
+    <li><a href="#retrowrite">RETROWRITE</a></li>
+    <li><a href="#mcsema">MCSEMA</a></li>
     <li><a href="#intel-pt">INTEL-PT</a></li>
     <li><a href="#coresight">CORESIGHT</a></li>
     <li><a href="#frida">FRIDA</a></li>
@@ -165,18 +168,27 @@ it allows for very fast and coverage guided fuzzing.</p>
 <p>However, if there is only the binary program and no source code available,
 then standard <code>afl-fuzz -n</code> (dumb mode) is not effective.</p>
 <p>The following is a description of how these binaries can be fuzzed with afl++</p>
-<p>!!!!!
-TL;DR: try DYNINST with afl-dyninst. If it produces too many crashes then
-use afl -Q qemu_mode, or better: use both in parallel.
-!!!!!</p>
+<h2 id="tldr">TL;DR:</h2>
+<p>qemu_mode in persistent mode is the fastest - if the stability is
+high enough. Otherwise try retrowrite, afl-dyninst and if these
+fail too then standard qemu_mode with AFL_ENTRYPOINT to where you need it.</p>
 <h2 id="qemu">QEMU</h2>
 <p>Qemu is the &ldquo;native&rdquo; solution to the program.
 It is available in the ./qemu_mode/ directory and once compiled it can
 be accessed by the afl-fuzz -Q command line option.
-The speed decrease is at about 50%.
 It is the easiest to use alternative and even works for cross-platform binaries.</p>
+<p>The speed decrease is at about 50%.
+However various options exist to increase the speed:</p>
+<ul>
+<li>using AFL_ENTRYPOINT to move the forkserver to a later basic block in
+the binary (+5-10% speed)</li>
+<li>using persistent mode <a href="../qemu_mode/README.persistent.md">qemu_mode/README.persistent.md</a>
+this will result in 150-300% overall speed - so 3-8x the original
+qemu_mode speed!</li>
+<li>using AFL_CODE_START/AFL_CODE_END to only instrument specific parts</li>
+</ul>
 <p>Note that there is also honggfuzz: <a href="https://github.com/google/honggfuzz">https://github.com/google/honggfuzz</a>
-which now has a qemu_mode, but its performance is just 1.5%!</p>
+which now has a qemu_mode, but its performance is just 1.5% &hellip;</p>
 <p>As it is included in afl++ this needs no URL.</p>
 <h2 id="wineqemu">WINE+QEMU</h2>
 <p>Wine mode can run Win32 PE binaries with the QEMU instrumentation.
@@ -209,6 +221,18 @@ used with afl-dyninst.</p>
 <p>So if Dyninst works, it is the best option available. Otherwise it just
 doesn&rsquo;t work well.</p>
 <p><a href="https://github.com/vanhauser-thc/afl-dyninst">https://github.com/vanhauser-thc/afl-dyninst</a></p>
+<h2 id="retrowrite">RETROWRITE</h2>
+<p>If you have an x86/x86_64 binary that still has it&rsquo;s symbols, is compiled
+with position independant code (PIC/PIE) and does not use most of the C++
+features then the retrowrite solution might be for you.
+It decompiles to ASM files which can then be instrumented with afl-gcc.</p>
+<p>It is at about 80-85% performance.</p>
+<p><a href="https://github.com/HexHive/retrowrite">https://github.com/HexHive/retrowrite</a></p>
+<h2 id="mcsema">MCSEMA</h2>
+<p>Theoretically you can also decompile to llvm IR with mcsema, and then
+use llvm_mode to instrument the binary.
+Good luck with that.</p>
+<p><a href="https://github.com/lifting-bits/mcsema">https://github.com/lifting-bits/mcsema</a></p>
 <h2 id="intel-pt">INTEL-PT</h2>
 <p>If you have a newer Intel CPU, you can make use of Intels processor trace.
 The big issue with Intel&rsquo;s PT is the small buffer size and the complex
@@ -244,6 +268,8 @@ What is special is that it is written Python, and scripted with Javascript.
 It is mostly used to reverse binaries on mobile phones however can be used
 everywhere.</p>
 <p>There is a WIP fuzzer available at <a href="https://github.com/andreafioraldi/frida-fuzzer">https://github.com/andreafioraldi/frida-fuzzer</a></p>
+<p>There is also an early implementation in an AFL++ test branch:
+<a href="https://github.com/vanhauser-thc/AFLplusplus/tree/frida">https://github.com/vanhauser-thc/AFLplusplus/tree/frida</a></p>
 <h2 id="pin--dynamorio">PIN &amp; DYNAMORIO</h2>
 <p>Pintool and Dynamorio are dynamic instrumentation engines, and they can be
 used for getting basic block information at runtime.
@@ -309,10 +335,13 @@ slow but have good path discovery, some are very hard to set-up &hellip;</p>
       
   <nav id="TableOfContents">
   <ul>
+    <li><a href="#tldr">TL;DR:</a></li>
     <li><a href="#qemu">QEMU</a></li>
     <li><a href="#wineqemu">WINE+QEMU</a></li>
     <li><a href="#unicorn">UNICORN</a></li>
     <li><a href="#dyninst">DYNINST</a></li>
+    <li><a href="#retrowrite">RETROWRITE</a></li>
+    <li><a href="#mcsema">MCSEMA</a></li>
     <li><a href="#intel-pt">INTEL-PT</a></li>
     <li><a href="#coresight">CORESIGHT</a></li>
     <li><a href="#frida">FRIDA</a></li>

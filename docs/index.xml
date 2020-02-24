@@ -42,7 +42,18 @@ Additionally the following features and patches have been integrated:
       <description>Fuzzing binary-only programs with afl++ afl++, libfuzzer and others are great if you have the source code, and it allows for very fast and coverage guided fuzzing.
 However, if there is only the binary program and no source code available, then standard afl-fuzz -n (dumb mode) is not effective.
 The following is a description of how these binaries can be fuzzed with afl++
-!!!!! TL;DR: try DYNINST with afl-dyninst. If it produces too many crashes then use afl -Q qemu_mode, or better: use both in parallel.</description>
+TL;DR: qemu_mode in persistent mode is the fastest - if the stability is high enough.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://aflplus.plus/docs/changelog/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://aflplus.plus/docs/changelog/</guid>
+      <description>Changelog This is the list of all noteworthy changes made in every public release of the tool. See README for the general instruction manual.
+Staying informed Want to stay in the loop on major new features? Join our mailing list by sending a mail to afl-users+subscribe@googlegroups.com.
+Version ++2.61d (develop):  &amp;hellip;  Version ++2.61c (release):  use -march=native if available most tools now check for mistyped environment variables gcc 10 is now supported the memory safety checks are now disabled for a little more speed during fuzzing (only affects creating queue entries), can be toggled in config.</description>
     </item>
     
     <item>
@@ -65,7 +76,7 @@ The custom mutator library is passed to afl-fuzz via the AFL_CUSTOM_MUTATOR_LIBR
       <guid>https://aflplus.plus/docs/env_variables/</guid>
       <description>Environmental variables This document discusses the environment variables used by American Fuzzy Lop++ to expose various exotic functions that may be (rarely) useful for power users or for some types of custom fuzzing setups. See README for the general instruction manual.
 1) Settings for afl-gcc, afl-clang, and afl-as - and gcc_plugin afl-gcc-fast Because they can&amp;rsquo;t directly accept command-line options, the compile-time tools make fairly broad use of environmental variables:
-  Setting AFL_HARDEN automatically adds code hardening options when invoking the downstream compiler.</description>
+  Most afl tools do not print any ouput if stout/stderr are redirected.</description>
     </item>
     
     <item>
@@ -85,7 +96,8 @@ The custom mutator library is passed to afl-fuzz via the AFL_CUSTOM_MUTATOR_LIBR
       
       <guid>https://aflplus.plus/docs/ideas/</guid>
       <description>Ideas for afl++ In the following, we describe a variety of ideas that could be implemented for further AFL++ versions.
-Flexible Grammar Mutator Currently, AFL++&#39;s mutation do not have deper knowledge about the fuzzed binary, apart from feedback, even though the developer may have insights about the target. A developer may chose to provide dictionaries and implement own mutations in python or c, but an easy mutator that behaves according to a given grammar, does not exist.</description>
+Flexible Grammar Mutator Currently, AFL++&#39;s mutation does not have deeper knowledge about the fuzzed binary, apart from feedback, even though the developer may have insights about the target.
+A developer may choose to provide dictionaries and implement own mutations in python or C, but an easy mutator that behaves according to a given grammar, does not exist.</description>
     </item>
     
     <item>

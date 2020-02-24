@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.fb72a40088aab25d631c6878b2fa43b595a45a9de2fb12a10393460ee16b78ef.js" integrity="sha256-&#43;3KkAIiqsl1jHGh4svpDtZWkWp3i&#43;xKhA5NGDuFreO8="></script>
+<script defer src="/en.search.min.a84062fc6c02e211f822898ee7b8ebe1479e67e26ecebe7be99fead096e993bd.js" integrity="sha256-qEBi/GwC4hH4IomO57jr4UeeZ&#43;Juzr576Z/q0Jbpk70="></script>
 
 <!--
 Made with Book Theme
@@ -82,7 +82,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.60c">Release 2.60c</a>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.61c">Release 2.61c</a>
 </li>
 <li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/vanhauser-thc/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -180,6 +180,12 @@ instruction manual.</p>
 tools make fairly broad use of environmental variables:</p>
 <ul>
 <li>
+<p>Most afl tools do not print any ouput if stout/stderr are redirected.
+If you want to have the output into a file then set the AFL_DEBUG
+environment variable.
+This is sadly necessary for various build processes which fail otherwise.</p>
+</li>
+<li>
 <p>Setting AFL_HARDEN automatically adds code hardening options when invoking
 the downstream compiler. This currently includes -D_FORTIFY_SOURCE=2 and
 -fstack-protector-all. The setting is useful for catching non-crashing
@@ -198,9 +204,8 @@ compiler supports that. Note that fuzzing with ASAN is mildly challenging</p>
 <li>see <a href="notes_for_asan.md">notes_for_asan.md</a>.</li>
 </ul>
 <p>(You can also enable MSAN via AFL_USE_MSAN; ASAN and MSAN come with the
-same gotchas; the modes are mutually exclusive. UBSAN and other exotic
-sanitizers are not officially supported yet, but are easy to get to work
-by hand.)</p>
+same gotchas; the modes are mutually exclusive. UBSAN can be enabled
+similarly by setting the environment variable AFL_USE_UBSAN=1)</p>
 </li>
 <li>
 <p>Setting AFL_CC, AFL_CXX, and AFL_AS lets you use alternate downstream

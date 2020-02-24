@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.fb72a40088aab25d631c6878b2fa43b595a45a9de2fb12a10393460ee16b78ef.js" integrity="sha256-&#43;3KkAIiqsl1jHGh4svpDtZWkWp3i&#43;xKhA5NGDuFreO8="></script>
+<script defer src="/en.search.min.a84062fc6c02e211f822898ee7b8ebe1479e67e26ecebe7be99fead096e993bd.js" integrity="sha256-qEBi/GwC4hH4IomO57jr4UeeZ&#43;Juzr576Z/q0Jbpk70="></script>
 
 <!--
 Made with Book Theme
@@ -82,7 +82,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.60c">Release 2.60c</a>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.61c">Release 2.61c</a>
 </li>
 <li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/vanhauser-thc/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -140,9 +140,13 @@ https://github.com/alex-shpak/hugo-book
   <nav id="TableOfContents">
   <ul>
     <li><a href="#flexible-grammar-mutator">Flexible Grammar Mutator</a></li>
-    <li><a href="#lto-based-non-colliding-edge-coverage">LTO Based Non-Colliding Edge Coverage</a></li>
+    <li><a href="#expand-on-the-mopt-mutator">Expand on the MOpt mutator</a></li>
     <li><a href="#qemu-4-based-instrumentation">QEMU 4-based Instrumentation</a></li>
     <li><a href="#wasm-instrumentation">WASM Instrumentation</a></li>
+    <li><a href="#machine-learning">Machine Learning</a></li>
+    <li><a href="#reengineer-afl-fuzz-as-thread-safe-embeddable-library">Reengineer afl-fuzz as Thread Safe, Embeddable Library</a></li>
+    <li><a href="#collision-free-binary-only-maps">Collision-free Binary-Only Maps</a></li>
+    <li><a href="#your-idea">Your idea!</a></li>
   </ul>
 </nav>
 
@@ -156,15 +160,53 @@ https://github.com/alex-shpak/hugo-book
 <article class="markdown"><h1 id="ideas-for-afl">Ideas for afl++</h1>
 <p>In the following, we describe a variety of ideas that could be implemented for further AFL++ versions.</p>
 <h2 id="flexible-grammar-mutator">Flexible Grammar Mutator</h2>
-<p>Currently, AFL++'s mutation do not have deper knowledge about the fuzzed binary, apart from feedback, even though the developer may have insights about the target. A developer may chose to provide dictionaries and implement own mutations in python or c, but an easy mutator that behaves according to a given grammar, does not exist.</p>
-<h2 id="lto-based-non-colliding-edge-coverage">LTO Based Non-Colliding Edge Coverage</h2>
-<p>An unsolved problem in fuzzing, right now, are hash collisions between paths. By iterating through all functions at link time, assigning unique values to each branch, therefore reducing or even eliminating collisions, should be possible.</p>
+<p>Currently, AFL++'s mutation does not have deeper knowledge about the fuzzed
+binary, apart from feedback, even though the developer may have insights
+about the target.</p>
+<p>A developer may choose to provide dictionaries and implement own mutations
+in python or C, but an easy mutator that behaves according to a given grammar,
+does not exist.</p>
+<p>State-of-the-art research on grammar fuzzing has some problems in their
+implementations like code quality, scalability, or ease of use and other
+common issues of the academic code.</p>
+<p>We aim to develop a pluggable grammar mutator for afl++ that combines
+various results.</p>
+<h2 id="expand-on-the-mopt-mutator">Expand on the MOpt mutator</h2>
+<p>Work on the MOpt mutator that is already in AFL++.</p>
+<p>This is an excellent mutations scheduler based on Particle Swarm
+Optimization but the current implementation schedule only the mutations
+that were present on AFL.</p>
+<p>AFL++ added a lost of optional mutators like the Input-2-State one based
+on Redqueen, the Radamsa mutator, the Custom mutator (the user can define
+its own mutator) and the work is to generalize MOpt for all the current
+and future mutators.</p>
 <h2 id="qemu-4-based-instrumentation">QEMU 4-based Instrumentation</h2>
-<p>First tests to use QEMU 4 for binary-only AFL++ showed that caching behavior changed, which vastly decreases fuzzing speeds.
-This is the case why, right now, we cannot switch to QEMU 4.2. Understanding the current instumentation and fixing the current caching issues will be needed.</p>
+<p>First tests to use QEMU 4 for binary-only AFL++ showed that caching behavior
+changed, which vastly decreases fuzzing speeds.</p>
+<p>This is the cause why, right now, we cannot switch to QEMU 4.2.</p>
+<p>Understanding the current instrumentation and fixing the current caching
+issues will be needed.</p>
 <h2 id="wasm-instrumentation">WASM Instrumentation</h2>
 <p>Currently, AFL++ can be used for source code fuzzing and traditional binaries.
-With the rise of WASM as compile target, however, a novel way of instrumentation needs to be implemented for binaries compiled to Webassembly. This can either be done by inserting instrumentation directly into the WASM AST, or by patching feeback into a WASM VMs of choice, similar to the current Unicorn instrumentation.</p>
+With the rise of WASM as compile target, however, a novel way of
+instrumentation needs to be implemented for binaries compiled to Webassembly.
+This can either be done by inserting instrumentation directly into the
+WASM AST, or by patching feedback into a WASM VMs of choice, similar to
+the current Unicorn instrumentation.</p>
+<h2 id="machine-learning">Machine Learning</h2>
+<p>Something with machine learning, better than NEUZZ :-)
+Either improve a single mutator thorugh learning of many different bugs (a bug class) or gather deep insights about a single target beforehand (CFG, DFG, VFG, &hellip;?) and improve performance for a single target.</p>
+<h2 id="reengineer-afl-fuzz-as-thread-safe-embeddable-library">Reengineer <code>afl-fuzz</code> as Thread Safe, Embeddable Library</h2>
+<p>Right now, afl-fuzz is single threaded, cannot safely be embedded in tools, and not multi-threaded. It makes use of a large number of globals, must always be the parent process and exec child processes.
+Instead, afl-fuzz could be refactored to contain no global state and globals.
+This allows for different use cases that could be implemented during this project.</p>
+<h2 id="collision-free-binary-only-maps">Collision-free Binary-Only Maps</h2>
+<p>AFL++ supports collison-free maps using an LTO (link-time-optimization) pass.
+This should be possile to implement for QEMU and Unicorn instrumentations.
+As the forkserver parent caches just in time translated translation blocks, adding a simple counter between jumps should be doable.</p>
+<h2 id="your-idea">Your idea!</h2>
+<p>Finally, we are open to proposals!
+Create an issue at <a href="https://github.com/vanhauser-thc/AFLplusplus/issues">https://github.com/vanhauser-thc/AFLplusplus/issues</a> and let&rsquo;s discuss :-)</p>
 </article>
  
 
@@ -196,9 +238,13 @@ With the rise of WASM as compile target, however, a novel way of instrumentation
   <nav id="TableOfContents">
   <ul>
     <li><a href="#flexible-grammar-mutator">Flexible Grammar Mutator</a></li>
-    <li><a href="#lto-based-non-colliding-edge-coverage">LTO Based Non-Colliding Edge Coverage</a></li>
+    <li><a href="#expand-on-the-mopt-mutator">Expand on the MOpt mutator</a></li>
     <li><a href="#qemu-4-based-instrumentation">QEMU 4-based Instrumentation</a></li>
     <li><a href="#wasm-instrumentation">WASM Instrumentation</a></li>
+    <li><a href="#machine-learning">Machine Learning</a></li>
+    <li><a href="#reengineer-afl-fuzz-as-thread-safe-embeddable-library">Reengineer afl-fuzz as Thread Safe, Embeddable Library</a></li>
+    <li><a href="#collision-free-binary-only-maps">Collision-free Binary-Only Maps</a></li>
+    <li><a href="#your-idea">Your idea!</a></li>
   </ul>
 </nav>
 

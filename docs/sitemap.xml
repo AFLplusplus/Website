@@ -24,6 +24,11 @@
   </url>
   
   <url>
+    <loc>https://aflplus.plus/docs/changelog/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/custom_mutator/</loc>
     <priority>0</priority>
   </url>

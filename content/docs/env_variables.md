@@ -10,6 +10,11 @@
 Because they can't directly accept command-line options, the compile-time
 tools make fairly broad use of environmental variables:
 
+  - Most afl tools do not print any ouput if stout/stderr are redirected.
+    If you want to have the output into a file then set the AFL_DEBUG
+    environment variable.
+    This is sadly necessary for various build processes which fail otherwise.
+
   - Setting AFL_HARDEN automatically adds code hardening options when invoking
     the downstream compiler. This currently includes -D_FORTIFY_SOURCE=2 and
     -fstack-protector-all. The setting is useful for catching non-crashing
@@ -25,9 +30,8 @@ tools make fairly broad use of environmental variables:
     - see [notes_for_asan.md](notes_for_asan.md).
 
     (You can also enable MSAN via AFL_USE_MSAN; ASAN and MSAN come with the
-    same gotchas; the modes are mutually exclusive. UBSAN and other exotic
-    sanitizers are not officially supported yet, but are easy to get to work
-    by hand.)
+    same gotchas; the modes are mutually exclusive. UBSAN can be enabled
+    similarly by setting the environment variable AFL_USE_UBSAN=1)
 
   - Setting AFL_CC, AFL_CXX, and AFL_AS lets you use alternate downstream
     compilation tools, rather than the default 'clang', 'gcc', or 'as' binaries
