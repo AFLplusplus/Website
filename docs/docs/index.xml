@@ -28,9 +28,9 @@ TL;DR: qemu_mode in persistent mode is the fastest - if the stability is high en
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/changelog/</guid>
-      <description>Changelog This is the list of all noteworthy changes made in every public release of the tool. See README for the general instruction manual.
+      <description>Changelog This is the list of all noteworthy changes made in every public release of the tool. See README.md for the general instruction manual.
 Staying informed Want to stay in the loop on major new features? Join our mailing list by sending a mail to afl-users+subscribe@googlegroups.com.
-Version ++2.61d (develop):  &amp;hellip;  Version ++2.61c (release):  use -march=native if available most tools now check for mistyped environment variables gcc 10 is now supported the memory safety checks are now disabled for a little more speed during fuzzing (only affects creating queue entries), can be toggled in config.</description>
+Version ++2.62d (developt):  qemu_mode now uses solely the internal capstone version to fix builds on modern Linux distributions afl-fuzz basic tools now report on the environment variables picked up more tools get environment variable usage info in the help output AFL_AUTORESUME will resume execution without the need to specify -i -  Version ++2.</description>
     </item>
     
     <item>
@@ -47,11 +47,22 @@ The custom mutator library is passed to afl-fuzz via the AFL_CUSTOM_MUTATOR_LIBR
     
     <item>
       <title></title>
+      <link>https://aflplus.plus/docs/custom_mutators/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://aflplus.plus/docs/custom_mutators/</guid>
+      <description>Custom Mutators in AFL++ This file describes how you can implement custom mutations to be used in AFL. For now, we support C/C++ library and Python module, collectivelly named as the custom mutator.
+Implemented by
+ C/C++ library (*.so): Khaled Yakdan from Code Intelligence (yakdan@code-intelligence.de) Python module: Christian Holler from Mozilla (choller@mozilla.com)  1) Introduction Custom mutators can be passed to afl-fuzz to perform custom mutations on test cases beyond those available in AFL.</description>
+    </item>
+    
+    <item>
+      <title></title>
       <link>https://aflplus.plus/docs/env_variables/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/env_variables/</guid>
-      <description>Environmental variables This document discusses the environment variables used by American Fuzzy Lop++ to expose various exotic functions that may be (rarely) useful for power users or for some types of custom fuzzing setups. See README for the general instruction manual.
+      <description>Environmental variables This document discusses the environment variables used by American Fuzzy Lop++ to expose various exotic functions that may be (rarely) useful for power users or for some types of custom fuzzing setups. See README.md for the general instruction manual.
 1) Settings for afl-gcc, afl-clang, and afl-as - and gcc_plugin afl-gcc-fast Because they can&amp;rsquo;t directly accept command-line options, the compile-time tools make fairly broad use of environmental variables:
   Most afl tools do not print any ouput if stout/stderr are redirected.</description>
     </item>
@@ -72,7 +83,7 @@ The custom mutator library is passed to afl-fuzz via the AFL_CUSTOM_MUTATOR_LIBR
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/ideas/</guid>
-      <description>Ideas for afl++ In the following, we describe a variety of ideas that could be implemented for further AFL++ versions.
+      <description>Ideas for afl++ In the following, we describe a variety of ideas that could be implemented for future AFL++ versions.
 Flexible Grammar Mutator Currently, AFL++&#39;s mutation does not have deeper knowledge about the fuzzed binary, apart from feedback, even though the developer may have insights about the target.
 A developer may choose to provide dictionaries and implement own mutations in python or C, but an easy mutator that behaves according to a given grammar, does not exist.</description>
     </item>
@@ -107,7 +118,7 @@ Improve the odds of spotting memory corruption bugs with libdislocator.so! It&am
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/notes_for_asan/</guid>
-      <description>Notes for using ASAN with afl-fuzz This file discusses some of the caveats for fuzzing under ASAN, and suggests a handful of alternatives. See README for the general instruction manual.
+      <description>Notes for using ASAN with afl-fuzz This file discusses some of the caveats for fuzzing under ASAN, and suggests a handful of alternatives. See README.md for the general instruction manual.
 1) Short version ASAN on 64-bit systems requests a lot of memory in a way that can&amp;rsquo;t be easily distinguished from a misbehaving program bent on crashing your system.
 Because of this, fuzzing with ASAN is recommended only in four scenarios:</description>
     </item>
@@ -118,7 +129,7 @@ Because of this, fuzzing with ASAN is recommended only in four scenarios:</descr
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/parallel_fuzzing/</guid>
-      <description>Tips for parallel fuzzing This document talks about synchronizing afl-fuzz jobs on a single machine or across a fleet of systems. See README for the general instruction manual.
+      <description>Tips for parallel fuzzing This document talks about synchronizing afl-fuzz jobs on a single machine or across a fleet of systems. See README.md for the general instruction manual.
 1) Introduction Every copy of afl-fuzz will take up one CPU core. This means that on an n-core system, you can almost always run around n concurrent fuzzing jobs with virtually no performance hit (you can use the afl-gotcpu tool to make sure).</description>
     </item>
     
@@ -138,7 +149,7 @@ INSTALLED afl-llvm-fix.diff	by kcwu(at)csie(dot)org afl-sort-all_uniq-fix.diff	b
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/perf_tips/</guid>
-      <description>Tips for performance optimization This file provides tips for troubleshooting slow or wasteful fuzzing jobs. See README for the general instruction manual.
+      <description>Tips for performance optimization This file provides tips for troubleshooting slow or wasteful fuzzing jobs. See README.md for the general instruction manual.
 1. Keep your test cases small This is probably the single most important step to take! Large test cases do not merely take more time and memory to be parsed by the tested binary, but also make the fuzzing process dramatically less efficient in several other ways.
 To illustrate, let&amp;rsquo;s say that you&amp;rsquo;re randomly flipping bits in a file, one bit at a time.</description>
     </item>
@@ -221,7 +232,7 @@ The enhancements compared to the original stock afl Many improvements were made 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/sister_projects/</guid>
-      <description>Sister projects This doc lists some of the projects that are inspired by, derived from, designed for, or meant to integrate with AFL. See README for the general instruction manual.
+      <description>Sister projects This doc lists some of the projects that are inspired by, derived from, designed for, or meant to integrate with AFL. See README.md for the general instruction manual.
 !!! !!! This list is outdated and needs an update, missing: e.g. Angora, FairFuzz !!!
 Support for other languages / environments: Python AFL (Jakub Wilk) Allows fuzz-testing of Python programs. Uses custom instrumentation and its own forkserver.
 http://jwilk.net/software/python-afl
@@ -234,7 +245,7 @@ Go-fuzz (Dmitry Vyukov) AFL-inspired guided fuzzing approach for Go targets:</de
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/status_screen/</guid>
-      <description>Understanding the status screen This document provides an overview of the status screen - plus tips for troubleshooting any warnings and red text shown in the UI. See README for the general instruction manual.
+      <description>Understanding the status screen This document provides an overview of the status screen - plus tips for troubleshooting any warnings and red text shown in the UI. See README.md for the general instruction manual.
 A note about colors The status screen and error messages use colors to keep things readable and attract your attention to the most important details. For example, red almost always means &amp;ldquo;consult this doc&amp;rdquo; :-)
 Unfortunately, the UI will render correctly only if your terminal is using traditional un*x palette (white text on black background) or something close to that.</description>
     </item>
@@ -245,7 +256,7 @@ Unfortunately, the UI will render correctly only if your terminal is using tradi
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/technical_details/</guid>
-      <description>Technical &amp;ldquo;whitepaper&amp;rdquo; for afl-fuzz This document provides a quick overview of the guts of American Fuzzy Lop. See README for the general instruction manual; and for a discussion of motivations and design goals behind AFL, see historical_notes.md.
+      <description>Technical &amp;ldquo;whitepaper&amp;rdquo; for afl-fuzz This document provides a quick overview of the guts of American Fuzzy Lop. See README.md for the general instruction manual; and for a discussion of motivations and design goals behind AFL, see historical_notes.md.
 0. Design statement American Fuzzy Lop does its best not to focus on any singular principle of operation and not be a proof-of-concept for any specific theory. The tool can be thought of as a collection of hacks that have been tested in practice, found to be surprisingly effective, and have been implemented in the simplest, most robust way I could think of at the time.</description>
     </item>
     

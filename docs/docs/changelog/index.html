@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.1214e6f14da6a7c4be9510e5fe69fa5686a44d6cc511112ee531b93a9085eaab.js" integrity="sha256-EhTm8U2mp8S&#43;lRDl/mn6VoakTWzFEREu5TG5OpCF6qs="></script>
+<script defer src="/en.search.min.0850dc62aba239771d516bf79fd82d5dd5806e66ea508c9ed34dcb6bd0a7d2dc.js" integrity="sha256-CFDcYquiOXcdUWv3n9gtXdWAbmbqUIye003La9Cn0tw="></script>
 
 <!--
 Made with Book Theme
@@ -82,7 +82,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.61c">Release 2.61c</a>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.62c">Release 2.62c</a>
 </li>
 <li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/vanhauser-thc/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -141,7 +141,8 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
-        <li><a href="#version-261d-develop">Version ++2.61d (develop):</a></li>
+        <li><a href="#version-262d-developt">Version ++2.62d (developt):</a></li>
+        <li><a href="#version-262c-release">Version ++2.62c (release):</a></li>
         <li><a href="#version-261c-release">Version ++2.61c (release):</a></li>
         <li><a href="#version-260c-release">Version ++2.60c (release):</a></li>
         <li><a href="#version-259c-release">Version ++2.59c (release):</a></li>
@@ -394,13 +395,24 @@ https://github.com/alex-shpak/hugo-book
       
 <article class="markdown"><h1 id="changelog">Changelog</h1>
 <p>This is the list of all noteworthy changes made in every public release of
-the tool. See README for the general instruction manual.</p>
+the tool. See README.md for the general instruction manual.</p>
 <h2 id="staying-informed">Staying informed</h2>
 <p>Want to stay in the loop on major new features? Join our mailing list by
 sending a mail to <a href="mailto:afl-users+subscribe@googlegroups.com">afl-users+subscribe@googlegroups.com</a>.</p>
-<h3 id="version-261d-develop">Version ++2.61d (develop):</h3>
+<h3 id="version-262d-developt">Version ++2.62d (developt):</h3>
 <ul>
-<li>&hellip;</li>
+<li>qemu_mode now uses solely the internal capstone version to fix builds
+on modern Linux distributions</li>
+<li>afl-fuzz basic tools now report on the environment variables picked up</li>
+<li>more tools get environment variable usage info in the help output</li>
+<li>AFL_AUTORESUME will resume execution without the need to specify <code>-i -</code></li>
+</ul>
+<h3 id="version-262c-release">Version ++2.62c (release):</h3>
+<ul>
+<li>Important fix for memory allocation functions that result in afl-fuzz
+not identifying crashes - UPDATE!</li>
+<li>Small fix for -E/-V to release the CPU</li>
+<li>CmpLog does not need sancov anymore</li>
 </ul>
 <h3 id="version-261c-release">Version ++2.61c (release):</h3>
 <ul>
@@ -443,7 +455,7 @@ should be</li>
 <li>now does not need to be recompiled between trace-pc and pass
 instrumentation. compile normally and set AFL_LLVM_USE_TRACE_PC :)</li>
 <li>LLVM 11 is supported</li>
-<li>CmpLog instrumentation using SanCov (see llvm_mode/README.cmplog)</li>
+<li>CmpLog instrumentation using SanCov (see llvm_mode/README.cmplog.md)</li>
 </ul>
 </li>
 <li>afl-gcc, afl-clang-fast, afl-gcc-fast:
@@ -604,7 +616,7 @@ afl never did), plus shows tuple content summary information now</li>
 <li>fix llvm_mode AFL_TRACE_PC with modern llvm</li>
 <li>fix a crash in qemu_mode which also exists in stock afl</li>
 <li>added libcompcov, a laf-intel implementation for qemu! :)
-see qemu_mode/libcompcov/README.libcompcov</li>
+see qemu_mode/libcompcov/README.libcompcov.md</li>
 <li>afl-fuzz now displays the selected core in the status screen (blue {#})</li>
 <li>updated afl-fuzz and afl-system-config for new scaling governor location
 in modern kernels</li>
@@ -613,8 +625,8 @@ in modern kernels</li>
 <li>if llvm_mode was compiled, afl-clang/afl-clang++ will point to these
 instead of afl-gcc</li>
 <li>added instrim, a much faster llvm_mode instrumentation at the cost of
-path discovery. See llvm_mode/README.instrim (<a href="https://github.com/csienslab/instrim">https://github.com/csienslab/instrim</a>)</li>
-<li>added MOpt (github.com/puppet-meteor/MOpt-AFL) mode, see docs/README.MOpt</li>
+path discovery. See llvm_mode/README.instrim.md (<a href="https://github.com/csienslab/instrim">https://github.com/csienslab/instrim</a>)</li>
+<li>added MOpt (github.com/puppet-meteor/MOpt-AFL) mode, see docs/README.MOpt.md</li>
 <li>added code to make it more portable to other platforms than Intel Linux</li>
 <li>added never zero counters for afl-gcc and optionally (because of an
 optimization issue in llvm &lt; 9) for llvm_mode (AFL_LLVM_NEVER_ZERO=1)</li>
@@ -643,11 +655,11 @@ that is longer but in line with other llvm specific env vars</li>
 LLVM and Qemu modes are now faster.
 Important changes:
 afl-fuzz: -e EXTENSION commandline option
-llvm_mode: LAF-intel performance (needs activation, see llvm/README.laf-intel)
-a few new environment variables for afl-fuzz, llvm and qemu, see docs/env_variables.txt</li>
+llvm_mode: LAF-intel performance (needs activation, see llvm/README.laf-intel.md)
+a few new environment variables for afl-fuzz, llvm and qemu, see docs/env_variables.md</li>
 <li>Added the power schedules of AFLfast by Marcel Boehme, but set the default
 to the AFL schedule, not to the FAST schedule. So nothing changes unless
-you use the new -p option :-) - see docs/power_schedules.txt</li>
+you use the new -p option :-) - see docs/power_schedules.md</li>
 <li>added afl-system-config script to set all system performance options for fuzzing</li>
 <li>llvm_mode works with llvm 3.9 up to including 8 !</li>
 <li>qemu_mode got upgraded from 2.1 to 3.1 - incorporated from
@@ -966,7 +978,7 @@ this is shown in the UI, especially in persistent mode.</p>
 generate dictionary entries that can help extend coverage.</p>
 </li>
 <li>
-<p>Moved libdislocator to its own dir, added README.</p>
+<p>Moved libdislocator to its own dir, added README.md.</p>
 </li>
 <li>
 <p>The demo in examples/instrumented_cmp is no more.</p>
@@ -3677,7 +3689,8 @@ it.</li>
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
-        <li><a href="#version-261d-develop">Version ++2.61d (develop):</a></li>
+        <li><a href="#version-262d-developt">Version ++2.62d (developt):</a></li>
+        <li><a href="#version-262c-release">Version ++2.62c (release):</a></li>
         <li><a href="#version-261c-release">Version ++2.61c (release):</a></li>
         <li><a href="#version-260c-release">Version ++2.60c (release):</a></li>
         <li><a href="#version-259c-release">Version ++2.59c (release):</a></li>

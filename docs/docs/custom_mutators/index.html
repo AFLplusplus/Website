@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Custom Mutators | AFLplusplus</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+<meta property="og:title" content="Custom Mutators | AFLplusplus" />
+<meta name="twitter:title" content="Custom Mutators | AFLplusplus" />
+<meta itemprop="name" content="Custom Mutators | AFLplusplus" />
+<meta name="application-name" content="Custom Mutators | AFLplusplus" />
+<meta property="og:site_name" content="AFLplusplus" />
+
+<meta name="description" content="The AFLplusplus website" />
+<meta itemprop="description" content="The AFLplusplus website" />
+<meta property="og:description" content="The AFLplusplus website" />
+<meta name="twitter:description" content="The AFLplusplus website" />
+
+<base href="https://aflplus.plus/docs/custom_mutators/">
+<link rel="canonical" href="https://aflplus.plus/docs/custom_mutators/" itemprop="url" /> 
+<meta name="url" content="https://aflplus.plus/docs/custom_mutators/" />
+<meta name="twitter:url" content="https://aflplus.plus/docs/custom_mutators/" /> 
+<meta property="og:url" content="https://aflplus.plus/docs/custom_mutators/" />
+
+ 
+  <meta itemprop="image" content="https://aflplus.plus/ogimage.png" />
+  <meta property="og:image" content="https://aflplus.plus/ogimage.png" /> 
+  <meta name="twitter:image" content="https://aflplus.plus/ogimage.png" />
+  <meta name="twitter:image:src" content="https://aflplus.plus/ogimage.png" /> 
+
+
+
+<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
+
+
+<script defer src="/en.search.min.0850dc62aba239771d516bf79fd82d5dd5806e66ea508c9ed34dcb6bd0a7d2dc.js" integrity="sha256-CFDcYquiOXcdUWv3n9gtXdWAbmbqUIye003La9Cn0tw="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><img src="/logo_256x256.png" alt="Logo" /><span>AFLplusplus</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+  <ul>
+<li><strong>Site map</strong>
+<ul>
+<li><a href="/features/">Features</a></li>
+<li><a href="/building/">Build &amp; Install</a></li>
+<li><a href="/docs/tutorials/">Tutorials</a></li>
+<li><a href="/docs/">Documentation</a></li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li><strong>Downloads</strong>
+<ul>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.62c">Release 2.62c</a>
+</li>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases">All releases</a></li>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus/archive/master.zip">Current devel</a></li>
+<li><a href="https://raw.githubusercontent.com/vanhauser-thc/AFLplusplus/master/docs/COPYING">License</a></li>
+</ul>
+</li>
+<li><strong>Links</strong>
+<ul>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus">Repo (GitHub)</a></li>
+<li><a href="https://groups.google.com/group/afl-users">Mailing list</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Custom Mutators</strong>
+
+  <label for="toc-control">
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-introduction">1) Introduction</a></li>
+    <li><a href="#2-apis">2) APIs</a>
+      <ul>
+        <li><a href="#custom-mutation">Custom Mutation</a></li>
+        <li><a href="#trimming-support">Trimming Support</a></li>
+        <li><a href="#environment-variables">Environment Variables</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-usage">3) Usage</a>
+      <ul>
+        <li><a href="#prerequisite">Prerequisite</a></li>
+        <li><a href="#custom-mutator-preparation">Custom Mutator Preparation</a></li>
+        <li><a href="#run">Run</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-example">4) Example</a></li>
+    <li><a href="#5-other-resources">5) Other Resources</a></li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+<article class="markdown"><h1 id="custom-mutators-in-afl">Custom Mutators in AFL++</h1>
+<p>This file describes how you can implement custom mutations to be used in AFL.
+For now, we support C/C++ library and Python module, collectivelly named as the
+custom mutator.</p>
+<p>Implemented by</p>
+<ul>
+<li>C/C++ library (<code>*.so</code>): Khaled Yakdan from Code Intelligence (<a href="mailto:yakdan@code-intelligence.de">yakdan@code-intelligence.de</a>)</li>
+<li>Python module: Christian Holler from Mozilla (<a href="mailto:choller@mozilla.com">choller@mozilla.com</a>)</li>
+</ul>
+<h2 id="1-introduction">1) Introduction</h2>
+<p>Custom mutators can be passed to <code>afl-fuzz</code> to perform custom mutations on test
+cases beyond those available in AFL. For example, to enable structure-aware
+fuzzing by using libraries that perform mutations according to a given grammar.</p>
+<p>The custom mutator is passed to <code>afl-fuzz</code> via the <code>AFL_CUSTOM_MUTATOR_LIBRARY</code>
+or <code>AFL_PYTHON_MODULE</code> environment variable., and must export a fuzz function.
+Please see <a href="#2-apis">APIs</a> and <a href="#3-usage">Usage</a> for detail.</p>
+<p>The custom mutation stage is set to be the first non-deterministic stage (right before the havoc stage).</p>
+<p>Note: If <code>AFL_CUSTOM_MUTATOR_ONLY</code> is set, all mutations will solely be
+performed with the custom mutator.</p>
+<h2 id="2-apis">2) APIs</h2>
+<p>C/C++:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afl_custom_init</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> seed);
+size_t <span style="color:#a6e22e">afl_custom_fuzz</span>(u8<span style="color:#f92672">*</span> buf, size_t buf_size,
+                       u8<span style="color:#f92672">*</span> add_buf, size_t add_buf_size,
+                       u8<span style="color:#f92672">*</span> mutated_out, size_t max_size);
+size_t <span style="color:#a6e22e">afl_custom_pre_save</span>(u8<span style="color:#f92672">*</span> buf, size_t buf_size, u8<span style="color:#f92672">*</span><span style="color:#f92672">*</span> out_buf);
+u32 <span style="color:#a6e22e">afl_custom_init_trim</span>(u8<span style="color:#f92672">*</span> buf, size_t buf_size);
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afl_custom_trim</span>(u8<span style="color:#f92672">*</span><span style="color:#f92672">*</span> out_buf, size_t<span style="color:#f92672">*</span> out_buf_size);
+u32 <span style="color:#a6e22e">afl_custom_post_trim</span>(u8 success);
+</code></pre></div><p>Python:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init</span>(seed):
+    <span style="color:#66d9ef">pass</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fuzz</span>(buf, add_buf, max_size):
+    <span style="color:#66d9ef">return</span> mutated_out
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">pre_save</span>(buf):
+    <span style="color:#66d9ef">return</span> out_buf
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init_trim</span>(buf):
+    <span style="color:#66d9ef">return</span> cnt
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">trim</span>():
+    <span style="color:#66d9ef">return</span> out_buf
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">post_trim</span>(success):
+    <span style="color:#66d9ef">return</span> next_index
+</code></pre></div><h3 id="custom-mutation">Custom Mutation</h3>
+<ul>
+<li>
+<p><code>init</code> (optional):</p>
+<p>This method is called when AFL++ starts up and is used to seed RNG.</p>
+</li>
+<li>
+<p><code>fuzz</code> (required):</p>
+<p>This method performs custom mutations on a given input. It also accepts an
+additional test case.</p>
+</li>
+<li>
+<p><code>pre_save</code> (optional):</p>
+<p>For some cases, the format of the mutated data returned from the custom
+mutator is not suitable to directly execute the target with this input.
+For example, when using libprotobuf-mutator, the data returned is in a
+protobuf format which corresponds to a given grammar. In order to execute
+the target, the protobuf data must be converted to the plain-text format expected by the target. In such scenarios, the user can define the
+<code>pre_save</code> function. This function is then transforms the data into the
+format expected by the API before executing the target.</p>
+</li>
+</ul>
+<h3 id="trimming-support">Trimming Support</h3>
+<p>The generic trimming routines implemented in AFL++ can easily destroy the
+structure of complex formats, possibly leading to a point where you have a lot
+of test cases in the queue that your Python module cannot process anymore but
+your target application still accepts. This is especially the case when your
+target can process a part of the input (causing coverage) and then errors out
+on the remaining input.</p>
+<p>In such cases, it makes sense to implement a custom trimming routine. The API
+consists of multiple methods because after each trimming step, we have to go
+back into the C code to check if the coverage bitmap is still the same for the
+trimmed input. Here&rsquo;s a quick API description:</p>
+<ul>
+<li>
+<p><code>init_trim</code> (optional):</p>
+<p>This method is called at the start of each trimming operation and receives
+the initial buffer. It should return the amount of iteration steps possible
+on this input (e.g. if your input has n elements and you want to remove them
+one by one, return n, if you do a binary search, return log(n), and so on).</p>
+<p>If your trimming algorithm doesn&rsquo;t allow you to determine the amount of
+(remaining) steps easily (esp. while running), then you can alternatively
+return 1 here and always return 0 in <code>post_trim</code> until you are finished and
+no steps remain. In that case, returning 1 in <code>post_trim</code> will end the
+trimming routine. The whole current index/max iterations stuff is only used
+to show progress.</p>
+</li>
+<li>
+<p><code>trim</code> (optional)</p>
+<p>This method is called for each trimming operation. It doesn&rsquo;t have any
+arguments because we already have the initial buffer from <code>init_trim</code> and we
+can memorize the current state in global variables. This can also save
+reparsing steps for each iteration. It should return the trimmed input
+buffer, where the returned data must not exceed the initial input data in
+length. Returning anything that is larger than the original data (passed to
+<code>init_trim</code>) will result in a fatal abort of AFL++.</p>
+</li>
+<li>
+<p><code>post_trim</code> (optional)</p>
+<p>This method is called after each trim operation to inform you if your
+trimming step was successful or not (in terms of coverage). If you receive
+a failure here, you should reset your input to the last known good state.
+In any case, this method must return the next trim iteration index (from 0
+to the maximum amount of steps you returned in <code>init_trim</code>).</p>
+</li>
+</ul>
+<p>Omitting any of three methods will cause the trimming to be disabled and trigger
+a fallback to the builtin default trimming routine.</p>
+<h3 id="environment-variables">Environment Variables</h3>
+<p>Optionally, the following environment variables are supported:</p>
+<ul>
+<li>
+<p><code>AFL_PYTHON_ONLY</code></p>
+<p>Disable all other mutation stages. This can prevent broken testcases
+(those that your Python module can&rsquo;t work with anymore) to fill up your
+queue. Best combined with a custom trimming routine (see below) because
+trimming can cause the same test breakage like havoc and splice.</p>
+</li>
+<li>
+<p><code>AFL_DEBUG</code></p>
+<p>When combined with <code>AFL_NO_UI</code>, this causes the C trimming code to emit additional messages about the performance and actions of your custom trimmer. Use this to see if it works :)</p>
+</li>
+</ul>
+<h2 id="3-usage">3) Usage</h2>
+<h3 id="prerequisite">Prerequisite</h3>
+<p>For Python mutator, the python 3 or 2 development package is required. On
+Debian/Ubuntu/Kali this can be done:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt install python3-dev
+<span style="color:#75715e"># or</span>
+sudo apt install python-dev
+</code></pre></div><p>Then, AFL++ can be compiled with Python support. The AFL++ Makefile detects
+Python 2 and 3 through <code>python-config</code> if it is in the PATH and compiles
+<code>afl-fuzz</code> with the feature if available.</p>
+<p>Note: for some distributions, you might also need the package <code>python[23]-apt</code>.
+In case your setup is different, set the necessary variables like this:
+<code>PYTHON_INCLUDE=/path/to/python/include LDFLAGS=-L/path/to/python/lib make</code>.</p>
+<h3 id="custom-mutator-preparation">Custom Mutator Preparation</h3>
+<p>For C/C++ mutator, the source code must be compiled as a shared object:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gcc -shared -Wall -O3 example.c -o example.so
+</code></pre></div><h3 id="run">Run</h3>
+<p>C/C++</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export AFL_CUSTOM_MUTATOR_LIBRARY<span style="color:#f92672">=</span>/full/path/to/example.so
+afl-fuzz /path/to/program
+</code></pre></div><p>Python</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export PYTHONPATH<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>dirname /full/path/to/example.py<span style="color:#e6db74">`</span>
+export AFL_PYTHON_MODULE<span style="color:#f92672">=</span>example
+afl-fuzz /path/to/program
+</code></pre></div><h2 id="4-example">4) Example</h2>
+<p>Please see <a href="../examples/custom_mutators/example.c">example.c</a> and
+<a href="../examples/custom_mutators/example.py">example.py</a></p>
+<h2 id="5-other-resources">5) Other Resources</h2>
+<ul>
+<li>AFL libprotobuf mutator
+<ul>
+<li><a href="https://github.com/bruce30262/libprotobuf-mutator_fuzzing_learning/tree/master/4_libprotobuf_aflpp_custom_mutator">bruce30262/libprotobuf-mutator_fuzzing_learning</a></li>
+<li><a href="https://github.com/thebabush/afl-libprotobuf-mutator">thebabush/afl-libprotobuf-mutator</a></li>
+</ul>
+</li>
+<li><a href="https://www.agarri.fr/docs/XML_Fuzzing-NullCon2017-PUBLIC.pdf">XML Fuzzing@NullCon 2017</a>
+<ul>
+<li><a href="https://bugs.chromium.org/p/chromium/issues/detail?id=930663">A bug detected by AFL + XML-aware mutators</a></li>
+</ul>
+</li>
+</ul>
+</article>
+ 
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+      </footer>
+      
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-introduction">1) Introduction</a></li>
+    <li><a href="#2-apis">2) APIs</a>
+      <ul>
+        <li><a href="#custom-mutation">Custom Mutation</a></li>
+        <li><a href="#trimming-support">Trimming Support</a></li>
+        <li><a href="#environment-variables">Environment Variables</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-usage">3) Usage</a>
+      <ul>
+        <li><a href="#prerequisite">Prerequisite</a></li>
+        <li><a href="#custom-mutator-preparation">Custom Mutator Preparation</a></li>
+        <li><a href="#run">Run</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-example">4) Example</a></li>
+    <li><a href="#5-other-resources">5) Other Resources</a></li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

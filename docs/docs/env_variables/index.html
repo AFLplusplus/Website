@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.1214e6f14da6a7c4be9510e5fe69fa5686a44d6cc511112ee531b93a9085eaab.js" integrity="sha256-EhTm8U2mp8S&#43;lRDl/mn6VoakTWzFEREu5TG5OpCF6qs="></script>
+<script defer src="/en.search.min.0850dc62aba239771d516bf79fd82d5dd5806e66ea508c9ed34dcb6bd0a7d2dc.js" integrity="sha256-CFDcYquiOXcdUWv3n9gtXdWAbmbqUIye003La9Cn0tw="></script>
 
 <!--
 Made with Book Theme
@@ -82,7 +82,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.61c">Release 2.61c</a>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.62c">Release 2.62c</a>
 </li>
 <li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/vanhauser-thc/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -173,7 +173,7 @@ https://github.com/alex-shpak/hugo-book
 <article class="markdown"><h1 id="environmental-variables">Environmental variables</h1>
 <p>This document discusses the environment variables used by American Fuzzy Lop++
 to expose various exotic functions that may be (rarely) useful for power
-users or for some types of custom fuzzing setups. See README for the general
+users or for some types of custom fuzzing setups. See README.md for the general
 instruction manual.</p>
 <h2 id="1-settings-for-afl-gcc-afl-clang-and-afl-as---and-gcc_plugin-afl-gcc-fast">1) Settings for afl-gcc, afl-clang, and afl-as - and gcc_plugin afl-gcc-fast</h2>
 <p>Because they can&rsquo;t directly accept command-line options, the compile-time
@@ -286,7 +286,7 @@ restricted to Intel CPUs ;-)
 - Setting AFL_LLVM_LAF_SPLIT_COMPARES will split all floating point and
   64, 32 and 16 bit integer CMP instructions
 
-See llvm_mode/README.laf-intel.md for more information. 
+See llvm_mode/README.laf-intel.md for more information.
 </code></pre>
 <h3 id="whitelist">WHITELIST</h3>
 <pre><code>This feature allows selectively instrumentation of the source
@@ -410,15 +410,15 @@ for more.</p>
 </li>
 <li>
 <p>Setting AFL_CUSTOM_MUTATOR_LIBRARY to a shared library with
-afl_custom_mutator() export run additional mutations though this library.
+afl_custom_fuzz() creates additional mutations through this library.
+If afl-fuzz is compiled with Python (which is autodetected during builing
+afl-fuzz), setting AFL_PYTHON_MODULE to a Python module can also provide
+additional mutations.
 If AFL_CUSTOM_MUTATOR_ONLY is also set, all mutations will solely be
-performed with/from the libary. see <a href="custom_mutator.md">custom_mutator.md</a></p>
-</li>
-<li>
-<p>For AFL_PYTHON_MODULE and AFL_PYTHON_ONLY - they require to be compiled
-with -DUSE_PYTHON. Please see <a href="python_mutators.md">python_mutators.md</a>
-This feature allows to configure custom mutators which can be very helpful
-in e.g. fuzzing XML or other highly flexible structured input.</p>
+performed with the custom mutator.
+This feature allows to configure custom mutators which can be very helpful,
+e.g. fuzzing XML or other highly flexible structured input.
+Please see <a href="custom_mutators.md">custom_mutators.md</a>.</p>
 </li>
 <li>
 <p>AFL_FAST_CAL keeps the calibration stage about 2.5x faster (albeit less
@@ -458,6 +458,19 @@ exit soon after the first crash is found.</p>
 <li>
 <p>Setting AFL_DEBUG_CHILD_OUTPUT will not suppress the child output.
 Not pretty but good for debugging purposes.</p>
+</li>
+<li>
+<p>Setting AFL_NO_CPU_RED will not display very high cpu usages in red color.</p>
+</li>
+<li>
+<p>Setting AFL_AUTORESUME will resume a fuzz run (same as providing <code>-i -</code>)
+for an existing out folder, even if a different <code>-i</code> was provided.
+Without this setting, afl-fuzz will refuse execution for a long-fuzzed out dir.</p>
+</li>
+<li>
+<p>Outdated environment variables that are that not supported anymore:
+AFL_DEFER_FORKSRV
+AFL_PERSISTENT</p>
 </li>
 </ul>
 <h2 id="4-settings-for-afl-qemu-trace">4) Settings for afl-qemu-trace</h2>
@@ -608,7 +621,7 @@ difficulty telling crashes and hangs apart.</p>
 </li>
 <li>
 <p>In the same vein, by default, MSAN_OPTIONS are set to:</p>
-<p>exit_code=86 (required for legacy reasons) <br>
+<p>exit_code=86 (required for legacy reasons)
 abort_on_error=1
 symbolize=0
 msan_track_origins=0

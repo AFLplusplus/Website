@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.1214e6f14da6a7c4be9510e5fe69fa5686a44d6cc511112ee531b93a9085eaab.js" integrity="sha256-EhTm8U2mp8S&#43;lRDl/mn6VoakTWzFEREu5TG5OpCF6qs="></script>
+<script defer src="/en.search.min.0850dc62aba239771d516bf79fd82d5dd5806e66ea508c9ed34dcb6bd0a7d2dc.js" integrity="sha256-CFDcYquiOXcdUWv3n9gtXdWAbmbqUIye003La9Cn0tw="></script>
 
 <!--
 Made with Book Theme
@@ -82,7 +82,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.61c">Release 2.61c</a>
+<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.62c">Release 2.62c</a>
 </li>
 <li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/vanhauser-thc/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -141,6 +141,7 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li><a href="#flexible-grammar-mutator">Flexible Grammar Mutator</a></li>
     <li><a href="#expand-on-the-mopt-mutator">Expand on the MOpt mutator</a></li>
+    <li><a href="#perf-fuzz-linux-kernel-module">perf-fuzz Linux Kernel Module</a></li>
     <li><a href="#qemu-4-based-instrumentation">QEMU 4-based Instrumentation</a></li>
     <li><a href="#wasm-instrumentation">WASM Instrumentation</a></li>
     <li><a href="#machine-learning">Machine Learning</a></li>
@@ -158,7 +159,8 @@ https://github.com/alex-shpak/hugo-book
 
       
 <article class="markdown"><h1 id="ideas-for-afl">Ideas for afl++</h1>
-<p>In the following, we describe a variety of ideas that could be implemented for further AFL++ versions.</p>
+<p>In the following, we describe a variety of ideas that could be implemented
+for future AFL++ versions.</p>
 <h2 id="flexible-grammar-mutator">Flexible Grammar Mutator</h2>
 <p>Currently, AFL++'s mutation does not have deeper knowledge about the fuzzed
 binary, apart from feedback, even though the developer may have insights
@@ -171,6 +173,7 @@ implementations like code quality, scalability, or ease of use and other
 common issues of the academic code.</p>
 <p>We aim to develop a pluggable grammar mutator for afl++ that combines
 various results.</p>
+<p>Mentor: andreafioraldi</p>
 <h2 id="expand-on-the-mopt-mutator">Expand on the MOpt mutator</h2>
 <p>Work on the MOpt mutator that is already in AFL++.</p>
 <p>This is an excellent mutations scheduler based on Particle Swarm
@@ -180,12 +183,23 @@ that were present on AFL.</p>
 on Redqueen, the Radamsa mutator, the Custom mutator (the user can define
 its own mutator) and the work is to generalize MOpt for all the current
 and future mutators.</p>
+<p>Mentor: vanhauser-thc or andreafioraldi</p>
+<h2 id="perf-fuzz-linux-kernel-module">perf-fuzz Linux Kernel Module</h2>
+<p>Port the parts of the Linux Kernel modified by
+<a href="https://gts3.org/assets/papers/2017/xu:os-fuzz.pdf">perf-fuzz</a>
+into a linux kernel module, so no source in the kernel needs to be changed.
+Or write your worn LKM from scratch to do this.
+The perf-fuzz kernel can be found at <a href="https://github.com/sslab-gatech/perf-fuzz">https://github.com/sslab-gatech/perf-fuzz</a>
+There also is/was a FreeBSD project at <a href="https://github.com/veracode-research/freebsd-perf-fuzz">https://github.com/veracode-research/freebsd-perf-fuzz</a></p>
+<p>This enables snapshot fuzzing on Linux with an incredible performance!</p>
+<p>Mentor: any</p>
 <h2 id="qemu-4-based-instrumentation">QEMU 4-based Instrumentation</h2>
 <p>First tests to use QEMU 4 for binary-only AFL++ showed that caching behavior
 changed, which vastly decreases fuzzing speeds.</p>
 <p>This is the cause why, right now, we cannot switch to QEMU 4.2.</p>
 <p>Understanding the current instrumentation and fixing the current caching
 issues will be needed.</p>
+<p>Mentor: andreafioraldi</p>
 <h2 id="wasm-instrumentation">WASM Instrumentation</h2>
 <p>Currently, AFL++ can be used for source code fuzzing and traditional binaries.
 With the rise of WASM as compile target, however, a novel way of
@@ -193,17 +207,23 @@ instrumentation needs to be implemented for binaries compiled to Webassembly.
 This can either be done by inserting instrumentation directly into the
 WASM AST, or by patching feedback into a WASM VMs of choice, similar to
 the current Unicorn instrumentation.</p>
+<p>Mentor: any</p>
 <h2 id="machine-learning">Machine Learning</h2>
-<p>Something with machine learning, better than NEUZZ :-)
-Either improve a single mutator thorugh learning of many different bugs (a bug class) or gather deep insights about a single target beforehand (CFG, DFG, VFG, &hellip;?) and improve performance for a single target.</p>
+<p>Something with machine learning, better than <a href="https://github.com/dongdongshe/neuzz">NEUZZ</a> :-)
+Either improve a single mutator thorugh learning of many different bugs
+(a bug class) or gather deep insights about a single target beforehand
+(CFG, DFG, VFG, &hellip;?) and improve performance for a single target.</p>
+<p>Mentor: domenukk</p>
 <h2 id="reengineer-afl-fuzz-as-thread-safe-embeddable-library">Reengineer <code>afl-fuzz</code> as Thread Safe, Embeddable Library</h2>
 <p>Right now, afl-fuzz is single threaded, cannot safely be embedded in tools, and not multi-threaded. It makes use of a large number of globals, must always be the parent process and exec child processes.
 Instead, afl-fuzz could be refactored to contain no global state and globals.
 This allows for different use cases that could be implemented during this project.</p>
+<p>Mentor: hexcoder- or vanhauser-thc</p>
 <h2 id="collision-free-binary-only-maps">Collision-free Binary-Only Maps</h2>
 <p>AFL++ supports collison-free maps using an LTO (link-time-optimization) pass.
 This should be possile to implement for QEMU and Unicorn instrumentations.
 As the forkserver parent caches just in time translated translation blocks, adding a simple counter between jumps should be doable.</p>
+<p>Mentor: andreafioraldi or domenukk</p>
 <h2 id="your-idea">Your idea!</h2>
 <p>Finally, we are open to proposals!
 Create an issue at <a href="https://github.com/vanhauser-thc/AFLplusplus/issues">https://github.com/vanhauser-thc/AFLplusplus/issues</a> and let&rsquo;s discuss :-)</p>
@@ -239,6 +259,7 @@ Create an issue at <a href="https://github.com/vanhauser-thc/AFLplusplus/issues"
   <ul>
     <li><a href="#flexible-grammar-mutator">Flexible Grammar Mutator</a></li>
     <li><a href="#expand-on-the-mopt-mutator">Expand on the MOpt mutator</a></li>
+    <li><a href="#perf-fuzz-linux-kernel-module">perf-fuzz Linux Kernel Module</a></li>
     <li><a href="#qemu-4-based-instrumentation">QEMU 4-based Instrumentation</a></li>
     <li><a href="#wasm-instrumentation">WASM Instrumentation</a></li>
     <li><a href="#machine-learning">Machine Learning</a></li>
