@@ -14,7 +14,6 @@ You can browse a part of the AFL++ doc here.
 + [Performance tips]({{< ref "perf_tips.md" >}})
 + [Note for ASan]({{< ref "notes_for_asan.md" >}})
 + [Power schedules]({{< ref "power_schedules.md" >}})
-+ [Custom mutators]({{< ref "custom_mutator.md" >}})
-+ [Python mutators]({{< ref "python_mutators.md" >}})
++ [Custom mutators]({{< ref "custom_mutators.md" >}})
 + [Technical Details]({{< ref "technical_details.md" >}})
 + [Historical Notes]({{< ref "historical_notes.md" >}})
