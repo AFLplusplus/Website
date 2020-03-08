@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.b73ab38ecb556b344fd5f7ef10460ae0191e5ca53ab2b49fef6f800af27b5e78.js" integrity="sha256-tzqzjstVazRP1ffvEEYK4BkeXKU6srSf72&#43;ACvJ7Xng="></script>
+<script defer src="/en.search.min.e9bb1c8eba7038301fb62454fafe4e71028ce7c7c43f2a52f23571523478d20a.js" integrity="sha256-6bscjrpwODAftiRU&#43;v5OcQKM58fEPypS8jVxUjR40go="></script>
 
 <!--
 Made with Book Theme
@@ -188,13 +188,17 @@ performed with the custom mutator.</p>
 <h2 id="2-apis">2) APIs</h2>
 <p>C/C++:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afl_custom_init</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> seed);
-size_t <span style="color:#a6e22e">afl_custom_fuzz</span>(u8<span style="color:#f92672">*</span> buf, size_t buf_size,
-                       u8<span style="color:#f92672">*</span> add_buf, size_t add_buf_size,
-                       u8<span style="color:#f92672">*</span> mutated_out, size_t max_size);
-size_t <span style="color:#a6e22e">afl_custom_pre_save</span>(u8<span style="color:#f92672">*</span> buf, size_t buf_size, u8<span style="color:#f92672">*</span><span style="color:#f92672">*</span> out_buf);
-u32 <span style="color:#a6e22e">afl_custom_init_trim</span>(u8<span style="color:#f92672">*</span> buf, size_t buf_size);
-<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afl_custom_trim</span>(u8<span style="color:#f92672">*</span><span style="color:#f92672">*</span> out_buf, size_t<span style="color:#f92672">*</span> out_buf_size);
-u32 <span style="color:#a6e22e">afl_custom_post_trim</span>(u8 success);
+size_t <span style="color:#a6e22e">afl_custom_fuzz</span>(uint8_t<span style="color:#f92672">*</span><span style="color:#f92672">*</span> buf, size_t buf_size, uint8_t<span style="color:#f92672">*</span> add_buf,
+                       size_t add_buf_size, size_t max_size);
+size_t <span style="color:#a6e22e">afl_custom_pre_save</span>(uint8_t<span style="color:#f92672">*</span> buf, size_t buf_size, uint8_t<span style="color:#f92672">*</span><span style="color:#f92672">*</span> out_buf);
+uint32_t <span style="color:#a6e22e">afl_custom_init_trim</span>(uint8_t<span style="color:#f92672">*</span> buf, size_t buf_size);
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afl_custom_trim</span>(uint8_t<span style="color:#f92672">*</span><span style="color:#f92672">*</span> out_buf, size_t<span style="color:#f92672">*</span> out_buf_size);
+uint32_t <span style="color:#a6e22e">afl_custom_post_trim</span>(uint8_t success);
+size_t <span style="color:#a6e22e">afl_custom_havoc_mutation</span>(uint8_t<span style="color:#f92672">*</span><span style="color:#f92672">*</span> buf, size_t buf_size, size_t max_size);
+uint8_t <span style="color:#a6e22e">afl_custom_havoc_mutation_probability</span>(<span style="color:#66d9ef">void</span>);
+uint8_t <span style="color:#a6e22e">afl_custom_queue_get</span>(<span style="color:#66d9ef">const</span> uint8_t<span style="color:#f92672">*</span> filename);
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afl_custom_queue_new_entry</span>(<span style="color:#66d9ef">const</span> uint8_t<span style="color:#f92672">*</span> filename_new_queue,
+                                <span style="color:#66d9ef">const</span> uint8_t<span style="color:#f92672">*</span> filename_orig_queue);
 </code></pre></div><p>Python:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init</span>(seed):
     <span style="color:#66d9ef">pass</span>
@@ -213,6 +217,18 @@ u32 <span style="color:#a6e22e">afl_custom_post_trim</span>(u8 success);
 
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">post_trim</span>(success):
     <span style="color:#66d9ef">return</span> next_index
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">havoc_mutation</span>(buf, max_size):
+    <span style="color:#66d9ef">return</span> mutated_out
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">havoc_mutation_probability</span>():
+    <span style="color:#66d9ef">return</span> probability <span style="color:#75715e"># int in [0, 100]</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">queue_get</span>(filename):
+    <span style="color:#66d9ef">return</span> True
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">queue_new_entry</span>(filename_new_queue, filename_orig_queue):
+    <span style="color:#66d9ef">pass</span>
 </code></pre></div><h3 id="custom-mutation">Custom Mutation</h3>
 <ul>
 <li>
@@ -220,9 +236,21 @@ u32 <span style="color:#a6e22e">afl_custom_post_trim</span>(u8 success);
 <p>This method is called when AFL++ starts up and is used to seed RNG.</p>
 </li>
 <li>
+<p><code>queue_get</code> (optional):</p>
+<p>This method determines whether the fuzzer should fuzz the current queue
+entry or not</p>
+</li>
+<li>
 <p><code>fuzz</code> (required):</p>
 <p>This method performs custom mutations on a given input. It also accepts an
 additional test case.</p>
+</li>
+<li>
+<p><code>havoc_mutation</code> and <code>havoc_mutation_probability</code> (optional):</p>
+<p><code>havoc_mutation</code> performs a single custom mutation on a given input. This
+mutation is stacked with the other mutations in havoc. The other method,
+<code>havoc_mutation_probability</code>, returns the probability that <code>havoc_mutation</code>
+is called in havoc. By default, it is 6%.</p>
 </li>
 <li>
 <p><code>pre_save</code> (optional):</p>
@@ -230,9 +258,14 @@ additional test case.</p>
 mutator is not suitable to directly execute the target with this input.
 For example, when using libprotobuf-mutator, the data returned is in a
 protobuf format which corresponds to a given grammar. In order to execute
-the target, the protobuf data must be converted to the plain-text format expected by the target. In such scenarios, the user can define the
+the target, the protobuf data must be converted to the plain-text format
+expected by the target. In such scenarios, the user can define the
 <code>pre_save</code> function. This function is then transforms the data into the
 format expected by the API before executing the target.</p>
+</li>
+<li>
+<p><code>queue_new_entry</code> (optional):</p>
+<p>This methods is called after adding a new test case to the queue.</p>
 </li>
 </ul>
 <h3 id="trimming-support">Trimming Support</h3>
@@ -285,10 +318,15 @@ a fallback to the builtin default trimming routine.</p>
 <p>Optionally, the following environment variables are supported:</p>
 <ul>
 <li>
-<p><code>AFL_PYTHON_ONLY</code></p>
+<p><code>AFL_CUSTOM_MUTATOR_ONLY</code></p>
 <p>Disable all other mutation stages. This can prevent broken testcases
 (those that your Python module can&rsquo;t work with anymore) to fill up your
 queue. Best combined with a custom trimming routine (see below) because
+trimming can cause the same test breakage like havoc and splice.</p>
+</li>
+<li>
+<p><code>AFL_PYTHON_ONLY</code></p>
+<p>Deprecated and removed, use <code>AFL_CUSTOM_MUTATOR_ONLY</code> instead
 trimming can cause the same test breakage like havoc and splice.</p>
 </li>
 <li>
