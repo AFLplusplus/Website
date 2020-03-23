@@ -9,15 +9,36 @@ Want to stay in the loop on major new features? Join our mailing list by
 sending a mail to <afl-users+subscribe@googlegroups.com>.
 
 
-### Version ++2.62d (developt):
+### Version ++2.62d (develop):
 
-  - qemu_mode now uses solely the internal capstone version to fix builds
-    on modern Linux distributions
-  - afl-fuzz basic tools now report on the environment variables picked up
-  - more tools get environment variable usage info in the help output
-  - AFL_AUTORESUME will resume execution without the need to specify `-i -`
-  - afl-tmin now supports hang mode `-H` to minimize hangs
-  - fixed potential afl-tmin missbehavior for targets with multiple hangs
+  - all:
+    - big code changes to make afl-fuzz thread-safe so afl-fuzz can spawn 
+      multiple fuzzing threads in the future or even become a library
+    - afl basic tools now report on the environment variables picked up
+    - more tools get environment variable usage info in the help output
+  - afl-fuzz:
+    - python mutator modules and custom mutator modules now use the same
+      interface and hence the API changed
+    - AFL_AUTORESUME will resume execution without the need to specify `-i -`
+    - added experimental power schedule -p mmopt that ignores the runtime of
+      queue entries and gives higher weighting to the last 5 queue entries
+      it is currently experimental and subject to change but preliminary
+      results are good
+  - LTO collision free instrumented added in llvm_mode with afl-clang-lto -
+    note that this mode is amazing, but quite some targets won't compile
+  - llvm_mode InsTrim mode:
+    - removed workaround for bug where paths were not instrumented and 
+      imported fix by author
+    - made skipping 1 block functions an option and is disable by default,
+      set AFL_LLVM_INSTRIM_SKIPSINGLEBLOCK=1 to re-enable this
+  - qemu_mode:
+    - qemu_mode now uses solely the internal capstone version to fix builds
+      on modern Linux distributions
+    - QEMU now logs routine arguments for CmpLog when the target is x86
+  - afl-tmin:
+    - now supports hang mode `-H` to minimize hangs
+    - fixed potential afl-tmin missbehavior for targets with multiple hangs
+  - Pressing Control-c in afl-cmin did not terminate it for some OS
 
 
 ### Version ++2.62c (release):

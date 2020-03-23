@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.e9bb1c8eba7038301fb62454fafe4e71028ce7c7c43f2a52f23571523478d20a.js" integrity="sha256-6bscjrpwODAftiRU&#43;v5OcQKM58fEPypS8jVxUjR40go="></script>
+<script defer src="/en.search.min.895003dfb78c90f4499d824eea0c34123ae8147e6e072d0ba47bb00afb0ead05.js" integrity="sha256-iVAD37eMkPRJnYJO6gw0EjroFH5uBy0LpHuwCvsOrQU="></script>
 
 <!--
 Made with Book Theme
@@ -82,7 +82,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.62c">Release 2.62c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/2.62c">Release 2.62c</a>
 </li>
 <li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/vanhauser-thc/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -185,6 +185,10 @@ Michal Zalewski &lt;lcamtuf@google.com&gt;.</p>
 <tr>
 <td><code>-p exploit</code> (AFL)</td>
 <td><img src="http://latex.codecogs.com/gif.latex?p%28i%29%20%3D%20%5Calpha%28i%29" alt="LIN"></td>
+</tr>
+<tr>
+<td><code>-p mmopt</code></td>
+<td>Experimental: <code>explore</code> with no weighting to runtime and increased weighting on the last 5 queue entries</td>
 </tr>
 <tr>
 <td>where <em>α(i)</em> is the performance score that AFL uses to compute for the seed input <em>i</em>, <em>β(i)&gt;1</em> is a constant, <em>s(i)</em> is the number of times that seed <em>i</em> has been chosen from the queue, <em>f(i)</em> is the number of generated inputs that exercise the same path as seed <em>i</em>, and <em>μ</em> is the average number of generated inputs exercising a path.</td>

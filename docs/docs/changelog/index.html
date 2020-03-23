@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.e9bb1c8eba7038301fb62454fafe4e71028ce7c7c43f2a52f23571523478d20a.js" integrity="sha256-6bscjrpwODAftiRU&#43;v5OcQKM58fEPypS8jVxUjR40go="></script>
+<script defer src="/en.search.min.895003dfb78c90f4499d824eea0c34123ae8147e6e072d0ba47bb00afb0ead05.js" integrity="sha256-iVAD37eMkPRJnYJO6gw0EjroFH5uBy0LpHuwCvsOrQU="></script>
 
 <!--
 Made with Book Theme
@@ -82,7 +82,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.62c">Release 2.62c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/2.62c">Release 2.62c</a>
 </li>
 <li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/vanhauser-thc/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -141,7 +141,7 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
-        <li><a href="#version-262d-developt">Version ++2.62d (developt):</a></li>
+        <li><a href="#version-262d-develop">Version ++2.62d (develop):</a></li>
         <li><a href="#version-262c-release">Version ++2.62c (release):</a></li>
         <li><a href="#version-261c-release">Version ++2.61c (release):</a></li>
         <li><a href="#version-260c-release">Version ++2.60c (release):</a></li>
@@ -399,15 +399,51 @@ the tool. See README.md for the general instruction manual.</p>
 <h2 id="staying-informed">Staying informed</h2>
 <p>Want to stay in the loop on major new features? Join our mailing list by
 sending a mail to <a href="mailto:afl-users+subscribe@googlegroups.com">afl-users+subscribe@googlegroups.com</a>.</p>
-<h3 id="version-262d-developt">Version ++2.62d (developt):</h3>
+<h3 id="version-262d-develop">Version ++2.62d (develop):</h3>
+<ul>
+<li>all:
+<ul>
+<li>big code changes to make afl-fuzz thread-safe so afl-fuzz can spawn
+multiple fuzzing threads in the future or even become a library</li>
+<li>afl basic tools now report on the environment variables picked up</li>
+<li>more tools get environment variable usage info in the help output</li>
+</ul>
+</li>
+<li>afl-fuzz:
+<ul>
+<li>python mutator modules and custom mutator modules now use the same
+interface and hence the API changed</li>
+<li>AFL_AUTORESUME will resume execution without the need to specify <code>-i -</code></li>
+<li>added experimental power schedule -p mmopt that ignores the runtime of
+queue entries and gives higher weighting to the last 5 queue entries
+it is currently experimental and subject to change but preliminary
+results are good</li>
+</ul>
+</li>
+<li>LTO collision free instrumented added in llvm_mode with afl-clang-lto -
+note that this mode is amazing, but quite some targets won&rsquo;t compile</li>
+<li>llvm_mode InsTrim mode:
+<ul>
+<li>removed workaround for bug where paths were not instrumented and
+imported fix by author</li>
+<li>made skipping 1 block functions an option and is disable by default,
+set AFL_LLVM_INSTRIM_SKIPSINGLEBLOCK=1 to re-enable this</li>
+</ul>
+</li>
+<li>qemu_mode:
 <ul>
 <li>qemu_mode now uses solely the internal capstone version to fix builds
 on modern Linux distributions</li>
-<li>afl-fuzz basic tools now report on the environment variables picked up</li>
-<li>more tools get environment variable usage info in the help output</li>
-<li>AFL_AUTORESUME will resume execution without the need to specify <code>-i -</code></li>
-<li>afl-tmin now supports hang mode <code>-H</code> to minimize hangs</li>
+<li>QEMU now logs routine arguments for CmpLog when the target is x86</li>
+</ul>
+</li>
+<li>afl-tmin:
+<ul>
+<li>now supports hang mode <code>-H</code> to minimize hangs</li>
 <li>fixed potential afl-tmin missbehavior for targets with multiple hangs</li>
+</ul>
+</li>
+<li>Pressing Control-c in afl-cmin did not terminate it for some OS</li>
 </ul>
 <h3 id="version-262c-release">Version ++2.62c (release):</h3>
 <ul>
@@ -3691,7 +3727,7 @@ it.</li>
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
-        <li><a href="#version-262d-developt">Version ++2.62d (developt):</a></li>
+        <li><a href="#version-262d-develop">Version ++2.62d (develop):</a></li>
         <li><a href="#version-262c-release">Version ++2.62c (release):</a></li>
         <li><a href="#version-261c-release">Version ++2.61c (release):</a></li>
         <li><a href="#version-260c-release">Version ++2.60c (release):</a></li>

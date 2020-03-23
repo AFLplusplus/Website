@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.e9bb1c8eba7038301fb62454fafe4e71028ce7c7c43f2a52f23571523478d20a.js" integrity="sha256-6bscjrpwODAftiRU&#43;v5OcQKM58fEPypS8jVxUjR40go="></script>
+<script defer src="/en.search.min.895003dfb78c90f4499d824eea0c34123ae8147e6e072d0ba47bb00afb0ead05.js" integrity="sha256-iVAD37eMkPRJnYJO6gw0EjroFH5uBy0LpHuwCvsOrQU="></script>
 
 <!--
 Made with Book Theme
@@ -82,7 +82,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases/tag/2.62c">Release 2.62c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/2.62c">Release 2.62c</a>
 </li>
 <li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/vanhauser-thc/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -161,6 +161,8 @@ https://github.com/alex-shpak/hugo-book
 <article class="markdown"><h1 id="ideas-for-afl">Ideas for afl++</h1>
 <p>In the following, we describe a variety of ideas that could be implemented
 for future AFL++ versions.</p>
+<p>For GSOC2020 interested students please see
+<a href="https://github.com/AFLplusplus/AFLplusplus/issues/208">https://github.com/AFLplusplus/AFLplusplus/issues/208</a></p>
 <h2 id="flexible-grammar-mutator">Flexible Grammar Mutator</h2>
 <p>Currently, AFL++'s mutation does not have deeper knowledge about the fuzzed
 binary, apart from feedback, even though the developer may have insights
@@ -185,14 +187,15 @@ its own mutator) and the work is to generalize MOpt for all the current
 and future mutators.</p>
 <p>Mentor: vanhauser-thc or andreafioraldi</p>
 <h2 id="perf-fuzz-linux-kernel-module">perf-fuzz Linux Kernel Module</h2>
-<p>Port the parts of the Linux Kernel modified by
+<p>Either Port the patch to the upcoming Ubuntu LTS 20.04 default kernel
+and provide a qemu-kvm image or find a different userspace snapshot
+solution that has a good performance and is reliable, e.g. with docker.
 <a href="https://gts3.org/assets/papers/2017/xu:os-fuzz.pdf">perf-fuzz</a>
-into a linux kernel module, so no source in the kernel needs to be changed.
-Or write your worn LKM from scratch to do this.
 The perf-fuzz kernel can be found at <a href="https://github.com/sslab-gatech/perf-fuzz">https://github.com/sslab-gatech/perf-fuzz</a>
 There also is/was a FreeBSD project at <a href="https://github.com/veracode-research/freebsd-perf-fuzz">https://github.com/veracode-research/freebsd-perf-fuzz</a></p>
 <p>This enables snapshot fuzzing on Linux with an incredible performance!</p>
-<p>Mentor: any</p>
+<p>Mentor: any
+Idea/Issue tracker: <a href="https://github.com/AFLplusplus/AFLplusplus/issues/248">https://github.com/AFLplusplus/AFLplusplus/issues/248</a></p>
 <h2 id="qemu-4-based-instrumentation">QEMU 4-based Instrumentation</h2>
 <p>First tests to use QEMU 4 for binary-only AFL++ showed that caching behavior
 changed, which vastly decreases fuzzing speeds.</p>
@@ -215,18 +218,28 @@ Either improve a single mutator thorugh learning of many different bugs
 (CFG, DFG, VFG, &hellip;?) and improve performance for a single target.</p>
 <p>Mentor: domenukk</p>
 <h2 id="reengineer-afl-fuzz-as-thread-safe-embeddable-library">Reengineer <code>afl-fuzz</code> as Thread Safe, Embeddable Library</h2>
-<p>Right now, afl-fuzz is single threaded, cannot safely be embedded in tools, and not multi-threaded. It makes use of a large number of globals, must always be the parent process and exec child processes.
+<p>Right now, afl-fuzz is single threaded, cannot safely be embedded in tools,
+and not multi-threaded. It makes use of a large number of globals, must always
+be the parent process and exec child processes.
 Instead, afl-fuzz could be refactored to contain no global state and globals.
-This allows for different use cases that could be implemented during this project.</p>
+This allows for different use cases that could be implemented during this
+project.
+Note that in the mean time a lot has happened here already, but e.g. making
+it all work and implement multithreading in afl-fuzz &hellip; there is still quite
+some work to do.</p>
 <p>Mentor: hexcoder- or vanhauser-thc</p>
 <h2 id="collision-free-binary-only-maps">Collision-free Binary-Only Maps</h2>
 <p>AFL++ supports collison-free maps using an LTO (link-time-optimization) pass.
-This should be possile to implement for QEMU and Unicorn instrumentations.
-As the forkserver parent caches just in time translated translation blocks, adding a simple counter between jumps should be doable.</p>
-<p>Mentor: andreafioraldi or domenukk</p>
+This should be possible to implement for QEMU and Unicorn instrumentations.
+As the forkserver parent caches just in time translated translation blocks,
+adding a simple counter between jumps should be doable.</p>
+<p>Note: this is already in development for qemu by Andrea, so for people who
+want to contribute it might make more sense to port his solution to unicorn.</p>
+<p>Mentor: andreafioraldi or domenukk
+Issue/idea tracker: <a href="https://github.com/AFLplusplus/AFLplusplus/issues/237">https://github.com/AFLplusplus/AFLplusplus/issues/237</a></p>
 <h2 id="your-idea">Your idea!</h2>
 <p>Finally, we are open to proposals!
-Create an issue at <a href="https://github.com/vanhauser-thc/AFLplusplus/issues">https://github.com/vanhauser-thc/AFLplusplus/issues</a> and let&rsquo;s discuss :-)</p>
+Create an issue at <a href="https://github.com/AFLplusplus/AFLplusplus/issues">https://github.com/AFLplusplus/AFLplusplus/issues</a> and let&rsquo;s discuss :-)</p>
 </article>
  
 

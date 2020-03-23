@@ -53,7 +53,7 @@ TL;DR: qemu_mode in persistent mode is the fastest - if the stability is high en
       <guid>https://aflplus.plus/docs/changelog/</guid>
       <description>Changelog This is the list of all noteworthy changes made in every public release of the tool. See README.md for the general instruction manual.
 Staying informed Want to stay in the loop on major new features? Join our mailing list by sending a mail to afl-users+subscribe@googlegroups.com.
-Version ++2.62d (developt):  qemu_mode now uses solely the internal capstone version to fix builds on modern Linux distributions afl-fuzz basic tools now report on the environment variables picked up more tools get environment variable usage info in the help output AFL_AUTORESUME will resume execution without the need to specify -i - afl-tmin now supports hang mode -H to minimize hangs fixed potential afl-tmin missbehavior for targets with multiple hangs  Version ++2.</description>
+Version ++2.62d (develop):  all:  big code changes to make afl-fuzz thread-safe so afl-fuzz can spawn multiple fuzzing threads in the future or even become a library afl basic tools now report on the environment variables picked up more tools get environment variable usage info in the help output   afl-fuzz:  python mutator modules and custom mutator modules now use the same interface and hence the API changed AFL_AUTORESUME will resume execution without the need to specify -i - added experimental power schedule -p mmopt that ignores the runtime of queue entries and gives higher weighting to the last 5 queue entries it is currently experimental and subject to change but preliminary results are good   LTO collision free instrumented added in llvm_mode with afl-clang-lto - note that this mode is amazing, but quite some targets won&amp;rsquo;t compile llvm_mode InsTrim mode:  removed workaround for bug where paths were not instrumented and imported fix by author made skipping 1 block functions an option and is disable by default, set AFL_LLVM_INSTRIM_SKIPSINGLEBLOCK=1 to re-enable this   qemu_mode:  qemu_mode now uses solely the internal capstone version to fix builds on modern Linux distributions QEMU now logs routine arguments for CmpLog when the target is x86   afl-tmin:  now supports hang mode -H to minimize hangs fixed potential afl-tmin missbehavior for targets with multiple hangs   Pressing Control-c in afl-cmin did not terminate it for some OS  Version ++2.</description>
     </item>
     
     <item>
@@ -107,6 +107,7 @@ Implemented by
       
       <guid>https://aflplus.plus/docs/ideas/</guid>
       <description>Ideas for afl++ In the following, we describe a variety of ideas that could be implemented for future AFL++ versions.
+For GSOC2020 interested students please see https://github.com/AFLplusplus/AFLplusplus/issues/208
 Flexible Grammar Mutator Currently, AFL++&#39;s mutation does not have deeper knowledge about the fuzzed binary, apart from feedback, even though the developer may have insights about the target.
 A developer may choose to provide dictionaries and implement own mutations in python or C, but an easy mutator that behaves according to a given grammar, does not exist.</description>
     </item>
@@ -220,7 +221,7 @@ NOTE: Only cPython 2.7, 3.7 and above are supported, although others may work. D
 Github Version: 2.60d
 includes all necessary/interesting changes from Google&amp;rsquo;s afl 2.56b
 Originally developed by Michal &amp;ldquo;lcamtuf&amp;rdquo; Zalewski.
-Repository: https://github.com/vanhauser-thc/AFLplusplus
+Repository: https://github.com/AFLplusplus/AFLplusplus
 afl++ is maintained by Marc &amp;ldquo;van Hauser&amp;rdquo; Heuse mh@mh-sec.de, Heiko &amp;ldquo;hexcoder-&amp;rdquo; Eißfeldt heiko.eissfeldt@hexco.de, Andrea Fioraldi andreafioraldi@gmail.com and Dominik Maier mail@dmnk.co.
 Note that although afl now has a Google afl repository https://github.com/Google/afl, it is unlikely to receive any noteable enhancements: https://twitter.com/Dor3s/status/1154737061787660288
 The enhancements compared to the original stock afl Many improvements were made over the official afl release - which did not get any feature improvements since November 2017.</description>
