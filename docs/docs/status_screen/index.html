@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.7fde4ef1ae5a074e5a5d5c742faf9bac0c42858e426f6c0d6f7fcbce009417f0.js" integrity="sha256-f95O8a5aB05aXVx0L6&#43;brAxChY5Cb2wNb3/LzgCUF/A="></script>
+<script defer src="/en.search.min.8c2b8d3a6788de57512f0f2c8dbcbf0ede17960a1346a728487133388552a198.js" integrity="sha256-jCuNOmeI3ldRLw8sjby/Dt4XlgoTRqcoSHEzOIVSoZg="></script>
 
 <!--
 Made with Book Theme
@@ -463,26 +463,38 @@ performance characteristics of each of these will differ quite a bit.</p>
 found in a machine-readable format in the fuzzer_stats file in the output
 directory. This includes:</p>
 <ul>
-<li><code>start_time</code>     - unix time indicating the start time of afl-fuzz</li>
-<li><code>last_update</code>    - unix time corresponding to the last update of this file</li>
-<li><code>fuzzer_pid</code>     - PID of the fuzzer process</li>
-<li><code>cycles_done</code>    - queue cycles completed so far</li>
-<li><code>execs_done</code>     - number of execve() calls attempted</li>
-<li><code>execs_per_sec</code>  - overall number of execs per second</li>
-<li><code>paths_total</code>    - total number of entries in the queue</li>
-<li><code>paths_found</code>    - number of entries discovered through local fuzzing</li>
-<li><code>paths_imported</code> - number of entries imported from other instances</li>
-<li><code>max_depth</code>      - number of levels in the generated data set</li>
-<li><code>cur_path</code>       - currently processed entry number</li>
-<li><code>pending_favs</code>   - number of favored entries still waiting to be fuzzed</li>
-<li><code>pending_total</code>  - number of all entries waiting to be fuzzed</li>
-<li>`stability      - percentage of bitmap bytes that behave consistently</li>
-<li><code>variable_paths</code> - number of test cases showing variable behavior</li>
-<li><code>unique_crashes</code> - number of unique crashes recorded</li>
-<li><code>unique_hangs</code>   - number of unique hangs encountered</li>
-<li><code>command_line</code>   - full command line used for the fuzzing session</li>
-<li><code>slowest_exec_ms</code>- real time of the slowest execution in seconds</li>
-<li><code>peak_rss_mb</code>    - max rss usage reached during fuzzing in MB</li>
+<li><code>start_time</code>        - unix time indicating the start time of afl-fuzz</li>
+<li><code>last_update</code>       - unix time corresponding to the last update of this file</li>
+<li><code>run_time</code>          - run time in seconds to the last update of this file</li>
+<li><code>fuzzer_pid</code>        - PID of the fuzzer process</li>
+<li><code>cycles_done</code>       - queue cycles completed so far</li>
+<li><code>cycles_wo_finds</code>   - number of cycles without any new paths found</li>
+<li><code>execs_done</code>        - number of execve() calls attempted</li>
+<li><code>execs_per_sec</code>     - overall number of execs per second</li>
+<li><code>paths_total</code>       - total number of entries in the queue</li>
+<li><code>paths_favored</code>     - number of queue entries that are favored</li>
+<li><code>paths_found</code>       - number of entries discovered through local fuzzing</li>
+<li><code>paths_imported</code>    - number of entries imported from other instances</li>
+<li><code>max_depth</code>         - number of levels in the generated data set</li>
+<li><code>cur_path</code>          - currently processed entry number</li>
+<li><code>pending_favs</code>      - number of favored entries still waiting to be fuzzed</li>
+<li><code>pending_total</code>     - number of all entries waiting to be fuzzed</li>
+<li><code>variable_paths</code>    - number of test cases showing variable behavior</li>
+<li><code>stability</code>         - percentage of bitmap bytes that behave consistently</li>
+<li><code>bitmap_cvg</code>        - percentage of edge coverage found in the map so far</li>
+<li><code>unique_crashes</code>    - number of unique crashes recorded</li>
+<li><code>unique_hangs</code>      - number of unique hangs encountered</li>
+<li><code>last_path</code>         - seconds since the last path was found</li>
+<li><code>last_crash</code>        - seconds since the last crash was found</li>
+<li><code>last_hang</code>         - seconds since the last hang was found</li>
+<li><code>execs_since_crash</code> - execs since the last crash was found</li>
+<li><code>exec_timeout</code>      - the -t command line value</li>
+<li><code>slowest_exec_ms</code>   - real time of the slowest execution in ms</li>
+<li><code>peak_rss_mb</code>       - max rss usage reached during fuzzing in MB</li>
+<li><code>afl_banner</code>        - banner text (e.g. the target name)</li>
+<li><code>afl_version</code>       - the version of afl used</li>
+<li><code>target_mode</code>       - default, persistent, qemu, unicorn, dumb</li>
+<li><code>command_line</code>      - full command line used for the fuzzing session</li>
 </ul>
 <p>Most of these map directly to the UI elements discussed earlier on.</p>
 <p>On top of that, you can also find an entry called <code>plot_data</code>, containing a

@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.7fde4ef1ae5a074e5a5d5c742faf9bac0c42858e426f6c0d6f7fcbce009417f0.js" integrity="sha256-f95O8a5aB05aXVx0L6&#43;brAxChY5Cb2wNb3/LzgCUF/A="></script>
+<script defer src="/en.search.min.8c2b8d3a6788de57512f0f2c8dbcbf0ede17960a1346a728487133388552a198.js" integrity="sha256-jCuNOmeI3ldRLw8sjby/Dt4XlgoTRqcoSHEzOIVSoZg="></script>
 
 <!--
 Made with Book Theme
@@ -146,6 +146,7 @@ https://github.com/alex-shpak/hugo-book
         <li><a href="#laf-intel">LAF-INTEL</a></li>
         <li><a href="#whitelist">WHITELIST</a></li>
         <li><a href="#instrim">INSTRIM</a></li>
+        <li><a href="#ngram">NGRAM</a></li>
         <li><a href="#not_zero">NOT_ZERO</a></li>
         <li><a href="#cmplog">CMPLOG</a></li>
         <li><a href="#whitelist-1">WHITELIST</a></li>
@@ -276,22 +277,27 @@ is more effective but makes not much sense together with this option.</p>
 </ul>
 <p>Then there are a few specific features that are only available in llvm_mode:</p>
 <h3 id="lto">LTO</h3>
-<p>This is a different kind way of instrumentation: first it compiles all
+<pre><code>This is a different kind way of instrumentation: first it compiles all
 code in LTO (link time optimization) and then performs an edge inserting
 instrumentation which is 100% collision free (collisions are a big issue
 in afl and afl-like instrumentations). This is performed by using
 afl-clang-lto/afl-clang-lto++ instead of afl-clang-fast, but is only
-built if LLVM 9 or newer is used.</p>
-<p>None of these options are necessary to be used and are rather for manual
+built if LLVM 9 or newer is used.
+
+None of these options are necessary to be used and are rather for manual
 use (which only ever the author of this LTO implementation will use ;-)
 These are used if several seperated instrumentation are performed which
-are then later combined.</p>
+are then later combined.
+</code></pre>
 <ul>
 <li>AFL_LLVM_LTO_STARTID sets the starting location ID for the instrumentation.
 This defaults to 1</li>
 <li>AFL_LLVM_LTO_DONTWRITEID prevents that the highest location ID written
 into the instrumentation is set in a global variable</li>
 </ul>
+<pre><code>Instrim, LTO and ngram modes can not be used together.
+See llvm_mode/README.LTO.md for more information.
+</code></pre>
 <h3 id="laf-intel">LAF-INTEL</h3>
 <pre><code>This great feature will split compares to series of single byte comparisons
 to allow afl-fuzz to find otherwise rather impossible paths. It is not
@@ -328,7 +334,15 @@ lower path discovery and therefore coverage.
   functions with a single basic block. This is useful for most C and
   some C++ targets.
 
+Instrim, LTO and ngram modes can not be used together.
 See llvm_mode/README.instrim.md
+</code></pre>
+<h3 id="ngram">NGRAM</h3>
+<pre><code>- Setting AFL_LLVM_NGRAM_SIZE activates ngram prev_loc coverage, good
+  values are 2, 4 or 8.
+
+Instrim, LTO and ngram modes can not be used together.
+See llvm_mode/README.ngram.md
 </code></pre>
 <h3 id="not_zero">NOT_ZERO</h3>
 <pre><code>- Setting AFL_LLVM_NOT_ZERO=1 during compilation will use counters
@@ -690,6 +704,7 @@ faults.</p>
         <li><a href="#laf-intel">LAF-INTEL</a></li>
         <li><a href="#whitelist">WHITELIST</a></li>
         <li><a href="#instrim">INSTRIM</a></li>
+        <li><a href="#ngram">NGRAM</a></li>
         <li><a href="#not_zero">NOT_ZERO</a></li>
         <li><a href="#cmplog">CMPLOG</a></li>
         <li><a href="#whitelist-1">WHITELIST</a></li>

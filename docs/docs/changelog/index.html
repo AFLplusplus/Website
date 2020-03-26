@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.7fde4ef1ae5a074e5a5d5c742faf9bac0c42858e426f6c0d6f7fcbce009417f0.js" integrity="sha256-f95O8a5aB05aXVx0L6&#43;brAxChY5Cb2wNb3/LzgCUF/A="></script>
+<script defer src="/en.search.min.8c2b8d3a6788de57512f0f2c8dbcbf0ede17960a1346a728487133388552a198.js" integrity="sha256-jCuNOmeI3ldRLw8sjby/Dt4XlgoTRqcoSHEzOIVSoZg="></script>
 
 <!--
 Made with Book Theme
@@ -400,6 +400,10 @@ the tool. See README.md for the general instruction manual.</p>
 <p>Want to stay in the loop on major new features? Join our mailing list by
 sending a mail to <a href="mailto:afl-users+subscribe@googlegroups.com">afl-users+subscribe@googlegroups.com</a>.</p>
 <h3 id="version-262d-develop">Version ++2.62d (develop):</h3>
+<p>! the repository was moved from vanhauser-thc to AFLplusplus. It is now
+an own organisation :)
+! development and acceptance of PRs now happen only in the dev branch
+and only occasionally when everything is fine we PR to master</p>
 <ul>
 <li>all:
 <ul>
@@ -407,6 +411,8 @@ sending a mail to <a href="mailto:afl-users+subscribe@googlegroups.com">afl-user
 multiple fuzzing threads in the future or even become a library</li>
 <li>afl basic tools now report on the environment variables picked up</li>
 <li>more tools get environment variable usage info in the help output</li>
+<li>force all output to stdout (some OK/SAY/WARN messages were sent to
+stdout, some to stderr)</li>
 </ul>
 </li>
 <li>afl-fuzz:
@@ -414,14 +420,21 @@ multiple fuzzing threads in the future or even become a library</li>
 <li>python mutator modules and custom mutator modules now use the same
 interface and hence the API changed</li>
 <li>AFL_AUTORESUME will resume execution without the need to specify <code>-i -</code></li>
-<li>added experimental power schedule -p mmopt that ignores the runtime of
-queue entries and gives higher weighting to the last 5 queue entries
-it is currently experimental and subject to change but preliminary
-results are good</li>
+<li>added experimental power schedules (-p):
+<ul>
+<li>mmopt: ignores runtime of queue entries, gives higher weighting to
+the last 5 queue entries</li>
+<li>rare: puts focus on queue entries that hits rare branches, also ignores
+runtime</li>
+</ul>
+</li>
 </ul>
 </li>
 <li>LTO collision free instrumented added in llvm_mode with afl-clang-lto -
 note that this mode is amazing, but quite some targets won&rsquo;t compile</li>
+<li>Added llvm_mode NGRAM prev_loc coverage by Adrean Herrera
+(<a href="https://github.com/adrianherrera/afl-ngram-pass/),">https://github.com/adrianherrera/afl-ngram-pass/),</a> activate by setting
+AFL_LLVM_NGRAM_SIZE</li>
 <li>llvm_mode InsTrim mode:
 <ul>
 <li>removed workaround for bug where paths were not instrumented and
