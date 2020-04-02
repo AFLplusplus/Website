@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.f0c6449c4d7ec1f3e38b684935068474823c17831c7afe0f9bceec7c9c287da6.js" integrity="sha256-8MZEnE1&#43;wfPji2hJNQaEdII8F4Mcev4Pm87sfJwofaY="></script>
+<script defer src="/en.search.min.753186ea4c7913aa30f0573d8822ba22bbc7819b74be61d0c089d31d7d84408b.js" integrity="sha256-dTGG6kx5E6ow8Fc9iCK6IrvHgZt0vmHQwInTHX2EQIs="></script>
 
 <!--
 Made with Book Theme
@@ -187,19 +187,16 @@ Please see <a href="#2-apis">APIs</a> and <a href="#3-usage">Usage</a> for detai
 performed with the custom mutator.</p>
 <h2 id="2-apis">2) APIs</h2>
 <p>C/C++:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afl_custom_init</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>afl, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> seed);
-size_t <span style="color:#a6e22e">afl_custom_fuzz</span>(uint8_t<span style="color:#f92672">*</span><span style="color:#f92672">*</span> buf, size_t buf_size, uint8_t<span style="color:#f92672">*</span> add_buf,
-                       size_t add_buf_size, size_t max_size);
-size_t <span style="color:#a6e22e">afl_custom_write_to_testcase</span>(uint8_t<span style="color:#f92672">*</span> buf, size_t buf_size, uint8_t<span style="color:#f92672">*</span><span style="color:#f92672">*</span> out_buf);
-uint32_t <span style="color:#a6e22e">afl_custom_init_trim</span>(uint8_t<span style="color:#f92672">*</span> buf, size_t buf_size);
-<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afl_custom_trim</span>(uint8_t<span style="color:#f92672">*</span><span style="color:#f92672">*</span> out_buf, size_t<span style="color:#f92672">*</span> out_buf_size);
-uint32_t <span style="color:#a6e22e">afl_custom_post_trim</span>(uint8_t success);
-size_t <span style="color:#a6e22e">afl_custom_havoc_mutation</span>(uint8_t<span style="color:#f92672">*</span><span style="color:#f92672">*</span> buf, size_t buf_size, size_t max_size);
-uint8_t <span style="color:#a6e22e">afl_custom_havoc_mutation_probability</span>(<span style="color:#66d9ef">void</span>);
-uint8_t <span style="color:#a6e22e">afl_custom_queue_get</span>(<span style="color:#66d9ef">const</span> uint8_t<span style="color:#f92672">*</span> filename);
-<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afl_custom_queue_new_entry</span>(<span style="color:#66d9ef">const</span> uint8_t<span style="color:#f92672">*</span> filename_new_queue,
-                                <span style="color:#66d9ef">const</span> uint8_t<span style="color:#f92672">*</span> filename_orig_queue);
-<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afl_custom_deinit</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">afl_custom_init</span>(afl_t <span style="color:#f92672">*</span>afl, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> seed);
+size_t <span style="color:#a6e22e">afl_custom_fuzz</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, uint8_t <span style="color:#f92672">*</span>buf, size_t buf_size, u8 <span style="color:#f92672">*</span><span style="color:#f92672">*</span>out_buf, uint8_t <span style="color:#f92672">*</span>add_buf, size_t add_buf_size, size_t max_size);
+size_t <span style="color:#a6e22e">afl_custom_pre_save</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, uint8_t <span style="color:#f92672">*</span>buf, size_t buf_size, uint8_t <span style="color:#f92672">*</span><span style="color:#f92672">*</span>out_buf);
+int32_t <span style="color:#a6e22e">afl_custom_init_trim</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, uint8_t <span style="color:#f92672">*</span>buf, size_t buf_size);
+size_t <span style="color:#a6e22e">afl_custom_trim</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, uint8_t <span style="color:#f92672">*</span><span style="color:#f92672">*</span>out_buf);
+int32_t <span style="color:#a6e22e">afl_custom_post_trim</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">int</span> success) {
+size_t afl_custom_havoc_mutation(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, u8 <span style="color:#f92672">*</span>buf, size_t buf_size, u8 <span style="color:#f92672">*</span><span style="color:#f92672">*</span>out_buf, size_t max_size);
+uint8_t afl_custom_havoc_mutation_probability(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data);
+uint8_t afl_custom_queue_get(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> uint8_t <span style="color:#f92672">*</span>filename); <span style="color:#66d9ef">void</span> afl_custom_queue_new_entry(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> uint8_t <span style="color:#f92672">*</span>filename_new_queue, <span style="color:#66d9ef">const</span> uint8_t <span style="color:#f92672">*</span>filename_orig_queue);
+<span style="color:#66d9ef">void</span> afl_custom_deinit(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data);
 </code></pre></div><p>Python:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init</span>(seed):
     <span style="color:#66d9ef">pass</span>
@@ -233,8 +230,8 @@ uint8_t <span style="color:#a6e22e">afl_custom_queue_get</span>(<span style="col
 </code></pre></div><h3 id="custom-mutation">Custom Mutation</h3>
 <ul>
 <li>
-<p><code>init</code> (optional):</p>
-<p>This method is called when AFL++ starts up and is used to seed RNG.</p>
+<p><code>init</code>:</p>
+<p>This method is called when AFL++ starts up and is used to seed RNG and set up buffers and state.</p>
 </li>
 <li>
 <p><code>queue_get</code> (optional):</p>
@@ -298,7 +295,7 @@ to show progress.</p>
 <p><code>trim</code> (optional)</p>
 <p>This method is called for each trimming operation. It doesn&rsquo;t have any
 arguments because we already have the initial buffer from <code>init_trim</code> and we
-can memorize the current state in global variables. This can also save
+can memorize the current state in the data variables. This can also save
 reparsing steps for each iteration. It should return the trimmed input
 buffer, where the returned data must not exceed the initial input data in
 length. Returning anything that is larger than the original data (passed to
@@ -313,6 +310,7 @@ In any case, this method must return the next trim iteration index (from 0
 to the maximum amount of steps you returned in <code>init_trim</code>).</p>
 </li>
 </ul>
+<p><code>deinit</code> the last method to be called, deinitializing the state.</p>
 <p>Omitting any of three methods will cause the trimming to be disabled and trigger
 a fallback to the builtin default trimming routine.</p>
 <h3 id="environment-variables">Environment Variables</h3>

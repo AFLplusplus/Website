@@ -40,3 +40,5 @@ Check out the GitHub repository [here](https://github.com/vanhauser-thc/AFLplusp
   * [CVE-2020-8036](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-8036) by Reza Mirzazade
 + Gifsicle
   * [Issue 130](https://github.com/kohler/gifsicle/issues/130) by Ashish Kunwar
++ FFmpeg
+  * [Ticket 8594](https://trac.ffmpeg.org/ticket/8594) by Andrea Fioraldi

@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.f0c6449c4d7ec1f3e38b684935068474823c17831c7afe0f9bceec7c9c287da6.js" integrity="sha256-8MZEnE1&#43;wfPji2hJNQaEdII8F4Mcev4Pm87sfJwofaY="></script>
+<script defer src="/en.search.min.753186ea4c7913aa30f0573d8822ba22bbc7819b74be61d0c089d31d7d84408b.js" integrity="sha256-dTGG6kx5E6ow8Fc9iCK6IrvHgZt0vmHQwInTHX2EQIs="></script>
 
 <!--
 Made with Book Theme
@@ -207,7 +207,9 @@ compiler supports that. Note that fuzzing with ASAN is mildly challenging</p>
 </ul>
 <p>(You can also enable MSAN via AFL_USE_MSAN; ASAN and MSAN come with the
 same gotchas; the modes are mutually exclusive. UBSAN can be enabled
-similarly by setting the environment variable AFL_USE_UBSAN=1)</p>
+similarly by setting the environment variable AFL_USE_UBSAN=1. Finally
+there is the Control Flow Integrity sanitizer that can be activated by
+AFL_USE_CFISAN=1)</p>
 </li>
 <li>
 <p>Setting AFL_CC, AFL_CXX, and AFL_AS lets you use alternate downstream

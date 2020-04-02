@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.f0c6449c4d7ec1f3e38b684935068474823c17831c7afe0f9bceec7c9c287da6.js" integrity="sha256-8MZEnE1&#43;wfPji2hJNQaEdII8F4Mcev4Pm87sfJwofaY="></script>
+<script defer src="/en.search.min.753186ea4c7913aa30f0573d8822ba22bbc7819b74be61d0c089d31d7d84408b.js" integrity="sha256-dTGG6kx5E6ow8Fc9iCK6IrvHgZt0vmHQwInTHX2EQIs="></script>
 
 <!--
 Made with Book Theme
@@ -413,6 +413,9 @@ multiple fuzzing threads in the future or even become a library</li>
 <li>more tools get environment variable usage info in the help output</li>
 <li>force all output to stdout (some OK/SAY/WARN messages were sent to
 stdout, some to stderr)</li>
+<li>uninstrumented mode uses an internal forkserver (&ldquo;fauxserver&rdquo;)</li>
+<li>now builds with <code>-D_FORTIFY_SOURCE=2</code></li>
+<li>drastically reduced number of (de)allocations during fuzzing</li>
 </ul>
 </li>
 <li>afl-fuzz:
@@ -430,6 +433,7 @@ runtime</li>
 </li>
 </ul>
 </li>
+<li>llvm_mode: added Control Flow Integrity sanitizer (AFL_USE_CFISAN)</li>
 <li>LTO collision free instrumented added in llvm_mode with afl-clang-lto -
 note that this mode is amazing, but quite some targets won&rsquo;t compile</li>
 <li>Added llvm_mode NGRAM prev_loc coverage by Adrean Herrera
@@ -634,7 +638,7 @@ installed to the &hellip;/lib/afl directory when present during make install</li
 <li>big code refactoring:
 <ul>
 <li>all includes are now in include/</li>
-<li>all afl sources are now in src/ - see src/README.src</li>
+<li>all afl sources are now in src/ - see src/README.md</li>
 <li>afl-fuzz was splitted up in various individual files for including
 functionality in other programs (e.g. forkserver, memory map, etc.)
 for better readability.</li>
