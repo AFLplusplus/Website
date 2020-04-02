@@ -41,4 +41,4 @@ Check out the GitHub repository [here](https://github.com/vanhauser-thc/AFLplusp
 + Gifsicle
   * [Issue 130](https://github.com/kohler/gifsicle/issues/130) by Ashish Kunwar
 + FFmpeg
-  * [Ticket 8594](https://trac.ffmpeg.org/ticket/8594) by Andrea Fioraldi
+  * [Ticket 8592](https://trac.ffmpeg.org/ticket/8592) [Ticket 8593](https://trac.ffmpeg.org/ticket/8593) [Ticket 8593](https://trac.ffmpeg.org/ticket/8593) [Ticket 8594](https://trac.ffmpeg.org/ticket/8594) [Ticket 8596](https://trac.ffmpeg.org/ticket/8596) by Andrea Fioraldi
