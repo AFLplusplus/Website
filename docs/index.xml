@@ -35,6 +35,18 @@ Additionally the following features and patches have been integrated:
     
     <item>
       <title></title>
+      <link>https://aflplus.plus/aflpp_fuzzing_framework_proposal/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://aflplus.plus/aflpp_fuzzing_framework_proposal/</guid>
+      <description>AFL++ as a Fuzzing Framework Proposal by Andrea.
+Big changes were done in AFL++ to improve usability but the tool remains an extension of the legendary AFL that inherits also its limitations.
+The future of AFL++, in my opinion, is not to improve the performance of AFL of a percentile.
+We don&amp;rsquo;t aim to build the &amp;ldquo;best&amp;rdquo; fuzzer, the best fuzzer is the fuzzer that you write for your target. We just want to give you all the pieces to do so easily and effectively.</description>
+    </item>
+    
+    <item>
+      <title></title>
       <link>https://aflplus.plus/docs/binaryonly_fuzzing/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
