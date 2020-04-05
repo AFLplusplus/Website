@@ -44,7 +44,8 @@ Mutators are independent sets of mutations. A scheduling policy can be set for s
  
 ## Example functions
 
-From a current source code perspective, afl-fuzz.c and functionality 
+From a current source code perspective, afl-fuzz.c would be the main.c and all
+other files be part of libaflpp.so
 
 ### Seeds
 
@@ -52,11 +53,13 @@ From a current source code perspective, afl-fuzz.c and functionality
   * ssize_t := number of seeds loaded
 
 `void aflpp_seedselection_configure(struct_aflpp *aflpp, uint32_t weight_time, uint32_t weight_len, uint32_t rare, bool now)`
+
 Setup a specific seed selection strategy. might need more options.
   * weight_... : apply weighting to this characeristic (0 = none, 1 = x1, 2 = x2, etc.)
   * now:= false: starting next cycle, true: immedeatly
 
 `int32_t aflpp_seedselection_custom_register(struct_aflpp *aflpp, void *custom_seed_calculation_callback)`
+
 Register your own seed selection algorithm
   * int32_t := -1 : failed, >= 0 : custom_seedselection_id
 
@@ -64,16 +67,19 @@ Register your own seed selection algorithm
   * bool := true : success, false : failure (not defined)
 
 `void aflpp_seedselection_method(struct_aflpp *aflpp, uint32_t method, bool now)`
+
 Alternativly select a pre-coded stategy
   * method := enum { EXPLORE, FAST, COE, LIN, QUAD, EXPLOIT, MMOPT, RARE }
 
 `bool aflpp_seedselection_next(struct_aflpp *aflpp)`
+
 Go to the next seed. Normally this would not be used as aflpp_mutations_mutate() would do that.
   * bool := true: this starts next cycle
 
 ## Mutation
 
 `void aflpp_mutations_configure(struct_aflpp *aflpp, uint64_t mutations, bool now)`
+
 Configure the mutator
   * mutations := enum { BITFLIP, ARITH, DICT, HAVOC, MORE_HAVOC, ... }, combined with OR
 
@@ -91,17 +97,21 @@ Configure the mutator
   * ssize_t := number of mutations performed
 
 `ssize_t aflpp_mutations_mutate_specfic(struct_aflpp *aflpp, uint64_t mutator_type, uint32_t count, uint32_t min_len, uint32_t max_len, void *sender_callback)`
+
 same as aflpp_mutations_mutate() but only use this specific mutator (of enum `mutations`)
 
 `ssize_t aflpp_mutations_mutate_custom(struct_aflpp *aflpp, int32_t custom_mutator_id, uint32_t count, uint32_t min_len, uint32_t max_len, void *sender_callback)`
+
 same as aflpp_mutations_mutate() but only use this specific mutator (of enum `mutations`)
+
+Also: load dictionary + enable/disable dictionary, etc.
 
 ## Sending
 
 `ssize_t sender_callback(struct_aflpp *aflpp, u8 *buf, uint32_t len)`
 
 we should also have default senders, e.g.
-`aflpp_send_stdin`, aflpp_send_file, aflpp_send_argv, aflpp_send_network, ...
+aflpp_send_stdin, aflpp_send_file, aflpp_send_argv, aflpp_send_network, ...
 for which some need a _configure, e.g. for file, network, argv
 
 ## struct_aflpp
