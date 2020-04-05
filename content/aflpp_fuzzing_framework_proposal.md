@@ -42,6 +42,85 @@ There will be also the possibility to use a custom algorithm for calculating the
 
 Mutators are independent sets of mutations. A scheduling policy can be set for such mutations (by default randomly taken like in havoc).
  
+## Entities
+
++ Executor
+  + Logger (shared mem or whatever, also a mmaped file, define a generic interface)
++ Feedback
+  + Feedback specific queue
+    + Feedback specific seed scheduler
+    + Feedback specific seed energy
++ Generic queue
+  + Generic seed scheduler
+  + Generic seed scheduler
++ Stage
+  + Mutator (simple)
+  + ScheduledMutator
+    + Mutation
+    + Mutations scheduler (only 2 atm, random and mopt)
+
+## Interfaces
+
+```
+Executor {
+  loggers // more than one
+
+  init()
+  destroy()
+  run_target()
+}
+
+Logger {
+  start // mem addr
+  end
+
+  init()
+  destroy()
+  flush()
+  reset() // memset 0 in the edge coverage case in AFL
+}
+
+Feedback {
+  loggers // more than one. also, a logger can be used by multiple feedbacks
+  specific_queue
+
+  init()
+  destroy()
+  is_interesting()
+}
+
+FeedbackSpecificQueue {
+  feedback
+  scheduler
+  energy_calc
+}
+
+GenericQueue {
+  feedbacks // all feedbacks
+  scheduler
+  energy_calc
+}
+
+Stage {
+  executor
+
+  init()
+  destroy()
+  run()
+}
+
+Mutator() {
+  mutate()
+}
+
+ScheduledMutator() {
+  scheduler
+  mutations[]
+  
+  mutate()
+}
+```
+
 ## Example functions
 
 From a current source code perspective, afl-fuzz.c would be the main.c and all
