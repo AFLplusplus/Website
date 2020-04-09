@@ -44,9 +44,12 @@ Mutators are independent sets of mutations. A scheduling policy can be set for s
  
 ## Entities
 
-+ Executor
-  + Logger (shared mem or whatever, also a mmaped file, define a generic interface)
++ Seed Queue
++ Executor (Forkserver, Fauxserver, Network Connector)
+  + Input Channel (A way to send a new testcase to the target (multiple can be stacked))
+  + Observation Channel (shared mem or whatever, also a mmaped file, define a generic interface)
 + Feedback
+  + Feedback Reducer (VFuzz "Sensor" -> Reduce Observation Channel output to feedback value)
   + Feedback specific queue
     + Feedback specific seed scheduler
     + Feedback specific seed energy
@@ -185,9 +188,9 @@ same as aflpp_mutations_mutate() but only use this specific mutator (of enum `mu
 
 Also: load dictionary + enable/disable dictionary, etc.
 
-## Sending
+## Input Sender
 
-`ssize_t sender_callback(struct_aflpp *aflpp, u8 *buf, uint32_t len)`
+`ssize_t send_input(struct_aflpp *aflpp, u8 *buf, uint32_t len)`
 
 we should also have default senders, e.g.
 aflpp_send_stdin, aflpp_send_file, aflpp_send_argv, aflpp_send_network, ...
