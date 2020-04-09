@@ -26,7 +26,7 @@ publishDir = "docs"
 os.system("cd AFLplusplus && git pull")
 os.system("cp -v AFLplusplus/docs/*.md content/docs/")
 
-r = requests.get("https://api.github.com/repos/vanhauser-thc/AFLplusplus/releases/latest")
+r = requests.get("https://api.github.com/repos/AFLplusplus/AFLplusplus/releases/latest")
 
 CONFIG = CONFIG.replace("__REL_NAME__", r.json()["name"])
 CONFIG = CONFIG.replace("__REL_URL__", r.json()["html_url"])

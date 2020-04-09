@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.ae541577d8c3a3539e616866f7530ef21cf2611904404d10acf11556f7c0f94c.js" integrity="sha256-rlQVd9jDo1OeYWhm91MO8hzyYRkEQE0QrPEVVvfA&#43;Uw="></script>
+<script defer src="/en.search.min.abfcab61a8e67efad83757319be096f27b3db5bf26a1212925243da00f120f40.js" integrity="sha256-q/yrYajmfvrYN1cxm&#43;CW8ns9tb8moSEpJSQ9oA8SD0A="></script>
 
 <!--
 Made with Book Theme
@@ -82,16 +82,16 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/2.62c">Release 2.62c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/2.63c">Release 2.63c</a>
 </li>
-<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases">All releases</a></li>
-<li><a href="https://github.com/vanhauser-thc/AFLplusplus/archive/master.zip">Current devel</a></li>
-<li><a href="https://raw.githubusercontent.com/vanhauser-thc/AFLplusplus/master/docs/COPYING">License</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
+<li><a href="https://raw.githubusercontent.com/AFLplusplus/AFLplusplus/master/docs/COPYING">License</a></li>
 </ul>
 </li>
 <li><strong>Links</strong>
 <ul>
-<li><a href="https://github.com/vanhauser-thc/AFLplusplus">Repo (GitHub)</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus">Repo (GitHub)</a></li>
 <li><a href="https://groups.google.com/group/afl-users">Mailing list</a></li>
 </ul>
 </li>
@@ -142,11 +142,13 @@ https://github.com/alex-shpak/hugo-book
     <li><a href="#1-settings-for-afl-gcc-afl-clang-and-afl-as---and-gcc_plugin-afl-gcc-fast">1) Settings for afl-gcc, afl-clang, and afl-as - and gcc_plugin afl-gcc-fast</a></li>
     <li><a href="#2-settings-for-afl-clang-fast--afl-clang-fast--afl-gcc-fast--afl-g-fast">2) Settings for afl-clang-fast / afl-clang-fast++ / afl-gcc-fast / afl-g++-fast</a>
       <ul>
+        <li><a href="#select-the-instrumentation-mode">Select the instrumentation mode</a></li>
         <li><a href="#lto">LTO</a></li>
-        <li><a href="#laf-intel">LAF-INTEL</a></li>
-        <li><a href="#whitelist">WHITELIST</a></li>
         <li><a href="#instrim">INSTRIM</a></li>
         <li><a href="#ngram">NGRAM</a></li>
+        <li><a href="#ctx">CTX</a></li>
+        <li><a href="#laf-intel">LAF-INTEL</a></li>
+        <li><a href="#whitelist">WHITELIST</a></li>
         <li><a href="#not_zero">NOT_ZERO</a></li>
         <li><a href="#cmplog">CMPLOG</a></li>
         <li><a href="#whitelist-1">WHITELIST</a></li>
@@ -278,6 +280,16 @@ is more effective but makes not much sense together with this option.</p>
 </li>
 </ul>
 <p>Then there are a few specific features that are only available in llvm_mode:</p>
+<h3 id="select-the-instrumentation-mode">Select the instrumentation mode</h3>
+<pre><code>- AFL_LLVM_INSTRUMENT - this configures the instrumentation mode. 
+  Available options:
+    DEFAULT - classic AFL (map[cur_loc ^ prev_loc &gt;&gt; 1]++)
+    CFG - InsTrim instrumentation (see below)
+    LTO - LTO instrumentation (see below)
+    CTX - context sensitive instrumentation (see below)
+    NGRAM-x - deeper previous location coverage (from NGRAM-2 up to NGRAM-16)
+  Only one can be used.
+</code></pre>
 <h3 id="lto">LTO</h3>
 <pre><code>This is a different kind way of instrumentation: first it compiles all
 code in LTO (link time optimization) and then performs an edge inserting
@@ -297,8 +309,42 @@ This defaults to 1</li>
 <li>AFL_LLVM_LTO_DONTWRITEID prevents that the highest location ID written
 into the instrumentation is set in a global variable</li>
 </ul>
-<pre><code>Instrim, LTO and ngram modes can not be used together.
-See llvm_mode/README.LTO.md for more information.
+<pre><code>See llvm_mode/README.LTO.md for more information.
+</code></pre>
+<h3 id="instrim">INSTRIM</h3>
+<pre><code>This feature increases the speed by ~15% without any disadvantages.
+
+- Setting AFL_LLVM_INSTRIM or AFL_LLVM_INSTRUMENT=CFG to activates this mode
+
+- Setting AFL_LLVM_INSTRIM_LOOPHEAD=1 expands on INSTRIM to optimize loops.
+  afl-fuzz will only be able to see the path the loop took, but not how
+  many times it was called (unless it is a complex loop).
+
+- Setting AFL_LLVM_INSTRIM_SKIPSINGLEBLOCK=1 will skip instrumenting
+  functions with a single basic block. This is useful for most C and
+  some C++ targets.
+
+See llvm_mode/README.instrim.md
+</code></pre>
+<h3 id="ngram">NGRAM</h3>
+<pre><code>- Setting AFL_LLVM_NGRAM_SIZE or AFL_LLVM_INSTRUMENT=NGRAM-{value}
+  activates ngram prev_loc coverage, good values are 2, 4 or 8
+  (any value between 2 and 16 is valid).
+  It is highly recommended to increase the MAP_SIZE_POW2 definition in
+  config.h to at least 18 and maybe up to 20 for this as otherwise too
+  many map collisions occur.
+
+See llvm_mode/README.ctx.md
+</code></pre>
+<h3 id="ctx">CTX</h3>
+<pre><code>- Setting AFL_LLVM_CTX or AFL_LLVM_INSTRUMENT=CTX
+  activates context sensitive branch coverage - meaning that each edge
+  is additionally combined with its caller.
+  It is highly recommended to increase the MAP_SIZE_POW2 definition in
+  config.h to at least 18 and maybe up to 20 for this as otherwise too
+  many map collisions occur.
+
+See llvm_mode/README.ngram.md
 </code></pre>
 <h3 id="laf-intel">LAF-INTEL</h3>
 <pre><code>This great feature will split compares to series of single byte comparisons
@@ -321,30 +367,6 @@ See llvm_mode/README.laf-intel.md for more information.
   files that match the names listed in this file.
 
 See llvm_mode/README.whitelist.md for more information.
-</code></pre>
-<h3 id="instrim">INSTRIM</h3>
-<pre><code>This feature increases the speed by whopping 20% but at the cost of a
-lower path discovery and therefore coverage.
-
-- Setting AFL_LLVM_INSTRIM activates this mode
-
-- Setting AFL_LLVM_INSTRIM_LOOPHEAD=1 expands on INSTRIM to optimize loops.
-  afl-fuzz will only be able to see the path the loop took, but not how
-  many times it was called (unless it is a complex loop).
-
-- Setting AFL_LLVM_INSTRIM_SKIPSINGLEBLOCK=1 will skip instrumenting
-  functions with a single basic block. This is useful for most C and
-  some C++ targets.
-
-Instrim, LTO and ngram modes can not be used together.
-See llvm_mode/README.instrim.md
-</code></pre>
-<h3 id="ngram">NGRAM</h3>
-<pre><code>- Setting AFL_LLVM_NGRAM_SIZE activates ngram prev_loc coverage, good
-  values are 2, 4 or 8.
-
-Instrim, LTO and ngram modes can not be used together.
-See llvm_mode/README.ngram.md
 </code></pre>
 <h3 id="not_zero">NOT_ZERO</h3>
 <pre><code>- Setting AFL_LLVM_NOT_ZERO=1 during compilation will use counters
@@ -416,6 +438,10 @@ rapidly put all timeouts in that bin.</p>
 <li>
 <p>AFL_NO_ARITH causes AFL to skip most of the deterministic arithmetics.
 This can be useful to speed up the fuzzing of text-based file formats.</p>
+</li>
+<li>
+<p>AFL_NO_SNAPSHOT will advice afl-fuzz not to use the snapshot feature
+if the snapshot lkm is loaded</p>
 </li>
 <li>
 <p>AFL_SHUFFLE_QUEUE randomly reorders the input queue on startup. Requested
@@ -702,11 +728,13 @@ faults.</p>
     <li><a href="#1-settings-for-afl-gcc-afl-clang-and-afl-as---and-gcc_plugin-afl-gcc-fast">1) Settings for afl-gcc, afl-clang, and afl-as - and gcc_plugin afl-gcc-fast</a></li>
     <li><a href="#2-settings-for-afl-clang-fast--afl-clang-fast--afl-gcc-fast--afl-g-fast">2) Settings for afl-clang-fast / afl-clang-fast++ / afl-gcc-fast / afl-g++-fast</a>
       <ul>
+        <li><a href="#select-the-instrumentation-mode">Select the instrumentation mode</a></li>
         <li><a href="#lto">LTO</a></li>
-        <li><a href="#laf-intel">LAF-INTEL</a></li>
-        <li><a href="#whitelist">WHITELIST</a></li>
         <li><a href="#instrim">INSTRIM</a></li>
         <li><a href="#ngram">NGRAM</a></li>
+        <li><a href="#ctx">CTX</a></li>
+        <li><a href="#laf-intel">LAF-INTEL</a></li>
+        <li><a href="#whitelist">WHITELIST</a></li>
         <li><a href="#not_zero">NOT_ZERO</a></li>
         <li><a href="#cmplog">CMPLOG</a></li>
         <li><a href="#whitelist-1">WHITELIST</a></li>

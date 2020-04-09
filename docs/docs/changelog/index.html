@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.ae541577d8c3a3539e616866f7530ef21cf2611904404d10acf11556f7c0f94c.js" integrity="sha256-rlQVd9jDo1OeYWhm91MO8hzyYRkEQE0QrPEVVvfA&#43;Uw="></script>
+<script defer src="/en.search.min.abfcab61a8e67efad83757319be096f27b3db5bf26a1212925243da00f120f40.js" integrity="sha256-q/yrYajmfvrYN1cxm&#43;CW8ns9tb8moSEpJSQ9oA8SD0A="></script>
 
 <!--
 Made with Book Theme
@@ -82,16 +82,16 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/2.62c">Release 2.62c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/2.63c">Release 2.63c</a>
 </li>
-<li><a href="https://github.com/vanhauser-thc/AFLplusplus/releases">All releases</a></li>
-<li><a href="https://github.com/vanhauser-thc/AFLplusplus/archive/master.zip">Current devel</a></li>
-<li><a href="https://raw.githubusercontent.com/vanhauser-thc/AFLplusplus/master/docs/COPYING">License</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
+<li><a href="https://raw.githubusercontent.com/AFLplusplus/AFLplusplus/master/docs/COPYING">License</a></li>
 </ul>
 </li>
 <li><strong>Links</strong>
 <ul>
-<li><a href="https://github.com/vanhauser-thc/AFLplusplus">Repo (GitHub)</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus">Repo (GitHub)</a></li>
 <li><a href="https://groups.google.com/group/afl-users">Mailing list</a></li>
 </ul>
 </li>
@@ -141,7 +141,7 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
-        <li><a href="#version-262d-develop">Version ++2.62d (develop):</a></li>
+        <li><a href="#version-263c-release">Version ++2.63c (release):</a></li>
         <li><a href="#version-262c-release">Version ++2.62c (release):</a></li>
         <li><a href="#version-261c-release">Version ++2.61c (release):</a></li>
         <li><a href="#version-260c-release">Version ++2.60c (release):</a></li>
@@ -399,7 +399,7 @@ the tool. See README.md for the general instruction manual.</p>
 <h2 id="staying-informed">Staying informed</h2>
 <p>Want to stay in the loop on major new features? Join our mailing list by
 sending a mail to <a href="mailto:afl-users+subscribe@googlegroups.com">afl-users+subscribe@googlegroups.com</a>.</p>
-<h3 id="version-262d-develop">Version ++2.62d (develop):</h3>
+<h3 id="version-263c-release">Version ++2.63c (release):</h3>
 <p>! the repository was moved from vanhauser-thc to AFLplusplus. It is now
 an own organisation :)
 ! development and acceptance of PRs now happen only in the dev branch
@@ -433,17 +433,27 @@ runtime</li>
 </li>
 </ul>
 </li>
-<li>llvm_mode: added Control Flow Integrity sanitizer (AFL_USE_CFISAN)</li>
+<li>llvm_mode:
+<ul>
+<li>added SNAPSHOT feature (using <a href="https://github.com/AFLplusplus/AFL-Snapshot-LKM">https://github.com/AFLplusplus/AFL-Snapshot-LKM</a>)</li>
+<li>added Control Flow Integrity sanitizer (AFL_USE_CFISAN)</li>
+<li>added AFL_LLVM_INSTRUMENT option to control the instrumentation type
+easier: DEFAULT, CFG (INSTRIM), LTO, CTX, NGRAM-x (x=2-16)</li>
+<li>made USE_TRACE_PC compile obsolete</li>
+</ul>
+</li>
 <li>LTO collision free instrumented added in llvm_mode with afl-clang-lto -
 note that this mode is amazing, but quite some targets won&rsquo;t compile</li>
 <li>Added llvm_mode NGRAM prev_loc coverage by Adrean Herrera
 (<a href="https://github.com/adrianherrera/afl-ngram-pass/),">https://github.com/adrianherrera/afl-ngram-pass/),</a> activate by setting
-AFL_LLVM_NGRAM_SIZE</li>
+AFL_LLVM_INSTRUMENT=NGRAM-<!-- raw HTML omitted --> or AFL_LLVM_NGRAM_SIZE=<!-- raw HTML omitted --></li>
+<li>Added llvm_mode context sensitive branch coverage, activated by setting
+AFL_LLVM_INSTRUMENT=CTX or AFL_LLVM_CTX=1</li>
 <li>llvm_mode InsTrim mode:
 <ul>
 <li>removed workaround for bug where paths were not instrumented and
 imported fix by author</li>
-<li>made skipping 1 block functions an option and is disable by default,
+<li>made skipping 1 block functions an option and is disabled by default,
 set AFL_LLVM_INSTRIM_SKIPSINGLEBLOCK=1 to re-enable this</li>
 </ul>
 </li>
@@ -461,6 +471,8 @@ on modern Linux distributions</li>
 </ul>
 </li>
 <li>Pressing Control-c in afl-cmin did not terminate it for some OS</li>
+<li>the custom API was rewritten and is now the same for Python and shared
+libraries.</li>
 </ul>
 <h3 id="version-262c-release">Version ++2.62c (release):</h3>
 <ul>
@@ -3744,7 +3756,7 @@ it.</li>
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
-        <li><a href="#version-262d-develop">Version ++2.62d (develop):</a></li>
+        <li><a href="#version-263c-release">Version ++2.63c (release):</a></li>
         <li><a href="#version-262c-release">Version ++2.62c (release):</a></li>
         <li><a href="#version-261c-release">Version ++2.61c (release):</a></li>
         <li><a href="#version-260c-release">Version ++2.60c (release):</a></li>

@@ -9,7 +9,7 @@ type: docs
 Download the lastest devel version with:
 
 ```shell
-$ git clone https://github.com/vanhauser-thc/AFLplusplus
+$ git clone https://github.com/AFLplusplus/AFLplusplus
 $ cd AFLplusplus
 ```
 
