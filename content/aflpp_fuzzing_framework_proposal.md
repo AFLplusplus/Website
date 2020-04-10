@@ -44,9 +44,10 @@ Mutators are independent sets of mutations. A scheduling policy can be set for s
  
 ## Entities
 
++ Virtual Input (hold input buffer and associated metadata (e.g. structure)
 + Seed Queue
 + Executor (Forkserver, Fauxserver, Network Connector)
-  + Input Channel (A way to send a new testcase to the target (multiple can be stacked))
+  + Input Channel (A way to send a new testcase to the target (multiple can be stacked)) > andrea: why multiple?
   + Observation Channel (shared mem or whatever, also a mmaped file, define a generic interface)
 + Feedback
   + Feedback Reducer (VFuzz "Sensor" -> Reduce Observation Channel output to feedback value)
@@ -66,17 +67,22 @@ Mutators are independent sets of mutations. A scheduling policy can be set for s
 
 ```
 Executor {
-  loggers // more than one
+  observers // more than one
+  current_input
+
+  place_input() // e.g. write to file on in the target memory
 
   init()
   destroy()
   run_target()
 }
 
-Logger {
-  start // mem addr
-  end
+Request {
+  executor
+  // request from the fuzzer (e.g. gimme me more input)
+}
 
+ObvservationChannel {
   init()
   destroy()
   flush()
@@ -84,8 +90,9 @@ Logger {
 }
 
 Feedback {
-  loggers // more than one. also, a logger can be used by multiple feedbacks
+  executor
   specific_queue
+  reducer_function
 
   init()
   destroy()
@@ -117,12 +124,146 @@ Mutator() {
 }
 
 ScheduledMutator() {
-  scheduler
   mutations[]
   
-  mutate()
+  mutate() // implemenats as the scheduler
 }
 ```
+
+## Implementation
+
+```c
+struct afl_virtual_input {
+  u8 (*init_cb)(struct afl_virtual_input*); // can be NULL
+  u8 (*destory_cb)(struct afl_virtual_input*); // can be NULL
+
+  u8* buffer;
+  u32 len;
+};
+
+struct afl_executor {
+  u8 (*init_cb)(struct afl_executor*); // can be NULL
+  u8 (*destory_cb)(struct afl_executor*); // can be NULL
+
+  u8 (*run_target_cb)(struct afl_executor*);
+  u8 (*place_input_cb)(struct afl_executor*); // assume current_input is valid
+  
+  struct afl_virtual_input* current_input;
+  
+  struct afl_observation_channel* observers;
+  u32 observers_num;
+};
+
+struct afl_request_handler {
+  u8 (*init_cb)(struct afl_request_handler*); // can be NULL
+  u8 (*destory_cb)(struct afl_request_handler*); // can be NULL
+
+  u8 (*handle_cb)(struct afl_executor* executor, void* data);
+  
+  s32 request_id; // the dispatcher check this
+};
+
+struct afl_observation_channel {
+  u8 (*init_cb)(struct afl_observation_channel*); // can be NULL
+  u8 (*destory_cb)(struct afl_observation_channel*); // can be NULL
+
+  u8 (*flush_cb)(struct afl_observation_channel*); // can be NULL
+  u8 (*reset_cb)(struct afl_observation_channel*); // can be NULL
+  
+  // extend here adding e.g. a shared memory
+};
+
+struct afl_feedback {
+  u8 (*init_cb)(struct afl_feedback*); // can be NULL
+  u8 (*destory_cb)(struct afl_feedback*); // can be NULL
+
+  u64 (*reducer_function)(u64, u64); // new_value = reducer(old_value, proposed_value)
+  s32 (*is_interesting_cb)(struct afl_executor* executor); // returns rate
+  
+  struct afl_queue* specific_queue;
+};
+
+struct afl_queue_entry {
+  u8 (*init_cb)(struct afl_queue_entry*); // can be NULL
+  u8 (*destory_cb)(struct afl_queue_entry*); // can be NULL
+  
+  // typical queue entry fields, omit for lazyness
+};
+
+struct afl_queue {
+  u8 (*init_cb)(struct afl_queue*); // can be NULL
+  u8 (*destory_cb)(struct afl_queue*); // can be NULL
+  
+  u8 (*add_cb)(struct afl_executor* executor, s32 rate);
+
+  struct afl_queue_entry* start;
+  struct afl_queue_entry* current;
+  
+  u32 size;
+};
+
+struct afl_stage {
+  u8 (*init_cb)(struct afl_stage*); // can be NULL
+  u8 (*destory_cb)(struct afl_stage*); // can be NULL
+
+  // run is not virtual
+
+  struct afl_mutators* mutators;
+  u32 mutators_num;
+
+  struct afl_executor* executor;
+};
+
+struct afl_mutator {
+  u8 (*init_cb)(struct afl_mutator*); // can be NULL
+  u8 (*destory_cb)(struct afl_mutator*); // can be NULL
+  
+  u8 (*mutate_cb)(struct afl_virtual_input* input);
+};
+
+typedef u8 (*mutation_func_t)(struct afl_virtual_input* input);
+
+struct afl_scheduled_mutator {
+  struct afl_mutator super;
+  
+  mutation_func_t* mutations;
+  u32 mutations_num;
+};
+```
+
+### Inheritance
+
+Example of extension of afl_virtual_input.
+
+```c
+struct afl_structured_input {
+  struct afl_virtual_input super;
+  
+  struct virtual_structure* structure;
+};
+
+u8 destroy_structure(struct afl_virtual_input* me) {
+
+  struct afl_structured_input* i = baseof(struct afl_structured_input, super, me);
+  ck_free(i->structure);
+  return R_OK; // all good
+
+}
+
+struct afl_virtual_input* new_structured_input(void) {
+
+  struct afl_structured_input* i = ck_alloc(sizeof(struct afl_structured_input));
+  i->super.destroy_cb = &destroy_structure;
+  i->structure = new_virtual_structure();
+
+  return &i->super;
+
+}
+```
+
+# Obsolote
+
+thsi part is obsolote, don't read (maintained as a reference).
 
 ## Example functions
 
