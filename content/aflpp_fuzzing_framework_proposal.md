@@ -59,9 +59,9 @@ Mutators are independent sets of mutations. A scheduling policy can be set for s
   + Generic seed scheduler
 + Stage
   + Mutator (simple)
-  + ScheduledMutator
+  + StackedMutator
     + Mutation
-    + Mutations scheduler (only 2 atm, random and mopt)
+    + run callback (schedule Mutations)
 
 ## Interfaces
 
@@ -113,7 +113,9 @@ GenericQueue {
 
 Stage {
   executor
-
+  scheduler
+  mutators
+  
   init()
   destroy()
   run()
@@ -123,10 +125,10 @@ Mutator() {
   mutate()
 }
 
-ScheduledMutator() {
+StackedMutator() {
   mutations[]
   
-  mutate() // implemenats as the scheduler
+  mutate()
 }
 ```
 
@@ -207,8 +209,10 @@ struct afl_stage {
   u8 (*destory_cb)(struct afl_stage*); // can be NULL
 
   // run is not virtual
+  
+  u8 (*shceduler_func)(struct afl_stage*, struct afl_mutator*);
 
-  struct afl_mutators* mutators;
+  struct afl_mutator* mutators;
   u32 mutators_num;
 
   struct afl_executor* executor;
@@ -223,11 +227,13 @@ struct afl_mutator {
 
 typedef u8 (*mutation_func_t)(struct afl_virtual_input* input);
 
-struct afl_scheduled_mutator {
+struct afl_stacked_mutator {
   struct afl_mutator super;
   
   mutation_func_t* mutations;
   u32 mutations_num;
+  
+  // mutate_cb here is a scheduler of mutations
 };
 ```
 
