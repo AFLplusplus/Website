@@ -36,8 +36,14 @@ Check out the GitHub repository [here](https://github.com/AFLplusplus/AFLplusplu
   * [CVE-2019-16168](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-16168) by Xingwei Lin
 + Vim
   * [CVE-2019-20079](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20079) by Dhiraj ([blog](https://www.inputzero.io/2020/03/fuzzing-vim.html))
++ Pure-FTPd
+  * [CVE-2019-20176](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20176) [CVE-2020-9274](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-14437)[CVE-2020-9365](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-9365) by Antonio Morales ([GitHub Security Lab](https://securitylab.github.com/research/fuzzing-sockets-FTP))
++ Bftpd
+  * [CVE-2020-6162](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-6162) [CVE-2020-6835](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-6835) by Antonio Morales ([GitHub Security Lab](https://securitylab.github.com/research/fuzzing-sockets-FTP))
 + Tcpdump
   * [CVE-2020-8036](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-8036) by Reza Mirzazade
++ ProFTPd
+  * [CVE-2020-9272](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-9272) [CVE-2020-9273](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-9273) by Antonio Morales ([GitHub Security Lab](https://securitylab.github.com/research/fuzzing-sockets-FTP))
 + Gifsicle
   * [Issue 130](https://github.com/kohler/gifsicle/issues/130) by Ashish Kunwar
 + FFmpeg
