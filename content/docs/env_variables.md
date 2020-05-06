@@ -97,12 +97,15 @@ Then there are a few specific features that are only available in llvm_mode:
 
     - AFL_LLVM_INSTRUMENT - this configures the instrumentation mode. 
       Available options:
-        DEFAULT - classic AFL (map[cur_loc ^ prev_loc >> 1]++)
+        CLASSIC - classic AFL (map[cur_loc ^ prev_loc >> 1]++) (default)
         CFG - InsTrim instrumentation (see below)
         LTO - LTO instrumentation (see below)
         CTX - context sensitive instrumentation (see below)
         NGRAM-x - deeper previous location coverage (from NGRAM-2 up to NGRAM-16)
-      Only one can be used.
+      In CLASSIC (default) and CFG/INSTRIM you can also specify CTX and/or
+      NGRAM, seperate the options with a comma "," then, e.g.:
+        AFL_LLVM_INSTRUMENT=CFG,CTX,NGRAM-4
+      Not that this is a good idea to use both CTX and NGRAM :)
 
 ### LTO
 
@@ -111,13 +114,22 @@ Then there are a few specific features that are only available in llvm_mode:
     instrumentation which is 100% collision free (collisions are a big issue
     in afl and afl-like instrumentations). This is performed by using
     afl-clang-lto/afl-clang-lto++ instead of afl-clang-fast, but is only
-    built if LLVM 9 or newer is used.
+    built if LLVM 11 or newer is used.
 
-    None of these options are necessary to be used and are rather for manual
-    use (which only ever the author of this LTO implementation will use ;-)
+   - AFL_LLVM_LTO_AUTODICTIONARY will generate a dictionary in the target
+     binary based on string compare and memory compare functions.
+     afl-fuzz will automatically get these transmitted when starting to
+     fuzz.
+
+    None of the following options are necessary to be used and are rather for
+    manual use (which only ever the author of this LTO implementation will use).
     These are used if several seperated instrumentation are performed which
     are then later combined.
 
+   - AFL_LLVM_MAP_ADDR sets the fixed map address to a different address than
+     the default 0x10000. A value of 0 or empty sets the map address to be
+     dynamic (the original afl way, which is slower)
+   - AFL_LLVM_MAP_DYNAMIC sets the shared memory address to be dynamic
    - AFL_LLVM_LTO_STARTID sets the starting location ID for the instrumentation.
      This defaults to 1
    - AFL_LLVM_LTO_DONTWRITEID prevents that the highest location ID written
@@ -195,6 +207,10 @@ Then there are a few specific features that are only available in llvm_mode:
       slowdown due a performance issue that is only fixed in llvm 9+.
       This feature increases path discovery by a little bit.
 
+    - Setting AFL_LLVM_SKIP_NEVERZERO=1 will not implement the skip zero
+      test. If the target performs only few loops then this will give a
+      small performance boost.
+
     See llvm_mode/README.neverzero.md
 
 ### CMPLOG
@@ -237,6 +253,11 @@ checks or alter some of the more exotic semantics of the tool:
     have been fuzzed and there were no new finds for a while. This would be
     normally indicated by the cycle counter in the UI turning green. May be
     convenient for some types of automated jobs.
+
+  - AFL_MAP_SIZE sets the size of the shared map that afl-fuzz, afl-showmap,
+    afl-tmin and afl-analyze create to gather instrumentation data from
+    the target. This must be equal or larger than the size the target was
+    compiled with.
 
   - Setting AFL_NO_AFFINITY disables attempts to bind to a specific CPU core
     on Linux systems. This slows things down, but lets you run more instances

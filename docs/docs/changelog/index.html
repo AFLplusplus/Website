@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.c36598e2b8650fbeaa10ea7f2c4922440abb5891013da43c958f368c480d51bc.js" integrity="sha256-w2WY4rhlD76qEOp/LEkiRAq7WJEBPaQ8lY82jEgNUbw="></script>
+<script defer src="/en.search.min.2a41500427e052a3abed02f9c327f832d43b6d05daaaef58f717a6eae5418a5c.js" integrity="sha256-KkFQBCfgUqOr7QL5wyf4MtQ7bQXaqu9Y9xem6uVBilw="></script>
 
 <!--
 Made with Book Theme
@@ -82,7 +82,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/2.63c">Release 2.63c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/2.64c">Release 2.64c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -141,6 +141,8 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
+        <li><a href="#version-264d-develop">Version ++2.64d (develop):</a></li>
+        <li><a href="#version-264c-release">Version ++2.64c (release):</a></li>
         <li><a href="#version-263c-release">Version ++2.63c (release):</a></li>
         <li><a href="#version-262c-release">Version ++2.62c (release):</a></li>
         <li><a href="#version-261c-release">Version ++2.61c (release):</a></li>
@@ -399,6 +401,93 @@ the tool. See README.md for the general instruction manual.</p>
 <h2 id="staying-informed">Staying informed</h2>
 <p>Want to stay in the loop on major new features? Join our mailing list by
 sending a mail to <a href="mailto:afl-users+subscribe@googlegroups.com">afl-users+subscribe@googlegroups.com</a>.</p>
+<h3 id="version-264d-develop">Version ++2.64d (develop):</h3>
+<ul>
+<li>afl-fuzz:
+<ul>
+<li>AFL_MAP_SIZE was not working correctly</li>
+<li>better python detection</li>
+<li>an old, old bug in afl that would show negative stability in rare
+circumstances is now hopefully fixed</li>
+</ul>
+</li>
+<li>llvm_mode:
+<ul>
+<li>if LLVM 11 is installed the posix shm_open+mmap is used and a fixed
+address for the shared memory map is used as this increases the
+fuzzing speed</li>
+<li>fixes to LTO mode if instrumented edges &gt; MAP_SIZE</li>
+<li>CTX and NGRAM can now be used together</li>
+<li>CTX and NGRAM are now also supported in CFG/INSTRIM mode</li>
+<li>AFL_LLVM_LAF_TRANSFORM_COMPARES could crash, fixed</li>
+<li>added AFL_LLVM_SKIP_NEVERZERO to skip the never zero coverage counter
+implementation. For targets with few or no loops or heavily called
+functions. Gives a small performance boost.</li>
+</ul>
+</li>
+<li>qemu_mode:
+<ul>
+<li>add information on PIE/PIC load addresses for 32 bit</li>
+<li>better dependency checks</li>
+</ul>
+</li>
+<li>gcc_plugin:
+<ul>
+<li>better dependency checks</li>
+</ul>
+</li>
+<li>unicorn_mode:
+<ul>
+<li>better submodule handling</li>
+</ul>
+</li>
+<li>afl-showmap: fix for -Q mode</li>
+<li>added examples/afl_network_proxy which allows to fuzz a target over the
+network (not fuzzing tcp/ip services but running afl-fuzz on one system
+and the target being on an embedded device)</li>
+<li>added examples/afl_untracer which does a binary-only fuzzing with the
+modifications done in memory</li>
+<li>added examples/afl_proxy which can be easily used to fuzz and instrument
+non-standard things</li>
+<li>all:
+<ul>
+<li>forkserver communication now also used for error reporting</li>
+<li>fix 32 bit build options</li>
+<li>make clean now leaves qemu-3.1.1.tar.xz and the unicornafl directory
+intact if in a git/svn checkout - unless &ldquo;deepclean&rdquo; is used</li>
+</ul>
+</li>
+</ul>
+<h3 id="version-264c-release">Version ++2.64c (release):</h3>
+<ul>
+<li>llvm_mode LTO mode:
+<ul>
+<li>now requires llvm11 - but compiles all targets! :)</li>
+<li>autodictionary feature added, enable with <code>AFL_LLVM_LTO_AUTODICTIONARY</code></li>
+<li>variable map size usage</li>
+</ul>
+</li>
+<li>afl-fuzz:
+<ul>
+<li>variable map size support added (only LTO mode can use this)</li>
+<li>snapshot feature usage now visible in UI</li>
+<li>Now setting <code>-L -1</code> will enable MOpt in parallel to normal mutation.
+Additionally, this allows to run dictionaries, radamsa and cmplog.</li>
+<li>fix for cmplog/redqueen mode if stdin was used</li>
+<li>fix for writing a better plot_data file</li>
+</ul>
+</li>
+<li>qemu_mode: fix for persistent mode (which would not terminate or get stuck)</li>
+<li>compare-transform/AFL_LLVM_LAF_TRANSFORM_COMPARES now transforms also
+static global and local variable comparisons (cannot find all though)</li>
+<li>extended forkserver: map_size and more information is communicated to
+afl-fuzz (and afl-fuzz acts accordingly)</li>
+<li>new environment variable: AFL_MAP_SIZE to specify the size of the shared map</li>
+<li>if AFL_CC/AFL_CXX is set but empty afl compilers did fail, fixed
+(this bug is in vanilla afl too)</li>
+<li>added NO_PYTHON flag to disable python support when building afl-fuzz</li>
+<li>more refactoring</li>
+</ul>
 <h3 id="version-263c-release">Version ++2.63c (release):</h3>
 <p>! the repository was moved from vanhauser-thc to AFLplusplus. It is now
 an own organisation :)
@@ -443,7 +532,7 @@ easier: DEFAULT, CFG (INSTRIM), LTO, CTX, NGRAM-x (x=2-16)</li>
 </ul>
 </li>
 <li>LTO collision free instrumented added in llvm_mode with afl-clang-lto -
-note that this mode is amazing, but quite some targets won&rsquo;t compile</li>
+this mode is amazing but requires you to build llvm 11 yourself</li>
 <li>Added llvm_mode NGRAM prev_loc coverage by Adrean Herrera
 (<a href="https://github.com/adrianherrera/afl-ngram-pass/),">https://github.com/adrianherrera/afl-ngram-pass/),</a> activate by setting
 AFL_LLVM_INSTRUMENT=NGRAM-<!-- raw HTML omitted --> or AFL_LLVM_NGRAM_SIZE=<!-- raw HTML omitted --></li>
@@ -542,7 +631,7 @@ for x86, x86_64, arm and aarch64</li>
 <li>AFL_PERSISTENT_HOOK callback module for persistent QEMU
 (see examples/qemu_persistent_hook)</li>
 <li>added qemu_mode/README.persistent.md documentation</li>
-<li>AFL_ENTRYPOINT noew has instruction granularity</li>
+<li>AFL_ENTRYPOINT now has instruction granularity</li>
 </ul>
 </li>
 <li>afl-cmin is now a sh script (invoking awk) instead of bash for portability
@@ -3756,6 +3845,8 @@ it.</li>
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
+        <li><a href="#version-264d-develop">Version ++2.64d (develop):</a></li>
+        <li><a href="#version-264c-release">Version ++2.64c (release):</a></li>
         <li><a href="#version-263c-release">Version ++2.63c (release):</a></li>
         <li><a href="#version-262c-release">Version ++2.62c (release):</a></li>
         <li><a href="#version-261c-release">Version ++2.61c (release):</a></li>

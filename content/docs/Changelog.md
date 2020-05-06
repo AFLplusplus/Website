@@ -9,6 +9,69 @@ Want to stay in the loop on major new features? Join our mailing list by
 sending a mail to <afl-users+subscribe@googlegroups.com>.
 
 
+### Version ++2.64d (develop):
+  - afl-fuzz:
+     - AFL_MAP_SIZE was not working correctly
+     - better python detection
+     - an old, old bug in afl that would show negative stability in rare
+       circumstances is now hopefully fixed
+  - llvm_mode:
+     - if LLVM 11 is installed the posix shm_open+mmap is used and a fixed
+       address for the shared memory map is used as this increases the
+       fuzzing speed
+     - fixes to LTO mode if instrumented edges > MAP_SIZE
+     - CTX and NGRAM can now be used together
+     - CTX and NGRAM are now also supported in CFG/INSTRIM mode
+     - AFL_LLVM_LAF_TRANSFORM_COMPARES could crash, fixed
+     - added AFL_LLVM_SKIP_NEVERZERO to skip the never zero coverage counter
+       implementation. For targets with few or no loops or heavily called
+       functions. Gives a small performance boost.
+  - qemu_mode:
+    - add information on PIE/PIC load addresses for 32 bit
+    - better dependency checks
+  - gcc_plugin:
+    - better dependency checks
+  - unicorn_mode:
+    - better submodule handling
+  - afl-showmap: fix for -Q mode
+  - added examples/afl_network_proxy which allows to fuzz a target over the
+    network (not fuzzing tcp/ip services but running afl-fuzz on one system
+    and the target being on an embedded device)
+  - added examples/afl_untracer which does a binary-only fuzzing with the
+    modifications done in memory
+  - added examples/afl_proxy which can be easily used to fuzz and instrument
+    non-standard things
+  - all:
+    - forkserver communication now also used for error reporting
+    - fix 32 bit build options
+    - make clean now leaves qemu-3.1.1.tar.xz and the unicornafl directory
+      intact if in a git/svn checkout - unless "deepclean" is used
+
+
+### Version ++2.64c (release):
+  - llvm_mode LTO mode:
+    - now requires llvm11 - but compiles all targets! :)
+    - autodictionary feature added, enable with `AFL_LLVM_LTO_AUTODICTIONARY`
+    - variable map size usage
+  - afl-fuzz:
+    - variable map size support added (only LTO mode can use this)
+    - snapshot feature usage now visible in UI
+    - Now setting `-L -1` will enable MOpt in parallel to normal mutation.
+      Additionally, this allows to run dictionaries, radamsa and cmplog.
+    - fix for cmplog/redqueen mode if stdin was used
+    - fix for writing a better plot_data file
+  - qemu_mode: fix for persistent mode (which would not terminate or get stuck)
+  - compare-transform/AFL_LLVM_LAF_TRANSFORM_COMPARES now transforms also
+    static global and local variable comparisons (cannot find all though)
+  - extended forkserver: map_size and more information is communicated to
+    afl-fuzz (and afl-fuzz acts accordingly)
+  - new environment variable: AFL_MAP_SIZE to specify the size of the shared map
+  - if AFL_CC/AFL_CXX is set but empty afl compilers did fail, fixed
+    (this bug is in vanilla afl too)
+  - added NO_PYTHON flag to disable python support when building afl-fuzz
+  - more refactoring
+
+
 ### Version ++2.63c (release):
 
   ! the repository was moved from vanhauser-thc to AFLplusplus. It is now
@@ -41,7 +104,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
       easier: DEFAULT, CFG (INSTRIM), LTO, CTX, NGRAM-x (x=2-16)
     - made USE_TRACE_PC compile obsolete
   - LTO collision free instrumented added in llvm_mode with afl-clang-lto -
-    note that this mode is amazing, but quite some targets won't compile
+    this mode is amazing but requires you to build llvm 11 yourself
   - Added llvm_mode NGRAM prev_loc coverage by Adrean Herrera
     (https://github.com/adrianherrera/afl-ngram-pass/), activate by setting
     AFL_LLVM_INSTRUMENT=NGRAM-<value> or AFL_LLVM_NGRAM_SIZE=<value>
@@ -117,7 +180,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
      - AFL_PERSISTENT_HOOK callback module for persistent QEMU
        (see examples/qemu_persistent_hook)
      - added qemu_mode/README.persistent.md documentation
-     - AFL_ENTRYPOINT noew has instruction granularity
+     - AFL_ENTRYPOINT now has instruction granularity
   - afl-cmin is now a sh script (invoking awk) instead of bash for portability
     the original script is still present as afl-cmin.bash
   - afl-showmap: -i dir option now allows processing multiple inputs using the
@@ -294,7 +357,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
     you use the new -p option :-) - see docs/power_schedules.md
   - added afl-system-config script to set all system performance options for fuzzing
   - llvm_mode works with llvm 3.9 up to including 8 !
-  - qemu_mode got upgraded from 2.1 to 3.1 - incorporated from 
+  - qemu_mode got upgraded from 2.1 to 3.1 - incorporated from
     https://github.com/andreafioraldi/afl and with community patches added
 
 
