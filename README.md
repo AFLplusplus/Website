@@ -10,7 +10,7 @@ Requirement: hugo extended installed.
 
 ## Local test
 
-`./test.h`
+`./test.sh`
 
 ## Deploy to GitHub
 
