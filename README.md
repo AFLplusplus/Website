@@ -1,6 +1,6 @@
 # AFLplusplus-website
 
-`git clone --recursive git@github.com:andreafioraldi/AFLplusplus-website.git`
+`git clone --recursive https://github.com/AFLplusplus/Website.git`
 
 Requirement: hugo extended installed.
 
