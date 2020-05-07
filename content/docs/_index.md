@@ -8,7 +8,7 @@ weight: 20
 You can browse a part of the AFL++ doc here.
 
 + [Binary-only fuzzing]({{< ref "binaryonly_fuzzing.md" >}})
-+ [Environmant variables]({{< ref "env_variables.md" >}})
++ [Environment variables]({{< ref "env_variables.md" >}})
 + [Status screen]({{< ref "status_screen.md" >}})
 + [Parallel fuzzing]({{< ref "parallel_fuzzing.md" >}})
 + [Performance tips]({{< ref "perf_tips.md" >}})
