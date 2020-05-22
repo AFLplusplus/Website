@@ -30,7 +30,7 @@ TL;DR: qemu_mode in persistent mode is the fastest - if the stability is high en
       <guid>https://aflplus.plus/docs/changelog/</guid>
       <description>Changelog This is the list of all noteworthy changes made in every public release of the tool. See README.md for the general instruction manual.
 Staying informed Want to stay in the loop on major new features? Join our mailing list by sending a mail to afl-users+subscribe@googlegroups.com.
-Version ++2.64d (develop):  afl-fuzz:  AFL_MAP_SIZE was not working correctly better python detection an old, old bug in afl that would show negative stability in rare circumstances is now hopefully fixed   llvm_mode:  if LLVM 11 is installed the posix shm_open+mmap is used and a fixed address for the shared memory map is used as this increases the fuzzing speed fixes to LTO mode if instrumented edges &amp;gt; MAP_SIZE CTX and NGRAM can now be used together CTX and NGRAM are now also supported in CFG/INSTRIM mode AFL_LLVM_LAF_TRANSFORM_COMPARES could crash, fixed added AFL_LLVM_SKIP_NEVERZERO to skip the never zero coverage counter implementation.</description>
+Version ++2.65c (release):  afl-fuzz:  AFL_MAP_SIZE was not working correctly better python detection an old, old bug in afl that would show negative stability in rare circumstances is now hopefully fixed AFL_POST_LIBRARY was deprecated, use AFL_CUSTOM_MUTATOR_LIBRARY instead (see docs/custom_mutators.</description>
     </item>
     
     <item>
@@ -194,8 +194,8 @@ NOTE: Only cPython 2.7, 3.7 and above are supported, although others may work. D
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/readme/</guid>
-      <description>american fuzzy lop plus plus (afl++) Release Version: 2.64c
-Github Version: 2.64d
+      <description>american fuzzy lop plus plus (afl++) Release Version: 2.65c
+Github Version: 2.65d
 includes all necessary/interesting changes from Google&amp;rsquo;s afl 2.56b
 Originally developed by Michal &amp;ldquo;lcamtuf&amp;rdquo; Zalewski.
 Repository: https://github.com/AFLplusplus/AFLplusplus

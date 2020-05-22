@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.25cdcbfe48ef65fa5ec3f2479770ac51cc66f80439afa6a1835de5852056103b.js" integrity="sha256-Jc3L/kjvZfpew/JHl3CsUcxm&#43;AQ5r6ahg13lhSBWEDs="></script>
+<script defer src="/en.search.min.0d5afd246d175c327063248504e7b9546fd6134f507a92393bcd19ce81db549d.js" integrity="sha256-DVr9JG0XXDJwYySFBOe5VG/WE09QepI5O80ZzoHbVJ0="></script>
 
 <!--
 Made with Book Theme
@@ -82,7 +82,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/2.64c">Release 2.64c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/2.65c">Release 2.65c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -141,7 +141,7 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
-        <li><a href="#version-264d-develop">Version ++2.64d (develop):</a></li>
+        <li><a href="#version-265c-release">Version ++2.65c (release):</a></li>
         <li><a href="#version-264c-release">Version ++2.64c (release):</a></li>
         <li><a href="#version-263c-release">Version ++2.63c (release):</a></li>
         <li><a href="#version-262c-release">Version ++2.62c (release):</a></li>
@@ -401,7 +401,7 @@ the tool. See README.md for the general instruction manual.</p>
 <h2 id="staying-informed">Staying informed</h2>
 <p>Want to stay in the loop on major new features? Join our mailing list by
 sending a mail to <a href="mailto:afl-users+subscribe@googlegroups.com">afl-users+subscribe@googlegroups.com</a>.</p>
-<h3 id="version-264d-develop">Version ++2.64d (develop):</h3>
+<h3 id="version-265c-release">Version ++2.65c (release):</h3>
 <ul>
 <li>afl-fuzz:
 <ul>
@@ -409,13 +409,18 @@ sending a mail to <a href="mailto:afl-users+subscribe@googlegroups.com">afl-user
 <li>better python detection</li>
 <li>an old, old bug in afl that would show negative stability in rare
 circumstances is now hopefully fixed</li>
+<li>AFL_POST_LIBRARY was deprecated, use AFL_CUSTOM_MUTATOR_LIBRARY
+instead (see docs/custom_mutators.md)</li>
 </ul>
 </li>
 <li>llvm_mode:
 <ul>
+<li>afl-clang-fast/lto now do not skip single block functions. This
+behaviour can be reactivated with AFL_LLVM_SKIPSINGLEBLOCK</li>
 <li>if LLVM 11 is installed the posix shm_open+mmap is used and a fixed
 address for the shared memory map is used as this increases the
 fuzzing speed</li>
+<li>InsTrim now has an LTO version! :-) That is the best and fastest mode!</li>
 <li>fixes to LTO mode if instrumented edges &gt; MAP_SIZE</li>
 <li>CTX and NGRAM can now be used together</li>
 <li>CTX and NGRAM are now also supported in CFG/INSTRIM mode</li>
@@ -438,6 +443,7 @@ functions. Gives a small performance boost.</li>
 </li>
 <li>unicorn_mode:
 <ul>
+<li>validate_crash_callback can now count non-crashing inputs as crash as well</li>
 <li>better submodule handling</li>
 </ul>
 </li>
@@ -446,7 +452,7 @@ functions. Gives a small performance boost.</li>
 network (not fuzzing tcp/ip services but running afl-fuzz on one system
 and the target being on an embedded device)</li>
 <li>added examples/afl_untracer which does a binary-only fuzzing with the
-modifications done in memory</li>
+modifications done in memory (intel32/64 and aarch64 support)</li>
 <li>added examples/afl_proxy which can be easily used to fuzz and instrument
 non-standard things</li>
 <li>all:
@@ -3811,7 +3817,13 @@ it.</li>
 </ul>
 <h3 id="version-021b-2013-11-12">Version 0.21b (2013-11-12):</h3>
 <ul>
-<li>Initial public release.</li>
+<li>
+<p>Initial public release.</p>
+</li>
+<li>
+<p>Added support for use of multiple custom mutators which can be specified using
+the environment variable AFL_CUSTOM_MUTATOR_LIBRARY.</p>
+</li>
 </ul>
 </article>
  
@@ -3845,7 +3857,7 @@ it.</li>
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
-        <li><a href="#version-264d-develop">Version ++2.64d (develop):</a></li>
+        <li><a href="#version-265c-release">Version ++2.65c (release):</a></li>
         <li><a href="#version-264c-release">Version ++2.64c (release):</a></li>
         <li><a href="#version-263c-release">Version ++2.63c (release):</a></li>
         <li><a href="#version-262c-release">Version ++2.62c (release):</a></li>

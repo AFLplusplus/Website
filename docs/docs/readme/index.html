@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.25cdcbfe48ef65fa5ec3f2479770ac51cc66f80439afa6a1835de5852056103b.js" integrity="sha256-Jc3L/kjvZfpew/JHl3CsUcxm&#43;AQ5r6ahg13lhSBWEDs="></script>
+<script defer src="/en.search.min.0d5afd246d175c327063248504e7b9546fd6134f507a92393bcd19ce81db549d.js" integrity="sha256-DVr9JG0XXDJwYySFBOe5VG/WE09QepI5O80ZzoHbVJ0="></script>
 
 <!--
 Made with Book Theme
@@ -82,7 +82,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/2.64c">Release 2.64c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/2.65c">Release 2.65c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -173,8 +173,8 @@ https://github.com/alex-shpak/hugo-book
 <article class="markdown"><h1 id="american-fuzzy-lop-plus-plus-afl">american fuzzy lop plus plus (afl++)</h1>
 <!-- raw HTML omitted -->
 <p><img src="https://api.travis-ci.com/AFLplusplus/AFLplusplus.svg?branch=master" alt="Travis State"></p>
-<p>Release Version: <a href="https://github.com/AFLplusplus/AFLplusplus/releases">2.64c</a></p>
-<p>Github Version: 2.64d</p>
+<p>Release Version: <a href="https://github.com/AFLplusplus/AFLplusplus/releases">2.65c</a></p>
+<p>Github Version: 2.65d</p>
 <p>includes all necessary/interesting changes from Google&rsquo;s afl 2.56b</p>
 <p>Originally developed by Michal &ldquo;lcamtuf&rdquo; Zalewski.</p>
 <p>Repository: <a href="https://github.com/AFLplusplus/AFLplusplus">https://github.com/AFLplusplus/AFLplusplus</a></p>
@@ -369,7 +369,7 @@ something cool.</p>
 <h2 id="building-and-installing-afl">Building and installing afl++</h2>
 <p>afl++ has many build options.
 The easiest is to build and install everything:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo apt install build-essential libtool-bin python3 automake bison libglib2.0-dev libpixman-1-dev clang python-setuptools llvm
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo apt install build-essential libtool-bin python3-dev automake flex bison libglib2.0-dev libpixman-1-dev clang python3-setuptools llvm
 $ make distrib
 $ sudo make install
 </code></pre></div><p>Note that &ldquo;make distrib&rdquo; also builds llvm_mode, qemu_mode, unicorn_mode and
@@ -795,8 +795,9 @@ encryption, checksums, cryptographic signatures, or compression are used to
 wholly wrap the actual data format to be tested.</p>
 <p>To work around this, you can comment out the relevant checks (see
 examples/libpng_no_checksum/ for inspiration); if this is not possible,
-you can also write a postprocessor, as explained in
-examples/post_library/ (with AFL_POST_LIBRARY)</p>
+you can also write a postprocessor, one of the hooks of custom mutators.
+See <a href="docs/custom_mutators.md">docs/custom_mutators.md</a> on how to use
+<code>AFL_CUSTOM_MUTATOR_LIBRARY</code></p>
 </li>
 <li>
 <p>There are some unfortunate trade-offs with ASAN and 64-bit binaries. This

@@ -9,16 +9,21 @@ Want to stay in the loop on major new features? Join our mailing list by
 sending a mail to <afl-users+subscribe@googlegroups.com>.
 
 
-### Version ++2.64d (develop):
+### Version ++2.65c (release):
   - afl-fuzz:
      - AFL_MAP_SIZE was not working correctly
      - better python detection
      - an old, old bug in afl that would show negative stability in rare
        circumstances is now hopefully fixed
+     - AFL_POST_LIBRARY was deprecated, use AFL_CUSTOM_MUTATOR_LIBRARY
+       instead (see docs/custom_mutators.md)
   - llvm_mode:
+     - afl-clang-fast/lto now do not skip single block functions. This
+       behaviour can be reactivated with AFL_LLVM_SKIPSINGLEBLOCK
      - if LLVM 11 is installed the posix shm_open+mmap is used and a fixed
        address for the shared memory map is used as this increases the
        fuzzing speed
+     - InsTrim now has an LTO version! :-) That is the best and fastest mode!
      - fixes to LTO mode if instrumented edges > MAP_SIZE
      - CTX and NGRAM can now be used together
      - CTX and NGRAM are now also supported in CFG/INSTRIM mode
@@ -32,13 +37,14 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
   - gcc_plugin:
     - better dependency checks
   - unicorn_mode:
+    - validate_crash_callback can now count non-crashing inputs as crash as well
     - better submodule handling
   - afl-showmap: fix for -Q mode
   - added examples/afl_network_proxy which allows to fuzz a target over the
     network (not fuzzing tcp/ip services but running afl-fuzz on one system
     and the target being on an embedded device)
   - added examples/afl_untracer which does a binary-only fuzzing with the
-    modifications done in memory
+    modifications done in memory (intel32/64 and aarch64 support)
   - added examples/afl_proxy which can be easily used to fuzz and instrument
     non-standard things
   - all:
@@ -2571,3 +2577,6 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
 ### Version 0.21b (2013-11-12):
 
   - Initial public release.
+
+  - Added support for use of multiple custom mutators which can be specified using 
+    the environment variable AFL_CUSTOM_MUTATOR_LIBRARY.
