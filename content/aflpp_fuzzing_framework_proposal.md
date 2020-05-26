@@ -15,7 +15,7 @@ We want to create a fuzzing framework with all the pieces to build fuzzer, a sor
 
 afl-fuzz will be just one of the frontends to this library.
 
-We will code it entirely in C starting from the existing AFL++ codebase for the maximum compatibility. One of our goals is to allow a DBI or a debugger to inject the entire library in a target process (like in frida-fuzzer, but better and *NOT* in Javascript).
+We will code it entirely in C starting from the existing AFL++ codebase for the maximum compatibility. One of our goals is to allow a dynamic binary instrumentation (DBI) or a debugger to inject the entire library in a target process (like in frida-fuzzer, but better and *NOT* in Javascript).
 
 Imagine injecting the library in a Windows application with a DLL injection with a harness that fuzzes an API with a structured mutator and without coverage. Or maybe with hardware feedback as coverage, or using a DBI, there is a landscape of possibilities.
 
