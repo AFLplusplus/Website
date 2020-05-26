@@ -15,15 +15,15 @@ We want to create a fuzzing framework with all the pieces to build fuzzer, a sor
 
 afl-fuzz will be just one of the frontends to this library.
 
-We will code it entirely in C starting from the existing AFl++ codebase for the maximum compatibility. One of our goals is to allow a DBI or a debugger to inject the entire library in a target process (like in frida-fuzzer, but better and *NOT* in Javascript).
+We will code it entirely in C starting from the existing AFL++ codebase for the maximum compatibility. One of our goals is to allow a DBI or a debugger to inject the entire library in a target process (like in frida-fuzzer, but better and *NOT* in Javascript).
 
 Imagine injecting the library in a Windows application with a DLL injection with a harness that fuzzes an API with a structured mutator and without coverage. Or maybe with hardware feedback as coverage, or using a DBI, there is a landscape of possibilities.
 
 ## Multiple fuzzers in one
 
-Imagine that you built 2 fuzzers but wants to share their results, we don't want to synchronize testcases anymore (we will ofc maintain the possibility to do that ofc for backward compatibility with AFL but seriously we want to deprecate it).
+Imagine that you built 2 fuzzers but want to share their results, we don't want to synchronize testcases anymore (we will maintain the possibility to do that ofc for backward compatibility with AFL but seriously we want to deprecate it).
 
-You can define these 2 fuzzers, run the first one a thread and run, e.g., 3 instances of the seconds running on 3 threads. All in the same process sharing results immediately.
+You can define these 2 fuzzers, run the first one in a thread and run, e.g., 3 instances of the second running on 3 threads. All in the same process sharing results immediately.
 
 There are several multithreaded fuzzers, most notably honggfuzz, but our idea is to go further and have different configurations running in different threads, not simply a multithreaded fuzzer.
 
@@ -35,8 +35,8 @@ A fuzzer can have multiple executors (a forkserver is an executor), for instance
 
 A fuzzer can have multiple feedback mechanisms (one for executor or multiple for executor e.g. edge coverage + cmp). When a new testcase triggers new feedback a callback decides if the new input has to be inserted in the normal queue or in the per-feedback queue or both.
 
-So the seed selection (the favored testcases set) can work on both normal queue or per-feedback queue.
-A mechanism for seed scheduling can be designed to stress a single type of feedback if the others are stuck (e.g. fuzzing does not produce anymore edge coverage but we still produce feedback regards memory allocation size, the fuzzer will use with more probability testcases from this per-feedback queue).
+So the seed selection (yielding the favored testcases set) can work on both normal queue or per-feedback queue.
+A mechanism for seed scheduling can be designed to stress a single type of feedback if the others are stuck (e.g. fuzzing does not produce anymore edge coverage but we still produce feedback regarding memory allocation size, then the fuzzer will use with more probability testcases from this per-feedback queue).
 
 There will be also the possibility to use a custom algorithm for calculating the energy of a testcase that can be different for each feedback mechanism.
 
@@ -44,7 +44,7 @@ Mutators are independent sets of mutations. A scheduling policy can be set for s
  
 ## Entities
 
-+ Virtual Input (hold input buffer and associated metadata (e.g. structure)
++ Virtual Input (hold input buffer and associated metadata (e.g. structure))
 + Seed Queue
 + Executor (Forkserver, Fauxserver, Network Connector)
   + Input Channel (A way to send a new testcase to the target (multiple can be stacked)) > andrea: why multiple?
@@ -56,7 +56,7 @@ Mutators are independent sets of mutations. A scheduling policy can be set for s
     + Feedback specific seed energy
 + Generic queue
   + Generic seed scheduler
-  + Generic seed scheduler
+  + Generic seed scheduler > andrea duplicate?
 + Stage
   + Mutator (simple)
   + StackedMutator
@@ -70,7 +70,7 @@ Executor {
   observers // more than one
   current_input
 
-  place_input() // e.g. write to file on in the target memory
+  place_input() // e.g. write to file or in the target memory
 
   init()
   destroy()
@@ -267,9 +267,9 @@ struct afl_virtual_input* new_structured_input(void) {
 }
 ```
 
-# Obsolote
+# Obsolete
 
-thsi part is obsolote, don't read (maintained as a reference).
+this part is obsolete, don't read (maintained as a reference).
 
 ## Example functions
 
