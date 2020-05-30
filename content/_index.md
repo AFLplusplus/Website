@@ -6,7 +6,7 @@ bookToc: false
 
 # AFL++ Overview
 
-AFLplusplus is the son of the [American Fuzzy Lop](http://lcamtuf.coredump.cx/afl/) fuzzer by Michal "lcamtuf" Zalewski and was created initially to incorporate all the best features developed in the years for the fuzzers in the AFL family and not merged in AFL cause it is not updated since November 2017.
+AFLplusplus is the daughter of the [American Fuzzy Lop](http://lcamtuf.coredump.cx/afl/) fuzzer by Michal "lcamtuf" Zalewski and was created initially to incorporate all the best features developed in the years for the fuzzers in the AFL family and not merged in AFL cause it is not updated since November 2017.
 
 ![screen1]({{% rel %}}screenshot1.png{{% /rel %}})
 
@@ -50,3 +50,12 @@ Check out the GitHub repository [here](https://github.com/AFLplusplus/AFLplusplu
   * [Ticket 8592](https://trac.ffmpeg.org/ticket/8592) [Ticket 8593](https://trac.ffmpeg.org/ticket/8593) [Ticket 8594](https://trac.ffmpeg.org/ticket/8594) [Ticket 8596](https://trac.ffmpeg.org/ticket/8596) by Andrea Fioraldi
 + Glibc
   * [Bug 25933](https://sourceware.org/bugzilla/show_bug.cgi?id=25933) by David Mendenhall
+
+## Sponsoring
+
+We always need servers with many cores for testing various changes for the efficiency.
+If you want to sponsor a server with more than 20 cores - contact us! :-)
+
+Current sponsors:
+
+* [Fuzzing IO](https://www.fuzzing.io) is sponsoring a 24 core server for one year, thank you! ![screen1]({{% rel %}}logo-fuzzing-io.png{{% /rel %}})
