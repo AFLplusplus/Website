@@ -137,7 +137,7 @@ StackedMutator() {
 ```c
 struct afl_virtual_input {
   u8 (*init_cb)(struct afl_virtual_input*); // can be NULL
-  u8 (*destory_cb)(struct afl_virtual_input*); // can be NULL
+  u8 (*destroy_cb)(struct afl_virtual_input*); // can be NULL
 
   u8* buffer;
   u32 len;
@@ -145,7 +145,7 @@ struct afl_virtual_input {
 
 struct afl_executor {
   u8 (*init_cb)(struct afl_executor*); // can be NULL
-  u8 (*destory_cb)(struct afl_executor*); // can be NULL
+  u8 (*destroy_cb)(struct afl_executor*); // can be NULL
 
   u8 (*run_target_cb)(struct afl_executor*);
   u8 (*place_input_cb)(struct afl_executor*); // assume current_input is valid
@@ -158,7 +158,7 @@ struct afl_executor {
 
 struct afl_request_handler {
   u8 (*init_cb)(struct afl_request_handler*); // can be NULL
-  u8 (*destory_cb)(struct afl_request_handler*); // can be NULL
+  u8 (*destroy_cb)(struct afl_request_handler*); // can be NULL
 
   u8 (*handle_cb)(struct afl_executor* executor, void* data);
   
@@ -167,7 +167,7 @@ struct afl_request_handler {
 
 struct afl_observation_channel {
   u8 (*init_cb)(struct afl_observation_channel*); // can be NULL
-  u8 (*destory_cb)(struct afl_observation_channel*); // can be NULL
+  u8 (*destroy_cb)(struct afl_observation_channel*); // can be NULL
 
   u8 (*flush_cb)(struct afl_observation_channel*); // can be NULL
   u8 (*reset_cb)(struct afl_observation_channel*); // can be NULL
@@ -177,7 +177,7 @@ struct afl_observation_channel {
 
 struct afl_feedback {
   u8 (*init_cb)(struct afl_feedback*); // can be NULL
-  u8 (*destory_cb)(struct afl_feedback*); // can be NULL
+  u8 (*destroy_cb)(struct afl_feedback*); // can be NULL
 
   u64 (*reducer_function)(u64, u64); // new_value = reducer(old_value, proposed_value)
   s32 (*is_interesting_cb)(struct afl_executor* executor); // returns rate
@@ -187,14 +187,14 @@ struct afl_feedback {
 
 struct afl_queue_entry {
   u8 (*init_cb)(struct afl_queue_entry*); // can be NULL
-  u8 (*destory_cb)(struct afl_queue_entry*); // can be NULL
+  u8 (*destroy_cb)(struct afl_queue_entry*); // can be NULL
   
   // typical queue entry fields, omit for lazyness
 };
 
 struct afl_queue {
   u8 (*init_cb)(struct afl_queue*); // can be NULL
-  u8 (*destory_cb)(struct afl_queue*); // can be NULL
+  u8 (*destroy_cb)(struct afl_queue*); // can be NULL
   
   u8 (*add_cb)(struct afl_executor* executor, s32 rate);
 
@@ -206,7 +206,7 @@ struct afl_queue {
 
 struct afl_stage {
   u8 (*init_cb)(struct afl_stage*); // can be NULL
-  u8 (*destory_cb)(struct afl_stage*); // can be NULL
+  u8 (*destroy_cb)(struct afl_stage*); // can be NULL
 
   // run is not virtual
   
@@ -220,7 +220,7 @@ struct afl_stage {
 
 struct afl_mutator {
   u8 (*init_cb)(struct afl_mutator*); // can be NULL
-  u8 (*destory_cb)(struct afl_mutator*); // can be NULL
+  u8 (*destroy_cb)(struct afl_mutator*); // can be NULL
   
   u8 (*mutate_cb)(struct afl_virtual_input* input);
 };
