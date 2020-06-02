@@ -68,7 +68,7 @@ Mutators are independent sets of mutations. A scheduling policy can be set for s
 ```
 Executor {
   observers // more than one
-  current_input
+  current_input // more than one
 
   place_input() // e.g. write to file or in the target memory
 
