@@ -44,7 +44,7 @@ Mutators are independent sets of mutations. A scheduling policy can be set for s
  
 ## Entities
 
-+ Virtual Input (hold input buffer and associated metadata (e.g. structure))
++ Virtual Input/Input State (hold input buffer and associated metadata (e.g. structure) for a testcase item)
 + Seed Queue
 + Executor (Forkserver, Fauxserver, Network Connector)
   + Input Channel (A way to send a new testcase to the target (multiple can be stacked)) > andrea: why multiple?
