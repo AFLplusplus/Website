@@ -45,7 +45,7 @@ Mutators are independent sets of mutations. A scheduling policy can be set for s
 ## Entities
 
 + Virtual Input/Input State (hold input buffer and associated metadata (e.g. structure) for a testcase item)
-+ Seed Queue
++ Seed Queue per input channel
 + Executor (Forkserver, Fauxserver, Network Connector)
   + Input Channel (A way to send a new testcase to the target (multiple can be stacked, i.e. change command line parameters sparingly, then fuzz for each option over file/stdin))
   + Observation Channel (shared mem or whatever, also a mmaped file, define a generic interface)
