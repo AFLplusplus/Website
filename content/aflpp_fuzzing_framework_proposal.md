@@ -96,7 +96,7 @@ Feedback {
 
   init()
   destroy()
-  is_interesting()
+  is_interesting() // not bool but e.g. float 0.0 - 1.0
 }
 
 FeedbackSpecificQueue {
