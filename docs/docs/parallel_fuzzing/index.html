@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.dc569d6e8b757d478d812a02ab482cf90f501af57f18e55276555824a166b866.js" integrity="sha256-3Fadbot1fUeNgSoCq0gs&#43;Q9QGvV/GOVSdlVYJKFmuGY="></script>
+<script defer src="/en.search.min.60dd47b31fb4278481711e71c795f66f7a9e6358d1a8c9672fbef99dd51a6747.js" integrity="sha256-YN1Hsx&#43;0J4SBcR5xx5X2b3qeY1jRqMlnL775ndUaZ0c="></script>
 
 <!--
 Made with Book Theme
@@ -231,7 +231,7 @@ every &lt;fuzzer_id&gt; local to the machine. It&rsquo;s best to use a naming sc
 that includes host name in the fuzzer ID, so that you can do something
 like:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#66d9ef">for</span> s in <span style="color:#f92672">{</span>1..10<span style="color:#f92672">}</span>; <span style="color:#66d9ef">do</span>
-  ssh user@host<span style="color:#e6db74">${</span>s<span style="color:#e6db74">}</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">tar -czf - sync/host</span><span style="color:#e6db74">${</span>s<span style="color:#e6db74">}</span><span style="color:#e6db74">_fuzzid*/[qf]*</span><span style="color:#e6db74">&#34;</span> &gt;host<span style="color:#e6db74">${</span>s<span style="color:#e6db74">}</span>.tgz
+  ssh user@host<span style="color:#e6db74">${</span>s<span style="color:#e6db74">}</span> <span style="color:#e6db74">&#34;tar -czf - sync/host</span><span style="color:#e6db74">${</span>s<span style="color:#e6db74">}</span><span style="color:#e6db74">_fuzzid*/[qf]*&#34;</span> &gt;host<span style="color:#e6db74">${</span>s<span style="color:#e6db74">}</span>.tgz
 <span style="color:#66d9ef">done</span>
 </code></pre></div></li>
 <li>
