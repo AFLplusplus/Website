@@ -82,7 +82,7 @@ Request {
   // request from the fuzzer (e.g. gimme me more input)
 }
 
-ObvservationChannel {
+ObservationChannel {
   init()
   destroy()
   flush()
@@ -92,7 +92,7 @@ ObvservationChannel {
 Feedback {
   executor
   specific_queue
-  reducer_function
+  reducers
 
   init()
   destroy()
