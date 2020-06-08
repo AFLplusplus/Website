@@ -92,11 +92,10 @@ ObservationChannel {
 Feedback {
   executor
   specific_queue
-  reducers
 
   init()
   destroy()
-  is_interesting() // not bool but e.g. float 0.0 - 1.0
+  reduce_feedback() // not bool but e.g. float 0.0 - 1.0
 }
 
 FeedbackSpecificQueue {
@@ -109,6 +108,8 @@ GenericQueue {
   feedbacks // all feedbacks
   scheduler
   energy_calc
+  
+  is_interesting() // not bool but e.g. float 0.0 - 1.0
 }
 
 Stage {
