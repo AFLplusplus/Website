@@ -85,8 +85,8 @@ Request {
 ObservationChannel {
   init()
   destroy()
-  flush()
-  reset() // memset 0 in the edge coverage case in AFL
+  pre_run() // memset 0 in the edge coverage case in AFL
+  post_run()
 }
 
 Feedback {
