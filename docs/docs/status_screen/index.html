@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.60dd47b31fb4278481711e71c795f66f7a9e6358d1a8c9672fbef99dd51a6747.js" integrity="sha256-YN1Hsx&#43;0J4SBcR5xx5X2b3qeY1jRqMlnL775ndUaZ0c="></script>
+<script defer src="/en.search.min.84fef5e9f1f54d768ef46f6c2eff7eaed4a902b22e5a75fb879a9d32b51c5c71.js" integrity="sha256-hP716fH1TXaO9G9sLv9&#43;rtSpArIuWnX7h5qdMrUcXHE="></script>
 
 <!--
 Made with Book Theme
@@ -73,8 +73,9 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><a href="/features/">Features</a></li>
 <li><a href="/building/">Build &amp; Install</a></li>
-<li><a href="/docs/tutorials/">Tutorials</a></li>
 <li><a href="/docs/">Documentation</a></li>
+<li><a href="/docs/tutorials/">Tutorials</a></li>
+<li><a href="/papers/">Papers</a></li>
 </ul>
 </li>
 </ul>
@@ -190,7 +191,7 @@ other side effects - sorry about that.</p>
 (normal: &ldquo;american fuzy lop&rdquo;, crash exploration mode: &ldquo;peruvian rabbit mode&rdquo;)
 and the version of afl++.
 Next to the version is the banner, which, if not set with -T by hand, will
-either show the binary name being fuzzed, or the -M/-S master/slave name for
+either show the binary name being fuzzed, or the -M/-S main/secondary name for
 parallel fuzzing.
 Finally, the last item is the power schedule mode being run (default: explore).</p>
 <h3 id="process-timing">Process timing</h3>
@@ -495,7 +496,7 @@ directory. This includes:</p>
 <li><code>var_byte_count</code>    - how many edges are non-deterministic</li>
 <li><code>afl_banner</code>        - banner text (e.g. the target name)</li>
 <li><code>afl_version</code>       - the version of afl used</li>
-<li><code>target_mode</code>       - default, persistent, qemu, unicorn, dumb</li>
+<li><code>target_mode</code>       - default, persistent, qemu, unicorn, non-instrumented</li>
 <li><code>command_line</code>      - full command line used for the fuzzing session</li>
 </ul>
 <p>Most of these map directly to the UI elements discussed earlier on.</p>

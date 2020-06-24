@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.60dd47b31fb4278481711e71c795f66f7a9e6358d1a8c9672fbef99dd51a6747.js" integrity="sha256-YN1Hsx&#43;0J4SBcR5xx5X2b3qeY1jRqMlnL775ndUaZ0c="></script>
+<script defer src="/en.search.min.84fef5e9f1f54d768ef46f6c2eff7eaed4a902b22e5a75fb879a9d32b51c5c71.js" integrity="sha256-hP716fH1TXaO9G9sLv9&#43;rtSpArIuWnX7h5qdMrUcXHE="></script>
 
 <!--
 Made with Book Theme
@@ -73,8 +73,9 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><a href="/features/">Features</a></li>
 <li><a href="/building/">Build &amp; Install</a></li>
-<li><a href="/docs/tutorials/">Tutorials</a></li>
 <li><a href="/docs/">Documentation</a></li>
+<li><a href="/docs/tutorials/">Tutorials</a></li>
+<li><a href="/papers/">Papers</a></li>
 </ul>
 </li>
 </ul>
@@ -157,7 +158,7 @@ https://github.com/alex-shpak/hugo-book
     <li><a href="#crash-triage">Crash triage</a></li>
     <li><a href="#going-beyond-crashes">Going beyond crashes</a></li>
     <li><a href="#common-sense-risks">Common-sense risks</a></li>
-    <li><a href="#known-limitations--areas-for-improvement">Known limitations &amp; areas for improvement</a></li>
+    <li><a href="#known-limitations--areas-for-improvement">Known limitations & areas for improvement</a></li>
     <li><a href="#special-thanks">Special thanks</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -236,7 +237,7 @@ better *BSD and Android support and much, much more.</p>
 <p>LLVM mode Ngram coverage by Adrian Herrera <a href="https://github.com/adrianherrera/afl-ngram-pass">https://github.com/adrianherrera/afl-ngram-pass</a></p>
 </li>
 </ul>
-<p>A more thorough list is available in the PATCHES file.</p>
+<p>A more thorough list is available in the <a href="docs/PATCHES.md">PATCHES</a> file.</p>
 <table>
 <thead>
 <tr>
@@ -337,7 +338,7 @@ better *BSD and Android support and much, much more.</p>
 <p>(3) partially via AFL_CODE_START/AFL_CODE_END</p>
 <p>(4) Only for LLVM &gt;= 11 and not all targets compile</p>
 <p>(5) upcoming, development in the branch</p>
-<p>(6) not compatible with LTO and InsTrim and needs at least LLVM &gt;= 4.1</p>
+<p>(6) not compatible with LTO instrumentation and needs at least LLVM &gt;= 4.1</p>
 <p>So all in all this is the best-of afl that is currently out there :-)</p>
 <p>For new versions and additional information, check out:
 <a href="https://github.com/AFLplusplus/AFLplusplus">https://github.com/AFLplusplus/AFLplusplus</a></p>
@@ -367,16 +368,25 @@ something cool.</p>
 <p>For everyone who wants to contribute (and send pull requests) please read
 <a href="CONTRIBUTING.md">CONTRIBUTING.md</a> before your submit.</p>
 <h2 id="building-and-installing-afl">Building and installing afl++</h2>
-<p>afl++ has many build options.
+<p>An easy way to install afl++ with everything compiled is available via docker:
+You can use the <a href="Dockerfile">Dockerfile</a> (which has gcc-10 and clang-11 -
+hence afl-clang-lto is available!) or just pull directly from the docker hub:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker pull aflplusplus/aflplusplus
+docker run -ti -v /location/of/your/target:/src aflplusplus/aflplusplus
+</code></pre></div><p>This container is automatically generated when a push to master happens.
+You will find your target source code in /src in the container.</p>
+<p>If you want to build afl++ yourself you have many options.
 The easiest is to build and install everything:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo apt install build-essential libtool-bin python3-dev automake flex bison libglib2.0-dev libpixman-1-dev clang python3-setuptools llvm
-$ make distrib
-$ sudo make install
-</code></pre></div><p>Note that &ldquo;make distrib&rdquo; also builds llvm_mode, qemu_mode, unicorn_mode and
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt install build-essential libtool-bin python3-dev automake flex bison libglib2.0-dev libpixman-1-dev clang python3-setuptools llvm
+make distrib
+sudo make install
+</code></pre></div><p>It is recommended to install the newest available gcc and clang and llvm-dev
+possible in your distribution!</p>
+<p>Note that &ldquo;make distrib&rdquo; also builds llvm_mode, qemu_mode, unicorn_mode and
 more. If you just want plain afl then do &ldquo;make all&rdquo;, however compiling and
 using at least llvm_mode is highly recommended for much better results -
 hence in this case</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ make source-only
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">make source-only
 </code></pre></div><p>is what you should choose.</p>
 <p>These build targets exist:</p>
 <ul>
@@ -395,7 +405,7 @@ hence in this case</p>
 </ul>
 <p><a href="https://developer.apple.com/library/archive/qa/qa1118/_index.html">Unless you are on Mac OS X</a> you can also build statically linked versions of the
 afl++ binaries by passing the STATIC=1 argument to make:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ make all STATIC<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">make all STATIC<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
 </code></pre></div><p>These build options exist:</p>
 <ul>
 <li>STATIC - compile AFL++ static</li>
@@ -406,12 +416,7 @@ afl++ binaries by passing the STATIC=1 argument to make:</p>
 <li>LLVM_CONFIG - if your distro doesn&rsquo;t use the standard name for llvm-config (e.g. Debian)</li>
 </ul>
 <p>e.g.: make ASAN_BUILD=1</p>
-<p>Note that afl++ is faster and better the newer the compilers used are.
-Hence at least gcc-9 and especially llvm-9 should be the compilers of choice.
-If your distribution does not have them, you can use the Dockerfile:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd AFLplusplus
-$ sudo docker build -t aflplusplus .
-</code></pre></div><h2 id="challenges-of-guided-fuzzing">Challenges of guided fuzzing</h2>
+<h2 id="challenges-of-guided-fuzzing">Challenges of guided fuzzing</h2>
 <p>Fuzzing is one of the most powerful and proven strategies for identifying
 security issues in real-world software; it is responsible for the vast
 majority of remote code execution and privilege escalation bugs found to date
@@ -476,7 +481,7 @@ superior to blind fuzzing or coverage-only tools.</p>
 <p>PLEASE NOTE: llvm_mode compilation with afl-clang-fast/afl-clang-fast++
 instead of afl-gcc/afl-g++ is much faster and has many cool features.
 See llvm_mode/ - however few code does not compile with llvm.
-We support llvm versions 3.8.0 to 11.</p>
+We support llvm versions 3.4 to 11.</p>
 <p>When source code is available, instrumentation can be injected by a companion
 tool that works as a drop-in replacement for gcc or clang in any standard build
 process for third-party code.</p>
@@ -485,13 +490,13 @@ other optimizations implemented by afl-fuzz, most programs can be fuzzed as fast
 or even faster than possible with traditional tools.</p>
 <p>The correct way to recompile the target program may vary depending on the
 specifics of the build process, but a nearly-universal approach would be:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ CC<span style="color:#f92672">=</span>/path/to/afl/afl-gcc ./configure
-$ make clean all
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">CC<span style="color:#f92672">=</span>/path/to/afl/afl-gcc ./configure
+make clean all
 </code></pre></div><p>For C++ programs, you&rsquo;d would also want to set <code>CXX=/path/to/afl/afl-g++</code>.</p>
 <p>The clang wrappers (afl-clang and afl-clang++) can be used in the same way;
 clang users may also opt to leverage a higher-performance instrumentation mode,
 as described in <a href="llvm_mode/README.md">llvm_mode/README.md</a>.
-Clang/LLVM has a much better performance and works with LLVM version 3.8.0 to 11.</p>
+Clang/LLVM has a much better performance and works with LLVM version 3.4 to 11.</p>
 <p>Using the LAF Intel performance enhancements are also recommended, see
 <a href="llvm_mode/README.laf-intel.md">llvm_mode/README.laf-intel.md</a></p>
 <p>Using partial instrumentation is also recommended, see
@@ -502,7 +507,7 @@ case, it is essential to link this executable against a static version of the
 instrumented library or to make sure that the correct .so file is loaded at
 runtime (usually by setting <code>LD_LIBRARY_PATH</code>). The simplest option is a static
 build, usually possible via:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ CC<span style="color:#f92672">=</span>/path/to/afl/afl-gcc ./configure --disable-shared
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">CC<span style="color:#f92672">=</span>/path/to/afl/afl-gcc ./configure --disable-shared
 </code></pre></div><p>Setting <code>AFL_HARDEN=1</code> when calling &lsquo;make&rsquo; will cause the CC wrapper to
 automatically enable code hardening options that make it easier to detect
 simple memory bugs. Libdislocator, a helper library included with AFL (see
@@ -515,8 +520,8 @@ fast, on-the-fly instrumentation of black-box binaries. This is accomplished
 with a version of QEMU running in the lesser-known &ldquo;user space emulation&rdquo; mode.</p>
 <p>QEMU is a project separate from AFL, but you can conveniently build the
 feature by doing:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd qemu_mode
-$ ./build_qemu_support.sh
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd qemu_mode
+./build_qemu_support.sh
 </code></pre></div><p>For additional instructions and caveats, see <a href="qemu_mode/README.md">qemu_mode/README.md</a>.</p>
 <p>If possible you should use the persistent mode, see <a href="qemu_mode/README.persistent.md">qemu_mode/README.persistent.md</a>.</p>
 <p>The mode is approximately 2-5x slower than compile-time instrumentation, is
@@ -557,16 +562,16 @@ therefore may increase the code coverage.</p>
 <li>rare (experimental)</li>
 </ul>
 <p>In parallel mode (-M/-S, several instances with the shared queue), we suggest to
-run the master using the explore or fast schedule (-p explore) and the slaves
-with a combination of cut-off-exponential (-p coe), exponential (-p fast),
+run the main node using the explore or fast schedule (-p explore) and the secondary
+nodes with a combination of cut-off-exponential (-p coe), exponential (-p fast),
 explore (-p explore) and mmopt (-p mmopt) schedules. If a schedule does
-not perform well for a target, restart the slave with a different schedule.</p>
+not perform well for a target, restart the secondary nodes with a different schedule.</p>
 <p>In single mode, using -p fast is usually slightly more beneficial than the
 default explore mode.
 (We don&rsquo;t want to change the default behavior of afl, so &ldquo;fast&rdquo; has not been
 made the default mode).</p>
 <p>More details can be found in the paper published at the 23rd ACM Conference on
-Computer and Communications Security <a href="https://www.sigsac.org/ccs/CCS2016/accepted-papers/">CCS'16</a></p>
+Computer and Communications Security <a href="https://www.sigsac.org/ccs/CCS2016/accepted-papers/">CCS&rsquo;16</a></p>
 <h2 id="choosing-initial-test-cases">Choosing initial test cases</h2>
 <p>To operate correctly, the fuzzer requires one or more starting file that
 contains a good example of the input data normally expected by the targeted
@@ -592,11 +597,11 @@ exercise different code paths in the target binary.</p>
 requires a read-only directory with initial test cases, a separate place to
 store its findings, plus a path to the binary to test.</p>
 <p>For target binaries that accept input directly from stdin, the usual syntax is:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ./afl-fuzz -i testcase_dir -o findings_dir /path/to/program <span style="color:#f92672">[</span>...params...<span style="color:#f92672">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./afl-fuzz -i testcase_dir -o findings_dir /path/to/program <span style="color:#f92672">[</span>...params...<span style="color:#f92672">]</span>
 </code></pre></div><p>For programs that take input from a file, use &lsquo;@@&rsquo; to mark the location in
 the target&rsquo;s command line where the input file name should be placed. The
 fuzzer will substitute this for you:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ./afl-fuzz -i testcase_dir -o findings_dir /path/to/program @@
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./afl-fuzz -i testcase_dir -o findings_dir /path/to/program @@
 </code></pre></div><p>You can also use the -f option to have the mutated data written to a specific
 file. This is useful if the program expects a particular file extension or so.</p>
 <p>Non-instrumented binaries can be fuzzed in the QEMU mode (add -Q in the command
@@ -649,12 +654,12 @@ early in the process, but this should quickly taper off.</p>
 queue entries. This should help with debugging.</p>
 <p>When you can&rsquo;t reproduce a crash found by afl-fuzz, the most likely cause is
 that you are not setting the same memory limit as used by the tool. Try:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ LIMIT_MB<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>
-$ <span style="color:#f92672">(</span> ulimit -Sv $<span style="color:#f92672">[</span>LIMIT_MB &lt;&lt; 10<span style="color:#f92672">]</span>; /path/to/tested_binary ... <span style="color:#f92672">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">LIMIT_MB<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>
+<span style="color:#f92672">(</span> ulimit -Sv $<span style="color:#f92672">[</span>LIMIT_MB &lt;&lt; 10<span style="color:#f92672">]</span>; /path/to/tested_binary ... <span style="color:#f92672">)</span>
 </code></pre></div><p>Change LIMIT_MB to match the -m parameter passed to afl-fuzz. On OpenBSD,
 also change -Sv to -Sd.</p>
 <p>Any existing output directory can be also used to resume aborted jobs; try:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ./afl-fuzz -i- -o existing_output_dir <span style="color:#f92672">[</span>...etc...<span style="color:#f92672">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./afl-fuzz -i- -o existing_output_dir <span style="color:#f92672">[</span>...etc...<span style="color:#f92672">]</span>
 </code></pre></div><p>If you have gnuplot installed, you can also generate some pretty graphs for any
 active fuzzing task using afl-plot. For an example of how this looks like,
 see <a href="http://lcamtuf.coredump.cx/afl/plot/">http://lcamtuf.coredump.cx/afl/plot/</a>.</p>
@@ -712,7 +717,7 @@ it is possible to get past an initial out-of-bounds read - and see what lies
 beneath.</p>
 <p>Oh, one more thing: for test case minimization, give afl-tmin a try. The tool
 can be operated in a very simple way:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ./afl-tmin -i test_case -o minimized_result -- /path/to/program <span style="color:#f92672">[</span>...<span style="color:#f92672">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./afl-tmin -i test_case -o minimized_result -- /path/to/program <span style="color:#f92672">[</span>...<span style="color:#f92672">]</span>
 </code></pre></div><p>The tool works with crashing and non-crashing test cases alike. In the crash
 mode, it will happily accept instrumented and non-instrumented binaries. In the
 non-crashing mode, the minimizer relies on standard AFL instrumentation to make
@@ -925,7 +930,7 @@ archives first, try: <a href="https://groups.google.com/group/afl-users">https:/
     <li><a href="#crash-triage">Crash triage</a></li>
     <li><a href="#going-beyond-crashes">Going beyond crashes</a></li>
     <li><a href="#common-sense-risks">Common-sense risks</a></li>
-    <li><a href="#known-limitations--areas-for-improvement">Known limitations &amp; areas for improvement</a></li>
+    <li><a href="#known-limitations--areas-for-improvement">Known limitations & areas for improvement</a></li>
     <li><a href="#special-thanks">Special thanks</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>

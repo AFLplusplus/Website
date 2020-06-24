@@ -19,100 +19,127 @@
   </url>
   
   <url>
+    <loc>https://aflplus.plus/papers/</loc>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/aflpp_fuzzing_framework_proposal/</loc>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/binaryonly_fuzzing/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/changelog/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/custom_mutator/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/custom_mutators/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/env_variables/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/historical_notes/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/ideas/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/install/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/life_pro_tips/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/notes_for_asan/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/parallel_fuzzing/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/patches/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/perf_tips/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/power_schedules/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/python_mutators/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/quickstartguide/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/readme/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/readme.mopt/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/readme.radamsa/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/sister_projects/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/status_screen/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/technical_details/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://aflplus.plus/docs/tutorials/libxml2_tutorial/</loc>
+    <priority>0</priority>
   </url>
   
   <url>

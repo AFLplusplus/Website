@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.60dd47b31fb4278481711e71c795f66f7a9e6358d1a8c9672fbef99dd51a6747.js" integrity="sha256-YN1Hsx&#43;0J4SBcR5xx5X2b3qeY1jRqMlnL775ndUaZ0c="></script>
+<script defer src="/en.search.min.84fef5e9f1f54d768ef46f6c2eff7eaed4a902b22e5a75fb879a9d32b51c5c71.js" integrity="sha256-hP716fH1TXaO9G9sLv9&#43;rtSpArIuWnX7h5qdMrUcXHE="></script>
 
 <!--
 Made with Book Theme
@@ -73,8 +73,9 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><a href="/features/">Features</a></li>
 <li><a href="/building/">Build &amp; Install</a></li>
-<li><a href="/docs/tutorials/">Tutorials</a></li>
 <li><a href="/docs/">Documentation</a></li>
+<li><a href="/docs/tutorials/">Tutorials</a></li>
+<li><a href="/papers/">Papers</a></li>
 </ul>
 </li>
 </ul>
@@ -141,6 +142,7 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
+        <li><a href="#version-265d-dev">Version ++2.65d (dev)</a></li>
         <li><a href="#version-265c-release">Version ++2.65c (release):</a></li>
         <li><a href="#version-264c-release">Version ++2.64c (release):</a></li>
         <li><a href="#version-263c-release">Version ++2.63c (release):</a></li>
@@ -401,6 +403,62 @@ the tool. See README.md for the general instruction manual.</p>
 <h2 id="staying-informed">Staying informed</h2>
 <p>Want to stay in the loop on major new features? Join our mailing list by
 sending a mail to <a href="mailto:afl-users+subscribe@googlegroups.com">afl-users+subscribe@googlegroups.com</a>.</p>
+<h3 id="version-265d-dev">Version ++2.65d (dev)</h3>
+<ul>
+<li>afl-fuzz:
+<ul>
+<li>-S secondary nodes now only sync from the main node to increase
+performance, the -M main node still syncs from everyone. Added checks
+that ensure exactly one main node is present and warn otherwise</li>
+<li>If no main node is present at a sync one secondary node automatically
+becomes a temporary main node until a real main nodes shows up</li>
+<li>Fixed a mayor performance issue we inherited from AFLfast</li>
+<li>switched murmur2 hashing and random() for xxh3 and xoshiro256**,
+resulting in an up to 5.5% speed increase</li>
+<li>Resizing the window does not crash afl-fuzz anymore</li>
+<li>Ensure that the targets are killed on exit</li>
+<li>fix/update to MOpt (thanks to arnow117)</li>
+<li>added MOpt dictionary support from repo</li>
+</ul>
+</li>
+<li>llvm_mode:
+<ul>
+<li>the default instrumentation is now PCGUARD if the llvm version is &gt;= 7,
+as it is faster and provides better coverage. The original afl
+instrumentation can be set via AFL_LLVM_INSTRUMENT=AFL. This is
+automatically done when the WHITELIST feature is used.</li>
+<li>some targets want a ld variant for LD that is not gcc/clang but ld,
+added afl-ld-lto to solve this</li>
+<li>lowered minimum required llvm version to 3.4 (except LLVMInsTrim, which
+needs 3.8.0)</li>
+<li>WHITELIST feature now supports wildcards (thanks to sirmc)</li>
+<li>small change to cmplog to make it work with current llvm 11-dev</li>
+<li>added AFL_LLVM_LAF_ALL, sets all laf-intel settings</li>
+<li>LTO whitelist functionality rewritten, now main, _init etc functions
+need not to be whitelisted anymore</li>
+<li>fixed crash in compare-transform-pass when strcasecmp/strncasecmp was
+tried to be instrumented with LTO</li>
+<li>fixed crash in cmplog with LTO</li>
+<li>enable snapshot lkm also for persistent mode</li>
+</ul>
+</li>
+<li>Unicornafl
+<ul>
+<li>Added powerPC support from unicorn/next</li>
+<li>rust bindings!</li>
+</ul>
+</li>
+<li>persistent mode shared memory testcase handover (instead of via
+files/stdin) - 10-100% performance increase</li>
+<li>General support for 64 bit PowerPC, RiscV, Sparc etc.</li>
+<li>slightly better performance compilation options for afl++ and targets</li>
+<li>fixed afl-gcc/afl-as that could break on fast systems reusing pids in
+the same second</li>
+<li>added lots of dictionaries from oss-fuzz, go-fuzz and Jakub Wilk</li>
+<li>added former post_library examples to examples/custom_mutators/</li>
+<li>Dockerfile upgraded to Ubuntu 20.04 Focal and installing llvm 11 and
+gcc 10 so afl-clang-lto can be build</li>
+</ul>
 <h3 id="version-265c-release">Version ++2.65c (release):</h3>
 <ul>
 <li>afl-fuzz:
@@ -3857,6 +3915,7 @@ the environment variable AFL_CUSTOM_MUTATOR_LIBRARY.</p>
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
+        <li><a href="#version-265d-dev">Version ++2.65d (dev)</a></li>
         <li><a href="#version-265c-release">Version ++2.65c (release):</a></li>
         <li><a href="#version-264c-release">Version ++2.64c (release):</a></li>
         <li><a href="#version-263c-release">Version ++2.63c (release):</a></li>
