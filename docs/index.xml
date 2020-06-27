@@ -39,8 +39,9 @@ Additionally the following features and patches have been integrated:
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/papers/</guid>
-      <description>Papers Works based on AFL++ 2020   Dominik Maier, Lukas Seidel, and Shinjo Park. &amp;ldquo;BaseSAFE: BasebandSAnitized Fuzzing through Emulation&amp;rdquo;. In 13th ACM Conference on Security and Privacy in Wireless and Mobile Networks (WiSec 20), Linz (Virtual Event), Austria, July 2020.
-  Andrea Fioraldi, Dominik Maier, Heiko Eißfeldt, and Marc Heuse. &amp;ldquo;AFL++: Combining incremental steps of fuzzing research&amp;rdquo;. In 14th USENIX Workshop on Offensive Technologies (WOOT 20). USENIX Association, Aug.</description>
+      <description>Papers Works based on AFL++ 2020   Andrea Fioraldi, Dominik Maier, Heiko Eißfeldt, and Marc Heuse. &amp;ldquo;AFL++: Combining incremental steps of fuzzing research&amp;rdquo;. In 14th USENIX Workshop on Offensive Technologies (WOOT 20). USENIX Association, Aug. 2020.
+  Andrea Fioraldi, Daniele Cono D’Elia, and Leonardo Querzoni. &amp;ldquo;Fuzzing binaries for memory safety errors with QASan&amp;rdquo;. In 2020 IEEE Cybersecurity Development (SecDev), 2020.
+  Dominik Maier, Lukas Seidel, and Shinjo Park.</description>
     </item>
     
     <item>
