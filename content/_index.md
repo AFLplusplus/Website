@@ -8,7 +8,7 @@ bookToc: false
 
 AFLplusplus is the daughter of the [American Fuzzy Lop](http://lcamtuf.coredump.cx/afl/) fuzzer by Michal "lcamtuf" Zalewski and was created initially to incorporate all the best features developed in the years for the fuzzers in the AFL family and not merged in AFL cause it is not updated since November 2017.
 
-![screen1]({{% rel %}}screenshot1.png{{% /rel %}})
+![screen1]({{% rel %}}screenshot2.png{{% /rel %}})
 
 The AFL++ fuzzing framework includes the following:
 
