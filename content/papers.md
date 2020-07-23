@@ -10,7 +10,7 @@ type: docs
 
 ### 2020
 
-+ Andrea Fioraldi, Dominik Maier, Heiko Eißfeldt, and Marc Heuse. "AFL++: Combining incremental steps of fuzzing research". *In 14th USENIX Workshop on Offensive Technologies (WOOT 20)*. USENIX Association, Aug. 2020.
++ Andrea Fioraldi, Dominik Maier, Heiko Eißfeldt, and Marc Heuse. ["AFL++: Combining incremental steps of fuzzing research"](https://aflplus.plus//papers/aflpp-woot2020.pdf). *In 14th USENIX Workshop on Offensive Technologies (WOOT 20)*. USENIX Association, Aug. 2020.
 
 + Andrea Fioraldi, Daniele Cono D’Elia, and Leonardo Querzoni. ["Fuzzing binaries for memory safety errors with QASan"](https://andreafioraldi.github.io/assets/qasan-secdev20.pdf). *In 2020 IEEE Secure Development Conference (SecDev)*, 2020.
 
