@@ -30,8 +30,6 @@ Check out the GitHub repository [here](https://github.com/AFLplusplus/AFLplusplu
 
 ## Trophies
 
-+ FreeRDP
-  * [CVE-2020-11095](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-11095) [CVE-2020-11096](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-11096) [CVE-2020-11097](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-11097) [CVE-2020-11098](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-11098) [CVE-2020-11099](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-11099) [CVE-2020-13397](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-13397) [CVE-2020-13398](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-13398) [CVE-2020-4030](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-4030) [CVE-2020-4031](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-4031) [CVE-2020-4032](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-4032) [CVE-2020-4033](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-4033) by Antonio Morales ([GitHub Security Lab](https://securitylab.github.com/research/fuzzing-sockets-FreeRDP))
 + VLC
   * [CVE-2019-14437](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-14437) [CVE-2019-14438](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-14438) [CVE-2019-14498](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-14498) [CVE-2019-14533](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-14533) [CVE-2019-14534](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-14534) [CVE-2019-14535](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-14535) [CVE-2019-14776](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-14776) [CVE-2019-14777](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-14777) [CVE-2019-14778](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-14778) [CVE-2019-14779](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-14779) [CVE-2019-14970](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-14970) by Antonio Morales ([GitHub Security Lab](https://securitylab.github.com/research/vlc-vulnerability-heap-overflow))
 + Sqlite
@@ -52,6 +50,8 @@ Check out the GitHub repository [here](https://github.com/AFLplusplus/AFLplusplu
   * [Ticket 8592](https://trac.ffmpeg.org/ticket/8592) [Ticket 8593](https://trac.ffmpeg.org/ticket/8593) [Ticket 8594](https://trac.ffmpeg.org/ticket/8594) [Ticket 8596](https://trac.ffmpeg.org/ticket/8596) by Andrea Fioraldi
 + Glibc
   * [Bug 25933](https://sourceware.org/bugzilla/show_bug.cgi?id=25933) by David Mendenhall
++ FreeRDP
+  * [CVE-2020-11095](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-11095) [CVE-2020-11096](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-11096) [CVE-2020-11097](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-11097) [CVE-2020-11098](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-11098) [CVE-2020-11099](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-11099) [CVE-2020-13397](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-13397) [CVE-2020-13398](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-13398) [CVE-2020-4030](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-4030) [CVE-2020-4031](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-4031) [CVE-2020-4032](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-4032) [CVE-2020-4033](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-4033) by Antonio Morales ([GitHub Security Lab](https://securitylab.github.com/research/fuzzing-sockets-FreeRDP))
 
 ## Sponsoring
 
