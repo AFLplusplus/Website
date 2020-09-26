@@ -26,4 +26,4 @@ type: docs
 
 + Andrea Fioraldi, Daniele Cono D’Elia, and Emilio Coppa. ["WEIZZ: Automatic grey-box fuzzing for structured binary formats"](https://andreafioraldi.github.io/assets/weizz-issta2020.pdf). *In Proceedings of the 29th ACM SIGSOFT International Symposium on Software Testing and Analysis*, ISSTA 2020, New York, NY, USA, 2020. Association for Computing Machinery.
 
-+ Marcel Böhme, Valentin Manès, and Sang Kil Cha. ["Boosting fuzzer efficiency: An information theoreticperspective"](https://mboehme.github.io/paper/FSE20.Entropy.pdf). *In Proceedings of the 14th Joint meeting of the European Software Engineering Conference and the ACM SIGSOFT Symposium on the Foundations of Software Engineering*, ESEC/FSE, pages 1–11, 2020.
++ Marcel Böhme, Valentin Manès, and Sang Kil Cha. ["Boosting fuzzer efficiency: An information theoretic perspective"](https://mboehme.github.io/paper/FSE20.Entropy.pdf). *In Proceedings of the 14th Joint meeting of the European Software Engineering Conference and the ACM SIGSOFT Symposium on the Foundations of Software Engineering*, ESEC/FSE, pages 1–11, 2020.
