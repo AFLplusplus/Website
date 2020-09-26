@@ -8,6 +8,8 @@ type: docs
 
 ## Works based on AFL++
 
+[Bibtex]({{% rel %}}papers_using_aflpp.bib{{% /rel %}})
+
 ### 2020
 
 + Andrea Fioraldi, Dominik Maier, Heiko Eißfeldt, and Marc Heuse. ["AFL++: Combining incremental steps of fuzzing research"](https://aflplus.plus//papers/aflpp-woot2020.pdf). *In 14th USENIX Workshop on Offensive Technologies (WOOT 20)*. USENIX Association, Aug. 2020.
@@ -18,6 +20,10 @@ type: docs
 
 ## Works citing AFL++
 
+[Bibtex]({{% rel %}}papers_citing_aflpp.bib{{% /rel %}})
+
 ### 2020
 
 + Andrea Fioraldi, Daniele Cono D’Elia, and Emilio Coppa. ["WEIZZ: Automatic grey-box fuzzing for structured binary formats"](https://andreafioraldi.github.io/assets/weizz-issta2020.pdf). *In Proceedings of the 29th ACM SIGSOFT International Symposium on Software Testing and Analysis*, ISSTA 2020, New York, NY, USA, 2020. Association for Computing Machinery.
+
++ Marcel Böhme, Valentin Manès, and Sang Kil Cha. ["Boosting fuzzer efficiency: An information theoreticperspective"](https://mboehme.github.io/paper/FSE20.Entropy.pdf). *In Proceedings of the 14th Joint meeting of the European Software Engineering Conference and the ACM SIGSOFT Symposium on the Foundations of Software Engineering*, ESEC/FSE, pages 1–11, 2020.
