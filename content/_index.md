@@ -24,6 +24,8 @@ See the [Features]({{< relref "/features" >}}) page.
 
 If you are a student or enthusiast developer and want to contribute, we have an [idea list](https://github.com/AFLplusplus/AFLplusplus/blob/master/docs/ideas.md) what would be cool to have! :-)
 
+If you want to acknoledge our work and the derived works by the academic community in your paper, see the [Papers]({{< relref "/papers" >}}) page.
+
 It is maintained by Marc "van Hauser" Heuse <mh@mh-sec.de>, Heiko "hexcoder-" Eißfeldt <heiko.eissfeldt@hexco.de>, Andrea Fioraldi <andreafioraldi@gmail.com> and Dominik Maier <mail@dmnk.co>.
 
 Check out the GitHub repository [here](https://github.com/AFLplusplus/AFLplusplus).
