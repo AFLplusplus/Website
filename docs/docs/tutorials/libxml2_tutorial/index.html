@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.8a5fe979a02d1368f2d3b4aebaa6567e8472ba7bcb29f44e708f810efdbde630.js" integrity="sha256-il/peaAtE2jy07SuuqZWfoRyunvLKfROcI&#43;BDv295jA="></script>
+<script defer src="/en.search.min.02375329525b14c75f1680ae22f432d28cf06133afd093507e722bfb98b68a3d.js" integrity="sha256-AjdTKVJbFMdfFoCuIvQy0ozwYTOv0JNQfnIr&#43;5i2ij0="></script>
 
 <!--
 Made with Book Theme
@@ -83,7 +83,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/2.68c">Release 2.68c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.0c">Release 3.00c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -189,16 +189,16 @@ index 735d951d..64725e9c 100644
  }
  
 <span style="color:#a6e22e">+int main(int argc, char** argv) {
-</span><span style="color:#a6e22e"></span><span style="color:#a6e22e">+
-</span><span style="color:#a6e22e"></span><span style="color:#a6e22e">+  if (argc &lt; 2) return 1;
-</span><span style="color:#a6e22e"></span><span style="color:#a6e22e">+
-</span><span style="color:#a6e22e"></span><span style="color:#a6e22e">+  while (__AFL_LOOP(10000))
-</span><span style="color:#a6e22e"></span><span style="color:#a6e22e">+    parseAndPrintFile(argv[1], NULL);
-</span><span style="color:#a6e22e"></span><span style="color:#a6e22e">+
-</span><span style="color:#a6e22e"></span><span style="color:#a6e22e">+  return 0;
-</span><span style="color:#a6e22e"></span><span style="color:#a6e22e">+
-</span><span style="color:#a6e22e"></span><span style="color:#a6e22e">+}
-</span><span style="color:#a6e22e"></span><span style="color:#a6e22e">+
+</span><span style="color:#a6e22e">+
+</span><span style="color:#a6e22e">+  if (argc &lt; 2) return 1;
+</span><span style="color:#a6e22e">+
+</span><span style="color:#a6e22e">+  while (__AFL_LOOP(10000))
+</span><span style="color:#a6e22e">+    parseAndPrintFile(argv[1], NULL);
+</span><span style="color:#a6e22e">+
+</span><span style="color:#a6e22e">+  return 0;
+</span><span style="color:#a6e22e">+
+</span><span style="color:#a6e22e">+}
+</span><span style="color:#a6e22e">+
 </span><span style="color:#a6e22e"></span> int
 <span style="color:#f92672">-main(int argc, char **argv) {
 </span><span style="color:#f92672"></span><span style="color:#a6e22e">+old_main(int argc, char **argv) {

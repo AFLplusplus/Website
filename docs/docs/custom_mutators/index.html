@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.8a5fe979a02d1368f2d3b4aebaa6567e8472ba7bcb29f44e708f810efdbde630.js" integrity="sha256-il/peaAtE2jy07SuuqZWfoRyunvLKfROcI&#43;BDv295jA="></script>
+<script defer src="/en.search.min.02375329525b14c75f1680ae22f432d28cf06133afd093507e722bfb98b68a3d.js" integrity="sha256-AjdTKVJbFMdfFoCuIvQy0ozwYTOv0JNQfnIr&#43;5i2ij0="></script>
 
 <!--
 Made with Book Theme
@@ -83,7 +83,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/2.68c">Release 2.68c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.0c">Release 3.00c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -191,12 +191,12 @@ performed with the custom mutator.</p>
 <h2 id="2-apis">2) APIs</h2>
 <p>C/C++:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">afl_custom_init</span>(afl_t <span style="color:#f92672">*</span>afl, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> seed);
-size_t <span style="color:#a6e22e">afl_custom_fuzz</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, uint8_t <span style="color:#f92672">*</span>buf, size_t buf_size, u8 <span style="color:#f92672">*</span><span style="color:#f92672">*</span>out_buf, uint8_t <span style="color:#f92672">*</span>add_buf, size_t add_buf_size, size_t max_size);
-size_t <span style="color:#a6e22e">afl_custom_post_process</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, uint8_t <span style="color:#f92672">*</span>buf, size_t buf_size, uint8_t <span style="color:#f92672">*</span><span style="color:#f92672">*</span>out_buf);
+size_t <span style="color:#a6e22e">afl_custom_fuzz</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, uint8_t <span style="color:#f92672">*</span>buf, size_t buf_size, u8 <span style="color:#f92672">**</span>out_buf, uint8_t <span style="color:#f92672">*</span>add_buf, size_t add_buf_size, size_t max_size);
+size_t <span style="color:#a6e22e">afl_custom_post_process</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, uint8_t <span style="color:#f92672">*</span>buf, size_t buf_size, uint8_t <span style="color:#f92672">**</span>out_buf);
 int32_t <span style="color:#a6e22e">afl_custom_init_trim</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, uint8_t <span style="color:#f92672">*</span>buf, size_t buf_size);
-size_t <span style="color:#a6e22e">afl_custom_trim</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, uint8_t <span style="color:#f92672">*</span><span style="color:#f92672">*</span>out_buf);
+size_t <span style="color:#a6e22e">afl_custom_trim</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, uint8_t <span style="color:#f92672">**</span>out_buf);
 int32_t <span style="color:#a6e22e">afl_custom_post_trim</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">int</span> success) {
-size_t afl_custom_havoc_mutation(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, u8 <span style="color:#f92672">*</span>buf, size_t buf_size, u8 <span style="color:#f92672">*</span><span style="color:#f92672">*</span>out_buf, size_t max_size);
+size_t afl_custom_havoc_mutation(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, u8 <span style="color:#f92672">*</span>buf, size_t buf_size, u8 <span style="color:#f92672">**</span>out_buf, size_t max_size);
 uint8_t afl_custom_havoc_mutation_probability(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data);
 uint8_t afl_custom_queue_get(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> uint8_t <span style="color:#f92672">*</span>filename);
 <span style="color:#66d9ef">void</span> afl_custom_queue_new_entry(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> uint8_t <span style="color:#f92672">*</span>filename_new_queue, <span style="color:#66d9ef">const</span> uint8_t <span style="color:#f92672">*</span>filename_orig_queue);
