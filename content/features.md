@@ -25,7 +25,7 @@ better *BSD and Android support and much, much more.
 
   * Custom mutator by a library (instead of Python) by kyakdan
 
-  * Unicron mode which allows fuzzing of binaries from completely different platforms (integration provided by domenukk)
+  * Unicorn mode which allows fuzzing of binaries from completely different platforms (integration provided by domenukk)
 
   * LAF-Intel or CompCov support for llvm_mode, qemu_mode and unicorn_mode
 
@@ -35,7 +35,7 @@ better *BSD and Android support and much, much more.
   
   * Win32 PE binary-only fuzzing with QEMU and Wine
 
-  * Radamsa mutator (enable with `-R` to add or `-RR` to run it exclusivly).
+  * Radamsa mutator (enable with `-R` to add or `-RR` to run it exclusively).
 
   * QBDI mode to fuzz android native libraries via QBDI framework
 
