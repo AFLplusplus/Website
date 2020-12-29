@@ -18,7 +18,7 @@ The AFL++ fuzzing framework includes the following:
 + Utilities for testcase/corpus minimization: afl-tmin, afl-cmin.
 + Helper libraries: libtokencap, libdislocator, libcompcov.
 
-It includes a lot of changes, optimizations and new features respect to AFL like the AFLfast power schedules, QEMU 3.1 upgrade with CompareCoverage, MOpt mutators, InsTrim instrumentation and a lot more.
+It includes a lot of changes, optimizations and new features respect to AFL like the AFLfast power schedules, QEMU 5.1 upgrade with CompareCoverage, MOpt mutators, InsTrim instrumentation and a lot more.
 
 See the [Features]({{< relref "/features" >}}) page.
 
