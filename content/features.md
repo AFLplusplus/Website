@@ -10,7 +10,7 @@ Many improvements were made over the official afl release - which did not
 get any feature improvements since November 2017.
 
 Among other changes afl++ has a more performant llvm_mode, supports
-llvm up to version 11, QEMU 3.1, more speed and crashfixes for QEMU,
+llvm up to version 11, QEMU 5.1, more speed and crashfixes for QEMU,
 better *BSD and Android support and much, much more.
 
   Additionally the following features and patches have been integrated:
