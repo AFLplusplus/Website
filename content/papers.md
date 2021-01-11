@@ -29,3 +29,5 @@ type: docs
 + Marcel Böhme, Valentin Manès, and Sang Kil Cha. ["Boosting fuzzer efficiency: An information theoretic perspective"](https://mboehme.github.io/paper/FSE20.Entropy.pdf). *In Proceedings of the 14th Joint meeting of the European Software Engineering Conference and the ACM SIGSOFT Symposium on the Foundations of Software Engineering*, ESEC/FSE, pages 1–11, 2020.
 
 + Güler, Emre and Görz, Philipp and Geretto, Elia and Jemmett, Andrea and Österlund, Sebastian and Bos, Herbert and Giuffrida, Cristiano and Holz, Thorsten. ["Cupid: Automatic fuzzer selection for collaborative fuzzing"](https://www.ei.ruhr-uni-bochum.de/media/emma/veroeffentlichungen/2020/09/26/ACSAC20-Cupid_TiM9H07.pdf). *In Annual Computer Security Applications Conference (ACSAC)*, ACM, 2020 (Austin, USA, December 2020), ACM
+
++ Ahmad Hazimeh, Adrian Herrera, and Mathias Payer. ["Magma: A Ground-Truth Fuzzing Benchmark"](https://dl.acm.org/doi/pdf/10.1145/3428334). Proc. ACM Meas. Anal. Comput. Syst. 4, 3, Article 49 (December 2020), 29 pages.
