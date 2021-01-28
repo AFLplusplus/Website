@@ -18,6 +18,10 @@ type: docs
 
 + Dominik Maier, Lukas Seidel, and Shinjo Park. ["BaseSAFE: BasebandSAnitized Fuzzing through Emulation"](https://arxiv.org/pdf/2005.07797.pdf). *In 13th ACM Conference on Security and Privacy in Wireless and Mobile Networks (WiSec 20)*, Linz (Virtual Event), Austria, July 2020.
 
+### 2021
+
++ Jinghan Wang, Chengyu Song, and Heng Yin. ["Reinforcement Learning-based Hierarchical Seed Scheduling for Greybox Fuzzing"](https://www.cs.ucr.edu/~csong/ndss21-afl-hier.pdf). In Proceedings of the 2021 Network and Distributed System Security Symposium (NDSS'21), February 2021. 
+
 ## Works citing AFL++
 
 [Bibtex]({{% rel %}}papers_citing_aflpp.bib{{% /rel %}})
@@ -31,3 +35,7 @@ type: docs
 + Güler, Emre and Görz, Philipp and Geretto, Elia and Jemmett, Andrea and Österlund, Sebastian and Bos, Herbert and Giuffrida, Cristiano and Holz, Thorsten. ["Cupid: Automatic fuzzer selection for collaborative fuzzing"](https://www.ei.ruhr-uni-bochum.de/media/emma/veroeffentlichungen/2020/09/26/ACSAC20-Cupid_TiM9H07.pdf). *In Annual Computer Security Applications Conference (ACSAC)*, ACM, 2020 (Austin, USA, December 2020), ACM
 
 + Ahmad Hazimeh, Adrian Herrera, and Mathias Payer. ["Magma: A Ground-Truth Fuzzing Benchmark"](https://dl.acm.org/doi/pdf/10.1145/3428334). Proc. ACM Meas. Anal. Comput. Syst. 4, 3, Article 49 (December 2020), 29 pages.
+
+### 2021
+
++ Stefan Nagy, Anh Nguyen-Tuong, Jason Hiser, Jack Davidson, and Matthew Hicks. ["Breaking Through Binaries: Compiler-quality Instrumentation for Better Binary-only Fuzzing"](http://static1.1.sqspcdn.com/static/f/543048/28391424/1610229123433/FIBRE_USENIX_21.pdf?token=F1KXP383rJP1UWqGgPASdv5Xlkc%3D). In 30th USENIX Security Symposium (USENIX Security 21), USENIX Association, August 2021. 
