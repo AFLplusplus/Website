@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.52b0df3e3f8b00c310860cd1be2b184df8491bc637decfb01f5672369aa6ceb3.js" integrity="sha256-UrDfPj&#43;LAMMQhgzRvisYTfhJG8Y33s&#43;wH1ZyNpqmzrM="></script>
+<script defer src="/en.search.min.414d90de4a21b6ac45cf31b1cf81535f59cbdbcba8754f23b5721b297b6a3ce5.js" integrity="sha256-QU2Q3kohtqxFzzGxz4FTX1nL28uodU8jtXIbKXtqPOU="></script>
 
 <!--
 Made with Book Theme
@@ -83,7 +83,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.10c">Release 3.10c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.11c">Release 3.11c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -191,7 +191,7 @@ other side effects - sorry about that.</p>
 (normal: &ldquo;american fuzy lop&rdquo;, crash exploration mode: &ldquo;peruvian rabbit mode&rdquo;)
 and the version of afl++.
 Next to the version is the banner, which, if not set with -T by hand, will
-either show the binary name being fuzzed, or the -M/-S main/secondary name for
+either show the binary name being fuzzed, or the -M/-S master/slave name for
 parallel fuzzing.
 Finally, the last item is the power schedule mode being run (default: explore).</p>
 <h3 id="process-timing">Process timing</h3>
@@ -496,7 +496,7 @@ directory. This includes:</p>
 <li><code>var_byte_count</code>    - how many edges are non-deterministic</li>
 <li><code>afl_banner</code>        - banner text (e.g. the target name)</li>
 <li><code>afl_version</code>       - the version of afl used</li>
-<li><code>target_mode</code>       - default, persistent, qemu, unicorn, non-instrumented</li>
+<li><code>target_mode</code>       - default, persistent, qemu, unicorn, dumb</li>
 <li><code>command_line</code>      - full command line used for the fuzzing session</li>
 </ul>
 <p>Most of these map directly to the UI elements discussed earlier on.</p>

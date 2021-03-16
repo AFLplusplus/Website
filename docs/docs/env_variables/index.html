@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.52b0df3e3f8b00c310860cd1be2b184df8491bc637decfb01f5672369aa6ceb3.js" integrity="sha256-UrDfPj&#43;LAMMQhgzRvisYTfhJG8Y33s&#43;wH1ZyNpqmzrM="></script>
+<script defer src="/en.search.min.414d90de4a21b6ac45cf31b1cf81535f59cbdbcba8754f23b5721b297b6a3ce5.js" integrity="sha256-QU2Q3kohtqxFzzGxz4FTX1nL28uodU8jtXIbKXtqPOU="></script>
 
 <!--
 Made with Book Theme
@@ -83,7 +83,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.10c">Release 3.10c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.11c">Release 3.11c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -164,7 +164,7 @@ https://github.com/alex-shpak/hugo-book
     <li><a href="#7-settings-for-afl-analyze">7) Settings for afl-analyze</a></li>
     <li><a href="#8-settings-for-libdislocator">8) Settings for libdislocator</a></li>
     <li><a href="#9-settings-for-libtokencap">9) Settings for libtokencap</a></li>
-    <li><a href="#10-third-party-variables-set-by-afl-fuzz--other-tools">10) Third-party variables set by afl-fuzz &amp; other tools</a></li>
+    <li><a href="#10-third-party-variables-set-by-afl-fuzz--other-tools">10) Third-party variables set by afl-fuzz & other tools</a></li>
   </ul>
 </nav>
 
@@ -267,10 +267,6 @@ application is very slow</p>
 <h2 id="2-settings-for-afl-clang-fast--afl-clang-fast--afl-gcc-fast--afl-g-fast">2) Settings for afl-clang-fast / afl-clang-fast++ / afl-gcc-fast / afl-g++-fast</h2>
 <p>The native instrumentation helpers (llvm_mode and gcc_plugin) accept a subset
 of the settings discussed in section #1, with the exception of:</p>
-<pre><code>- Setting AFL_LLVM_SKIPSINGLEBLOCK=1 will skip instrumenting
-  functions with a single basic block. This is useful for most C and
-  some C++ targets. This works for all instrumentation modes.
-</code></pre>
 <ul>
 <li>
 <p>AFL_AS, since this toolchain does not directly invoke GNU as.</p>
@@ -307,16 +303,10 @@ afl-clang-lto/afl-clang-lto++ instead of afl-clang-fast, but is only
 built if LLVM 11 or newer is used.
 </code></pre>
 <ul>
-<li>
-<p>AFL_LLVM_INSTRUMENT=CFG will use Control Flow Graph instrumentation.
-(recommended)</p>
-</li>
-<li>
-<p>AFL_LLVM_LTO_AUTODICTIONARY will generate a dictionary in the target
+<li>AFL_LLVM_LTO_AUTODICTIONARY will generate a dictionary in the target
 binary based on string compare and memory compare functions.
 afl-fuzz will automatically get these transmitted when starting to
-fuzz.</p>
-</li>
+fuzz.</li>
 </ul>
 <pre><code>None of the following options are necessary to be used and are rather for
 manual use (which only ever the author of this LTO implementation will use).
@@ -336,19 +326,17 @@ into the instrumentation is set in a global variable</li>
 <pre><code>See llvm_mode/README.LTO.md for more information.
 </code></pre>
 <h3 id="instrim">INSTRIM</h3>
-<pre><code>This feature increases the speed by ~15% without any disadvantages to the
-classic instrumentation.
-
-Note that there is also an LTO version (if you have llvm 11 or higher) -
-that is the best instrumentation we have. Use `afl-clang-lto` to activate.
-The InsTrim LTO version additionally has all the options and features of
-LTO (see above).
+<pre><code>This feature increases the speed by ~15% without any disadvantages.
 
 - Setting AFL_LLVM_INSTRIM or AFL_LLVM_INSTRUMENT=CFG to activates this mode
 
 - Setting AFL_LLVM_INSTRIM_LOOPHEAD=1 expands on INSTRIM to optimize loops.
   afl-fuzz will only be able to see the path the loop took, but not how
   many times it was called (unless it is a complex loop).
+
+- Setting AFL_LLVM_INSTRIM_SKIPSINGLEBLOCK=1 will skip instrumenting
+  functions with a single basic block. This is useful for most C and
+  some C++ targets.
 
 See llvm_mode/README.instrim.md
 </code></pre>
@@ -377,17 +365,12 @@ See llvm_mode/README.ngram.md
 to allow afl-fuzz to find otherwise rather impossible paths. It is not
 restricted to Intel CPUs ;-)
 
-- Setting AFL_LLVM_LAF_TRANSFORM_COMPARES will split string compare functions
-
 - Setting AFL_LLVM_LAF_SPLIT_SWITCHES will split switch()es
+
+- Setting AFL_LLVM_LAF_TRANSFORM_COMPARES will split string compare functions
 
 - Setting AFL_LLVM_LAF_SPLIT_COMPARES will split all floating point and
   64, 32 and 16 bit integer CMP instructions
-
-- Setting AFL_LLVM_LAF_SPLIT_FLOATS will split floating points, needs
-  AFL_LLVM_LAF_SPLIT_COMPARES to be set
-
-- Setting AFL_LLVM_LAF_ALL sets all of the above
 
 See llvm_mode/README.laf-intel.md for more information.
 </code></pre>
@@ -509,8 +492,9 @@ else. This makes the &ldquo;own finds&rdquo; counter in the UI more accurate.
 Beyond counter aesthetics, not much else should change.</p>
 </li>
 <li>
-<p>Note that AFL_POST_LIBRARY is deprecated, use AFL_CUSTOM_MUTATOR_LIBRARY
-instead (see below).</p>
+<p>Setting AFL_POST_LIBRARY allows you to configure a postprocessor for
+mutated files - say, to fix up checksums. See examples/post_library/
+for more.</p>
 </li>
 <li>
 <p>Setting AFL_CUSTOM_MUTATOR_LIBRARY to a shared library with
@@ -789,7 +773,7 @@ faults.</p>
     <li><a href="#7-settings-for-afl-analyze">7) Settings for afl-analyze</a></li>
     <li><a href="#8-settings-for-libdislocator">8) Settings for libdislocator</a></li>
     <li><a href="#9-settings-for-libtokencap">9) Settings for libtokencap</a></li>
-    <li><a href="#10-third-party-variables-set-by-afl-fuzz--other-tools">10) Third-party variables set by afl-fuzz &amp; other tools</a></li>
+    <li><a href="#10-third-party-variables-set-by-afl-fuzz--other-tools">10) Third-party variables set by afl-fuzz & other tools</a></li>
   </ul>
 </nav>
 

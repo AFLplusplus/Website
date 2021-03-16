@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.52b0df3e3f8b00c310860cd1be2b184df8491bc637decfb01f5672369aa6ceb3.js" integrity="sha256-UrDfPj&#43;LAMMQhgzRvisYTfhJG8Y33s&#43;wH1ZyNpqmzrM="></script>
+<script defer src="/en.search.min.414d90de4a21b6ac45cf31b1cf81535f59cbdbcba8754f23b5721b297b6a3ce5.js" integrity="sha256-QU2Q3kohtqxFzzGxz4FTX1nL28uodU8jtXIbKXtqPOU="></script>
 
 <!--
 Made with Book Theme
@@ -83,7 +83,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.10c">Release 3.10c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.11c">Release 3.11c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -165,12 +165,12 @@ virtually no performance hit (you can use the afl-gotcpu tool to make sure).</p>
 <p>In fact, if you rely on just a single job on a multi-core system, you will
 be underutilizing the hardware. So, parallelization is usually the right
 way to go.</p>
-<p>When targeting multiple unrelated binaries or using the tool in
-&ldquo;non-instrumented&rdquo; (-n) mode, it is perfectly fine to just start up several
-fully separate instances of afl-fuzz. The picture gets more complicated when
-you want to have multiple fuzzers hammering a common target: if a hard-to-hit
-but interesting test case is synthesized by one fuzzer, the remaining instances
-will not be able to use that input to guide their work.</p>
+<p>When targeting multiple unrelated binaries or using the tool in &ldquo;dumb&rdquo; (-n)
+mode, it is perfectly fine to just start up several fully separate instances
+of afl-fuzz. The picture gets more complicated when you want to have multiple
+fuzzers hammering a common target: if a hard-to-hit but interesting test case
+is synthesized by one fuzzer, the remaining instances will not be able to use
+that input to guide their work.</p>
 <p>To help with this problem, afl-fuzz offers a simple way to synchronize test
 cases on the fly.</p>
 <p>Note that afl++ has AFLfast&rsquo;s power schedules implemented.
@@ -183,29 +183,28 @@ e.g. Angora (<a href="https://github.com/AngoraFuzzer/Angora/">https://github.co
 system, simply create a new, empty output directory (&ldquo;sync dir&rdquo;) that will be
 shared by all the instances of afl-fuzz; and then come up with a naming scheme
 for every instance - say, &ldquo;fuzzer01&rdquo;, &ldquo;fuzzer02&rdquo;, etc.</p>
-<p>Run the first one (&ldquo;main node&rdquo;, -M) like this:</p>
-<pre><code>./afl-fuzz -i testcase_dir -o sync_dir -M fuzzer01 [...other stuff...]
+<p>Run the first one (&ldquo;master&rdquo;, -M) like this:</p>
+<pre><code>$ ./afl-fuzz -i testcase_dir -o sync_dir -M fuzzer01 [...other stuff...]
 </code></pre><p>&hellip;and then, start up secondary (-S) instances like this:</p>
-<pre><code>./afl-fuzz -i testcase_dir -o sync_dir -S fuzzer02 [...other stuff...]
-./afl-fuzz -i testcase_dir -o sync_dir -S fuzzer03 [...other stuff...]
+<pre><code>$ ./afl-fuzz -i testcase_dir -o sync_dir -S fuzzer02 [...other stuff...]
+$ ./afl-fuzz -i testcase_dir -o sync_dir -S fuzzer03 [...other stuff...]
 </code></pre><p>Each fuzzer will keep its state in a separate subdirectory, like so:</p>
 <p>/path/to/sync_dir/fuzzer01/</p>
 <p>Each instance will also periodically rescan the top-level sync directory
 for any test cases found by other fuzzers - and will incorporate them into
-its own fuzzing when they are deemed interesting enough.
-For performance reasons only -M main node syncs the queue with everyone, the
--S secondary nodes will only sync from the main node.</p>
-<p>The difference between the -M and -S modes is that the main instance will
+its own fuzzing when they are deemed interesting enough.</p>
+<p>The difference between the -M and -S modes is that the master instance will
 still perform deterministic checks; while the secondary instances will
-proceed straight to random tweaks.</p>
-<p>Note that you must always have one -M main instance!</p>
+proceed straight to random tweaks. If you don&rsquo;t want to do deterministic
+fuzzing at all, it&rsquo;s OK to run all instances with -S. With very slow or complex
+targets, or when running heavily parallelized jobs, this is usually a good plan.</p>
 <p>Note that running multiple -M instances is wasteful, although there is an
 experimental support for parallelizing the deterministic checks. To leverage
 that, you need to create -M instances like so:</p>
-<pre><code>./afl-fuzz -i testcase_dir -o sync_dir -M mainA:1/3 [...]
-./afl-fuzz -i testcase_dir -o sync_dir -M mainB:2/3 [...]
-./afl-fuzz -i testcase_dir -o sync_dir -M mainC:3/3 [...]
-</code></pre><p>&hellip;where the first value after &lsquo;:&rsquo; is the sequential ID of a particular main
+<pre><code>$ ./afl-fuzz -i testcase_dir -o sync_dir -M masterA:1/3 [...]
+$ ./afl-fuzz -i testcase_dir -o sync_dir -M masterB:2/3 [...]
+$ ./afl-fuzz -i testcase_dir -o sync_dir -M masterC:3/3 [...]
+</code></pre><p>&hellip;where the first value after &lsquo;:&rsquo; is the sequential ID of a particular master
 instance (starting at 1), and the second value is the total number of fuzzers to
 distribute the deterministic fuzzing across. Note that if you boot up fewer
 fuzzers than indicated by the second number passed to -M, you may end up with
@@ -216,9 +215,9 @@ it&rsquo;s probably time to stop.</p>
 <p>WARNING: Exercise caution when explicitly specifying the -f option. Each fuzzer
 must use a separate temporary file; otherwise, things will go south. One safe
 example may be:</p>
-<pre><code>./afl-fuzz [...] -S fuzzer10 -f file10.txt ./fuzzed/binary @@
-./afl-fuzz [...] -S fuzzer11 -f file11.txt ./fuzzed/binary @@
-./afl-fuzz [...] -S fuzzer12 -f file12.txt ./fuzzed/binary @@
+<pre><code>$ ./afl-fuzz [...] -S fuzzer10 -f file10.txt ./fuzzed/binary @@
+$ ./afl-fuzz [...] -S fuzzer11 -f file11.txt ./fuzzed/binary @@
+$ ./afl-fuzz [...] -S fuzzer12 -f file12.txt ./fuzzed/binary @@
 </code></pre><p>This is not a concern if you use @@ without -f and let afl-fuzz come up with the
 file name.</p>
 <h2 id="3-multi-system-parallelization">3) Multi-system parallelization</h2>
@@ -233,7 +232,7 @@ every &lt;fuzzer_id&gt; local to the machine. It&rsquo;s best to use a naming sc
 that includes host name in the fuzzer ID, so that you can do something
 like:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#66d9ef">for</span> s in <span style="color:#f92672">{</span>1..10<span style="color:#f92672">}</span>; <span style="color:#66d9ef">do</span>
-  ssh user@host<span style="color:#e6db74">${</span>s<span style="color:#e6db74">}</span> <span style="color:#e6db74">&#34;tar -czf - sync/host</span><span style="color:#e6db74">${</span>s<span style="color:#e6db74">}</span><span style="color:#e6db74">_fuzzid*/[qf]*&#34;</span> &gt;host<span style="color:#e6db74">${</span>s<span style="color:#e6db74">}</span>.tgz
+  ssh user@host<span style="color:#e6db74">${</span>s<span style="color:#e6db74">}</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">tar -czf - sync/host</span><span style="color:#e6db74">${</span>s<span style="color:#e6db74">}</span><span style="color:#e6db74">_fuzzid*/[qf]*</span><span style="color:#e6db74">&#34;</span> &gt;host<span style="color:#e6db74">${</span>s<span style="color:#e6db74">}</span>.tgz
 <span style="color:#66d9ef">done</span>
 </code></pre></div></li>
 <li>
@@ -285,7 +284,7 @@ eventually 10 feeding back to group 1.</p>
 the fleet without having to copy every fuzzer queue to every single host.</p>
 </li>
 <li>
-<p>You do not want a &ldquo;main&rdquo; instance of afl-fuzz on every system; you should
+<p>You do not want a &ldquo;master&rdquo; instance of afl-fuzz on every system; you should
 run them all with -S, and just designate a single process somewhere within
 the fleet to run with -M.</p>
 </li>
@@ -300,17 +299,17 @@ automatically switch from a fancy UI to more limited status reports. There is
 also basic machine-readable information always written to the fuzzer_stats file
 in the output directory. Locally, that information can be interpreted with
 afl-whatsup.</p>
-<p>In principle, you can use the status screen of the main (-M) instance to
+<p>In principle, you can use the status screen of the master (-M) instance to
 monitor the overall fuzzing progress and decide when to stop. In this
 mode, the most important signal is just that no new paths are being found
-for a longer while. If you do not have a main instance, just pick any
+for a longer while. If you do not have a master instance, just pick any
 single secondary instance to watch and go by that.</p>
 <p>You can also rely on that instance&rsquo;s output directory to collect the
 synthesized corpus that covers all the noteworthy paths discovered anywhere
 within the fleet. Secondary (-S) instances do not require any special
 monitoring, other than just making sure that they are up.</p>
 <p>Keep in mind that crashing inputs are <em>not</em> automatically propagated to the
-main instance, so you may still want to monitor for crashes fleet-wide
+master instance, so you may still want to monitor for crashes fleet-wide
 from within your synchronization or health checking scripts (see afl-whatsup).</p>
 <h2 id="5-asymmetric-setups">5) Asymmetric setups</h2>
 <p>It is perhaps worth noting that all of the following is permitted:</p>

@@ -9,68 +9,16 @@ Want to stay in the loop on major new features? Join our mailing list by
 sending a mail to <afl-users+subscribe@googlegroups.com>.
 
 
-### Version ++2.65d (dev)
-  - afl-fuzz:
-     - -S secondary nodes now only sync from the main node to increase
-       performance, the -M main node still syncs from everyone. Added checks
-       that ensure exactly one main node is present and warn otherwise
-     - If no main node is present at a sync one secondary node automatically
-       becomes a temporary main node until a real main nodes shows up
-     - Fixed a mayor performance issue we inherited from AFLfast
-     - switched murmur2 hashing and random() for xxh3 and xoshiro256**,
-       resulting in an up to 5.5% speed increase
-     - Resizing the window does not crash afl-fuzz anymore
-     - Ensure that the targets are killed on exit
-     - fix/update to MOpt (thanks to arnow117)
-     - added MOpt dictionary support from repo
-  - llvm_mode:
-    - the default instrumentation is now PCGUARD if the llvm version is >= 7,
-      as it is faster and provides better coverage. The original afl
-      instrumentation can be set via AFL_LLVM_INSTRUMENT=AFL. This is
-      automatically done when the WHITELIST feature is used. 
-    - some targets want a ld variant for LD that is not gcc/clang but ld,
-      added afl-ld-lto to solve this
-    - lowered minimum required llvm version to 3.4 (except LLVMInsTrim, which
-      needs 3.8.0)
-    - WHITELIST feature now supports wildcards (thanks to sirmc)
-    - small change to cmplog to make it work with current llvm 11-dev
-    - added AFL_LLVM_LAF_ALL, sets all laf-intel settings
-    - LTO whitelist functionality rewritten, now main, _init etc functions
-      need not to be whitelisted anymore
-    - fixed crash in compare-transform-pass when strcasecmp/strncasecmp was
-      tried to be instrumented with LTO
-    - fixed crash in cmplog with LTO
-    - enable snapshot lkm also for persistent mode
-  - Unicornafl
-    - Added powerPC support from unicorn/next
-    - rust bindings!
-  - persistent mode shared memory testcase handover (instead of via
-    files/stdin) - 10-100% performance increase
-  - General support for 64 bit PowerPC, RiscV, Sparc etc.
-  - slightly better performance compilation options for afl++ and targets
-  - fixed afl-gcc/afl-as that could break on fast systems reusing pids in
-    the same second
-  - added lots of dictionaries from oss-fuzz, go-fuzz and Jakub Wilk
-  - added former post_library examples to examples/custom_mutators/
-  - Dockerfile upgraded to Ubuntu 20.04 Focal and installing llvm 11 and
-    gcc 10 so afl-clang-lto can be build
-
-
-### Version ++2.65c (release):
+### Version ++2.64d (develop):
   - afl-fuzz:
      - AFL_MAP_SIZE was not working correctly
      - better python detection
      - an old, old bug in afl that would show negative stability in rare
        circumstances is now hopefully fixed
-     - AFL_POST_LIBRARY was deprecated, use AFL_CUSTOM_MUTATOR_LIBRARY
-       instead (see docs/custom_mutators.md)
   - llvm_mode:
-     - afl-clang-fast/lto now do not skip single block functions. This
-       behaviour can be reactivated with AFL_LLVM_SKIPSINGLEBLOCK
      - if LLVM 11 is installed the posix shm_open+mmap is used and a fixed
        address for the shared memory map is used as this increases the
        fuzzing speed
-     - InsTrim now has an LTO version! :-) That is the best and fastest mode!
      - fixes to LTO mode if instrumented edges > MAP_SIZE
      - CTX and NGRAM can now be used together
      - CTX and NGRAM are now also supported in CFG/INSTRIM mode
@@ -84,14 +32,13 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
   - gcc_plugin:
     - better dependency checks
   - unicorn_mode:
-    - validate_crash_callback can now count non-crashing inputs as crash as well
     - better submodule handling
   - afl-showmap: fix for -Q mode
   - added examples/afl_network_proxy which allows to fuzz a target over the
     network (not fuzzing tcp/ip services but running afl-fuzz on one system
     and the target being on an embedded device)
   - added examples/afl_untracer which does a binary-only fuzzing with the
-    modifications done in memory (intel32/64 and aarch64 support)
+    modifications done in memory
   - added examples/afl_proxy which can be easily used to fuzz and instrument
     non-standard things
   - all:
@@ -921,7 +868,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
   - Switched from exit() to _exit() in injected code to avoid snafus with
     destructors in C++ code. Spotted by sunblate.
 
-  - Made a change to avoid spuriously setting __AFL_SHM_ID when
+  - Made a change to avoid spuriously setting __AFL_SHM_ID when 
     AFL_DUMB_FORKSRV is set in conjunction with -n. Spotted by Jakub Wilk.
 
 ### Version 1.94b:
@@ -2624,6 +2571,3 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
 ### Version 0.21b (2013-11-12):
 
   - Initial public release.
-
-  - Added support for use of multiple custom mutators which can be specified using 
-    the environment variable AFL_CUSTOM_MUTATOR_LIBRARY.

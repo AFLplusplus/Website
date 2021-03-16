@@ -83,10 +83,6 @@ tools make fairly broad use of environmental variables:
 The native instrumentation helpers (llvm_mode and gcc_plugin) accept a subset
 of the settings discussed in section #1, with the exception of:
 
-    - Setting AFL_LLVM_SKIPSINGLEBLOCK=1 will skip instrumenting
-      functions with a single basic block. This is useful for most C and
-      some C++ targets. This works for all instrumentation modes.
-
   - AFL_AS, since this toolchain does not directly invoke GNU as.
 
   - TMPDIR and AFL_KEEP_ASSEMBLY, since no temporary assembly files are
@@ -120,9 +116,6 @@ Then there are a few specific features that are only available in llvm_mode:
     afl-clang-lto/afl-clang-lto++ instead of afl-clang-fast, but is only
     built if LLVM 11 or newer is used.
 
-   - AFL_LLVM_INSTRUMENT=CFG will use Control Flow Graph instrumentation.
-     (recommended)
-
    - AFL_LLVM_LTO_AUTODICTIONARY will generate a dictionary in the target
      binary based on string compare and memory compare functions.
      afl-fuzz will automatically get these transmitted when starting to
@@ -146,19 +139,17 @@ Then there are a few specific features that are only available in llvm_mode:
 
 ### INSTRIM
 
-    This feature increases the speed by ~15% without any disadvantages to the
-    classic instrumentation.
-
-    Note that there is also an LTO version (if you have llvm 11 or higher) -
-    that is the best instrumentation we have. Use `afl-clang-lto` to activate.
-    The InsTrim LTO version additionally has all the options and features of
-    LTO (see above).
+    This feature increases the speed by ~15% without any disadvantages.
 
     - Setting AFL_LLVM_INSTRIM or AFL_LLVM_INSTRUMENT=CFG to activates this mode
 
     - Setting AFL_LLVM_INSTRIM_LOOPHEAD=1 expands on INSTRIM to optimize loops.
       afl-fuzz will only be able to see the path the loop took, but not how
       many times it was called (unless it is a complex loop).
+
+    - Setting AFL_LLVM_INSTRIM_SKIPSINGLEBLOCK=1 will skip instrumenting
+      functions with a single basic block. This is useful for most C and
+      some C++ targets.
 
     See llvm_mode/README.instrim.md
 
@@ -190,17 +181,12 @@ Then there are a few specific features that are only available in llvm_mode:
     to allow afl-fuzz to find otherwise rather impossible paths. It is not
     restricted to Intel CPUs ;-)
 
-    - Setting AFL_LLVM_LAF_TRANSFORM_COMPARES will split string compare functions
-
     - Setting AFL_LLVM_LAF_SPLIT_SWITCHES will split switch()es
+
+    - Setting AFL_LLVM_LAF_TRANSFORM_COMPARES will split string compare functions
 
     - Setting AFL_LLVM_LAF_SPLIT_COMPARES will split all floating point and
       64, 32 and 16 bit integer CMP instructions
-
-    - Setting AFL_LLVM_LAF_SPLIT_FLOATS will split floating points, needs
-      AFL_LLVM_LAF_SPLIT_COMPARES to be set
-
-    - Setting AFL_LLVM_LAF_ALL sets all of the above
 
     See llvm_mode/README.laf-intel.md for more information.
 
@@ -315,8 +301,9 @@ checks or alter some of the more exotic semantics of the tool:
     else. This makes the "own finds" counter in the UI more accurate.
     Beyond counter aesthetics, not much else should change.
 
-  - Note that AFL_POST_LIBRARY is deprecated, use AFL_CUSTOM_MUTATOR_LIBRARY
-    instead (see below).
+  - Setting AFL_POST_LIBRARY allows you to configure a postprocessor for
+    mutated files - say, to fix up checksums. See examples/post_library/
+    for more.
 
   - Setting AFL_CUSTOM_MUTATOR_LIBRARY to a shared library with
     afl_custom_fuzz() creates additional mutations through this library.
