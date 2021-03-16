@@ -227,8 +227,8 @@ afl-fuzz /path/to/program
 
 ## 4) Example
 
-Please see [example.c](../examples/custom_mutators/example.c) and
-[example.py](../examples/custom_mutators/example.py)
+Please see [example.c](https://github.com/AFLplusplus/AFLplusplus/blob/stable/utils/custom_mutators/example.c) and
+[example.py](https://github.com/AFLplusplus/AFLplusplus/blob/stable/utils/custom_mutators/example.py)
 
 ## 5) Other Resources
 
