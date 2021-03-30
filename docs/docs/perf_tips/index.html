@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.414d90de4a21b6ac45cf31b1cf81535f59cbdbcba8754f23b5721b297b6a3ce5.js" integrity="sha256-QU2Q3kohtqxFzzGxz4FTX1nL28uodU8jtXIbKXtqPOU="></script>
+<script defer src="/en.search.min.118c6bc4ee4320cd43de639b6048be9939caa6f7bb8a1a76a123eb3db4c07f3e.js" integrity="sha256-EYxrxO5DIM1D3mObYEi&#43;mTnKpve7ihp2oSPrPbTAfz4="></script>
 
 <!--
 Made with Book Theme
@@ -83,7 +83,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.11c">Release 3.11c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.12c">Release 3.12c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -198,7 +198,7 @@ be then manually fed to a more resource-hungry program later on.</p>
 a file.</p>
 <h2 id="3-use-llvm-instrumentation">3. Use LLVM instrumentation</h2>
 <p>When fuzzing slow targets, you can gain 20-100% performance improvement by
-using the LLVM-based instrumentation mode described in <a href="../llvm_mode/README.md">the llvm_mode README</a>.
+using the LLVM-based instrumentation mode described in <a href="../instrumentation/README.llvm.md">the instrumentation README</a>.
 Note that this mode requires the use of clang and will not work with GCC.</p>
 <p>The LLVM mode also offers a &ldquo;persistent&rdquo;, in-process fuzzing mode that can
 work well for certain types of self-contained libraries, and for fast targets,
@@ -207,11 +207,11 @@ that can offer huge benefits for programs with high startup overhead. Both
 modes require you to edit the source code of the fuzzed program, but the
 changes often amount to just strategically placing a single line or two.</p>
 <p>If there are important data comparisons performed (e.g. <code>strcmp(ptr, MAGIC_HDR)</code>)
-then using laf-intel (see llvm_mode/README.laf-intel.md) will help <code>afl-fuzz</code> a lot
+then using laf-intel (see instrumentation/README.laf-intel.md) will help <code>afl-fuzz</code> a lot
 to get to the important parts in the code.</p>
 <p>If you are only interested in specific parts of the code being fuzzed, you can
-whitelist the files that are actually relevant. This improves the speed and
-accuracy of afl. See llvm_mode/README.whitelist.md</p>
+instrument_files the files that are actually relevant. This improves the speed and
+accuracy of afl. See instrumentation/README.instrument_list.md</p>
 <p>Also use the InsTrim mode on larger binaries, this improves performance and
 coverage a lot.</p>
 <h2 id="4-profile-and-optimize-the-binary">4. Profile and optimize the binary</h2>
@@ -241,7 +241,7 @@ There are third-party libraries that make it easy to get rid of such code,
 e.g.:</p>
 <p><a href="https://launchpad.net/libeatmydata">https://launchpad.net/libeatmydata</a></p>
 <p>In programs that are slow due to unavoidable initialization overhead, you may
-want to try the LLVM deferred forkserver mode (see llvm_mode/README.md),
+want to try the LLVM deferred forkserver mode (see README.llvm.md),
 which can give you speed gains up to 10x, as mentioned above.</p>
 <p>Last but not least, if you are using ASAN and the performance is unacceptable,
 consider turning it off for now, and manually examining the generated corpus

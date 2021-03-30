@@ -48,7 +48,17 @@
   </url>
   
   <url>
+    <loc>https://aflplus.plus/docs/docs/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/env_variables/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://aflplus.plus/docs/faq/</loc>
     <priority>0</priority>
   </url>
   
@@ -119,6 +129,11 @@
   
   <url>
     <loc>https://aflplus.plus/docs/readme.radamsa/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://aflplus.plus/docs/rpc_statsd/</loc>
     <priority>0</priority>
   </url>
   

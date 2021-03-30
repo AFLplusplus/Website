@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.414d90de4a21b6ac45cf31b1cf81535f59cbdbcba8754f23b5721b297b6a3ce5.js" integrity="sha256-QU2Q3kohtqxFzzGxz4FTX1nL28uodU8jtXIbKXtqPOU="></script>
+<script defer src="/en.search.min.118c6bc4ee4320cd43de639b6048be9939caa6f7bb8a1a76a123eb3db4c07f3e.js" integrity="sha256-EYxrxO5DIM1D3mObYEi&#43;mTnKpve7ihp2oSPrPbTAfz4="></script>
 
 <!--
 Made with Book Theme
@@ -83,7 +83,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.11c">Release 3.11c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.12c">Release 3.12c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -153,6 +153,7 @@ https://github.com/alex-shpak/hugo-book
         <li><a href="#path-geometry">Path geometry</a></li>
         <li><a href="#cpu-load">CPU load</a></li>
         <li><a href="#addendum-status-and-plot-files">Addendum: status and plot files</a></li>
+        <li><a href="#addendum-automatically-send-metrics-with-statsd">Addendum: Automatically send metrics with StatsD</a></li>
       </ul>
     </li>
   </ul>
@@ -187,13 +188,15 @@ to comment out USE_COLORS, then do <code>make clean all</code>.</p>
 other side effects - sorry about that.</p>
 <p>With that out of the way, let&rsquo;s talk about what&rsquo;s actually on the screen&hellip;</p>
 <h3 id="the-status-bar">The status bar</h3>
-<p>The top line shows you which mode afl-fuzz is running in
+<pre><code>american fuzzy lop ++3.01a (default) [fast] {0}
+</code></pre><p>The top line shows you which mode afl-fuzz is running in
 (normal: &ldquo;american fuzy lop&rdquo;, crash exploration mode: &ldquo;peruvian rabbit mode&rdquo;)
 and the version of afl++.
 Next to the version is the banner, which, if not set with -T by hand, will
-either show the binary name being fuzzed, or the -M/-S master/slave name for
+either show the binary name being fuzzed, or the -M/-S main/secondary name for
 parallel fuzzing.
-Finally, the last item is the power schedule mode being run (default: explore).</p>
+Second to last is the power schedule mode being run (default: fast).
+Finally, the last item is the CPU id.</p>
 <h3 id="process-timing">Process timing</h3>
 <pre><code>  +----------------------------------------------------+
   |        run time : 0 days, 8 hrs, 32 min, 43 sec    |
@@ -230,10 +233,7 @@ cases discovered so far, fuzzed them, and looped back to the very beginning.
 Every fuzzing session should be allowed to complete at least one cycle; and
 ideally, should run much longer than that.</p>
 <p>As noted earlier, the first pass can take a day or longer, so sit back and
-relax. If you want to get broader but more shallow coverage right away, try
-the <code>-d</code> option - it gives you a more familiar experience by skipping the
-deterministic fuzzing steps. It is, however, inferior to the standard mode in
-a couple of subtle ways.</p>
+relax.</p>
 <p>To help make the call on when to hit <code>Ctrl-C</code>, the cycle counter is color-coded.
 It is shown in magenta during the first pass, progresses to yellow if new finds
 are still being made in subsequent rounds, then blue when that ends - and
@@ -253,8 +253,6 @@ shows the ID of the test case it is currently working on, plus the number of
 inputs it decided to ditch because they were persistently timing out.</p>
 <p>The &ldquo;*&rdquo; suffix sometimes shown in the first line means that the currently
 processed path is not &ldquo;favored&rdquo; (a property discussed later on).</p>
-<p>If you feel that the fuzzer is progressing too slowly, see the note about the
-<code>-d</code> option in this doc.</p>
 <h3 id="map-coverage">Map coverage</h3>
 <pre><code>  +--------------------------------------+
   |    map density : 10.15% / 29.07%     |
@@ -425,7 +423,7 @@ Generally harmless. For example, when fuzzing sqlite, an input like
 when the &lsquo;stability&rsquo; metric stays over 90% or so, but can become an issue
 if not. Here&rsquo;s what to try:
 <ul>
-<li>Use afl-clang-fast from <a href="../llvm_mode/">llvm_mode</a> - it uses a thread-local tracking
+<li>Use afl-clang-fast from <a href="../instrumentation/">instrumentation</a> - it uses a thread-local tracking
 model that is less prone to concurrency issues,</li>
 <li>See if the target can be compiled or run without threads. Common
 <code>./configure</code> options include <code>--without-threads</code>, <code>--disable-pthreads</code>, or
@@ -496,13 +494,32 @@ directory. This includes:</p>
 <li><code>var_byte_count</code>    - how many edges are non-deterministic</li>
 <li><code>afl_banner</code>        - banner text (e.g. the target name)</li>
 <li><code>afl_version</code>       - the version of afl used</li>
-<li><code>target_mode</code>       - default, persistent, qemu, unicorn, dumb</li>
+<li><code>target_mode</code>       - default, persistent, qemu, unicorn, non-instrumented</li>
 <li><code>command_line</code>      - full command line used for the fuzzing session</li>
 </ul>
 <p>Most of these map directly to the UI elements discussed earlier on.</p>
 <p>On top of that, you can also find an entry called <code>plot_data</code>, containing a
 plottable history for most of these fields. If you have gnuplot installed, you
 can turn this into a nice progress report with the included <code>afl-plot</code> tool.</p>
+<h3 id="addendum-automatically-send-metrics-with-statsd">Addendum: Automatically send metrics with StatsD</h3>
+<p>In a CI environment or when running multiple fuzzers, it can be tedious to
+log into each of them or deploy scripts to read the fuzzer statistics.
+Using <code>AFL_STATSD</code> (and the other related environment variables <code>AFL_STATSD_HOST</code>,
+<code>AFL_STATSD_PORT</code>, <code>AFL_STATSD_TAGS_FLAVOR</code>) you can automatically send metrics
+to your favorite StatsD server. Depending on your StatsD server you will be able
+to monitor, trigger alerts or perform actions based on these metrics (e.g: alert on
+slow exec/s for a new build, threshold of crashes, time since last crash &gt; X, etc).</p>
+<p>The selected metrics are a subset of all the metrics found in the status and in
+the plot file. The list is the following: <code>cycle_done</code>, <code>cycles_wo_finds</code>,
+<code>execs_done</code>,<code>execs_per_sec</code>, <code>paths_total</code>, <code>paths_favored</code>, <code>paths_found</code>,
+<code>paths_imported</code>, <code>max_depth</code>, <code>cur_path</code>, <code>pending_favs</code>, <code>pending_total</code>,
+<code>variable_paths</code>, <code>unique_crashes</code>, <code>unique_hangs</code>, <code>total_crashes</code>,
+<code>slowest_exec_ms</code>, <code>edges_found</code>, <code>var_byte_count</code>, <code>havoc_expansion</code>.
+Their definitions can be found in the addendum above.</p>
+<p>When using multiple fuzzer instances with StatsD it is <em>strongly</em> recommended to setup
+the flavor (AFL_STATSD_TAGS_FLAVOR) to match your StatsD server. This will allow you
+to see individual fuzzer performance, detect bad ones, see the progress of each
+strategy&hellip;</p>
 </article>
  
 
@@ -546,6 +563,7 @@ can turn this into a nice progress report with the included <code>afl-plot</code
         <li><a href="#path-geometry">Path geometry</a></li>
         <li><a href="#cpu-load">CPU load</a></li>
         <li><a href="#addendum-status-and-plot-files">Addendum: status and plot files</a></li>
+        <li><a href="#addendum-automatically-send-metrics-with-statsd">Addendum: Automatically send metrics with StatsD</a></li>
       </ul>
     </li>
   </ul>

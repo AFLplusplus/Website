@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.414d90de4a21b6ac45cf31b1cf81535f59cbdbcba8754f23b5721b297b6a3ce5.js" integrity="sha256-QU2Q3kohtqxFzzGxz4FTX1nL28uodU8jtXIbKXtqPOU="></script>
+<script defer src="/en.search.min.118c6bc4ee4320cd43de639b6048be9939caa6f7bb8a1a76a123eb3db4c07f3e.js" integrity="sha256-EYxrxO5DIM1D3mObYEi&#43;mTnKpve7ihp2oSPrPbTAfz4="></script>
 
 <!--
 Made with Book Theme
@@ -83,7 +83,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.11c">Release 3.11c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.12c">Release 3.12c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -144,6 +144,8 @@ https://github.com/alex-shpak/hugo-book
     <li><a href="#qemu">QEMU</a></li>
     <li><a href="#wineqemu">WINE+QEMU</a></li>
     <li><a href="#unicorn">UNICORN</a></li>
+    <li><a href="#afl-frida">AFL FRIDA</a></li>
+    <li><a href="#afl-untracer">AFL UNTRACER</a></li>
     <li><a href="#dyninst">DYNINST</a></li>
     <li><a href="#retrowrite">RETROWRITE</a></li>
     <li><a href="#mcsema">MCSEMA</a></li>
@@ -167,12 +169,14 @@ https://github.com/alex-shpak/hugo-book
 <p>afl++, libfuzzer and others are great if you have the source code, and
 it allows for very fast and coverage guided fuzzing.</p>
 <p>However, if there is only the binary program and no source code available,
-then standard <code>afl-fuzz -n</code> (dumb mode) is not effective.</p>
-<p>The following is a description of how these binaries can be fuzzed with afl++</p>
+then standard <code>afl-fuzz -n</code> (non-instrumented mode) is not effective.</p>
+<p>The following is a description of how these binaries can be fuzzed with afl++.</p>
 <h2 id="tldr">TL;DR:</h2>
 <p>qemu_mode in persistent mode is the fastest - if the stability is
 high enough. Otherwise try retrowrite, afl-dyninst and if these
-fail too then standard qemu_mode with AFL_ENTRYPOINT to where you need it.</p>
+fail too then try standard qemu_mode with AFL_ENTRYPOINT to where you need it.</p>
+<p>If your target is a library use utils/afl_frida/.</p>
+<p>If your target is non-linux then use unicorn_mode/.</p>
 <h2 id="qemu">QEMU</h2>
 <p>Qemu is the &ldquo;native&rdquo; solution to the program.
 It is available in the ./qemu_mode/ directory and once compiled it can
@@ -181,10 +185,10 @@ It is the easiest to use alternative and even works for cross-platform binaries.
 <p>The speed decrease is at about 50%.
 However various options exist to increase the speed:</p>
 <ul>
-<li>using AFL_ENTRYPOINT to move the forkserver to a later basic block in
+<li>using AFL_ENTRYPOINT to move the forkserver entry to a later basic block in
 the binary (+5-10% speed)</li>
 <li>using persistent mode <a href="../qemu_mode/README.persistent.md">qemu_mode/README.persistent.md</a>
-this will result in 150-300% overall speed - so 3-8x the original
+this will result in 150-300% overall speed increase - so 3-8x the original
 qemu_mode speed!</li>
 <li>using AFL_CODE_START/AFL_CODE_END to only instrument specific parts</li>
 </ul>
@@ -203,6 +207,14 @@ if needed. On top, block chaining has been removed. This means the speed boost
 introduced in  the patched QEMU Mode of afl++ cannot simply be ported over to
 Unicorn. For further information, check out <a href="../unicorn_mode/README.md">unicorn_mode/README.md</a>.</p>
 <p>As it is included in afl++ this needs no URL.</p>
+<h2 id="afl-frida">AFL FRIDA</h2>
+<p>If you want to fuzz a binary-only shared library then you can fuzz it with
+frida-gum via utils/afl_frida/, you will have to write a harness to
+call the target function in the library, use afl-frida.c as a template.</p>
+<h2 id="afl-untracer">AFL UNTRACER</h2>
+<p>If you want to fuzz a binary-only shared library then you can fuzz it with
+utils/afl_untracer/, use afl-untracer.c as a template.
+It is slower than AFL FRIDA (see above).</p>
 <h2 id="dyninst">DYNINST</h2>
 <p>Dyninst is a binary instrumentation framework similar to Pintool and
 Dynamorio (see far below). However whereas Pintool and Dynamorio work at
@@ -223,7 +235,7 @@ used with afl-dyninst.</p>
 doesn&rsquo;t work well.</p>
 <p><a href="https://github.com/vanhauser-thc/afl-dyninst">https://github.com/vanhauser-thc/afl-dyninst</a></p>
 <h2 id="retrowrite">RETROWRITE</h2>
-<p>If you have an x86/x86_64 binary that still has it&rsquo;s symbols, is compiled
+<p>If you have an x86/x86_64 binary that still has its symbols, is compiled
 with position independant code (PIC/PIE) and does not use most of the C++
 features then the retrowrite solution might be for you.
 It decompiles to ASM files which can then be instrumented with afl-gcc.</p>
@@ -257,7 +269,7 @@ be used. This one is faster than the other.</p>
 But its IPT performance is just 6%!</p>
 <h2 id="coresight">CORESIGHT</h2>
 <p>Coresight is ARM&rsquo;s answer to Intel&rsquo;s PT.
-There is no implementation so far which handle coresight and getting
+There is no implementation so far which handles coresight and getting
 it working on an ARM Linux is very difficult due to custom kernel building
 on embedded systems is difficult. And finding one that has coresight in
 the ARM chip is difficult too.
@@ -274,13 +286,13 @@ everywhere.</p>
 <h2 id="pin--dynamorio">PIN &amp; DYNAMORIO</h2>
 <p>Pintool and Dynamorio are dynamic instrumentation engines, and they can be
 used for getting basic block information at runtime.
-Pintool is only available for Intel x32/x64 on Linux, Mac OS and Windows
+Pintool is only available for Intel x32/x64 on Linux, Mac OS and Windows,
 whereas Dynamorio is additionally available for ARM and AARCH64.
 Dynamorio is also 10x faster than Pintool.</p>
 <p>The big issue with Dynamorio (and therefore Pintool too) is speed.
 Dynamorio has a speed decrease of 98-99%
 Pintool has a speed decrease of 99.5%</p>
-<p>Hence Dynamorio is the option to go for if everything fails, and Pintool
+<p>Hence Dynamorio is the option to go for if everything else fails, and Pintool
 only if Dynamorio fails too.</p>
 <p>Dynamorio solutions:</p>
 <ul>
@@ -302,6 +314,7 @@ slow but have good path discovery, some are very hard to set-up &hellip;</p>
 <li>QSYM: <a href="https://github.com/sslab-gatech/qsym">https://github.com/sslab-gatech/qsym</a></li>
 <li>Manticore: <a href="https://github.com/trailofbits/manticore">https://github.com/trailofbits/manticore</a></li>
 <li>S2E: <a href="https://github.com/S2E">https://github.com/S2E</a></li>
+<li>Tinyinst <a href="https://github.com/googleprojectzero/TinyInst">https://github.com/googleprojectzero/TinyInst</a> (Mac/Windows only)</li>
 <li>&hellip; please send me any missing that are good</li>
 </ul>
 <h2 id="closing-words">Closing words</h2>
@@ -340,6 +353,8 @@ slow but have good path discovery, some are very hard to set-up &hellip;</p>
     <li><a href="#qemu">QEMU</a></li>
     <li><a href="#wineqemu">WINE+QEMU</a></li>
     <li><a href="#unicorn">UNICORN</a></li>
+    <li><a href="#afl-frida">AFL FRIDA</a></li>
+    <li><a href="#afl-untracer">AFL UNTRACER</a></li>
     <li><a href="#dyninst">DYNINST</a></li>
     <li><a href="#retrowrite">RETROWRITE</a></li>
     <li><a href="#mcsema">MCSEMA</a></li>

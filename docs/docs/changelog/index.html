@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.414d90de4a21b6ac45cf31b1cf81535f59cbdbcba8754f23b5721b297b6a3ce5.js" integrity="sha256-QU2Q3kohtqxFzzGxz4FTX1nL28uodU8jtXIbKXtqPOU="></script>
+<script defer src="/en.search.min.118c6bc4ee4320cd43de639b6048be9939caa6f7bb8a1a76a123eb3db4c07f3e.js" integrity="sha256-EYxrxO5DIM1D3mObYEi&#43;mTnKpve7ihp2oSPrPbTAfz4="></script>
 
 <!--
 Made with Book Theme
@@ -83,7 +83,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.11c">Release 3.11c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.12c">Release 3.12c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -142,7 +142,14 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
-        <li><a href="#version-264d-develop">Version ++2.64d (develop):</a></li>
+        <li><a href="#version-312c-release">Version ++3.12c (release)</a></li>
+        <li><a href="#version-311c-release">Version ++3.11c (release)</a></li>
+        <li><a href="#version-310c-release">Version ++3.10c (release)</a></li>
+        <li><a href="#version-300c-release">Version ++3.00c (release)</a></li>
+        <li><a href="#version-268c-release">Version ++2.68c (release)</a></li>
+        <li><a href="#version-267c-release">Version ++2.67c (release)</a></li>
+        <li><a href="#version-266c-release">Version ++2.66c (release)</a></li>
+        <li><a href="#version-265c-release">Version ++2.65c (release):</a></li>
         <li><a href="#version-264c-release">Version ++2.64c (release):</a></li>
         <li><a href="#version-263c-release">Version ++2.63c (release):</a></li>
         <li><a href="#version-262c-release">Version ++2.62c (release):</a></li>
@@ -402,7 +409,404 @@ the tool. See README.md for the general instruction manual.</p>
 <h2 id="staying-informed">Staying informed</h2>
 <p>Want to stay in the loop on major new features? Join our mailing list by
 sending a mail to <a href="mailto:afl-users+subscribe@googlegroups.com">afl-users+subscribe@googlegroups.com</a>.</p>
-<h3 id="version-264d-develop">Version ++2.64d (develop):</h3>
+<h3 id="version-312c-release">Version ++3.12c (release)</h3>
+<ul>
+<li>afl-fuzz:
+<ul>
+<li>added AFL_TARGET_ENV variable to pass extra env vars to the target
+(for things like LD_LIBRARY_PATH)</li>
+<li>fix map detection, AFL_MAP_SIZE not needed anymore for most cases</li>
+<li>fix counting favorites (just a display thing)</li>
+</ul>
+</li>
+<li>afl-cc:
+<ul>
+<li>fix cmplog rtn (rare crash and not being able to gather ptr data)</li>
+<li>fix our own PCGUARD implementation to compile with llvm 10.0.1</li>
+<li>link runtime not to shared libs</li>
+<li>ensure shared libraries are properly built and instrumented</li>
+<li>AFL_LLVM_INSTRUMENT_ALLOW/DENY were not implemented for LTO, added</li>
+<li>show correct LLVM PCGUARD NATIVE mode when auto switching to it
+and keep fsanitize-coverage-*list=&hellip;
+Short mnemnonic NATIVE is now also accepted.</li>
+</ul>
+</li>
+<li>qemu_mode (thanks @realmadsci):
+<ul>
+<li>move AFL_PRELOAD and AFL_USE_QASAN logic inside afl-qemu-trace</li>
+<li>add AFL_QEMU_CUSTOM_BIN</li>
+</ul>
+</li>
+<li>unicorn_mode
+<ul>
+<li>accidently removed the subfolder from github, re-added</li>
+</ul>
+</li>
+<li>added DEFAULT_PERMISSION to config.h for all files created, default
+to 0600</li>
+</ul>
+<h3 id="version-311c-release">Version ++3.11c (release)</h3>
+<ul>
+<li>afl-fuzz:
+<ul>
+<li>better auto detection of map size</li>
+<li>fix sanitizer settings (bug since 3.10c)</li>
+<li>fix an off-by-one overwrite in cmplog</li>
+<li>add non-unicode variants from unicode-looking dictionary entries</li>
+<li>Rust custom mutator API improvements</li>
+<li>Imported crash stats painted yellow on resume (only new ones are red)</li>
+</ul>
+</li>
+<li>afl-cc:
+<ul>
+<li>added AFL_NOOPT that will just pass everything to the normal
+gcc/clang compiler without any changes - to pass weird configure
+scripts</li>
+<li>fixed a crash that can occur with ASAN + CMPLOG together plus
+better support for unicode (thanks to @stbergmann for reporting!)</li>
+<li>fixed a crash in LAF transform for empty strings</li>
+<li>handle erroneous setups in which multiple afl-compiler-rt are
+compiled into the target. This now also supports dlopen()
+instrumented libs loaded before the forkserver and even after the
+forkserver is started (then with collisions though)</li>
+<li>the compiler rt was added also in object building (-c) which
+should have been fixed years ago but somewhere got lost :(</li>
+<li>Renamed CTX to CALLER, added correct/real CTX implementation to
+CLASSIC</li>
+</ul>
+</li>
+<li>qemu_mode:
+<ul>
+<li>added AFL_QEMU_EXCLUDE_RANGES env by @realmadsci, thanks!</li>
+<li>if no new/updated checkout is wanted, build with:
+NO_CHECKOUT=1 ./build_qemu_support.sh</li>
+<li>we no longer perform a &ldquo;git drop&rdquo;</li>
+</ul>
+</li>
+<li>afl-cmin: support filenames with spaces</li>
+</ul>
+<h3 id="version-310c-release">Version ++3.10c (release)</h3>
+<ul>
+<li>Mac OS ARM64 support</li>
+<li>Android support fixed and updated by Joey Jiaojg - thanks!</li>
+<li>New selective instrumentation option with _<em>AFL_COVERAGE</em>* commands
+to be placed in the source code.
+Check out instrumentation/README.instrument_list.md</li>
+<li>afl-fuzz
+<ul>
+<li>Making AFL_MAP_SIZE (mostly) obsolete - afl-fuzz now learns on
+start the target map size</li>
+<li>upgraded cmplog/redqueen: solving for floating point, solving
+transformations (e.g. toupper, tolower, to/from hex, xor,
+arithmetics, etc.). This is costly hence new command line option
+<code>-l</code> that sets the intensity (values 1 to 3). Recommended is 2.</li>
+<li>added <code>AFL_CMPLOG_ONLY_NEW</code> to not use cmplog on initial seeds
+from <code>-i</code> or resumes (these have most likely already been done)</li>
+<li>fix crash for very, very fast targets+systems (thanks to mhlakhani
+for reporting)</li>
+<li>on restarts (<code>-i</code>)/autoresume (AFL_AUTORESUME) the stats are now
+reloaded and used, thanks to Vimal Joseph for this patch!</li>
+<li>changed the meaning of &lsquo;+&rsquo; of the &lsquo;-t&rsquo; option, it now means to
+auto-calculate the timeout with the value given being the max
+timeout. The original meaning of skipping timeouts instead of
+abort is now inherent to the -t option.</li>
+<li>if deterministic mode is active (<code>-D</code>, or <code>-M</code> without <code>-d</code>) then
+we sync after every queue entry as this can take very long time
+otherwise</li>
+<li>added minimum SYNC_TIME to include/config.h (30 minutes default)</li>
+<li>better detection if a target needs a large shared map</li>
+<li>fix for <code>-Z</code></li>
+<li>fixed a few crashes</li>
+<li>switched to an even faster RNG</li>
+<li>added hghwng&rsquo;s patch for faster trace map analysis</li>
+<li>printing suggestions for mistyped <code>AFL_</code> env variables</li>
+<li>added Rust bindings for custom mutators (thanks @julihoh)</li>
+</ul>
+</li>
+<li>afl-cc
+<ul>
+<li>allow instrumenting LLVMFuzzerTestOneInput</li>
+<li>fixed endless loop for allow/blocklist lines starting with a
+comment (thanks to Zherya for reporting)</li>
+<li>cmplog/redqueen now also tracks floating point, _ExtInt() + 128bit</li>
+<li>cmplog/redqueen can now process basic libc++ and libstdc++
+std::string comparisons (no position or length type variants)</li>
+<li>added support for __afl_coverage_interesting() for LTO and our
+own PCGUARD (llvm 10.0.1+), read more about this function and
+selective coverage in instrumentation/README.instrument_list.md</li>
+<li>added AFL_LLVM_INSTRUMENT option NATIVE for native clang pc-guard
+support (less performant than our own), GCC for old afl-gcc and
+CLANG for old afl-clang</li>
+<li>fixed a potential crash in the LAF feature</li>
+<li>workaround for llvm bitcast lto bug</li>
+<li>workaround for llvm 13</li>
+</ul>
+</li>
+<li>qemuafl
+<ul>
+<li>QASan (address sanitizer for Qemu) ported to qemuafl!
+See qemu_mode/libqasan/README.md</li>
+<li>solved some persistent mode bugs (thanks Dil4rd)</li>
+<li>solved an issue when dumping the memory maps (thanks wizche)</li>
+<li>Android support for QASan</li>
+</ul>
+</li>
+<li>unicornafl
+<ul>
+<li>Substantial speed gains in python bindings for certain use cases</li>
+<li>Improved rust bindings</li>
+<li>Added a new example harness to compare python, c and rust bindings</li>
+</ul>
+</li>
+<li>afl-cmin and afl-showmap now support the -f option</li>
+<li>afl_plot now also generates a graph on the discovered edges</li>
+<li>changed default: no memory limit for afl-cmin and afl-cmin.bash</li>
+<li>warn on any _AFL and __AFL env vars.</li>
+<li>set AFL_IGNORE_UNKNOWN_ENVS to not warn on unknown AFL_&hellip; env vars</li>
+<li>added dummy Makefile to instrumentation/</li>
+<li>Updated utils/afl_frida to be 5% faster, 7% on x86_x64</li>
+<li>Added <code>AFL_KILL_SIGNAL</code> env variable (thanks @v-p-b)</li>
+<li>@Edznux added a nice documentation on how to use rpc.statsd with
+afl++ in docs/rpc_statsd.md, thanks!</li>
+</ul>
+<h3 id="version-300c-release">Version ++3.00c (release)</h3>
+<ul>
+<li>llvm_mode/ and gcc_plugin/ moved to instrumentation/</li>
+<li>examples/ renamed to utils/</li>
+<li>moved libdislocator, libtokencap and qdbi_mode to utils/</li>
+<li>all compilers combined to afl-cc which emulates the previous ones</li>
+<li>afl-llvm/gcc-rt.o merged into afl-compiler-rt.o</li>
+<li>afl-fuzz
+<ul>
+<li>not specifying -M or -S will now auto-set &ldquo;-S default&rdquo;</li>
+<li>deterministic fuzzing is now disabled by default and can be enabled with
+-D. It is still enabled by default for -M.</li>
+<li>a new seed selection was implemented that uses weighted randoms based on
+a schedule performance score, which is much better that the previous
+walk the whole queue approach. Select the old mode with -Z (auto enabled
+with -M)</li>
+<li>Marcel Boehme submitted a patch that improves all AFFast schedules :)</li>
+<li>the default schedule is now FAST</li>
+<li>memory limits are now disabled by default, set them with -m if required</li>
+<li>rpc.statsd support, for stats and charts, by Edznux, thanks a lot!</li>
+<li>reading testcases from -i now descends into subdirectories</li>
+<li>allow the -x command line option up to 4 times</li>
+<li>loaded extras now have a duplication protection</li>
+<li>If test cases are too large we do a partial read on the maximum
+supported size</li>
+<li>longer seeds with the same trace information will now be ignored
+for fuzzing but still be used for splicing</li>
+<li>crashing seeds are now not prohibiting a run anymore but are
+skipped - they are used for splicing, though</li>
+<li>update MOpt for expanded havoc modes</li>
+<li>setting the env var AFL_NO_AUTODICT will not load an LTO autodictionary</li>
+<li>added NO_SPLICING compile option and makefile define</li>
+<li>added INTROSPECTION make target that writes all mutations to
+out/NAME/introspection.txt</li>
+<li>print special compile time options used in help output</li>
+<li>when using -c cmplog, one of the childs was not killed, fixed</li>
+<li>somewhere we broke -n dumb fuzzing, fixed</li>
+<li>added afl_custom_describe to the custom mutator API to allow for easy
+mutation reproduction on crashing inputs</li>
+<li>new env. var. AFL_NO_COLOR (or AFL_NO_COLOUR) to suppress colored
+console output (when configured with USE_COLOR and not ALWAYS_COLORED)</li>
+</ul>
+</li>
+<li>instrumentation
+<ul>
+<li>We received an enhanced gcc_plugin module from AdaCore, thank you
+very much!!</li>
+<li>not overriding -Ox or -fno-unroll-loops anymore</li>
+<li>we now have our own trace-pc-guard implementation. It is the same as
+-fsanitize-coverage=trace-pc-guard from llvm 12, but: it is a) inline
+and b) works from llvm 10.0.1 + onwards :)</li>
+<li>new llvm pass: dict2file via AFL_LLVM_DICT2FILE, create afl-fuzz
+-x dictionary of string comparisons found during compilation</li>
+<li>LTO autodict now also collects interesting cmp comparisons,
+std::string compare + find + ==, bcmp</li>
+<li>fix crash in dict2file for integers &gt; 64 bit</li>
+</ul>
+</li>
+<li>custom mutators
+<ul>
+<li>added a new custom mutator: symcc -&gt; <a href="https://github.com/eurecom-s3/symcc/">https://github.com/eurecom-s3/symcc/</a></li>
+<li>added a new custom mutator: libfuzzer that integrates libfuzzer mutations</li>
+<li>Our afl++ Grammar-Mutator is now better integrated into custom_mutators/</li>
+<li>added INTROSPECTION support for custom modules</li>
+<li>python fuzz function was not optional, fixed</li>
+<li>some python mutator speed improvements</li>
+</ul>
+</li>
+<li>afl-cmin/afl-cmin.bash now search first in PATH and last in AFL_PATH</li>
+<li>unicornafl synced with upstream version 1.02 (fixes, better rust bindings)</li>
+<li>renamed AFL_DEBUG_CHILD_OUTPUT to AFL_DEBUG_CHILD</li>
+<li>added AFL_CRASH_EXITCODE env variable to treat a child exitcode as crash</li>
+</ul>
+<h3 id="version-268c-release">Version ++2.68c (release)</h3>
+<ul>
+<li>added the GSoC excellent afl++ grammar mutator by Shengtuo to our
+custom_mutators/ (see custom_mutators/README.md) - or get it here:
+<a href="https://github.com/AFLplusplus/Grammar-Mutator">https://github.com/AFLplusplus/Grammar-Mutator</a></li>
+<li>a few QOL changes for Apple and its outdated gmake</li>
+<li>afl-fuzz:
+<ul>
+<li>fix for auto dictionary entries found during fuzzing to not throw out
+a -x dictionary</li>
+<li>added total execs done to plot file</li>
+<li>AFL_MAX_DET_EXTRAS env variable added to control the amount of
+deterministic dict entries without recompiling.</li>
+<li>AFL_FORKSRV_INIT_TMOUT env variable added to control the time to wait
+for the forkserver to come up without the need to increase the overall
+timeout.</li>
+<li>bugfix for cmplog that results in a heap overflow based on target data
+(thanks to the magma team for reporting!)</li>
+<li>write fuzzing setup into out/fuzzer_setup (environment variables and
+command line)</li>
+</ul>
+</li>
+<li>custom mutators:
+<ul>
+<li>added afl_custom_fuzz_count/fuzz_count function to allow specifying
+the number of fuzz attempts for custom_fuzz</li>
+</ul>
+</li>
+<li>llvm_mode:
+<ul>
+<li>ported SanCov to LTO, and made it the default for LTO. better
+instrumentation locations</li>
+<li>Further llvm 12 support (fast moving target like afl++ :-) )</li>
+<li>deprecated LLVM SKIPSINGLEBLOCK env environment</li>
+</ul>
+</li>
+</ul>
+<h3 id="version-267c-release">Version ++2.67c (release)</h3>
+<ul>
+<li>Support for improved afl++ snapshot module:
+<a href="https://github.com/AFLplusplus/AFL-Snapshot-LKM">https://github.com/AFLplusplus/AFL-Snapshot-LKM</a></li>
+<li>Due to the instrumentation needing more memory, the initial memory sizes
+for -m have been increased</li>
+<li>afl-fuzz:
+<ul>
+<li>added -F option to allow -M main fuzzers to sync to foreign fuzzers,
+e.g. honggfuzz or libfuzzer</li>
+<li>added -b option to bind to a specific CPU</li>
+<li>eliminated CPU affinity race condition for -S/-M runs</li>
+<li>expanded havoc mode added, on no cycle finds add extra splicing and
+MOpt into the mix</li>
+<li>fixed a bug in redqueen for strings and made deterministic with -s</li>
+<li>Compiletime autodictionary fixes</li>
+</ul>
+</li>
+<li>llvm_mode:
+<ul>
+<li>now supports llvm 12</li>
+<li>support for AFL_LLVM_ALLOWLIST/AFL_LLVM_DENYLIST (previous
+AFL_LLVM_WHITELIST and AFL_LLVM_INSTRUMENT_FILE are deprecated and
+are matched to AFL_LLVM_ALLOWLIST). The format is compatible to llvm
+sancov, and also supports function matching :)</li>
+<li>added neverzero counting to trace-pc/pcgard</li>
+<li>fixes for laf-intel float splitting (thanks to mark-griffin for
+reporting)</li>
+<li>fixes for llvm 4.0</li>
+<li>skipping ctors and ifuncs for instrumentation</li>
+<li>LTO: switch default to the dynamic memory map, set AFL_LLVM_MAP_ADDR
+for a fixed map address (eg. 0x10000)</li>
+<li>LTO: improved stability for persistent mode, no other instrumentation
+has that advantage</li>
+<li>LTO: fixed autodict for long strings</li>
+<li>LTO: laf-intel and redqueen/cmplog are now applied at link time
+to prevent llvm optimizing away the splits</li>
+<li>LTO: autodictionary mode is a fixed default now</li>
+<li>LTO: instrim instrumentation disabled, only classic support used
+as it is always better</li>
+<li>LTO: env var AFL_LLVM_DOCUMENT_IDS=file will document which edge ID
+was given to which function during compilation</li>
+<li>LTO: single block functions were not implemented by default, fixed</li>
+<li>LTO: AFL_LLVM_SKIP_NEVERZERO behaviour was inversed, fixed</li>
+<li>setting AFL_LLVM_LAF_SPLIT_FLOATS now activates
+AFL_LLVM_LAF_SPLIT_COMPARES</li>
+<li>support for -E and -shared compilation runs</li>
+</ul>
+</li>
+<li>added honggfuzz mangle as a custom mutator in custom_mutators/honggfuzz</li>
+<li>added afl-frida gum solution to examples/afl_frida (mostly imported
+from <a href="https://github.com/meme/hotwax/">https://github.com/meme/hotwax/</a>)</li>
+<li>small fixes to afl-plot, afl-whatsup and man page creation</li>
+<li>new README, added FAQ</li>
+</ul>
+<h3 id="version-266c-release">Version ++2.66c (release)</h3>
+<ul>
+<li>renamed the main branch on Github to &ldquo;stable&rdquo;</li>
+<li>renamed master/slave to main/secondary</li>
+<li>renamed blacklist/whitelist to ignorelist/instrumentlist -&gt;
+AFL_LLVM_INSTRUMENT_FILE and AFL_GCC_INSTRUMENT_FILE</li>
+<li>warn on deprecated environment variables</li>
+<li>afl-fuzz:
+<ul>
+<li>-S secondary nodes now only sync from the main node to increase
+performance, the -M main node still syncs from everyone. Added checks
+that ensure exactly one main node is present and warn otherwise</li>
+<li>Add -D after -S to force a secondary to perform deterministic fuzzing</li>
+<li>If no main node is present at a sync one secondary node automatically
+becomes a temporary main node until a real main nodes shows up</li>
+<li>Fixed a mayor performance issue we inherited from AFLfast</li>
+<li>switched murmur2 hashing and random() for xxh3 and xoshiro256**,
+resulting in an up to 5.5% speed increase</li>
+<li>Resizing the window does not crash afl-fuzz anymore</li>
+<li>Ensure that the targets are killed on exit</li>
+<li>fix/update to MOpt (thanks to arnow117)</li>
+<li>added MOpt dictionary support from repo</li>
+<li>added experimental SEEK power schedule. It is EXPLORE with ignoring
+the runtime and less focus on the length of the test case</li>
+</ul>
+</li>
+<li>llvm_mode:
+<ul>
+<li>the default instrumentation is now PCGUARD if the llvm version is &gt;= 7,
+as it is faster and provides better coverage. The original afl
+instrumentation can be set via AFL_LLVM_INSTRUMENT=AFL. This is
+automatically done when the instrument_file list feature is used.</li>
+<li>PCGUARD mode is now even better because we made it collision free - plus
+it has a fixed map size, so it is also faster! :)</li>
+<li>some targets want a ld variant for LD that is not gcc/clang but ld,
+added afl-ld-lto to solve this</li>
+<li>lowered minimum required llvm version to 3.4 (except LLVMInsTrim, which
+needs 3.8.0)</li>
+<li>instrument_file list feature now supports wildcards (thanks to sirmc)</li>
+<li>small change to cmplog to make it work with current llvm 11-dev</li>
+<li>added AFL_LLVM_LAF_ALL, sets all laf-intel settings</li>
+<li>LTO instrument_files functionality rewritten, now main, _init etc functions
+need not to be listed anymore</li>
+<li>fixed crash in compare-transform-pass when strcasecmp/strncasecmp was
+tried to be instrumented with LTO</li>
+<li>fixed crash in cmplog with LTO</li>
+<li>enable snapshot lkm also for persistent mode</li>
+</ul>
+</li>
+<li>Unicornafl
+<ul>
+<li>Added powerPC support from unicorn/next</li>
+<li>rust bindings!</li>
+</ul>
+</li>
+<li>CMPLOG/Redqueen now also works for MMAP sharedmem</li>
+<li>ensure shmem is released on errors</li>
+<li>we moved radamsa to be a custom mutator in ./custom_mutators/. It is not
+compiled by default anymore.</li>
+<li>allow running in /tmp (only unsafe with umask 0)</li>
+<li>persistent mode shared memory testcase handover (instead of via
+files/stdin) - 10-100% performance increase</li>
+<li>General support for 64 bit PowerPC, RiscV, Sparc etc.</li>
+<li>fix afl-cmin.bash</li>
+<li>slightly better performance compilation options for afl++ and targets</li>
+<li>fixed afl-gcc/afl-as that could break on fast systems reusing pids in
+the same second</li>
+<li>added lots of dictionaries from oss-fuzz, go-fuzz and Jakub Wilk</li>
+<li>added former post_library examples to examples/custom_mutators/</li>
+<li>Dockerfile upgraded to Ubuntu 20.04 Focal and installing llvm 11 and
+gcc 10 so afl-clang-lto can be build</li>
+</ul>
+<h3 id="version-265c-release">Version ++2.65c (release):</h3>
 <ul>
 <li>afl-fuzz:
 <ul>
@@ -410,13 +814,18 @@ sending a mail to <a href="mailto:afl-users+subscribe@googlegroups.com">afl-user
 <li>better python detection</li>
 <li>an old, old bug in afl that would show negative stability in rare
 circumstances is now hopefully fixed</li>
+<li>AFL_POST_LIBRARY was deprecated, use AFL_CUSTOM_MUTATOR_LIBRARY
+instead (see docs/custom_mutators.md)</li>
 </ul>
 </li>
 <li>llvm_mode:
 <ul>
+<li>afl-clang-fast/lto now do not skip single block functions. This
+behaviour can be reactivated with AFL_LLVM_SKIPSINGLEBLOCK</li>
 <li>if LLVM 11 is installed the posix shm_open+mmap is used and a fixed
 address for the shared memory map is used as this increases the
 fuzzing speed</li>
+<li>InsTrim now has an LTO version! :-) That is the best and fastest mode!</li>
 <li>fixes to LTO mode if instrumented edges &gt; MAP_SIZE</li>
 <li>CTX and NGRAM can now be used together</li>
 <li>CTX and NGRAM are now also supported in CFG/INSTRIM mode</li>
@@ -439,6 +848,7 @@ functions. Gives a small performance boost.</li>
 </li>
 <li>unicorn_mode:
 <ul>
+<li>validate_crash_callback can now count non-crashing inputs as crash as well</li>
 <li>better submodule handling</li>
 </ul>
 </li>
@@ -447,7 +857,7 @@ functions. Gives a small performance boost.</li>
 network (not fuzzing tcp/ip services but running afl-fuzz on one system
 and the target being on an embedded device)</li>
 <li>added examples/afl_untracer which does a binary-only fuzzing with the
-modifications done in memory</li>
+modifications done in memory (intel32/64 and aarch64 support)</li>
 <li>added examples/afl_proxy which can be easily used to fuzz and instrument
 non-standard things</li>
 <li>all:
@@ -639,7 +1049,7 @@ for x86, x86_64, arm and aarch64</li>
 the original script is still present as afl-cmin.bash</li>
 <li>afl-showmap: -i dir option now allows processing multiple inputs using the
 forkserver. This is for enhanced speed in afl-cmin.</li>
-<li>added blacklist and whitelisting function check in all modules of llvm_mode</li>
+<li>added blacklist and instrument_filesing function check in all modules of llvm_mode</li>
 <li>added fix from Debian project to compile libdislocator and libtokencap</li>
 <li>libdislocator: AFL_ALIGNED_ALLOC to force size alignment to max_align_t</li>
 </ul>
@@ -703,7 +1113,7 @@ download succeeded. f*ckin travis fails downloading 40% of the time!</li>
 performance loss of ~10%</li>
 <li>added test/test-performance.sh script</li>
 <li>(re)added gcc_plugin, fast inline instrumentation is not yet finished,
-however it includes the whitelisting and persistance feature! by hexcoder-</li>
+however it includes the instrument_filesing and persistance feature! by hexcoder-</li>
 <li>gcc_plugin tests added to testing framework</li>
 </ul>
 <h3 id="version-254d-257c-release">Version ++2.54d-2.57c (release):</h3>
@@ -741,7 +1151,7 @@ installed to the &hellip;/lib/afl directory when present during make install</li
 <ul>
 <li>all includes are now in include/</li>
 <li>all afl sources are now in src/ - see src/README.md</li>
-<li>afl-fuzz was splitted up in various individual files for including
+<li>afl-fuzz was split up in various individual files for including
 functionality in other programs (e.g. forkserver, memory map, etc.)
 for better readability.</li>
 <li>new code indention everywhere</li>
@@ -791,7 +1201,7 @@ optimization issue in llvm &lt; 9) for llvm_mode (AFL_LLVM_NEVER_ZERO=1)</li>
 <li>more cpu power for afl-system-config</li>
 <li>added forkserver patch to afl-tmin, makes it much faster (originally from
 github.com/nccgroup/TriforceAFL)</li>
-<li>added whitelist support for llvm_mode via AFL_LLVM_WHITELIST to allow
+<li>added instrument_files support for llvm_mode via AFL_LLVM_WHITELIST to allow
 only to instrument what is actually interesting. Gives more speed and less
 map pollution (originally by choller@mozilla)</li>
 <li>added Python Module mutator support, python2.7-dev is autodetected.
@@ -3812,7 +4222,13 @@ it.</li>
 </ul>
 <h3 id="version-021b-2013-11-12">Version 0.21b (2013-11-12):</h3>
 <ul>
-<li>Initial public release.</li>
+<li>
+<p>Initial public release.</p>
+</li>
+<li>
+<p>Added support for use of multiple custom mutators which can be specified using
+the environment variable AFL_CUSTOM_MUTATOR_LIBRARY.</p>
+</li>
 </ul>
 </article>
  
@@ -3846,7 +4262,14 @@ it.</li>
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
-        <li><a href="#version-264d-develop">Version ++2.64d (develop):</a></li>
+        <li><a href="#version-312c-release">Version ++3.12c (release)</a></li>
+        <li><a href="#version-311c-release">Version ++3.11c (release)</a></li>
+        <li><a href="#version-310c-release">Version ++3.10c (release)</a></li>
+        <li><a href="#version-300c-release">Version ++3.00c (release)</a></li>
+        <li><a href="#version-268c-release">Version ++2.68c (release)</a></li>
+        <li><a href="#version-267c-release">Version ++2.67c (release)</a></li>
+        <li><a href="#version-266c-release">Version ++2.66c (release)</a></li>
+        <li><a href="#version-265c-release">Version ++2.65c (release):</a></li>
         <li><a href="#version-264c-release">Version ++2.64c (release):</a></li>
         <li><a href="#version-263c-release">Version ++2.63c (release):</a></li>
         <li><a href="#version-262c-release">Version ++2.62c (release):</a></li>

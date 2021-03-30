@@ -3,68 +3,56 @@
 In the following, we describe a variety of ideas that could be implemented
 for future AFL++ versions.
 
-For GSOC2020 interested students please see
-[https://github.com/AFLplusplus/AFLplusplus/issues/208](https://github.com/AFLplusplus/AFLplusplus/issues/208)
+# GSoC 2021
 
-## Flexible Grammar Mutator
+All GSoC 2021 projects will be in the Rust development language!
 
-Currently, AFL++'s mutation does not have deeper knowledge about the fuzzed
-binary, apart from feedback, even though the developer may have insights
-about the target.
+## UI for libaflrs
 
-A developer may choose to provide dictionaries and implement own mutations
-in python or C, but an easy mutator that behaves according to a given grammar,
-does not exist.
+Write a user interface to libaflrs, the upcoming backend of afl++.
+This might look like the afl-fuzz UI, but you can improve on it - and should!
 
-State-of-the-art research on grammar fuzzing has some problems in their
-implementations like code quality, scalability, or ease of use and other
-common issues of the academic code.
+## Schedulers for libaflrs
 
-We aim to develop a pluggable grammar mutator for afl++ that combines
-various results.
+Schedulers is a mechanism that selects items from the fuzzing corpus based
+on strategy and randomness. One scheduler might focus on long paths,
+another on rarity of edges disocvered, still another on a combination on
+things. Some of the schedulers in afl++ have to be ported, but you are free
+to come up with your own if you want to - and see how it performs.
 
-Mentor: andreafioraldi 
+## Forkserver support for libaflrs
 
-## Expand on the MOpt mutator
+The current libaflrs implementation fuzzes in-memory, however obviously we
+want to support afl instrumented binaries as well.
+Hence a forkserver support needs to be implemented - forking off the target
+and talking to the target via a socketpair and the communication protocol
+within.
 
-Work on the MOpt mutator that is already in AFL++.
+## More Observers for libaflrs
 
-This is an excellent mutations scheduler based on Particle Swarm
-Optimization but the current implementation schedule only the mutations
-that were present on AFL.
+An observer is measuring functionality that looks at the target being fuzzed
+and documents something about it. In traditional fuzzing this is the coverage
+in the target, however we want to add various more observers, e.g. stack depth,
+heap usage, etc. - this is a topic for an experienced Rust developer.
 
-AFL++ added a lot of optional mutators like the Input-2-State one based
-on Redqueen, the Radamsa mutator, the Custom mutator (the user can define
-its own mutator) and the work is to generalize MOpt for all the current
-and future mutators.
+# Generic ideas and wishlist - NOT PART OF GSoC 2021 !
 
-Mentor: vanhauser-thc or andreafioraldi
+The below list is not part of GSoC 2021.
 
-## perf-fuzz Linux Kernel Module
+## Analysis software
 
-Either Port the patch to the upcoming Ubuntu LTS 20.04 default kernel
-and provide a qemu-kvm image or find a different userspace snapshot
-solution that has a good performance and is reliable, e.g. with docker.
-[perf-fuzz](https://gts3.org/assets/papers/2017/xu:os-fuzz.pdf)
-The perf-fuzz kernel can be found at [https://github.com/sslab-gatech/perf-fuzz](https://github.com/sslab-gatech/perf-fuzz)
-There also is/was a FreeBSD project at [https://github.com/veracode-research/freebsd-perf-fuzz](https://github.com/veracode-research/freebsd-perf-fuzz)
+Currently analysis is done by using afl-plot, which is rather outdated.
+A GTK or browser tool to create run-time analysis based on fuzzer_stats,
+queue/id* information and plot_data that allows for zooming in and out,
+changing min/max display values etc. and doing that for a single run,
+different runs and campaigns vs campaigns.
+Interesting values are execs, and execs/s, edges discovered (total, when
+each edge was discovered and which other fuzzer share finding that edge),
+test cases executed.
+It should be clickable which value is X and Y axis, zoom factor, log scaling
+on-off, etc.
 
-This enables snapshot fuzzing on Linux with an incredible performance!
-
-Mentor: any
-Idea/Issue tracker: [https://github.com/AFLplusplus/AFLplusplus/issues/248](https://github.com/AFLplusplus/AFLplusplus/issues/248)
-
-## QEMU 4-based Instrumentation
-
-First tests to use QEMU 4 for binary-only AFL++ showed that caching behavior
-changed, which vastly decreases fuzzing speeds.
-
-This is the cause why, right now, we cannot switch to QEMU 4.2.
-
-Understanding the current instrumentation and fixing the current caching
-issues will be needed.
-
-Mentor: andreafioraldi
+Mentor: vanhauser-thc
 
 ## WASM Instrumentation
 
@@ -85,33 +73,6 @@ Either improve a single mutator thorugh learning of many different bugs
 (CFG, DFG, VFG, ...?) and improve performance for a single target.
 
 Mentor: domenukk
-
-## Reengineer `afl-fuzz` as Thread Safe, Embeddable Library
-
-Right now, afl-fuzz is single threaded, cannot safely be embedded in tools,
-and not multi-threaded. It makes use of a large number of globals, must always
-be the parent process and exec child processes. 
-Instead, afl-fuzz could be refactored to contain no global state and globals.
-This allows for different use cases that could be implemented during this
-project.
-Note that in the mean time a lot has happened here already, but e.g. making
-it all work and implement multithreading in afl-fuzz ... there is still quite
-some work to do.
-
-Mentor: hexcoder- or vanhauser-thc
-
-## Collision-free Binary-Only Maps
-
-AFL++ supports collison-free maps using an LTO (link-time-optimization) pass.
-This should be possible to implement for QEMU and Unicorn instrumentations.
-As the forkserver parent caches just in time translated translation blocks,
-adding a simple counter between jumps should be doable.
-
-Note: this is already in development for qemu by Andrea, so for people who
-want to contribute it might make more sense to port his solution to unicorn.
-
-Mentor: andreafioraldi or domenukk
-Issue/idea tracker: [https://github.com/AFLplusplus/AFLplusplus/issues/237](https://github.com/AFLplusplus/AFLplusplus/issues/237)
 
 ## Your idea!
 

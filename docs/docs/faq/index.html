@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>F a Q | AFLplusplus</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+<meta property="og:title" content="F a Q | AFLplusplus" />
+<meta name="twitter:title" content="F a Q | AFLplusplus" />
+<meta itemprop="name" content="F a Q | AFLplusplus" />
+<meta name="application-name" content="F a Q | AFLplusplus" />
+<meta property="og:site_name" content="AFLplusplus" />
+
+<meta name="description" content="The AFLplusplus website" />
+<meta itemprop="description" content="The AFLplusplus website" />
+<meta property="og:description" content="The AFLplusplus website" />
+<meta name="twitter:description" content="The AFLplusplus website" />
+
+<base href="https://aflplus.plus/docs/faq/">
+<link rel="canonical" href="https://aflplus.plus/docs/faq/" itemprop="url" /> 
+<meta name="url" content="https://aflplus.plus/docs/faq/" />
+<meta name="twitter:url" content="https://aflplus.plus/docs/faq/" /> 
+<meta property="og:url" content="https://aflplus.plus/docs/faq/" />
+
+ 
+  <meta itemprop="image" content="https://aflplus.plus/ogimage.png" />
+  <meta property="og:image" content="https://aflplus.plus/ogimage.png" /> 
+  <meta name="twitter:image" content="https://aflplus.plus/ogimage.png" />
+  <meta name="twitter:image:src" content="https://aflplus.plus/ogimage.png" /> 
+
+
+
+<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
+
+
+<script defer src="/en.search.min.118c6bc4ee4320cd43de639b6048be9939caa6f7bb8a1a76a123eb3db4c07f3e.js" integrity="sha256-EYxrxO5DIM1D3mObYEi&#43;mTnKpve7ihp2oSPrPbTAfz4="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><img src="/logo_256x256.png" alt="Logo" /><span>AFLplusplus</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+  <ul>
+<li><strong>Site map</strong>
+<ul>
+<li><a href="/features/">Features</a></li>
+<li><a href="/building/">Build &amp; Install</a></li>
+<li><a href="/docs/">Documentation</a></li>
+<li><a href="/docs/tutorials/">Tutorials</a></li>
+<li><a href="/papers/">Papers</a></li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li><strong>Downloads</strong>
+<ul>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.12c">Release 3.12c</a>
+</li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
+<li><a href="https://raw.githubusercontent.com/AFLplusplus/AFLplusplus/master/docs/COPYING">License</a></li>
+</ul>
+</li>
+<li><strong>Links</strong>
+<ul>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus">Repo (GitHub)</a></li>
+<li><a href="https://groups.google.com/group/afl-users">Mailing list</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>F a Q</strong>
+
+  <label for="toc-control">
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#contents">Contents</a></li>
+    <li><a href="#what-is-the-difference-between-afl-and-afl">What is the difference between afl and afl++?</a></li>
+    <li><a href="#how-to-improve-the-fuzzing-speed">How to improve the fuzzing speed?</a></li>
+    <li><a href="#how-do-i-fuzz-a-network-service">How do I fuzz a network service?</a></li>
+    <li><a href="#how-do-i-fuzz-a-gui-program">How do I fuzz a GUI program?</a></li>
+    <li><a href="#what-is-an-edge">What is an &ldquo;edge&rdquo;?</a></li>
+    <li><a href="#why-is-my-stability-below-100">Why is my stability below 100%?</a></li>
+    <li><a href="#how-can-i-improve-the-stability-value">How can I improve the stability value?</a></li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+<article class="markdown"><h1 id="frequently-asked-questions-about-afl">Frequently asked questions about afl++</h1>
+<h2 id="contents">Contents</h2>
+<ul>
+<li><a href="#what-is-the-difference-between-afl-and-afl">What is the difference between afl and afl++?</a></li>
+<li><a href="#how-to-improve-the-fuzzing-speed">How to improve the fuzzing speed?</a></li>
+<li><a href="#how-do-i-fuzz-a-network-service">How do I fuzz a network service?</a></li>
+<li><a href="#how-do-i-fuzz-a-gui-program">How do I fuzz a GUI program?</a></li>
+<li><a href="#what-is-an-edge">What is an edge?</a></li>
+<li><a href="#why-is-my-stability-below-100">Why is my stability below 100%?</a></li>
+<li><a href="#how-can-i-improve-the-stability-value">How can I improve the stability value?</a></li>
+</ul>
+<p>If you find an interesting or important question missing, submit it via
+<a href="https://github.com/AFLplusplus/AFLplusplus/issues">https://github.com/AFLplusplus/AFLplusplus/issues</a></p>
+<h2 id="what-is-the-difference-between-afl-and-afl">What is the difference between afl and afl++?</h2>
+<p>American Fuzzy Lop (AFL) was developed by Michał &ldquo;lcamtuf&rdquo; Zalewski starting in
+2013/2014, and when he left Google end of 2017 he stopped developing it.</p>
+<p>At the end of 2019 the Google fuzzing team took over maintenance of AFL, however
+it is only accepting PRs from the community and is not developing enhancements
+anymore.</p>
+<p>In the second quarter of 2019, 1 1/2 year later when no further development of
+AFL had happened and it became clear there would none be coming, afl++
+was born, where initially community patches were collected and applied
+for bug fixes and enhancements. Then from various AFL spin-offs - mostly academic
+research - features were integrated. This already resulted in a much advanced
+AFL.</p>
+<p>Until the end of 2019 the afl++ team had grown to four active developers which
+then implemented their own research and features, making it now by far the most
+flexible and feature rich guided fuzzer available as open source.
+And in independent fuzzing benchmarks it is one of the best fuzzers available,
+e.g. <a href="https://www.fuzzbench.com/reports/2020-08-03/index.html">Fuzzbench Report</a></p>
+<h2 id="how-to-improve-the-fuzzing-speed">How to improve the fuzzing speed?</h2>
+<ol>
+<li>Use <a href="docs/llvm_mode/README.md">llvm_mode</a>: afl-clang-lto (llvm &gt;= 11) or afl-clang-fast (llvm &gt;= 9 recommended)</li>
+<li>Use <a href="llvm_mode/README.persistent_mode.md">persistent mode</a> (x2-x20 speed increase)</li>
+<li>Use the <a href="https://github.com/AFLplusplus/AFL-Snapshot-LKM">afl++ snapshot module</a> (x2 speed increase)</li>
+<li>If you do not use shmem persistent mode, use <code>AFL_TMPDIR</code> to put the input file directory on a tempfs location, see <a href="docs/env_variables.md">docs/env_variables.md</a></li>
+<li>Improve Linux kernel performance: modify <code>/etc/default/grub</code>, set <code>GRUB_CMDLINE_LINUX_DEFAULT=&quot;ibpb=off ibrs=off kpti=off l1tf=off mds=off mitigations=off no_stf_barrier noibpb noibrs nopcid nopti nospec_store_bypass_disable nospectre_v1 nospectre_v2 pcid=off pti=off spec_store_bypass_disable=off spectre_v2=off stf_barrier=off&quot;</code>; then <code>update-grub</code> and <code>reboot</code> (warning: makes the system less secure)</li>
+<li>Running on an <code>ext2</code> filesystem with <code>noatime</code> mount option will be a bit faster than on any other journaling filesystem</li>
+<li>Use your cores! <a href="../README.md#b-using-multiple-coresthreads">README.md:3.b) Using multiple cores/threads</a></li>
+</ol>
+<h2 id="how-do-i-fuzz-a-network-service">How do I fuzz a network service?</h2>
+<p>The short answer is - you cannot, at least not &ldquo;out of the box&rdquo;.</p>
+<p>Using a network channel is inadequate for several reasons:</p>
+<ul>
+<li>it has a slow-down of x10-20 on the fuzzing speed</li>
+<li>it does not scale to fuzzing multiple instances easily,</li>
+<li>instead of one initial data packet often a back-and-forth interplay of packets is needed for stateful protocols (which is totally unsupported by most coverage aware fuzzers).</li>
+</ul>
+<p>The established method to fuzz network services is to modify the source code
+to read from a file or stdin (fd 0) (or even faster via shared memory, combine
+this with persistent mode <a href="llvm_mode/README.persistent_mode.md">llvm_mode/README.persistent_mode.md</a>
+and you have a performance gain of x10 instead of a performance loss of over
+x10 - that is a x100 difference!).</p>
+<p>If modifying the source is not an option (e.g. because you only have a binary
+and perform binary fuzzing) you can also use a shared library with AFL_PRELOAD
+to emulate the network. This is also much faster than the real network would be.
+See <a href="../utils/socket_fuzzing/">utils/socket_fuzzing/</a>.</p>
+<p>There is an outdated afl++ branch that implements networking if you are
+desperate though: <a href="https://github.com/AFLplusplus/AFLplusplus/tree/networking">https://github.com/AFLplusplus/AFLplusplus/tree/networking</a> -
+however a better option is AFLnet (<a href="https://github.com/aflnet/aflnet">https://github.com/aflnet/aflnet</a>)
+which allows you to define network state with different type of data packets.</p>
+<h2 id="how-do-i-fuzz-a-gui-program">How do I fuzz a GUI program?</h2>
+<p>If the GUI program can read the fuzz data from a file (via the command line,
+a fixed location or via an environment variable) without needing any user
+interaction then it would be suitable for fuzzing.</p>
+<p>Otherwise it is not possible without modifying the source code - which is a
+very good idea anyway as the GUI functionality is a huge CPU/time overhead
+for the fuzzing.</p>
+<p>So create a new <code>main()</code> that just reads the test case and calls the
+functionality for processing the input that the GUI program is using.</p>
+<h2 id="what-is-an-edge">What is an &ldquo;edge&rdquo;?</h2>
+<p>A program contains <code>functions</code>, <code>functions</code> contain the compiled machine code.
+The compiled machine code in a <code>function</code> can be in a single or many <code>basic blocks</code>.
+A <code>basic block</code> is the largest possible number of subsequent machine code
+instructions that has exactly one entrypoint (which can be be entered by multiple other basic blocks)
+and runs linearly without branching or jumping to other addresses (except at the end).</p>
+<pre><code>function() {
+  A:
+    some
+    code
+  B:
+    if (x) goto C; else goto D;
+  C:
+    some code
+    goto E
+  D:
+    some code
+    goto B
+  E:
+    return
+}
+</code></pre><p>Every code block between two jump locations is a <code>basic block</code>.</p>
+<p>An <code>edge</code> is then the unique relationship between two directly connected <code>basic blocks</code> (from the
+code example above):</p>
+<pre><code>              Block A
+                |
+                v
+              Block B  &lt;------+
+             /        \       |
+            v          v      |
+         Block C    Block D --+
+             \
+              v
+              Block E
+</code></pre><p>Every line between two blocks is an <code>edge</code>.
+Note that a few basic block loop to itself, this too would be an edge.</p>
+<h2 id="why-is-my-stability-below-100">Why is my stability below 100%?</h2>
+<p>Stability is measured by how many percent of the edges in the target are
+&ldquo;stable&rdquo;. Sending the same input again and again should take the exact same
+path through the target every time. If that is the case, the stability is 100%.</p>
+<p>If however randomness happens, e.g. a thread reading other external data,
+reaction to timing, etc. then in some of the re-executions with the same data
+the edge coverage result will be different accross runs.
+Those edges that change are then flagged &ldquo;unstable&rdquo;.</p>
+<p>The more &ldquo;unstable&rdquo; edges, the more difficult for afl++ to identify valid new
+paths.</p>
+<p>A value above 90% is usually fine and a value above 80% is also still ok, and
+even a value above 20% can still result in successful finds of bugs.
+However, it is recommended that for values below 90% or 80% you should take
+countermeasures to improve stability.</p>
+<h2 id="how-can-i-improve-the-stability-value">How can I improve the stability value?</h2>
+<p>For fuzzing a 100% stable target that covers all edges is the best case.
+A 90% stable target that covers all edges is however better than a 100% stable
+target that ignores 10% of the edges.</p>
+<p>With instability you basically have a partial coverage loss on an edge, with
+ignored functions you have a full loss on that edges.</p>
+<p>There are functions that are unstable, but also provide value to coverage, eg
+init functions that use fuzz data as input for example.
+If however a function that has nothing to do with the input data is the
+source of instability, e.g. checking jitter, or is a hash map function etc.
+then it should not be instrumented.</p>
+<p>To be able to exclude these functions (based on AFL++'s measured stability)
+the following process will allow to identify functions with variable edges.</p>
+<p>Four steps are required to do this and it also requires quite some knowledge
+of coding and/or disassembly and is effectively possible only with
+afl-clang-fast PCGUARD and afl-clang-lto LTO instrumentation.</p>
+<ol>
+<li>
+<p>First step: Identify which edge ID numbers are unstable</p>
+<p>run the target with <code>export AFL_DEBUG=1</code> for a few minutes then terminate.
+The out/fuzzer_stats file will then show the edge IDs that were identified
+as unstable.</p>
+</li>
+<li>
+<p>Second step: Find the responsible function(s).</p>
+<p>a) For LTO instrumented binaries this can be documented during compile
+time, just set <code>export AFL_LLVM_DOCUMENT_IDS=/path/to/a/file</code>.
+This file will have one assigned edge ID and the corresponding
+function per line.</p>
+<p>b) For PCGUARD instrumented binaries it is much more difficult. Here you
+can either modify the __sanitizer_cov_trace_pc_guard function in
+llvm_mode/afl-llvm-rt.o.c to write a backtrace to a file if the ID in
+__afl_area_ptr[*guard] is one of the unstable edge IDs.
+(Example code is already there).
+Then recompile and reinstall llvm_mode and rebuild your target.
+Run the recompiled target with afl-fuzz for a while and then check the
+file that you wrote with the backtrace information.
+Alternatively you can use <code>gdb</code> to hook __sanitizer_cov_trace_pc_guard_init
+on start, check to which memory address the edge ID value is written
+and set a write breakpoint to that address (<code>watch 0x.....</code>).</p>
+<p>c) in all other instrumentation types this is not possible. So just
+recompile with the two mentioned above. This is just for
+identifying the functions that have unstable edges.</p>
+</li>
+<li>
+<p>Third step: create a text file with the filenames/functions</p>
+<p>Identify which source code files contain the functions that you need to
+remove from instrumentation, or just specify the functions you want to
+skip for instrumentation. Note that optimization might inline functions!</p>
+<p>Simply follow this document on how to do this: <a href="llvm_mode/README.instrument_list.md">llvm_mode/README.instrument_list.md</a>
+If PCGUARD is used, then you need to follow this guide (needs llvm 12+!):
+<a href="http://clang.llvm.org/docs/SanitizerCoverage.html#partially-disabling-instrumentation">http://clang.llvm.org/docs/SanitizerCoverage.html#partially-disabling-instrumentation</a></p>
+<p>Only exclude those functions from instrumentation that provide no value
+for coverage - that is if it does not process any fuzz data directly
+or indirectly (e.g. hash maps, thread management etc.).
+If however a function directly or indirectly handles fuzz data then you
+should not put the function in a deny instrumentation list and rather
+live with the instability it comes with.</p>
+</li>
+<li>
+<p>Fourth step: recompile the target</p>
+<p>Recompile, fuzz it, be happy :)</p>
+<p>This link explains this process for <a href="https://github.com/google/fuzzbench/issues/677">Fuzzbench</a></p>
+</li>
+</ol>
+</article>
+ 
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+      </footer>
+      
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#contents">Contents</a></li>
+    <li><a href="#what-is-the-difference-between-afl-and-afl">What is the difference between afl and afl++?</a></li>
+    <li><a href="#how-to-improve-the-fuzzing-speed">How to improve the fuzzing speed?</a></li>
+    <li><a href="#how-do-i-fuzz-a-network-service">How do I fuzz a network service?</a></li>
+    <li><a href="#how-do-i-fuzz-a-gui-program">How do I fuzz a GUI program?</a></li>
+    <li><a href="#what-is-an-edge">What is an &ldquo;edge&rdquo;?</a></li>
+    <li><a href="#why-is-my-stability-below-100">Why is my stability below 100%?</a></li>
+    <li><a href="#how-can-i-improve-the-stability-value">How can I improve the stability value?</a></li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

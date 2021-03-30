@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.414d90de4a21b6ac45cf31b1cf81535f59cbdbcba8754f23b5721b297b6a3ce5.js" integrity="sha256-QU2Q3kohtqxFzzGxz4FTX1nL28uodU8jtXIbKXtqPOU="></script>
+<script defer src="/en.search.min.118c6bc4ee4320cd43de639b6048be9939caa6f7bb8a1a76a123eb3db4c07f3e.js" integrity="sha256-EYxrxO5DIM1D3mObYEi&#43;mTnKpve7ihp2oSPrPbTAfz4="></script>
 
 <!--
 Made with Book Theme
@@ -83,7 +83,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.11c">Release 3.11c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.12c">Release 3.12c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -164,11 +164,11 @@ Michal Zalewski &lt;lcamtuf@google.com&gt;.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>-p explore</code> (default)</td>
+<td><code>-p explore</code></td>
 <td><img src="http://latex.codecogs.com/gif.latex?p%28i%29%3D%5Cfrac%7B%5Calpha%28i%29%7D%7B%5Cbeta%7D" alt="EXPLORE"></td>
 </tr>
 <tr>
-<td><code>-p fast</code></td>
+<td><code>-p fast</code> (default)</td>
 <td><img src="http://latex.codecogs.com/gif.latex?p(i)=%5Cmin%5Cleft(%5Cfrac%7B%5Calpha(i)%7D%7B%5Cbeta%7D%5Ccdot%5Cfrac%7B2%5E%7Bs(i)%7D%7D%7Bf(i)%7D,M%5Cright)" alt="FAST"></td>
 </tr>
 <tr>
@@ -196,13 +196,17 @@ Michal Zalewski &lt;lcamtuf@google.com&gt;.</p>
 <td>Experimental: <code>rare</code> puts focus on queue entries that hit rare edges</td>
 </tr>
 <tr>
+<td><code>-p seek</code></td>
+<td>Experimental: <code>seek</code> is EXPLORE but ignoring the runtime of the queue input and less focus on the size</td>
+</tr>
+<tr>
 <td>where <em>α(i)</em> is the performance score that AFL uses to compute for the seed input <em>i</em>, <em>β(i)&gt;1</em> is a constant, <em>s(i)</em> is the number of times that seed <em>i</em> has been chosen from the queue, <em>f(i)</em> is the number of generated inputs that exercise the same path as seed <em>i</em>, and <em>μ</em> is the average number of generated inputs exercising a path.</td>
 <td></td>
 </tr>
 </tbody>
 </table>
 <p>More details can be found in the paper that was accepted at the <a href="https://www.sigsac.org/ccs/CCS2016/accepted-papers/">23rd ACM Conference on Computer and Communications Security (CCS&rsquo;16)</a>.</p>
-<p>PS: In parallel mode (several instances with shared queue), we suggest to run the master using the exploit schedule (-p exploit) and the slaves with a combination of cut-off-exponential (-p coe), exponential (-p fast; default), and explore (-p explore) schedules. In single mode, the default settings will do. <strong>EDIT:</strong> In parallel mode, AFLFast seems to perform poorly because the path probability estimates are incorrect for the imported seeds. Pull requests to fix this issue by syncing the estimates accross instances are appreciated :)</p>
+<p>PS: In parallel mode (several instances with shared queue), we suggest to run the main node using the exploit schedule (-p exploit) and the secondary nodes with a combination of cut-off-exponential (-p coe), exponential (-p fast; default), and explore (-p explore) schedules. In single mode, the default settings will do. <strong>EDIT:</strong> In parallel mode, AFLFast seems to perform poorly because the path probability estimates are incorrect for the imported seeds. Pull requests to fix this issue by syncing the estimates across instances are appreciated :)</p>
 <p>Copyright 2013, 2014, 2015, 2016 Google Inc. All rights reserved.
 Released under terms and conditions of Apache License, Version 2.0.</p>
 </article>

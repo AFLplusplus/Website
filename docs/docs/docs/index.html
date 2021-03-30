@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Docs | AFLplusplus</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+<meta property="og:title" content="Docs | AFLplusplus" />
+<meta name="twitter:title" content="Docs | AFLplusplus" />
+<meta itemprop="name" content="Docs | AFLplusplus" />
+<meta name="application-name" content="Docs | AFLplusplus" />
+<meta property="og:site_name" content="AFLplusplus" />
+
+<meta name="description" content="The AFLplusplus website" />
+<meta itemprop="description" content="The AFLplusplus website" />
+<meta property="og:description" content="The AFLplusplus website" />
+<meta name="twitter:description" content="The AFLplusplus website" />
+
+<base href="https://aflplus.plus/docs/docs/">
+<link rel="canonical" href="https://aflplus.plus/docs/docs/" itemprop="url" /> 
+<meta name="url" content="https://aflplus.plus/docs/docs/" />
+<meta name="twitter:url" content="https://aflplus.plus/docs/docs/" /> 
+<meta property="og:url" content="https://aflplus.plus/docs/docs/" />
+
+ 
+  <meta itemprop="image" content="https://aflplus.plus/ogimage.png" />
+  <meta property="og:image" content="https://aflplus.plus/ogimage.png" /> 
+  <meta name="twitter:image" content="https://aflplus.plus/ogimage.png" />
+  <meta name="twitter:image:src" content="https://aflplus.plus/ogimage.png" /> 
+
+
+
+<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
+
+
+<script defer src="/en.search.min.118c6bc4ee4320cd43de639b6048be9939caa6f7bb8a1a76a123eb3db4c07f3e.js" integrity="sha256-EYxrxO5DIM1D3mObYEi&#43;mTnKpve7ihp2oSPrPbTAfz4="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><img src="/logo_256x256.png" alt="Logo" /><span>AFLplusplus</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+  <ul>
+<li><strong>Site map</strong>
+<ul>
+<li><a href="/features/">Features</a></li>
+<li><a href="/building/">Build &amp; Install</a></li>
+<li><a href="/docs/">Documentation</a></li>
+<li><a href="/docs/tutorials/">Tutorials</a></li>
+<li><a href="/papers/">Papers</a></li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li><strong>Downloads</strong>
+<ul>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.12c">Release 3.12c</a>
+</li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
+<li><a href="https://raw.githubusercontent.com/AFLplusplus/AFLplusplus/master/docs/COPYING">License</a></li>
+</ul>
+</li>
+<li><strong>Links</strong>
+<ul>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus">Repo (GitHub)</a></li>
+<li><a href="https://groups.google.com/group/afl-users">Mailing list</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Docs</strong>
+
+  <label for="toc-control">
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#about-us">About us</a></li>
+    <li><a href="#about-the-afl-fuzzer-project">About the afl++ fuzzer project</a></li>
+    <li><a href="#metrics">Metrics</a></li>
+    <li><a href="#project-budget">Project Budget</a></li>
+    <li><a href="#additional-information">Additional Information</a></li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+<article class="markdown"><h1 id="restructure-afls-documentation">Restructure afl++'s documentation</h1>
+<h2 id="about-us">About us</h2>
+<p>We are dedicated to everything around fuzzing, our main and most well known
+contribution is the fuzzer <code>afl++</code> which is part of all major Unix
+distributions (e.g. Debian, Arch, FreeBSD, etc.) and is deployed on Google&rsquo;s
+oss-fuzz and clusterfuzz. It is rated the top fuzzer on Google&rsquo;s fuzzbench.</p>
+<p>We are four individuals from Europe supported by a large community.</p>
+<p>All our tools are open source.</p>
+<h2 id="about-the-afl-fuzzer-project">About the afl++ fuzzer project</h2>
+<p>afl++ inherited it&rsquo;s documentation from the original Google afl project.
+Since then it has been massively improved - feature and performance wise -
+and although the documenation has likewise been continued it has grown out
+of proportion.
+The documentation is done by non-natives to the English language, plus
+none of us has a writer background.</p>
+<p>We see questions on afl++ usage on mailing lists (e.g. afl-users), discord
+channels, web forums and as issues in our repository.</p>
+<p>This only increases as afl++ has been on the top of Google&rsquo;s fuzzbench
+statistics (which measures the performance of fuzzers) and is now being
+integrated in Google&rsquo;s oss-fuzz and clusterfuzz - and is in many Unix
+packaging repositories, e.g. Debian, FreeBSD, etc.</p>
+<p>afl++ now has 44 (!) documentation files with 13k total lines of content.
+This is way too much.</p>
+<p>Hence afl++ needs a complete overhaul of it&rsquo;s documentation, both on a
+organisation/structural level as well as the content.</p>
+<p>Overall the following actions have to be performed:</p>
+<ul>
+<li>Create a better structure of documentation so it is easier to find the
+information that is being looked for, combining and/or splitting up the
+existing documents as needed.</li>
+<li>Rewrite some documentation to remove duplication. Several information is
+present several times in the documentation. These should be removed to
+where needed so that we have as little bloat as possible.</li>
+<li>The documents have been written and modified by a lot of different people,
+most of them non-native English speaker. Hence an overall review where
+parts should be rewritten has to be performed and then the rewrite done.</li>
+<li>Create a cheat-sheet for a very short best-setup build and run of afl++</li>
+<li>Pictures explain more than 1000 words. We need at least 4 images that
+explain the workflow with afl++:
+<ul>
+<li>the build workflow</li>
+<li>the fuzzing workflow</li>
+<li>the fuzzing campaign management workflow</li>
+<li>the overall workflow that is an overview of the above</li>
+<li>maybe more? where the technical writes seems it necessary for
+understanding.</li>
+</ul>
+</li>
+</ul>
+<p>Requirements:</p>
+<ul>
+<li>Documentation has to be in Markdown format</li>
+<li>Images have to be either in SVG or PNG format.</li>
+<li>All documentation should be (moved) in(to) docs/</li>
+</ul>
+<p>The project does not require writing new documentation or tutorials beside the
+cheat sheet. The technical information for the cheat sheet will be provided by
+us.</p>
+<h2 id="metrics">Metrics</h2>
+<p>afl++ is a the highest performant fuzzer publicly available - but is also the
+most feature rich and complex. With the publicity of afl++&rsquo; success and
+deployment in Google projects internally and externally and availability as
+a package on most Linux distributions we see more and more issues being
+created and help requests on our Discord channel that would not be
+necessary if people would have read through all our documentation - which
+is unrealistic.</p>
+<p>We expect the the new documenation after this project to be cleaner, easier
+accessible and lighter to digest by our users, resulting in much less
+help requests. On the other hand the amount of users using afl++ should
+increase as well as it will be more accessible which would also increase
+questions again - but overall resulting in a reduction of help requests.</p>
+<p>In numbers: we currently have per week on average 5 issues on Github,
+10 questions on discord and 1 on mailing lists that would not be necessary
+with perfect documentation and perfect people.</p>
+<p>We would consider this project a success if afterwards we only have
+2 issues on Github and 3 questions on discord anymore that would be answered
+by reading the documentation. The mailing list is usually used by the most
+novice users and we don&rsquo;t expect any less questions there.</p>
+<h2 id="project-budget">Project Budget</h2>
+<p>We have zero experience with technical writers, so this is very hard for us
+to calculate. We expect it to be a lot of work though because of the amount
+of documentation we have that needs to be restructured and partially rewritten
+(44 documents with 13k total lines of content).</p>
+<p>We assume the daily rate of a very good and experienced technical writer in
+times of a pandemic to be ~500$ (according to web research), and calculate
+the overall amout of work to be around 20 days for everything incl. the
+graphics (but again - this is basically just guessing).</p>
+<p>Technical Writer                                              10000$
+Volunteer stipends                                                0$ (waved)
+T-Shirts for the top 10 contributors and helpers to this documentation project:
+10 afl++ logo t-shirts 		20$ each		200$
+10 shipping cost of t-shirts    10$ each		100$</p>
+<p>Total: 10.300$
+(in the submission form 10.280$ was entered)</p>
+<h2 id="additional-information">Additional Information</h2>
+<p>We have participated in Google Summer of Code in 2020 and hope to be selected
+again in 2021.</p>
+<p>We have no experience with a technical writer, but we will support that person
+with video calls, chats, emails and messaging, provide all necessary information
+and write technical contents that is required for the success of this project.
+It is clear to us that a technical writer knows how to write, but cannot know
+the technical details in a complex tooling like in afl++. This guidance, input,
+etc. has to come from us.</p>
+</article>
+ 
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+      </footer>
+      
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#about-us">About us</a></li>
+    <li><a href="#about-the-afl-fuzzer-project">About the afl++ fuzzer project</a></li>
+    <li><a href="#metrics">Metrics</a></li>
+    <li><a href="#project-budget">Project Budget</a></li>
+    <li><a href="#additional-information">Additional Information</a></li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

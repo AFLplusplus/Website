@@ -23,7 +23,7 @@ publishDir = "docs"
   ReleaseURL = "__REL_URL__"
 """
 
-os.system("cd AFLplusplus && git pull origin master")
+os.system("cd AFLplusplus && git pull origin stable")
 os.system("cp -v AFLplusplus/docs/*.md content/docs/")
 
 r = requests.get("https://api.github.com/repos/AFLplusplus/AFLplusplus/releases/latest")

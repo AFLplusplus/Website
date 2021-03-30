@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.414d90de4a21b6ac45cf31b1cf81535f59cbdbcba8754f23b5721b297b6a3ce5.js" integrity="sha256-QU2Q3kohtqxFzzGxz4FTX1nL28uodU8jtXIbKXtqPOU="></script>
+<script defer src="/en.search.min.118c6bc4ee4320cd43de639b6048be9939caa6f7bb8a1a76a123eb3db4c07f3e.js" integrity="sha256-EYxrxO5DIM1D3mObYEi&#43;mTnKpve7ihp2oSPrPbTAfz4="></script>
 
 <!--
 Made with Book Theme
@@ -83,7 +83,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.11c">Release 3.11c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.12c">Release 3.12c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -150,7 +150,6 @@ https://github.com/alex-shpak/hugo-book
       </ul>
     </li>
     <li><a href="#afl-style-in-process-fuzzer-for-llvm-kostya-serebryany">AFL-style in-process fuzzer for LLVM (Kostya Serebryany)</a></li>
-    <li><a href="#afl-fixup-shim-ben-nagy">AFL fixup shim (Ben Nagy)</a></li>
     <li><a href="#triforceafl-tim-newsham-and-jesse-hertz">TriforceAFL (Tim Newsham and Jesse Hertz)</a></li>
     <li><a href="#winafl-ivan-fratric">WinAFL (Ivan Fratric)</a></li>
     <li><a href="#network-fuzzing">Network fuzzing</a>
@@ -165,6 +164,8 @@ https://github.com/alex-shpak/hugo-book
         <li><a href="#afldff-quantumvm">AFLDFF (quantumvm)</a></li>
         <li><a href="#afl-launch-ben-nagy">afl-launch (Ben Nagy)</a></li>
         <li><a href="#afl-utils-rc0r">AFL Utils (rc0r)</a></li>
+        <li><a href="#afl-crash-analyzer-floyd">AFL crash analyzer (floyd)</a></li>
+        <li><a href="#afl-extras-fekir">afl-extras (fekir)</a></li>
         <li><a href="#afl-fuzzing-scripts-tobias-ospelt">afl-fuzzing-scripts (Tobias Ospelt)</a></li>
         <li><a href="#afl-sid-jacek-wielemborek">afl-sid (Jacek Wielemborek)</a></li>
         <li><a href="#afl-monitor-paul-s-ziegler">afl-monitor (Paul S. Ziegler)</a></li>
@@ -247,12 +248,8 @@ options.</p>
 <p>Provides an evolutionary instrumentation-guided fuzzing harness that allows
 some programs to be fuzzed without the fork / execve overhead. (Similar
 functionality is now available as the &ldquo;persistent&rdquo; feature described in
-<a href="../llvm_mode/README.md">the llvm_mode readme</a>)</p>
+<a href="../instrumentation/README.llvm.md">the llvm_mode readme</a>)</p>
 <p><a href="http://llvm.org/docs/LibFuzzer.html">http://llvm.org/docs/LibFuzzer.html</a></p>
-<h2 id="afl-fixup-shim-ben-nagy">AFL fixup shim (Ben Nagy)</h2>
-<p>Allows AFL_POST_LIBRARY postprocessors to be written in arbitrary languages
-that don&rsquo;t have C / .so bindings. Includes examples in Go.</p>
-<p><a href="https://github.com/bnagy/aflfix">https://github.com/bnagy/aflfix</a></p>
 <h2 id="triforceafl-tim-newsham-and-jesse-hertz">TriforceAFL (Tim Newsham and Jesse Hertz)</h2>
 <p>Leverages QEMU full system emulation mode to allow AFL to target operating
 systems and other alien worlds:</p>
@@ -288,8 +285,12 @@ be exposed on the Internet.</p>
 <h3 id="afl-utils-rc0r">AFL Utils (rc0r)</h3>
 <p>Simplifies the triage of discovered crashes, start parallel instances, etc.</p>
 <p><a href="https://github.com/rc0r/afl-utils">https://github.com/rc0r/afl-utils</a></p>
+<h3 id="afl-crash-analyzer-floyd">AFL crash analyzer (floyd)</h3>
 <p>Another crash triage tool:</p>
 <p><a href="https://github.com/floyd-fuh/afl-crash-analyzer">https://github.com/floyd-fuh/afl-crash-analyzer</a></p>
+<h3 id="afl-extras-fekir">afl-extras (fekir)</h3>
+<p>Collect data, parallel afl-tmin, startup scripts.</p>
+<p><a href="https://github.com/fekir/afl-extras">https://github.com/fekir/afl-extras</a></p>
 <h3 id="afl-fuzzing-scripts-tobias-ospelt">afl-fuzzing-scripts (Tobias Ospelt)</h3>
 <p>Simplifies starting up multiple parallel AFL jobs.</p>
 <p><a href="https://github.com/floyd-fuh/afl-fuzzing-scripts/">https://github.com/floyd-fuh/afl-fuzzing-scripts/</a></p>
@@ -356,7 +357,7 @@ projects.</p>
 <p><a href="https://code.google.com/p/address-sanitizer/wiki/AsanCoverage#Coverage_counters">https://code.google.com/p/address-sanitizer/wiki/AsanCoverage#Coverage_counters</a></p>
 <h3 id="afl-js-han-choongwoo">AFL JS (Han Choongwoo)</h3>
 <p>One-off optimizations to speed up the fuzzing of JavaScriptCore (now likely
-superseded by LLVM deferred forkserver init - see llvm_mode/README.md).</p>
+superseded by LLVM deferred forkserver init - see README.llvm.md).</p>
 <p><a href="https://github.com/tunz/afl-fuzz-js">https://github.com/tunz/afl-fuzz-js</a></p>
 <h3 id="afl-harness-for-fwknop-michael-rash">AFL harness for fwknop (Michael Rash)</h3>
 <p>An example of a fairly involved integration with AFL.</p>
@@ -431,7 +432,6 @@ paths or crashes at any point in a fuzzing job.</p>
       </ul>
     </li>
     <li><a href="#afl-style-in-process-fuzzer-for-llvm-kostya-serebryany">AFL-style in-process fuzzer for LLVM (Kostya Serebryany)</a></li>
-    <li><a href="#afl-fixup-shim-ben-nagy">AFL fixup shim (Ben Nagy)</a></li>
     <li><a href="#triforceafl-tim-newsham-and-jesse-hertz">TriforceAFL (Tim Newsham and Jesse Hertz)</a></li>
     <li><a href="#winafl-ivan-fratric">WinAFL (Ivan Fratric)</a></li>
     <li><a href="#network-fuzzing">Network fuzzing</a>
@@ -446,6 +446,8 @@ paths or crashes at any point in a fuzzing job.</p>
         <li><a href="#afldff-quantumvm">AFLDFF (quantumvm)</a></li>
         <li><a href="#afl-launch-ben-nagy">afl-launch (Ben Nagy)</a></li>
         <li><a href="#afl-utils-rc0r">AFL Utils (rc0r)</a></li>
+        <li><a href="#afl-crash-analyzer-floyd">AFL crash analyzer (floyd)</a></li>
+        <li><a href="#afl-extras-fekir">afl-extras (fekir)</a></li>
         <li><a href="#afl-fuzzing-scripts-tobias-ospelt">afl-fuzzing-scripts (Tobias Ospelt)</a></li>
         <li><a href="#afl-sid-jacek-wielemborek">afl-sid (Jacek Wielemborek)</a></li>
         <li><a href="#afl-monitor-paul-s-ziegler">afl-monitor (Paul S. Ziegler)</a></li>
