@@ -36,6 +36,8 @@ type: docs
 
 + Ahmad Hazimeh, Adrian Herrera, and Mathias Payer. ["Magma: A Ground-Truth Fuzzing Benchmark"](https://dl.acm.org/doi/pdf/10.1145/3428334). *Proc. ACM Meas. Anal. Comput. Syst. 4*, 3, Article 49 (December 2020), 29 pages.
 
++ Vishnyakov A., Fedotov A., Kuts D., Novikov A., Parygina D., Kobrin E., Logunova V., Belecky P., Kurmangaleev Sh. ["Sydr: Cutting Edge Dynamic Symbolic Execution"](https://arxiv.org/pdf/2011.09269.pdf). 2020 Ivannikov ISPRAS Open Conference (ISPRAS), IEEE, 2020, pp. 46-54.
+
 ### 2021
 
 + Stefan Nagy, Anh Nguyen-Tuong, Jason Hiser, Jack Davidson, and Matthew Hicks. ["Breaking Through Binaries: Compiler-quality Instrumentation for Better Binary-only Fuzzing"](http://static1.1.sqspcdn.com/static/f/543048/28391424/1610229123433/FIBRE_USENIX_21.pdf?token=F1KXP383rJP1UWqGgPASdv5Xlkc%3D). *In 30th USENIX Security Symposium (USENIX Security 21)*, USENIX Association, August 2021. 
