@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.118c6bc4ee4320cd43de639b6048be9939caa6f7bb8a1a76a123eb3db4c07f3e.js" integrity="sha256-EYxrxO5DIM1D3mObYEi&#43;mTnKpve7ihp2oSPrPbTAfz4="></script>
+<script defer src="/en.search.min.5d60843c87fc8b4cc00c3e0d0a6644717ab28ccb0462adce2238a95782df03fb.js" integrity="sha256-XWCEPIf8i0zADD4NCmZEcXqyjMsEYq3OIjipV4LfA/s="></script>
 
 <!--
 Made with Book Theme
@@ -159,7 +159,7 @@ https://github.com/alex-shpak/hugo-book
     <li><a href="#10-the-fork-server">10 The fork server</a></li>
     <li><a href="#11-parallelization">11. Parallelization</a></li>
     <li><a href="#12-binary-only-instrumentation">12. Binary-only instrumentation</a></li>
-    <li><a href="#13-the-afl-analyze-tool">13. The afl-analyze tool</a></li>
+    <li><a href="#13-the-afl-analyze-tool">13. The <code>afl-analyze</code> tool</a></li>
   </ul>
 </nav>
 
@@ -189,8 +189,8 @@ governing principles are speed, reliability, and ease of use.</p>
 coverage, along with coarse branch-taken hit counts. The code injected at
 branch points is essentially equivalent to:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">  cur_location <span style="color:#f92672">=</span> <span style="color:#f92672">&lt;</span>COMPILE_TIME_RANDOM<span style="color:#f92672">&gt;</span>;
-  shared_mem[cur_location <span style="color:#f92672">^</span> prev_location]<span style="color:#f92672">+</span><span style="color:#f92672">+</span>; 
-  prev_location <span style="color:#f92672">=</span> cur_location <span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>;
+  shared_mem[cur_location <span style="color:#f92672">^</span> prev_location]<span style="color:#f92672">++</span>; 
+  prev_location <span style="color:#f92672">=</span> cur_location <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">1</span>;
 </code></pre></div><p>The <code>cur_location</code> value is generated randomly to simplify the process of
 linking complex projects and keep the XOR output distributed uniformly.</p>
 <p>The <code>shared_mem[]</code> array is a 64 kB SHM region passed to the instrumented binary
@@ -547,11 +547,11 @@ help of a separately-built version of QEMU in &ldquo;user emulation&rdquo; mode.
 allows the execution of cross-architecture code - say, ARM binaries on x86.</p>
 <p>QEMU uses basic blocks as translation units; the instrumentation is implemented
 on top of this and uses a model roughly analogous to the compile-time hooks:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">  <span style="color:#66d9ef">if</span> (block_address <span style="color:#f92672">&gt;</span> elf_text_start <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> block_address <span style="color:#f92672">&lt;</span> elf_text_end) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">  <span style="color:#66d9ef">if</span> (block_address <span style="color:#f92672">&gt;</span> elf_text_start <span style="color:#f92672">&amp;&amp;</span> block_address <span style="color:#f92672">&lt;</span> elf_text_end) {
 
-    cur_location <span style="color:#f92672">=</span> (block_address <span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">4</span>) <span style="color:#f92672">^</span> (block_address <span style="color:#f92672">&lt;</span><span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">8</span>);
-    shared_mem[cur_location <span style="color:#f92672">^</span> prev_location]<span style="color:#f92672">+</span><span style="color:#f92672">+</span>; 
-    prev_location <span style="color:#f92672">=</span> cur_location <span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>;
+    cur_location <span style="color:#f92672">=</span> (block_address <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">4</span>) <span style="color:#f92672">^</span> (block_address <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">8</span>);
+    shared_mem[cur_location <span style="color:#f92672">^</span> prev_location]<span style="color:#f92672">++</span>; 
+    prev_location <span style="color:#f92672">=</span> cur_location <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">1</span>;
 
   }
 </code></pre></div><p>The shift-and-XOR-based scrambling in the second line is used to mask the
@@ -647,7 +647,7 @@ other criteria. May be an atomically compared keyword or so.</li>
     <li><a href="#10-the-fork-server">10 The fork server</a></li>
     <li><a href="#11-parallelization">11. Parallelization</a></li>
     <li><a href="#12-binary-only-instrumentation">12. Binary-only instrumentation</a></li>
-    <li><a href="#13-the-afl-analyze-tool">13. The afl-analyze tool</a></li>
+    <li><a href="#13-the-afl-analyze-tool">13. The <code>afl-analyze</code> tool</a></li>
   </ul>
 </nav>
 
