@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.5d60843c87fc8b4cc00c3e0d0a6644717ab28ccb0462adce2238a95782df03fb.js" integrity="sha256-XWCEPIf8i0zADD4NCmZEcXqyjMsEYq3OIjipV4LfA/s="></script>
+<script defer src="/en.search.min.539e3afb1d2e5e5f0b2c11063f354fb1011503479ecd601b3ba2c0faf10e5aeb.js" integrity="sha256-U546&#43;x0uXl8LLBEGPzVPsQEVA0eezWAbO6LA&#43;vEOWus="></script>
 
 <!--
 Made with Book Theme
@@ -362,8 +362,9 @@ exceed it by a margin sufficient to be classified as hangs.</p>
   | arithmetics : 53/2.54M, 0/537k, 0/55.2k             |
   |  known ints : 8/322k, 12/1.32M, 10/1.70M            |
   |  dictionary : 9/52k, 1/53k, 1/24k                   |
-  |       havoc : 1903/20.0M, 0/0                       |
-  |        trim : 20.31%/9201, 17.05%                   |
+  |havoc/splice : 1903/20.0M, 0/0                       |
+  |py/custom/rq : unused, 53/2.54M, unused              |
+  |    trim/eff : 20.31%/9201, 17.05%                   |
   +-----------------------------------------------------+
 </code></pre><p>This is just another nerd-targeted section keeping track of how many paths we
 have netted, in proportion to the number of execs attempted, for each of the
@@ -375,6 +376,10 @@ files; the second one corresponds to the number of execs needed to achieve this
 goal. Finally, the third number shows the proportion of bytes that, although
 not possible to remove, were deemed to have no effect and were excluded from
 some of the more expensive deterministic fuzzing steps.</p>
+<p>Note that when deterministic mutation mode is off (which is the default
+because it is not very efficient) the first five lines display
+&ldquo;disabled (default, enable with -D)&quot;.</p>
+<p>Only what is activated will have counter shown.</p>
 <h3 id="path-geometry">Path geometry</h3>
 <pre><code>  +---------------------+
   |    levels : 5       |

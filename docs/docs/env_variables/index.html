@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.5d60843c87fc8b4cc00c3e0d0a6644717ab28ccb0462adce2238a95782df03fb.js" integrity="sha256-XWCEPIf8i0zADD4NCmZEcXqyjMsEYq3OIjipV4LfA/s="></script>
+<script defer src="/en.search.min.539e3afb1d2e5e5f0b2c11063f354fb1011503479ecd601b3ba2c0faf10e5aeb.js" integrity="sha256-U546&#43;x0uXl8LLBEGPzVPsQEVA0eezWAbO6LA&#43;vEOWus="></script>
 
 <!--
 Made with Book Theme
@@ -145,7 +145,6 @@ https://github.com/alex-shpak/hugo-book
       <ul>
         <li><a href="#select-the-instrumentation-mode">Select the instrumentation mode</a></li>
         <li><a href="#lto">LTO</a></li>
-        <li><a href="#instrim">INSTRIM</a></li>
         <li><a href="#ngram">NGRAM</a></li>
         <li><a href="#ctx">CTX</a></li>
         <li><a href="#laf-intel">LAF-INTEL</a></li>
@@ -229,7 +228,7 @@ overridden.</p>
 </li>
 <li>
 <p>Setting <code>AFL_USE_ASAN</code> automatically enables ASAN, provided that your
-compiler supports that. Note that fuzzing with ASAN is mildly challenging</p>
+compiler supports it. Note that fuzzing with ASAN is mildly challenging</p>
 <ul>
 <li>see <a href="notes_for_asan.md">notes_for_asan.md</a>.</li>
 </ul>
@@ -238,6 +237,14 @@ same gotchas; the modes are mutually exclusive. UBSAN can be enabled
 similarly by setting the environment variable <code>AFL_USE_UBSAN=1</code>. Finally
 there is the Control Flow Integrity sanitizer that can be activated by
 <code>AFL_USE_CFISAN=1</code>)</p>
+</li>
+<li>
+<p>Setting <code>AFL_USE_LSAN</code> automatically enables Leak-Sanitizer, provided
+that your compiler supports it. To perform a leak check within your
+program at a certain point (such as at the end of an __AFL_LOOP),
+you can run the macro __AFL_LEAK_CHECK(); which will cause
+an abort if any memory is leaked (you can combine this with the
+LSAN_OPTIONS=suppressions option to supress some known leaks).</p>
 </li>
 <li>
 <p>Setting <code>AFL_CC</code>, <code>AFL_CXX</code>, and <code>AFL_AS</code> lets you use alternate downstream
@@ -313,16 +320,15 @@ Not all passes support this option though as it is an outdated feature.</p>
     PCGUARD - our own pcgard based instrumentation (default)
     NATIVE - clang's original pcguard based instrumentation
     CLASSIC - classic AFL (map[cur_loc ^ prev_loc &gt;&gt; 1]++) (default)
-    CFG - InsTrim instrumentation (see below)
     LTO - LTO instrumentation (see below)
     CTX - context sensitive instrumentation (see below)
     NGRAM-x - deeper previous location coverage (from NGRAM-2 up to NGRAM-16)
     GCC - outdated gcc instrumentation
     CLANG - outdated clang instrumentation
-  In CLASSIC (default) and CFG/INSTRIM you can also specify CTX and/or
-  NGRAM, seperate the options with a comma &quot;,&quot; then, e.g.:
-    `AFL_LLVM_INSTRUMENT=CFG,CTX,NGRAM-4`
-  Not that this is a good idea to use both CTX and NGRAM :)
+  In CLASSIC you can also specify CTX and/or NGRAM, seperate the options
+  with a comma &quot;,&quot; then, e.g.:
+    `AFL_LLVM_INSTRUMENT=CLASSIC,CTX,NGRAM-4`
+  Note that this is actually not a good idea to use both CTX and NGRAM :)
 </code></pre>
 <h3 id="lto">LTO</h3>
 <p>This is a different kind way of instrumentation: first it compiles all
@@ -354,24 +360,6 @@ This defaults to 1</li>
 into the instrumentation is set in a global variable</li>
 </ul>
 <p>See <a href="../instrumentation/README.lto.md">instrumentation/README.lto.md</a> for more information.</p>
-<h3 id="instrim">INSTRIM</h3>
-<p>This feature increases the speed by ~15% without any disadvantages to the
-classic instrumentation.</p>
-<p>Note that there is also an LTO version (if you have llvm 11 or higher) -
-that is the best instrumentation we have. Use <code>afl-clang-lto</code> to activate.
-The InsTrim LTO version additionally has all the options and features of
-LTO (see above).</p>
-<ul>
-<li>
-<p>Setting <code>AFL_LLVM_INSTRIM</code> or <code>AFL_LLVM_INSTRUMENT=CFG</code> activates this mode</p>
-</li>
-<li>
-<p>Setting <code>AFL_LLVM_INSTRIM_LOOPHEAD=1</code> expands on INSTRIM to optimize loops.
-afl-fuzz will only be able to see the path the loop took, but not how
-many times it was called (unless it is a complex loop).</p>
-</li>
-</ul>
-<p>See <a href="../instrumentation/README.instrim.md">instrumentation/README.instrim.md</a></p>
 <h3 id="ngram">NGRAM</h3>
 <ul>
 <li>Setting <code>AFL_LLVM_NGRAM_SIZE</code> or <code>AFL_LLVM_INSTRUMENT=NGRAM-{value}</code>
@@ -477,6 +465,10 @@ system) and are OK with some performance loss.</p>
 have been fuzzed and there were no new finds for a while. This would be
 normally indicated by the cycle counter in the UI turning green. May be
 convenient for some types of automated jobs.</p>
+</li>
+<li>
+<p><code>AFL_EXIT_ON_SEED_ISSUES</code> will restore the vanilla afl-fuzz behaviour
+which does not allow crashes or timeout seeds in the initial -i corpus.</p>
 </li>
 <li>
 <p><code>AFL_MAP_SIZE</code> sets the size of the shared map that afl-fuzz, afl-showmap,
@@ -594,7 +586,8 @@ may complain of high load prematurely, especially on systems with low core
 counts. To avoid the alarming red color, you can set <code>AFL_NO_CPU_RED</code>.</p>
 </li>
 <li>
-<p>In QEMU mode (-Q), <code>AFL_PATH</code> will be searched for afl-qemu-trace.</p>
+<p>In QEMU mode (-Q) and Frida mode (-O), <code>AFL_PATH</code> will
+be searched for afl-qemu-trace and afl-frida-trace.so.</p>
 </li>
 <li>
 <p>In QEMU mode (-Q), setting <code>AFL_QEMU_CUSTOM_BIN</code> cause afl-fuzz to skip
@@ -634,6 +627,17 @@ coloring console output when configured with USE_COLOR and not ALWAYS_COLORED.</
 <li>
 <p>Setting <code>AFL_FORCE_UI</code> will force painting the UI on the screen even if
 no valid terminal was detected (for virtual consoles)</p>
+</li>
+<li>
+<p>If you are using persistent mode (you should, see <a href="instrumentation/README.persistent_mode.md">instrumentation/README.persistent_mode.md</a>)
+some targets keep inherent state due which a detected crash testcase does
+not crash the target again when the testcase is given. To be able to still
+re-trigger these crashes you can use the <code>AFL_PERSISTENT_RECORD</code> variable
+with a value of how many previous fuzz cases to keep prio a crash.
+if set to e.g. 10, then the 9 previous inputs are written to
+out/default/crashes as RECORD:000000,cnt:000000 to RECORD:000000,cnt:000008
+and RECORD:000000,cnt:000009 being the crash case.
+NOTE: This option needs to be enabled in config.h first!</p>
 </li>
 <li>
 <p>If you are Jakub, you may need <code>AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES</code>.
@@ -851,7 +855,7 @@ override this by setting <code>LD_BIND_LAZY</code> beforehand, but it is almost
 certainly pointless.</p>
 </li>
 <li>
-<p>By default, <code>ASAN_OPTIONS</code> are set to:</p>
+<p>By default, <code>ASAN_OPTIONS</code> are set to (among others):</p>
 </li>
 </ul>
 <pre><code>    abort_on_error=1
@@ -871,9 +875,16 @@ difficulty telling crashes and hangs apart.</p>
     symbolize=0
     msan_track_origins=0
     allocator_may_return_null=1
-</code></pre><p>Be sure to include the first one when customizing anything, since some
-MSAN versions don&rsquo;t call <code>abort()</code> on error, and we need a way to detect
-faults.</p>
+</code></pre><ul>
+<li>Similarly, the default <code>LSAN_OPTIONS</code> are set to:</li>
+</ul>
+<pre><code>    exit_code=23
+    fast_unwind_on_malloc=0
+    symbolize=0
+    print_suppressions=0
+</code></pre><p>Be sure to include the first ones for LSAN and MSAN when customizing
+anything, since some MSAN and LSAN versions don&rsquo;t call <code>abort()</code> on
+error, and we need a way to detect faults.</p>
 </article>
  
 
@@ -909,7 +920,6 @@ faults.</p>
       <ul>
         <li><a href="#select-the-instrumentation-mode">Select the instrumentation mode</a></li>
         <li><a href="#lto">LTO</a></li>
-        <li><a href="#instrim">INSTRIM</a></li>
         <li><a href="#ngram">NGRAM</a></li>
         <li><a href="#ctx">CTX</a></li>
         <li><a href="#laf-intel">LAF-INTEL</a></li>

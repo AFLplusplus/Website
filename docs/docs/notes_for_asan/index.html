@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.5d60843c87fc8b4cc00c3e0d0a6644717ab28ccb0462adce2238a95782df03fb.js" integrity="sha256-XWCEPIf8i0zADD4NCmZEcXqyjMsEYq3OIjipV4LfA/s="></script>
+<script defer src="/en.search.min.539e3afb1d2e5e5f0b2c11063f354fb1011503479ecd601b3ba2c0faf10e5aeb.js" integrity="sha256-U546&#43;x0uXl8LLBEGPzVPsQEVA0eezWAbO6LA&#43;vEOWus="></script>
 
 <!--
 Made with Book Theme
@@ -187,6 +187,12 @@ utils/asan_cgroups).</p>
 afl-gcc / afl-clang wrappers will pick that up and add the appropriate flags.
 Note that ASAN is incompatible with -static, so be mindful of that.</p>
 <p>(You can also use AFL_USE_MSAN=1 to enable MSAN instead.)</p>
+<p>When compiling with AFL_USE_LSAN, the leak sanitizer will normally run
+when the program exits. In order to utilize this check at different times,
+such as at the end of a loop, you may use the macro __AFL_LEAK_CHECK();.
+This macro will report a crash in afl-fuzz if any memory is left leaking
+at this stage. You can also use LSAN_OPTIONS and a supressions file
+for more fine-tuned checking, however make sure you keep exitcode=23.</p>
 <p>NOTE: if you run several secondary instances, only one should run the target
 compiled with ASAN (and UBSAN, CFISAN), the others should run the target with
 no sanitizers compiled in.</p>

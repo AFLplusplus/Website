@@ -1,0 +1,504 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Baby Fuzzer - The LibAFL Fuzzing Library</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="libafl.html">The LibAFL Fuzzing Library</a></li><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="getting_started/getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting_started/setup.html"><strong aria-hidden="true">1.1.</strong> Setup</a></li><li class="chapter-item expanded "><a href="getting_started/build.html"><strong aria-hidden="true">1.2.</strong> Build</a></li><li class="chapter-item expanded "><a href="getting_started/crates.html"><strong aria-hidden="true">1.3.</strong> Crates</a></li></ol></li><li class="chapter-item expanded "><a href="baby_fuzzer.html" class="active"><strong aria-hidden="true">2.</strong> Baby Fuzzer</a></li><li class="chapter-item expanded "><a href="design/design.html"><strong aria-hidden="true">3.</strong> Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="design/core_concepts.html"><strong aria-hidden="true">3.1.</strong> Core Concepts</a></li><li class="chapter-item expanded "><a href="design/architecture.html"><strong aria-hidden="true">3.2.</strong> Architecture</a></li></ol></li><li class="chapter-item expanded "><a href="medatata/metadata.html"><strong aria-hidden="true">4.</strong> Understanding Metadata</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="medatata/definition.html"><strong aria-hidden="true">4.1.</strong> Definition</a></li><li class="chapter-item expanded "><a href="medatata/de_serialization.html"><strong aria-hidden="true">4.2.</strong> (De)Serialization</a></li><li class="chapter-item expanded "><a href="medatata/usage.html"><strong aria-hidden="true">4.3.</strong> Usage</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">The LibAFL Fuzzing Library</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="baby-fuzzer"><a class="header" href="#baby-fuzzer">Baby Fuzzer</a></h1>
+<p>This chapter will teach you how to create a naive fuzzer using the LibAFL API, you will learn about basic entities such as <code>State</code>, <code>Observer</code>, and <code>Executor</code>.
+The following chapters will discuss in detail the components of LibAFL, while here we will just scratch the fundamentals.</p>
+<p>We are going to fuzz a simple Rust function that panics under a condition. The fuzzer will be single-threaded and will stop after the crash like libFuzzer does normally.</p>
+<p>You can find a complete version of this tutorial as an example fuzzer in <a href="https://github.com/AFLplusplus/LibAFL/tree/main/fuzzers/baby_fuzzer"><code>fuzzers/baby_fuzzer</code></a>.</p>
+<h2 id="creating-a-project"><a class="header" href="#creating-a-project">Creating a project</a></h2>
+<p>We use cargo to create a new Rust project with LibAFL as a dependency. </p>
+<pre><code class="language-sh">$ cargo new baby_fuzzer
+$ cd baby_fuzzer
+</code></pre>
+<p>The generated <em>Cargo.toml</em> looks like the following:</p>
+<pre><code class="language-toml">[package]
+name = &quot;baby_fuzzer&quot;
+version = &quot;0.1.0&quot;
+authors = [&quot;Your Name &lt;you@example.com&gt;&quot;]
+edition = &quot;2018&quot;
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+</code></pre>
+<p>In order to use LibAFl we must add it as dependency adding <code>libafl = { path = &quot;path/to/libafl/&quot; }</code> under <code>[dependencies]</code>.
+You can use the LibAFL version from crates.io if you want, in this case, you have to use <code>libafl = &quot;*&quot;</code> to get the latest version.</p>
+<p>As we are going to fuzz Rust code, we want that a panic does not simply cause the program exit, but an abort that can be caught by the fuzzer.
+To do that, we specify <code>panic = &quot;abort&quot;</code> in the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html">profiles</a>.</p>
+<p>Alongside this setting, we add some optimization flags for the compile when building in release mode.</p>
+<p>The final <em>Cargo.toml</em> should look similar to the following:</p>
+<pre><code class="language-toml">[package]
+name = &quot;baby_fuzzer&quot;
+version = &quot;0.1.0&quot;
+authors = [&quot;Your Name &lt;you@example.com&gt;&quot;]
+edition = &quot;2018&quot;
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+libafl = { path = &quot;path/to/libafl/&quot; }
+
+[profile.dev]
+panic = &quot;abort&quot;
+
+[profile.release]
+panic = &quot;abort&quot;
+lto = true
+codegen-units = 1
+opt-level = 3
+debug = true
+</code></pre>
+<h2 id="the-function-under-test"><a class="header" href="#the-function-under-test">The function under test</a></h2>
+<p>Opening <code>src/main.rs</code> we have an empty main function.
+To start, we create the closure that we want to fuzz. It takes a buffer as input and panics if it starts with &quot;abc&quot;.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut harness = |buf: &amp;[u8]| {
+    if buf.len() &gt; 0 &amp;&amp; buf[0] == 'a' as u8 {
+        if buf.len() &gt; 1 &amp;&amp; buf[1] == 'b' as u8 {
+            if buf.len() &gt; 2 &amp;&amp; buf[2] == 'c' as u8 {
+                panic!(&quot;=)&quot;);
+            }
+        }
+    }
+};
+// To test the panic:
+// let input = &quot;abc&quot;.as_bytes();
+// harness(&amp;input);
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="generating-and-running-some-tests"><a class="header" href="#generating-and-running-some-tests">Generating and running some tests</a></h2>
+<p>One of the main components that a LibAFL-based fuzzer uses is the State, a container of the data that is evolved during the fuzzing process, such as the Corpus of inputs.
+In our main so we create a basic State instance like the following:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// create a State from scratch
+let mut state = State::new(
+    // RNG
+    StdRand::with_seed(current_nanos()),
+    // Corpus that will be evolved, we keep it in memory for performance
+    InMemoryCorpus::new(),
+    (),
+    // Corpus in which we store solutions (crashes in this example),
+    // on disk so the user can get them after stopping the fuzzer
+    OnDiskCorpus::new(PathBuf::from(&quot;./crashes&quot;)).unwrap(),
+    (),
+);
+<span class="boring">}
+</span></code></pre></pre>
+<p>It takes a random number generator, that is part of the fuzzer state, in this case, we use the default one <code>StdRand</code> but you can choose a different one. We seed it with the current nanoseconds.</p>
+<p>As the second parameter, it takes an instance of something implementing the Corpus trait, InMemoryCorpus in this case. The corpus is the container of the testcases evolved by the fuzzer, in this case, we keep it all in memory.</p>
+<p>We will discuss later the third and fifth parameters. The fourth is another corpus, in this case, to store the testcases that are considered as &quot;solutions&quot; for the fuzzer. For our purpose, the solution is the input that triggers the panic. In this case, we want to store it to disk under the <code>crashes</code> directory so we can inspect it.</p>
+<p>Another required component is the EventManager. It handles some events such as the addition of a testcase to the corpus during the fuzzing process. For our purpose, we use the simplest one that just displays the information about these events to the user using a Stats instance.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// The Stats trait define how the fuzzer stats are reported to the user
+let stats = SimpleStats::new(|s| println!(&quot;{}&quot;, s));
+
+// The event manager handle the various events generated during the fuzzing loop
+// such as the notification of the addition of a new item to the corpus
+let mut mgr = SimpleEventManager::new(stats);
+<span class="boring">}
+</span></code></pre></pre>
+<p>Last but not least, we need an Executor that is the entity responsible to run our program under test. In this example, we want to run the harness function in process, and so we use the InProcessExecutor.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Create the executor for an in-process function
+let mut executor =
+    InProcessExecutor::new(&amp;mut harness, (), &amp;mut state, &amp;mut mgr)
+        .expect(&quot;Failed to create the Executor&quot;.into());
+<span class="boring">}
+</span></code></pre></pre>
+<p>It takes a reference to the harness, the state, and the event manager. We will discuss the second parameter later.
+As the executor expects that the harness returns an ExitKind object, we add <code>ExitKind::Ok</code> to our harness function.</p>
+<p>Now we have the 3 major entities ready for running our tests, but we still cannot generate testcases.</p>
+<p>For this purpose, we use a Generator, RandPrintablesGenerator that generates a string of printable bytes.
+The State's method used to generate and run tests needs a scheduling policy for the corpus. We create it as QueueCorpusScheduler, a scheduler that serves testcases to the fuzzer in a FIFO fashion.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// A queue policy to get testcasess from the corpus
+let scheduler = QueueCorpusScheduler::new();
+
+// Generator of printable bytearrays of max size 32
+let mut generator = RandPrintablesGenerator::new(32);
+
+// Generate 8 initial inputs
+state
+    .generate_initial_inputs(&amp;mut executor, &amp;mut generator, &amp;mut mgr, &amp;scheduler, 8)
+    .expect(&quot;Failed to generate the initial corpus&quot;.into());
+<span class="boring">}
+</span></code></pre></pre>
+<p>Now you can prepend the following <code>use</code> directives to your main.rs and compile it.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::path::PathBuf;
+use libafl::{
+    corpus::{InMemoryCorpus, OnDiskCorpus, QueueCorpusScheduler},
+    events::SimpleEventManager,
+    executors::{inprocess::InProcessExecutor, ExitKind},
+    generators::RandPrintablesGenerator,
+    state::State,
+    stats::SimpleStats,
+    utils::{current_nanos, StdRand},
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>When running, you should see something similar to:</p>
+<pre><code class="language-sh">$ cargo run
+    Finished dev [unoptimized + debuginfo] target(s) in 0.04s
+     Running `target/debug/baby_fuzzer`
+[LOG Debug]: Loaded 0 over 8 initial testcases
+</code></pre>
+<h2 id="evolving-the-corpus-with-feedbacks"><a class="header" href="#evolving-the-corpus-with-feedbacks">Evolving the corpus with feedbacks</a></h2>
+<p>Now you simply ran 8 randomly generated testcases but none of them has been stored in the corpus. If you are very lucky, maybe you triggered the panic by chance but you don't see any saved file in <code>crashes</code>.</p>
+<p>Now we want to turn our simple fuzzer into a feedback-based one and increase the chance to generate the right input to trigger the panic. We are going to implement a simple feedback based on the 3 conditions that are needed to reach the panic.</p>
+<p>To do that, we need a way to keep track of if a condition is satisfied. The component that feeds the fuzzer with information about properties of a fuzzing run, the satisfied conditions in our case, is the Observer. We use the StdMapObserver, the default observer that uses a map to keep track of covered elements. In our fuzzer, each condition is mapped to an entry of such map.</p>
+<p>We represent such map as a <code>static mut</code> variable:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Coverage map with explicit assignments due to the lack of instrumentation
+static mut SIGNALS: [u8; 16] = [0; 16];
+
+fn signals_set(idx: usize) {
+    unsafe { SIGNALS[idx] = 1 };
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>As we don't rely on any instrumentation engine, we have to manually track the satisfied conditions in a map modyfing our tested function:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// The closure that we want to fuzz
+let mut harness = |buf: &amp;[u8]| {
+    signals_set(0);
+    if buf.len() &gt; 0 &amp;&amp; buf[0] == 'a' as u8 {
+        signals_set(1);
+        if buf.len() &gt; 1 &amp;&amp; buf[1] == 'b' as u8 {
+            signals_set(2);
+            if buf.len() &gt; 2 &amp;&amp; buf[2] == 'c' as u8 {
+                panic!(&quot;=)&quot;);
+            }
+        }
+    }
+    ExitKind::Ok
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>The observer can be created directly from the <code>SIGNALS</code> map, in the following way:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Create an observation channel using the signals map
+let observer = StdMapObserver::new(&quot;signals&quot;, unsafe { &amp;mut SIGNALS });
+<span class="boring">}
+</span></code></pre></pre>
+<p>The observers are usually kept in the corresponding executor as they keep track of information that is valid for just one run. We have then to modify our InProcessExecutor creation to include the observer as follows:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Create the executor for an in-process function with just one observer
+let mut executor =
+    InProcessExecutor::new(&amp;mut harness, tuple_list!(observer), &amp;mut state, &amp;mut mgr)
+        .expect(&quot;Failed to create the Executor&quot;.into());
+<span class="boring">}
+</span></code></pre></pre>
+<p>Now that the fuzzer can observe which condition is satisfied, we need a way to rate an input as interesting (i.e. worth of addition to the corpus) based on this observation. Here comes the notion of Feedback. The Feedback is part of the State and provides a way to rate input and its corresponding execution as interesting looking for the information in the observers. Feedbacks can maintain a cumulative state of the information seen so far, in our case it maintains the set of conditions satisfied in the previous runs.</p>
+<p>We use MaxMapFeedback, a feedback that implements a novelty search over the map of the MapObserver. Basically, if there is a value in the observer's map that is greater than the maximum value registered so far for the same entry, it rates the input as interesting and updates its state.</p>
+<p>Feedbacks are used also to decide if an input is a &quot;solution&quot;. The feedback that does that is called the Objective Feedback and when it rates an input as interested it is not saved to the corpus but to the solutions, written in the <code>crashes</code> folder in our case. We use the CrashFeedback to tell the fuzzer that if an input causes the program to crash it is a solution for us.</p>
+<p>We need to update our State creation including these feedbacks:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// create a State from scratch
+let mut state = State::new(
+    // RNG
+    StdRand::with_seed(current_nanos()),
+    // Corpus that will be evolved, we keep it in memory for performance
+    InMemoryCorpus::new(),
+    // Feedback to rate the interestingness of an input
+    MaxMapFeedback::new_with_observer(&amp;observer),
+    // Corpus in which we store solutions (crashes in this example),
+    // on disk so the user can get them after stopping the fuzzer
+    OnDiskCorpus::new(PathBuf::from(&quot;./crashes&quot;)).unwrap(),
+    // Feedbacks to recognize an input as solution
+    CrashFeedback::new(),
+);
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="the-actual-fuzzing"><a class="header" href="#the-actual-fuzzing">The actual fuzzing</a></h2>
+<p>Now, after including the correct <code>use</code>, we can run the program, but the outcome is not so different from the previous one as the random generator does not take into account what we save as interesting in the corpus. To do that, we need to plug a Mutator.</p>
+<p>Another central component of LibAFL is the Fuzzer, an entity that holds a set of Stages that are actions done on individual inputs taken from the corpus. The MutationalStage mutates the input and executes it several times for instance.</p>
+<p>As the last step, to have a proper fuzzer, we create a Fuzzer with a single MutationalStage that uses a mutator inspired by the havoc mutator of AFL.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Setup a basic mutator with a mutational stage
+let mutator = StdScheduledMutator::new(havoc_mutations());
+let stage = StdMutationalStage::new(mutator);
+
+// A fuzzer with just one stage
+let mut fuzzer = StdFuzzer::new(tuple_list!(stage));
+
+fuzzer
+    .fuzz_loop(&amp;mut state, &amp;mut executor, &amp;mut mgr, &amp;scheduler)
+    .expect(&quot;Error in the fuzzing loop&quot;.into());
+<span class="boring">}
+</span></code></pre></pre>
+<p><code>fuzz_loop</code> will request a testcase for each iteration to the fuzzer using the scheduler and then it will invoke the stage.</p>
+<p>After adding this code, we have a proper fuzzer, that can run a find the input that panics the function in less than a second.</p>
+<pre><code>$ cargo run
+   Compiling baby_fuzzer v0.1.0 (/home/andrea/Desktop/baby_fuzzer)
+    Finished dev [unoptimized + debuginfo] target(s) in 1.56s
+     Running `target/debug/baby_fuzzer`
+[New Testcase] clients: 1, corpus: 2, objectives: 0, executions: 1, exec/sec: 0
+[LOG Debug]: Loaded 1 over 8 initial testcases
+[New Testcase] clients: 1, corpus: 3, objectives: 0, executions: 804, exec/sec: 0
+[New Testcase] clients: 1, corpus: 4, objectives: 0, executions: 1408, exec/sec: 0
+thread 'main' panicked at '=)', src/main.rs:35:21
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+Crashed with SIGABRT
+Child crashed!
+[Objective] clients: 1, corpus: 4, objectives: 1, executions: 1408, exec/sec: 0
+Waiting for broker...
+Bye!
+</code></pre>
+<p>As you can see, after the panic message, the <code>objectives</code> count of the log increased by one and you will find the crashing input in <code>crashes/id_0</code>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="getting_started/crates.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="design/design.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="getting_started/crates.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="design/design.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

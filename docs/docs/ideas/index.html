@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.5d60843c87fc8b4cc00c3e0d0a6644717ab28ccb0462adce2238a95782df03fb.js" integrity="sha256-XWCEPIf8i0zADD4NCmZEcXqyjMsEYq3OIjipV4LfA/s="></script>
+<script defer src="/en.search.min.539e3afb1d2e5e5f0b2c11063f354fb1011503479ecd601b3ba2c0faf10e5aeb.js" integrity="sha256-U546&#43;x0uXl8LLBEGPzVPsQEVA0eezWAbO6LA&#43;vEOWus="></script>
 
 <!--
 Made with Book Theme
@@ -140,15 +140,9 @@ https://github.com/alex-shpak/hugo-book
       
   <nav id="TableOfContents">
   <ul>
-    <li><a href="#ui-for-libaflrs">UI for libaflrs</a></li>
-    <li><a href="#schedulers-for-libaflrs">Schedulers for libaflrs</a></li>
-    <li><a href="#forkserver-support-for-libaflrs">Forkserver support for libaflrs</a></li>
-    <li><a href="#more-observers-for-libaflrs">More Observers for libaflrs</a></li>
-  </ul>
-
-  <ul>
     <li><a href="#analysis-software">Analysis software</a></li>
     <li><a href="#wasm-instrumentation">WASM Instrumentation</a></li>
+    <li><a href="#support-other-programming-languages">Support other programming languages</a></li>
     <li><a href="#machine-learning">Machine Learning</a></li>
     <li><a href="#your-idea">Your idea!</a></li>
   </ul>
@@ -164,30 +158,6 @@ https://github.com/alex-shpak/hugo-book
 <article class="markdown"><h1 id="ideas-for-afl">Ideas for afl++</h1>
 <p>In the following, we describe a variety of ideas that could be implemented
 for future AFL++ versions.</p>
-<h1 id="gsoc-2021">GSoC 2021</h1>
-<p>All GSoC 2021 projects will be in the Rust development language!</p>
-<h2 id="ui-for-libaflrs">UI for libaflrs</h2>
-<p>Write a user interface to libaflrs, the upcoming backend of afl++.
-This might look like the afl-fuzz UI, but you can improve on it - and should!</p>
-<h2 id="schedulers-for-libaflrs">Schedulers for libaflrs</h2>
-<p>Schedulers is a mechanism that selects items from the fuzzing corpus based
-on strategy and randomness. One scheduler might focus on long paths,
-another on rarity of edges disocvered, still another on a combination on
-things. Some of the schedulers in afl++ have to be ported, but you are free
-to come up with your own if you want to - and see how it performs.</p>
-<h2 id="forkserver-support-for-libaflrs">Forkserver support for libaflrs</h2>
-<p>The current libaflrs implementation fuzzes in-memory, however obviously we
-want to support afl instrumented binaries as well.
-Hence a forkserver support needs to be implemented - forking off the target
-and talking to the target via a socketpair and the communication protocol
-within.</p>
-<h2 id="more-observers-for-libaflrs">More Observers for libaflrs</h2>
-<p>An observer is measuring functionality that looks at the target being fuzzed
-and documents something about it. In traditional fuzzing this is the coverage
-in the target, however we want to add various more observers, e.g. stack depth,
-heap usage, etc. - this is a topic for an experienced Rust developer.</p>
-<h1 id="generic-ideas-and-wishlist---not-part-of-gsoc-2021-">Generic ideas and wishlist - NOT PART OF GSoC 2021 !</h1>
-<p>The below list is not part of GSoC 2021.</p>
 <h2 id="analysis-software">Analysis software</h2>
 <p>Currently analysis is done by using afl-plot, which is rather outdated.
 A GTK or browser tool to create run-time analysis based on fuzzer_stats,
@@ -208,6 +178,10 @@ This can either be done by inserting instrumentation directly into the
 WASM AST, or by patching feedback into a WASM VMs of choice, similar to
 the current Unicorn instrumentation.</p>
 <p>Mentor: any</p>
+<h2 id="support-other-programming-languages">Support other programming languages</h2>
+<p>Other programming languages also use llvm hence they could (easily?) supported
+for fuzzing, e.g. mono, swift, go, kotlin native, fortran, &hellip;</p>
+<p>Mentor: vanhauser-thc</p>
 <h2 id="machine-learning">Machine Learning</h2>
 <p>Something with machine learning, better than <a href="https://github.com/dongdongshe/neuzz">NEUZZ</a> :-)
 Either improve a single mutator thorugh learning of many different bugs
@@ -247,15 +221,9 @@ Create an issue at <a href="https://github.com/AFLplusplus/AFLplusplus/issues">h
       
   <nav id="TableOfContents">
   <ul>
-    <li><a href="#ui-for-libaflrs">UI for libaflrs</a></li>
-    <li><a href="#schedulers-for-libaflrs">Schedulers for libaflrs</a></li>
-    <li><a href="#forkserver-support-for-libaflrs">Forkserver support for libaflrs</a></li>
-    <li><a href="#more-observers-for-libaflrs">More Observers for libaflrs</a></li>
-  </ul>
-
-  <ul>
     <li><a href="#analysis-software">Analysis software</a></li>
     <li><a href="#wasm-instrumentation">WASM Instrumentation</a></li>
+    <li><a href="#support-other-programming-languages">Support other programming languages</a></li>
     <li><a href="#machine-learning">Machine Learning</a></li>
     <li><a href="#your-idea">Your idea!</a></li>
   </ul>
