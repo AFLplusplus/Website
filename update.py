@@ -27,7 +27,7 @@ os.system("cd AFLplusplus && git pull origin stable")
 os.system("cp -v AFLplusplus/docs/*.md content/docs/")
 
 os.system("cd LibAFL && git pull origin main")
-os.system("cd LibAFL/docs && mdbook build && cp -r -v book ../../static/libafl-book")
+os.system("cd LibAFL/docs && mdbook build && cp -r -v book/* ../../static/libafl-book")
 
 r = requests.get("https://api.github.com/repos/AFLplusplus/AFLplusplus/releases/latest")
 
