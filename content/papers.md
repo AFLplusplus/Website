@@ -46,6 +46,6 @@ type: docs
 
 + Stefan Nagy, Anh Nguyen-Tuong, Jason Hiser, Jack Davidson, and Matthew Hicks. ["Breaking Through Binaries: Compiler-quality Instrumentation for Better Binary-only Fuzzing"](http://static1.1.sqspcdn.com/static/f/543048/28391424/1610229123433/FIBRE_USENIX_21.pdf?token=F1KXP383rJP1UWqGgPASdv5Xlkc%3D). *In 30th USENIX Security Symposium (USENIX Security 21)*, USENIX Association, August 2021. 
 
-+ Dominik Maier and Lukas Seidel. ["JMPscare: Introspection for Binary-Only Fuzzing"](https://www.ndss-symposium.org/wp-content/uploads/bar2021_23003_paper.pdf). (2021).
++ Dominik Maier and Lukas Seidel. ["JMPscare: Introspection for Binary-Only Fuzzing"](https://www.ndss-symposium.org/wp-content/uploads/bar2021_23003_paper.pdf). *Workshop on Binary Analysis Research (BAR)*. Vol. 2021. 2021.
 
-+ Yu-Chuan Liang and Hsu-Chun Hsiao. ["icLibFuzzer: Isolated-context libFuzzer for Improving Fuzzer Comparability"](https://www.ndss-symposium.org/wp-content/uploads/bar2021_23013_paper.pdf). (2021).
++ Yu-Chuan Liang and Hsu-Chun Hsiao. ["icLibFuzzer: Isolated-context libFuzzer for Improving Fuzzer Comparability"](https://www.ndss-symposium.org/wp-content/uploads/bar2021_23013_paper.pdf). *Workshop on Binary Analysis Research (BAR)*. Vol. 2021. 2021.
