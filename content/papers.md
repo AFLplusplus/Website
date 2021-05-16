@@ -22,6 +22,10 @@ type: docs
 
 + Jinghan Wang, Chengyu Song, and Heng Yin. ["Reinforcement Learning-based Hierarchical Seed Scheduling for Greybox Fuzzing"](https://www.cs.ucr.edu/~csong/ndss21-afl-hier.pdf). *In Proceedings of the 2021 Network and Distributed System Security Symposium (NDSS'21)*, February 2021. 
 
++ Luca Borzacchiello, Emilio Coppa and Camil Demetrescu. ["Fuzzing Symbolic Expressions"](https://arxiv.org/pdf/2102.06580.pdf). *In 2021 IEEE/ACM 43rd International Conference on Software Engineering (ICSE)*, 2021.
+
++ Sihang Liu, Suyash Mahar, Baishakhi Ray, and Samira Khan. ["PMFuzz: Test Case Generation for Persistent Memory Programs"](https://www.cs.virginia.edu/~smk9u/Liu_PMFuzz_ASPLOS21.pdf). *The International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS)*, 2021
+
 ## Works citing AFL++
 
 [Bibtex]({{% rel %}}papers_citing_aflpp.bib{{% /rel %}})
@@ -41,3 +45,7 @@ type: docs
 ### 2021
 
 + Stefan Nagy, Anh Nguyen-Tuong, Jason Hiser, Jack Davidson, and Matthew Hicks. ["Breaking Through Binaries: Compiler-quality Instrumentation for Better Binary-only Fuzzing"](http://static1.1.sqspcdn.com/static/f/543048/28391424/1610229123433/FIBRE_USENIX_21.pdf?token=F1KXP383rJP1UWqGgPASdv5Xlkc%3D). *In 30th USENIX Security Symposium (USENIX Security 21)*, USENIX Association, August 2021. 
+
++ Dominik Maier and Lukas Seidel. ["JMPscare: Introspection for Binary-Only Fuzzing"](https://www.ndss-symposium.org/wp-content/uploads/bar2021_23003_paper.pdf). (2021).
+
++ Yu-Chuan Liang and Hsu-Chun Hsiao. ["icLibFuzzer: Isolated-context libFuzzer for Improving Fuzzer Comparability"](https://www.ndss-symposium.org/wp-content/uploads/bar2021_23013_paper.pdf). (2021).
