@@ -17,4 +17,5 @@ bookMenuLevels: 2
    - [License](https://raw.githubusercontent.com/AFLplusplus/AFLplusplus/master/docs/COPYING)
  - **Links**
    - [Repo (GitHub)](https://github.com/AFLplusplus/AFLplusplus)
+   - [Donations](https://opencollective.com/AFLplusplusEU)
    - [Mailing list](https://groups.google.com/group/afl-users)
