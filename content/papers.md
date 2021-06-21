@@ -26,6 +26,10 @@ type: docs
 
 + Sihang Liu, Suyash Mahar, Baishakhi Ray, and Samira Khan. ["PMFuzz: Test Case Generation for Persistent Memory Programs"](https://www.cs.virginia.edu/~smk9u/Liu_PMFuzz_ASPLOS21.pdf). *The International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS)*, 2021
 
++ Andrea Fioraldi, Daniele Cono D'Elia, Davide Balzarotti. ["The Use of Likely Invariants as Feedback for Fuzzers"](http://www.s3.eurecom.fr/docs/usenixsec21_fioraldi.pdf). *In 30th USENIX Security Symposium (USENIX Security 21)*, USENIX Association, August 2021.
+
++ Prashast Srivastava and Mathias Payer. ["Gramatron: Effective Grammar-Aware Fuzzing"](http://nebelwelt.net/files/21ISSTA.pdf). *InProceedings of the 30th ACM SIGSOFT International Sympo-sium on Software Testing and Analysis (ISSTA ’21)*, July 11–17, 2021, Virtual, Denmark.
+
 ## Works citing AFL++
 
 [Bibtex]({{% rel %}}papers_citing_aflpp.bib{{% /rel %}})
@@ -49,3 +53,5 @@ type: docs
 + Dominik Maier and Lukas Seidel. ["JMPscare: Introspection for Binary-Only Fuzzing"](https://www.ndss-symposium.org/wp-content/uploads/bar2021_23003_paper.pdf). *Workshop on Binary Analysis Research (BAR)*. Vol. 2021. 2021.
 
 + Yu-Chuan Liang and Hsu-Chun Hsiao. ["icLibFuzzer: Isolated-context libFuzzer for Improving Fuzzer Comparability"](https://www.ndss-symposium.org/wp-content/uploads/bar2021_23013_paper.pdf). *Workshop on Binary Analysis Research (BAR)*. Vol. 2021. 2021.
+
++ Adrian Herrera, Hendra Gunadi, Shane Magrath, Michael Norrish, MathiasPayer, and Antony L. Hosking. ["Seed Selection for Successful Fuzzing"](http://nebelwelt.net/files/21ISSTA2.pdf). *InProceedings of the 30th ACM SIGSOFT International Symposium on Software Testing and Analysis (ISSTA ’21)*, July 11–17, 2021, Virtual, Denmark.
