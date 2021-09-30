@@ -1,0 +1,1014 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>The LibAFL Fuzzing Library</title>
+        <meta name="robots" content="noindex" />
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="libafl.html">The LibAFL Fuzzing Library</a></li><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="getting_started/getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting_started/setup.html"><strong aria-hidden="true">1.1.</strong> Setup</a></li><li class="chapter-item expanded "><a href="getting_started/build.html"><strong aria-hidden="true">1.2.</strong> Build</a></li><li class="chapter-item expanded "><a href="getting_started/crates.html"><strong aria-hidden="true">1.3.</strong> Crates</a></li></ol></li><li class="chapter-item expanded "><a href="baby_fuzzer.html"><strong aria-hidden="true">2.</strong> Baby Fuzzer</a></li><li class="chapter-item expanded "><a href="core_concepts/core_concepts.html"><strong aria-hidden="true">3.</strong> Core Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="core_concepts/observer.html"><strong aria-hidden="true">3.1.</strong> Observer</a></li><li class="chapter-item expanded "><a href="core_concepts/executor.html"><strong aria-hidden="true">3.2.</strong> Executor</a></li><li class="chapter-item expanded "><a href="core_concepts/feedback.html"><strong aria-hidden="true">3.3.</strong> Feedback</a></li><li class="chapter-item expanded "><a href="core_concepts/input.html"><strong aria-hidden="true">3.4.</strong> Input</a></li><li class="chapter-item expanded "><a href="core_concepts/corpus.html"><strong aria-hidden="true">3.5.</strong> Corpus</a></li><li class="chapter-item expanded "><a href="core_concepts/mutator.html"><strong aria-hidden="true">3.6.</strong> Mutator</a></li><li class="chapter-item expanded "><a href="core_concepts/generator.html"><strong aria-hidden="true">3.7.</strong> Generator</a></li><li class="chapter-item expanded "><a href="core_concepts/stage.html"><strong aria-hidden="true">3.8.</strong> Stage</a></li></ol></li><li class="chapter-item expanded "><a href="design/design.html"><strong aria-hidden="true">4.</strong> Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="design/architecture.html"><strong aria-hidden="true">4.1.</strong> Architecture</a></li><li class="chapter-item expanded "><a href="design/metadata.html"><strong aria-hidden="true">4.2.</strong> Metadata</a></li></ol></li><li class="chapter-item expanded "><a href="message_passing/message_passing.html"><strong aria-hidden="true">5.</strong> Message Passing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="message_passing/spawn_instances.html"><strong aria-hidden="true">5.1.</strong> Spawning Instances</a></li><li class="chapter-item expanded "><a href="message_passing/configurations.html"><strong aria-hidden="true">5.2.</strong> Configurations</a></li></ol></li><li class="chapter-item expanded "><a href="tutorial/tutorial.html"><strong aria-hidden="true">6.</strong> Tutorial</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tutorial/intro.html"><strong aria-hidden="true">6.1.</strong> Introduction</a></li></ol></li><li class="chapter-item expanded "><a href="advanced_features/advanced_features.html"><strong aria-hidden="true">7.</strong> Advanced Features</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="advanced_features/concolic/concolic.html"><strong aria-hidden="true">7.1.</strong> Concolic Tracing &amp; Hybrid Fuzzing</a></li><li class="chapter-item expanded "><a href="advanced_features/no_std/no_std.html"><strong aria-hidden="true">7.2.</strong> LibAFL in no_std environments (Kernels, Hypervisors, ...)</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The LibAFL Fuzzing Library</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="the-libafl-fuzzing-library"><a class="header" href="#the-libafl-fuzzing-library">The LibAFL Fuzzing Library</a></h1>
+<img align="right" src="https://github.com/AFLplusplus/Website/raw/master/static/logo_256x256.png" alt="AFL++ Logo">
+<p><em>by Andrea Fioraldi and Dominik Maier</em></p>
+<p>Welcome to LibAFL, the Advanced Fuzzing Library.
+This book shall be a gentle introduction into the library.</p>
+<p>This version of the LibAFL book is coupled with the release 1.0 beta of the library.</p>
+<p>This document is still work-in-progress and incomplete. The structure and the concepts explained here are subject to change in future revisions, as the structure of LibAFL itself will evolve.</p>
+<p>The HTML version of this book is available online at <a href="https://aflplus.plus/libafl-book/">https://aflplus.plus/libafl-book/</a> and offline from the LibAFL repository in the <code>docs/</code> folder.
+Build it using <code>mdbook build</code> in this folder, or run <code>mdbook serve</code> to view the book.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>Fuzzers are important tools for security researchers and developers alike.
+A wide range of state-of-the-art tools like <a href="https://github.com/AFLplusplus/AFLplusplus">AFL++</a>, <a href="https://llvm.org/docs/LibFuzzer.html">libFuzzer</a> or <a href="https://github.com/google/honggfuzz">honggfuzz</a> are available to users. They do their job in a very effective way, finding thousands of bugs.</p>
+<p>From the perspective of a power user, however, these tools are limited.
+Their design does not treat extensibility as a first-class citizen.
+Usually, a fuzzer developer can choose to either fork one of these existing tools, or to create a new fuzzer from scratch.
+In any case, researchers end up with tons of fuzzers, all of which are incompatible with each other.
+Their outstanding features can not just be combined for new projects.
+By reinventing the wheel over and over, we may completely miss out on features that are complex to reimplement.</p>
+<p>To tackle this issue, we created LibAFL, a library that is <em>not just another fuzzer</em>, but a collection of reusable pieces for individual fuzzers.
+LibAFL, written in Rust, helps you develop a fuzzer tailored for your specific needs.
+Be it a specific target, a particular instrumentation backend, or a custom mutator, you can leverage existing bits and pieces to craft the fastest and most efficient fuzzer you can envision.</p>
+<h2 id="why-libafl"><a class="header" href="#why-libafl">Why LibAFL?</a></h2>
+<p>LibAFL gives you many of the benefits of an off-the-shelf fuzzer, while being completely customizable.
+Some highlight features currently include:</p>
+<ul>
+<li><code>multi platform</code>: LibAFL works pretty much anywhere you can find a Rust compiler for. We already used it on <em>Windows</em>, <em>Android</em>, <em>MacOS</em>, and <em>Linux</em>, on <em>x86_64</em>, <em>aarch64</em>, ...</li>
+<li><code>portable</code>: <code>LibAFL</code> can be built in <code>no_std</code> mode.
+This means it does not require a specific OS-dependent runtime to function.
+Define an allocator and a way to map pages, and you are good to inject LibAFL in obscure targets like embedded devices, hypervisors, or maybe even WebAssembly?</li>
+<li><code>adaptable</code>: Given years of experience fine-tuning <em>AFLplusplus</em> and our academic fuzzing background, we could incorporate recent fuzzing trends into LibAFL's design and make it future-proof.
+To give an example, as opposed to old-skool fuzzers, a <code>BytesInput</code> is just one of the potential forms of inputs:
+feel free to use and mutate an Abstract Syntax Tree instead, for structured fuzzing.</li>
+<li><code>scalable</code>: As part of LibAFL, we developed <code>Low Level Message Passing</code>, <code>LLMP</code> for short, which allows LibAFL to scale almost linearly over cores. That is, if you chose to use this feature - it is your fuzzer, after all.
+Scaling to multiple machines over TCP is also possible, using LLMP's <code>broker2broker</code> feature.</li>
+<li><code>fast</code>: We do everything we can at compile time so that the runtime overhead is as minimal as it can get.</li>
+<li><code>bring your own target</code>: We support binary-only modes, like QEMU-Mode and Frida-Mode with ASAN and CmpLog, as well as multiple compilation passes for sourced-based instrumentation.
+Of course, we also support custom instrumentation, as you can see in the Python example based on Google's Atheris.</li>
+<li><code>usable</code>: This one is on you to decide. Dig right in!</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
+<p>To get startes with LibAFL, there are some initial steps to do.
+In this chapter, we discuss how to download and build LibAFL, using Rust's <code>cargo</code> command.
+We also describe the structure of LibAFL's components, so-called crates, and the purpose of each individual crate.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="setup"><a class="header" href="#setup">Setup</a></h1>
+<p>The first step is to download LibAFL and all dependencies that are not automatically installed with <code>cargo</code>.</p>
+<blockquote>
+<h3 id="command-line-notation"><a class="header" href="#command-line-notation">Command Line Notation</a></h3>
+<p>In this chapter and throughout the book, we show some commands used in the
+terminal. Lines that you should enter in a terminal all start with <code>$</code>. You
+don’t need to type in the <code>$</code> character; it indicates the start of each
+command. Lines that don’t start with <code>$</code> typically show the output of the
+previous command. Additionally, PowerShell-specific examples will use <code>&gt;</code>
+rather than <code>$</code>.</p>
+</blockquote>
+<p>While you technically do not need to install LibAFL, but can use the version from crates.io directly, we do recommend to download or clone the GitHub version.
+This gets you the example fuzzers, additional utilities, and latest patches.
+The easiest way to do this is to use <code>git</code>.</p>
+<pre><code class="language-sh">$ git clone git@github.com:AFLplusplus/LibAFL.git
+</code></pre>
+<p>You can alternatively, on a UNIX-like machine, download a compressed archive and extract it with:</p>
+<pre><code class="language-sh">$ wget https://github.com/AFLplusplus/LibAFL/archive/main.tar.gz
+$ tar xvf LibAFL-main.tar.gz
+$ rm LibAFL-main.tar.gz
+$ ls LibAFL-main # this is the extracted folder
+</code></pre>
+<h2 id="clang-installation"><a class="header" href="#clang-installation">Clang installation</a></h2>
+<p>One of the external dependencies of LibAFL is the Clang C/C++ compiler.
+While most of the code is in pure Rust, we still need a C compiler because stable Rust still does not support features that some parts of LibAFL may need, such as weak linking, and LLVM builtins linking.
+For these parts, we use C to expose the missing functionalities to our Rust codebase.</p>
+<p>In addition, if you want to perform source-level fuzz testing of C/C++ applications,
+you will likely need Clang with its instrumentation options to compile the programs
+under test.</p>
+<p>On Linux you could use your distribution's package manager to get Clang,
+but these packages are not always up-to-date.
+Instead, we suggest using the Debian/Ubuntu prebuilt packages from LLVM that are available using their <a href="https://apt.llvm.org/">official repository</a>.</p>
+<p>For Microsoft Windows, you can download the <a href="https://llvm.org/builds/">installer package</a> that LLVM generates periodically.</p>
+<p>Despite Clang being the default C compiler on MacOS, we discourage the use of the build shipped by Apple and encourage
+the installation from <a href="https://brew.sh/">Homebrew</a>, using <code>brew install llvm</code>.</p>
+<p>Alternatively, you can download and build the LLVM source tree - Clang included - following the steps
+explained <a href="https://clang.llvm.org/get_started.html">here</a>.</p>
+<h2 id="rust-installation"><a class="header" href="#rust-installation">Rust installation</a></h2>
+<p>If you do not have Rust installed, you can easily follow the steps described <a href="https://www.rust-lang.org/tools/install">here</a>
+to install it on any supported system.
+Be aware that Rust versions shipped with Linux distributions may be outdated, LibAFL always targets the latest <code>stable</code> version available via <code>rustup upgrade</code>.</p>
+<p>We suggest installing Clang and LLVM first.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="building-libafl"><a class="header" href="#building-libafl">Building LibAFL</a></h1>
+<p>LibAFL, as most of the Rust projects, can be built using <code>cargo</code> from the root directory of the project with:</p>
+<pre><code class="language-sh">$ cargo build --release
+</code></pre>
+<p>Note that the <code>--release</code> flag is optional for development, but you needed to add it to fuzzing at a decent speed.
+Slowdowns of 10x or more are not uncommon for Debug builds.</p>
+<p>The LibAFL repository is composed of multiple crates.
+The <a href="https://github.com/AFLplusplus/LibAFL/blob/main/Cargo.toml">top-level <code>Cargo.toml</code></a> is the workspace file grouping these crates.
+Calling <code>cargo build</code> from the root directory will compile all crates in the workspace.</p>
+<h2 id="build-example-fuzzers"><a class="header" href="#build-example-fuzzers">Build Example Fuzzers</a></h2>
+<p>The best starting point for experienced rustaceans is to read through, and adapt, the example fuzzers.</p>
+<p>We group these fuzzers in the <a href="https://github.com/AFLplusplus/LibAFL/tree/main/fuzzers"><code>./fuzzers</code></a> directory of the LibAFL repository.
+The directory contains a set of crates that are not part of the workspace.</p>
+<p>Each of these example fuzzers uses particular features of LibAFL, sometimes combined with different instrumentation backends (e.g. <a href="https://clang.llvm.org/docs/SanitizerCoverage.html">SanitizerCoverage</a>, <a href="https://frida.re/">Frida</a>, ...).</p>
+<p>You can use these crates as examples and as skeletons for custom fuzzers with similar feature sets.
+Each fuzzer will have a <code>README.md</code> file in its directory, describing the fuzzer and its features.</p>
+<p>To build an example fuzzer, you have to invoke <code>cargo build --release</code> from its respective folder (<code>fuzzers/[FUZZER_NAME]</code>).</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="crates"><a class="header" href="#crates">Crates</a></h1>
+<p>LibAFL is composed of different crates.
+A crate is an individual library in Rust's Cargo build system, that you can use by adding it to your project's <code>Cargo.toml</code>, like:</p>
+<pre><code class="language-toml">[dependencies]
+libafl = { version = &quot;*&quot; }
+</code></pre>
+<p>For LibAFL, each crate has its self-contained purpose, and the user may not need to use all of them in its project.
+Following the naming convention of the folders in the project's root, they are:</p>
+<h3 id="a-hrefhttpsgithubcomaflpluspluslibafltreemainlibafllibafla"><a class="header" href="#a-hrefhttpsgithubcomaflpluspluslibafltreemainlibafllibafla"><a href="https://github.com/AFLplusplus/LibAFL/tree/main/libafl"><code>libafl</code></a></a></h3>
+<p>This is the main crate that contains all the components needed to build a fuzzer.</p>
+<p>This crate has a number of feature flags that enable and disable certain aspects of LibAFL.
+The features can be found in <a href="https://github.com/AFLplusplus/LibAFL/blob/main/libafl/Cargo.toml">LibAFL's <code>Cargo.toml</code></a> under &quot;<code>[features]</code>&quot;, and are usually explained with comments there.
+Some features worthy of remark are:</p>
+<ul>
+<li><code>std</code> enables the parts of the code that use the Rust standard library. Without this flag, LibAFL is <code>no_std</code> compatible. This disables a range of features, but allows us to use LibAFL in embedded environments, read <a href="getting_started/../advanced_features/no_std/no_std.html">the <code>no_std</code> section</a> for further details.</li>
+<li><code>derive</code> enables the usage of the <code>derive(...)</code> macros defined in libafl_derive from libafl.</li>
+<li><code>rand_trait</code> allows you to use LibAFL's very fast (<em>but insecure!</em>) random number generator wherever compatibility with Rust's <a href="https://crates.io/crates/rand"><code>rand</code> crate</a> is needed.</li>
+<li><code>llmp_bind_public</code> makes LibAFL's LLMP bind to a public TCP port, over which other fuzzers nodes can communicate with this instance.</li>
+<li><code>introspection</code> adds performance statistics to LibAFL.</li>
+</ul>
+<p>You can chose the features by using <code>features = [&quot;feature1&quot;, &quot;feature2&quot;, ...]</code> for LibAFL in your <code>Cargo.toml</code>.
+Out of this list, by default, <code>std</code>, <code>derive</code>, and <code>rand_trait</code> are already set.
+You can choose to disable them by setting <code>default-features = false</code> in your <code>Cargo.toml</code>.</p>
+<h3 id="libafl_sugar"><a class="header" href="#libafl_sugar">libafl_sugar</a></h3>
+<p>The sugar crate abstracts away most of the complexity of LibAFL's API.
+Instead of high flexibility, it aims to be high-level and easy-to-use.
+It is not as flexible as stitching your fuzzer together from each individual component, but allows you to build a fuzzer with minimal lines of code.
+To see it in action, take a look at the <a href="https://github.com/AFLplusplus/LibAFL/tree/main/fuzzers/libfuzzer_stb_image_sugar"><code>libfuzzer_stb_image_sugar</code> example fuzzer</a>.</p>
+<h3 id="libafl_derive"><a class="header" href="#libafl_derive">libafl_derive</a></h3>
+<p>This a proc-macro crate paired with the <code>libafl</code> crate.</p>
+<p>At the moment, it just exposes the <code>derive(SerdeAny)</code> macro that can be used to define Metadata structs, see the section about <a href="getting_started/../design/metadata.html">Metadata</a> for details.</p>
+<h3 id="libafl_targets"><a class="header" href="#libafl_targets">libafl_targets</a></h3>
+<p>This crate exposes code to interact with, and to instrument, targets.
+To enable and disable features at compile-time, the features are enabled and disabled using feature flags.</p>
+<p>Currently, the supported flags are:</p>
+<ul>
+<li><code>pcguard_edges</code> defines the SanitizerCoverage trace-pc-guard hooks to track the executed edges in a map.</li>
+<li>`pcguard_hitcounts defines the SanitizerCoverage trace-pc-guard hooks to track the executed edges with the hitcounts (like AFL) in a map.</li>
+<li><code>libfuzzer</code> exposes a compatibility layer with libFuzzer style harnesses.</li>
+<li><code>value_profile</code> defines the SanitizerCoverage trace-cmp hooks to track the matching bits of each comparison in a map. </li>
+</ul>
+<h3 id="libafl_cc"><a class="header" href="#libafl_cc">libafl_cc</a></h3>
+<p>This is a library that provides utils wrap compilers and create source-level fuzzers.</p>
+<p>At the moment, only the Clang compiler is supported.
+To understand it deeper, look through the tutorials and examples.</p>
+<h3 id="libafl_frida"><a class="header" href="#libafl_frida">libafl_frida</a></h3>
+<p>This library bridges LibAFL with Frida as instrumentation backend.</p>
+<p>With this crate, you can instrument targets on Linux/macOS/Windows/Android for coverage collection.</p>
+<p>Additionally, it supports CmpLog, and AddressSanitizer instrumentation and runtimes for aarch64.</p>
+<h3 id="libafl_qemu"><a class="header" href="#libafl_qemu">libafl_qemu</a></h3>
+<p>This library bridges LibAFL with QEMU user-mode to fuzz ELF cross-platform binaries.</p>
+<p>It works on Linux and can collect edge coverage without collisions!
+It also supports a wide range of hooks and instrumentation options.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="a-simple-libafl-fuzzer"><a class="header" href="#a-simple-libafl-fuzzer">A Simple LibAFL Fuzzer</a></h1>
+<p>This chapter discusses a naive fuzzer using the LibAFL API.
+You will learn about basic entities such as <code>State</code>, <code>Observer</code>, and <code>Executor</code>.
+While the following chapters discuss the components of LibAFL in detail, here we introduce the fundamentals.</p>
+<p>We are going to fuzz a simple Rust function that panics under a condition. The fuzzer will be single-threaded and will stop after the crash, just like libFuzzer normally does.</p>
+<p>You can find a complete version of this tutorial as an example fuzzer in <a href="https://github.com/AFLplusplus/LibAFL/tree/main/fuzzers/baby_fuzzer"><code>fuzzers/baby_fuzzer</code></a>.</p>
+<blockquote>
+<h3 id="warning"><a class="header" href="#warning">Warning</a></h3>
+<p>This example fuzzer is too naive for any real-world usage.
+Its purpose is solely to show the main components of the library, for a more in-depth walkthrough on building a custom fuzzer go to the <a href="./tutorial/intro.html">Tutorial chapter</a> directly.</p>
+</blockquote>
+<h2 id="creating-a-project"><a class="header" href="#creating-a-project">Creating a project</a></h2>
+<p>We use cargo to create a new Rust project with LibAFL as a dependency. </p>
+<pre><code class="language-sh">$ cargo new baby_fuzzer
+$ cd baby_fuzzer
+</code></pre>
+<p>The generated <code>Cargo.toml</code> looks like the following:</p>
+<pre><code class="language-toml">[package]
+name = &quot;baby_fuzzer&quot;
+version = &quot;0.1.0&quot;
+authors = [&quot;Your Name &lt;you@example.com&gt;&quot;]
+edition = &quot;2018&quot;
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+</code></pre>
+<p>In order to use LibAFl we must add it as dependency adding <code>libafl = { path = &quot;path/to/libafl/&quot; }</code> under <code>[dependencies]</code>.
+You can use the LibAFL version from crates.io if you want, in this case, you have to use <code>libafl = &quot;*&quot;</code> to get the latest version (or set it to the current version).</p>
+<p>As we are going to fuzz Rust code, we want that a panic does not simply cause the program to exit, but raise an <code>abort</code> that can then be caught by the fuzzer.
+To do that, we specify <code>panic = &quot;abort&quot;</code> in the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html">profiles</a>.</p>
+<p>Alongside this setting, we add some optimization flags for the compile when building in release mode.</p>
+<p>The final <code>Cargo.toml</code> should look similar to the following:</p>
+<pre><code class="language-toml">[package]
+name = &quot;baby_fuzzer&quot;
+version = &quot;0.1.0&quot;
+authors = [&quot;Your Name &lt;you@example.com&gt;&quot;]
+edition = &quot;2018&quot;
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+libafl = { path = &quot;path/to/libafl/&quot; }
+
+[profile.dev]
+panic = &quot;abort&quot;
+
+[profile.release]
+panic = &quot;abort&quot;
+lto = true
+codegen-units = 1
+opt-level = 3
+debug = true
+</code></pre>
+<h2 id="the-function-under-test"><a class="header" href="#the-function-under-test">The function under test</a></h2>
+<p>Opening <code>src/main.rs</code>, we have an empty <code>main</code> function.
+To start, we create the closure that we want to fuzz. It takes a buffer as input and panics if it starts with <code>&quot;abc&quot;</code>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>extern crate libafl;
+use libafl::inputs::{BytesInput, HasTargetBytes};
+
+let mut harness = |input: &amp;BytesInput| {
+    let target = input.target_bytes();
+    let buf = target.as_slice();
+    if buf.len() &gt; 0 &amp;&amp; buf[0] == 'a' as u8 {
+        if buf.len() &gt; 1 &amp;&amp; buf[1] == 'b' as u8 {
+            if buf.len() &gt; 2 &amp;&amp; buf[2] == 'c' as u8 {
+                panic!(&quot;=)&quot;);
+            }
+        }
+    }
+};
+// To test the panic:
+// let input = BytesInput::new(&quot;abc&quot;.as_bytes());
+// harness(&amp;input);
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="generating-and-running-some-tests"><a class="header" href="#generating-and-running-some-tests">Generating and running some tests</a></h2>
+<p>One of the main components that a LibAFL-based fuzzer uses is the State, a container of the data that is evolved during the fuzzing process.
+Includes all State, such as the Corpus of inputs, the current rng state, and potential Metadata for the testcases and run.
+In our <code>main</code> we create a basic State instance like the following:</p>
+<pre><code class="language-rust ignore">// create a State from scratch
+let mut state = StdState::new(
+    // RNG
+    StdRand::with_seed(current_nanos()),
+    // Corpus that will be evolved, we keep it in memory for performance
+    InMemoryCorpus::new(),
+    // Corpus in which we store solutions (crashes in this example),
+    // on disk so the user can get them after stopping the fuzzer
+    OnDiskCorpus::new(PathBuf::from(&quot;./crashes&quot;)).unwrap(),
+    (),
+);
+</code></pre>
+<p>It takes a random number generator, that is part of the fuzzer state, in this case, we use the default one <code>StdRand</code> but you can choose a different one. We seed it with the current nanoseconds.</p>
+<p>As the second parameter, it takes an instance of something implementing the Corpus trait, InMemoryCorpus in this case. The corpus is the container of the testcases evolved by the fuzzer, in this case, we keep it all in memory.</p>
+<p>We will discuss the last parameter later. The third parameter is another corpus, in this case, to store the testcases that are considered as &quot;solutions&quot; for the fuzzer. For our purpose, the solution is the input that triggers the panic. In this case, we want to store it to disk under the <code>crashes</code> directory, so we can inspect it.</p>
+<p>Another required component is the EventManager. It handles some events such as the addition of a testcase to the corpus during the fuzzing process. For our purpose, we use the simplest one that just displays the information about these events to the user using a Stats instance.</p>
+<pre><code class="language-rust ignore">// The Stats trait define how the fuzzer stats are reported to the user
+let stats = SimpleStats::new(|s| println!(&quot;{}&quot;, s));
+
+// The event manager handle the various events generated during the fuzzing loop
+// such as the notification of the addition of a new item to the corpus
+let mut mgr = SimpleEventManager::new(stats);
+</code></pre>
+<p>In addition, we have the Fuzzer, an entity that contains some actions that alter the State. One of these actions is the scheduling of the testcases to the fuzzer using a CorpusScheduler.
+We create it as QueueCorpusScheduler, a scheduler that serves testcases to the fuzzer in a FIFO fashion.</p>
+<pre><code class="language-rust ignore">// A queue policy to get testcasess from the corpus
+let scheduler = QueueCorpusScheduler::new();
+
+// A fuzzer with feedbacks and a corpus scheduler
+let mut fuzzer = StdFuzzer::new(scheduler, (), ());
+</code></pre>
+<p>Last but not least, we need an Executor that is the entity responsible to run our program under test. In this example, we want to run the harness function in-process (without forking off a child, for example), and so we use the <code>InProcessExecutor</code>.</p>
+<pre><code class="language-rust ignore">// Create the executor for an in-process function
+let mut executor = InProcessExecutor::new(
+    &amp;mut harness,
+    (),
+    &amp;mut fuzzer,
+    &amp;mut state,
+    &amp;mut mgr,
+)
+.expect(&quot;Failed to create the Executor&quot;);
+</code></pre>
+<p>It takes a reference to the harness, the state, and the event manager. We will discuss the second parameter later.
+As the executor expects that the harness returns an ExitKind object, we add <code>ExitKind::Ok</code> to our harness function.</p>
+<p>Now we have the 4 major entities ready for running our tests, but we still cannot generate testcases.</p>
+<p>For this purpose, we use a Generator, <code>RandPrintablesGenerator</code> that generates a string of printable bytes.</p>
+<pre><code class="language-rust ignore">use libafl::generators::RandPrintablesGenerator;
+
+// Generator of printable bytearrays of max size 32
+let mut generator = RandPrintablesGenerator::new(32);
+
+// Generate 8 initial inputs
+state
+    .generate_initial_inputs(&amp;mut executor, &amp;mut generator, &amp;mut mgr, &amp;scheduler, 8)
+    .expect(&quot;Failed to generate the initial corpus&quot;.into());
+</code></pre>
+<p>Now you can prepend the necessary <code>use</code> directives to your main.rs and compile the fuzzer.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>extern crate libafl;
+
+use std::path::PathBuf;
+use libafl::{
+    bolts::{current_nanos, rands::StdRand},
+    corpus::{InMemoryCorpus, OnDiskCorpus, QueueCorpusScheduler},
+    events::SimpleEventManager,
+    executors::{inprocess::InProcessExecutor, ExitKind},
+    generators::RandPrintablesGenerator,
+    inputs::{BytesInput, HasTargetBytes},
+    state::StdState,
+    stats::SimpleStats,
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>When running, you should see something similar to:</p>
+<pre><code class="language-sh">$ cargo run
+    Finished dev [unoptimized + debuginfo] target(s) in 0.04s
+     Running `target/debug/baby_fuzzer`
+[LOG Debug]: Loaded 0 over 8 initial testcases
+</code></pre>
+<h2 id="evolving-the-corpus-with-feedbacks"><a class="header" href="#evolving-the-corpus-with-feedbacks">Evolving the corpus with feedbacks</a></h2>
+<p>Now you simply ran 8 randomly generated testcases, but none of them has been stored in the corpus. If you are very lucky, maybe you triggered the panic by chance but you don't see any saved file in <code>crashes</code>.</p>
+<p>Now we want to turn our simple fuzzer into a feedback-based one and increase the chance to generate the right input to trigger the panic. We are going to implement a simple feedback based on the 3 conditions that are needed to reach the panic.</p>
+<p>To do that, we need a way to keep track of if a condition is satisfied. The component that feeds the fuzzer with information about properties of a fuzzing run, the satisfied conditions in our case, is the Observer. We use the <code>StdMapObserver</code>, the default observer that uses a map to keep track of covered elements. In our fuzzer, each condition is mapped to an entry of such map.</p>
+<p>We represent such map as a <code>static mut</code> variable.
+As we don't rely on any instrumentation engine, we have to manually track the satisfied conditions in a map modyfing our tested function:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>extern crate libafl;
+use libafl::{
+    inputs::{BytesInput, HasTargetBytes},
+    executors::ExitKind,
+};
+
+// Coverage map with explicit assignments due to the lack of instrumentation
+static mut SIGNALS: [u8; 16] = [0; 16];
+
+fn signals_set(idx: usize) {
+    unsafe { SIGNALS[idx] = 1 };
+}
+
+// The closure that we want to fuzz
+let mut harness = |input: &amp;BytesInput| {
+    let target = input.target_bytes();
+    let buf = target.as_slice();
+    signals_set(0);
+    if buf.len() &gt; 0 &amp;&amp; buf[0] == 'a' as u8 {
+        signals_set(1);
+        if buf.len() &gt; 1 &amp;&amp; buf[1] == 'b' as u8 {
+            signals_set(2);
+            if buf.len() &gt; 2 &amp;&amp; buf[2] == 'c' as u8 {
+                panic!(&quot;=)&quot;);
+            }
+        }
+    }
+    ExitKind::Ok
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>The observer can be created directly from the <code>SIGNALS</code> map, in the following way:</p>
+<pre><code class="language-rust ignore">// Create an observation channel using the signals map
+let observer = StdMapObserver::new(&quot;signals&quot;, unsafe { &amp;mut SIGNALS });
+</code></pre>
+<p>The observers are usually kept in the corresponding executor as they keep track of information that is valid for just one run. We have then to modify our InProcessExecutor creation to include the observer as follows:</p>
+<pre><code class="language-rust ignore">// Create the executor for an in-process function with just one observer
+let mut executor =
+    InProcessExecutor::new(&amp;mut harness, tuple_list!(observer), &amp;mut state, &amp;mut mgr)
+        .expect(&quot;Failed to create the Executor&quot;.into());
+</code></pre>
+<p>Now that the fuzzer can observe which condition is satisfied, we need a way to rate an input as interesting (i.e. worth of addition to the corpus) based on this observation. Here comes the notion of Feedback. The Feedback is part of the State and provides a way to rate input and its corresponding execution as interesting looking for the information in the observers. Feedbacks can maintain a cumulative state of the information seen so far in a so-called FeedbackState instance, in our case it maintains the set of conditions satisfied in the previous runs.</p>
+<p>We use MaxMapFeedback, a feedback that implements a novelty search over the map of the MapObserver. Basically, if there is a value in the observer's map that is greater than the maximum value registered so far for the same entry, it rates the input as interesting and updates its state.</p>
+<p>Feedbacks are used also to decide if an input is a &quot;solution&quot;. The feedback that does that is called the Objective Feedback and when it rates an input as interested it is not saved to the corpus but to the solutions, written in the <code>crashes</code> folder in our case. We use the CrashFeedback to tell the fuzzer that if an input causes the program to crash it is a solution for us.</p>
+<p>We need to update our State creation including the feedback state and the Fuzzer including the feedback and the objective:</p>
+<pre><code class="language-rust ignore">extern crate libafl;
+use libafl::{
+    bolts::{rands::StdRand,
+    corpus::{InMemoryCorpus, OnDiskCorpus, RandCorpusScheduler},
+    events::{setup_restarting_mgr_std, EventConfig, EventRestarter},
+    feedbacks::{MapFeedbackState, MaxMapFeedback, CrashFeedback},
+    fuzzer::{StdFuzzer},
+};
+
+// The state of the edges feedback.
+let feedback_state = MapFeedbackState::with_observer(&amp;observer);
+
+// Feedback to rate the interestingness of an input
+let feedback = MaxMapFeedback::new(&amp;feedback_state, &amp;observer);
+
+// A feedback to choose if an input is a solution or not
+let objective = CrashFeedback::new();
+
+// create a State from scratch
+let mut state = StdState::new(
+    // RNG
+    StdRand::with_seed(current_nanos()),
+    // Corpus that will be evolved, we keep it in memory for performance
+    InMemoryCorpus::new(),
+    // Corpus in which we store solutions (crashes in this example),
+    // on disk so the user can get them after stopping the fuzzer
+    OnDiskCorpus::new(PathBuf::from(&quot;./crashes&quot;)).unwrap(),
+    // States of the feedbacks.
+    // They are the data related to the feedbacks that you want to persist in the State.
+    tuple_list!(feedback_state),
+);
+
+// ...
+
+// A fuzzer with feedbacks and a corpus scheduler
+let mut fuzzer = StdFuzzer::new(scheduler, feedback, objective);
+</code></pre>
+<h2 id="the-actual-fuzzing"><a class="header" href="#the-actual-fuzzing">The actual fuzzing</a></h2>
+<p>Now, after including the correct <code>use</code>, we can run the program, but the outcome is not so different from the previous one as the random generator does not take into account what we save as interesting in the corpus. To do that, we need to plug a Mutator.</p>
+<p>Another central component of LibAFL are the Stages, that are actions done on individual inputs taken from the corpus. The MutationalStage mutates the input and executes it several times for instance.</p>
+<p>As the last step, we create a MutationalStage that uses a mutator inspired by the havoc mutator of AFL.</p>
+<pre><code class="language-rust ignore">// Setup a mutational stage with a basic bytes mutator
+let mutator = StdScheduledMutator::new(havoc_mutations());
+let mut stages = tuple_list!(StdMutationalStage::new(mutator));
+
+fuzzer
+    .fuzz_loop(&amp;mut stages, &amp;mut executor, &amp;mut state, &amp;mut mgr)
+    .expect(&quot;Error in the fuzzing loop&quot;);
+</code></pre>
+<p><code>fuzz_loop</code> will request a testcase for each iteration to the fuzzer using the scheduler and then it will invoke the stage.</p>
+<p>After adding this code, we have a proper fuzzer, that can run a find the input that panics the function in less than a second.</p>
+<pre><code class="language-text">$ cargo run
+   Compiling baby_fuzzer v0.1.0 (/home/andrea/Desktop/baby_fuzzer)
+    Finished dev [unoptimized + debuginfo] target(s) in 1.56s
+     Running `target/debug/baby_fuzzer`
+[New Testcase] clients: 1, corpus: 2, objectives: 0, executions: 1, exec/sec: 0
+[LOG Debug]: Loaded 1 over 8 initial testcases
+[New Testcase] clients: 1, corpus: 3, objectives: 0, executions: 804, exec/sec: 0
+[New Testcase] clients: 1, corpus: 4, objectives: 0, executions: 1408, exec/sec: 0
+thread 'main' panicked at '=)', src/main.rs:35:21
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+Crashed with SIGABRT
+Child crashed!
+[Objective] clients: 1, corpus: 4, objectives: 1, executions: 1408, exec/sec: 0
+Waiting for broker...
+Bye!
+</code></pre>
+<p>As you can see, after the panic message, the <code>objectives</code> count of the log increased by one and you will find the crashing input in <code>crashes/</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="core-concepts"><a class="header" href="#core-concepts">Core Concepts</a></h1>
+<p>LibAFL is designed around some core concepts that we think can effectively abstract most of the other fuzzers designs.</p>
+<p>Here, we discuss these concepts and provide some examples related to other fuzzers.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="observer"><a class="header" href="#observer">Observer</a></h1>
+<p>An Observer, or Observation Channel, is an entity that provides an information observed during the execution of the program under test to the fuzzer.</p>
+<p>The information contained in the Observer is not preserved across executions.</p>
+<p>As an example, the coverage shared map filled during the execution to report the executed edges used by fuzzers such as AFL and HonggFuzz can be considered an Observation Channel.
+This information is not preserved across runs and it is an observation of a dynamic property of the program.</p>
+<p>In terms of code, in the library this entity is described by the <a href="https://docs.rs/libafl/0/libafl/observers/trait.Observer.html"><code>Observer</code></a> trait.</p>
+<p>In addition to holding the volatile data connected with the last execution of the target, the structures implementing this trait can define some execution hooks that are executed before and after each fuzz case. In this hooks, the observer can modify the fuzzer's state.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="executor"><a class="header" href="#executor">Executor</a></h1>
+<p>In different fuzzers, this concept of executing the program under test means each run is now always the same.
+For instance, for in-memory fuzzers like libFuzzer an execution is a call to an harness function, for hypervisor-based fuzzers like <a href="https://github.com/IntelLabs/kAFL">kAFL</a> instead an entire operating system is started from a snapshot for each run.</p>
+<p>In our model, an Executor is the entity that defines not only how to execute the target, but all the volatile operations that are related to just a single run of the target.</p>
+<p>So the Executor is for instance responsible to inform the program about the input that the fuzzer wants to use in the run, writing to a memory location for instance or passing it as a parameter to the harness function.</p>
+<p>In our model, it can also hold a set of Observers connected with each execution.</p>
+<p>In Rust, we bind this concept to the <a href="https://docs.rs/libafl/0/libafl/executors/trait.Executor.html"><code>Executor</code></a> trait. A structure implementing this trait must implement <a href="https://docs.rs/libafl/0/libafl/executors/trait.HasObservers.html"><code>HasObservers</code></a> too if wants to hold a set of Observers.</p>
+<p>By default, we implement some commonly used Executors such as <a href="https://docs.rs/libafl/0/libafl/executors/inprocess/struct.InProcessExecutor.html"><code>InProcessExecutor</code></a> is which the target is a harness function providing in-process crash detection. Another Executor is the <a href="https://docs.rs/libafl/0/libafl/executors/forkserver/struct.ForkserverExecutor.html"><code>ForkserverExecutor</code></a> that implements an AFL-like mechanism to spawn child processes to fuzz.</p>
+<p>A common pattern when creating an Executor is wrapping an existing one, for instance <a href="https://docs.rs/libafl/0.6.1/libafl/executors/timeout/struct.TimeoutExecutor.html"><code>TimeoutExecutor</code></a> wraps an executor and install a timeout callback before calling the original run function of the wrapped executor.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="feedback"><a class="header" href="#feedback">Feedback</a></h1>
+<p>The Feedback is an entity that classifies the outcome of an execution of the program under test as interesting or not.
+Typically, if an execution is interesting, the corresponding input used to feed the target program is added to a corpus.</p>
+<p>Most of the times, the notion of Feedback is deeply linked to the Observer, but they are different concepts.</p>
+<p>The Feedback, in most of the cases, processes the information reported by one or more observers to decide if the execution is interesting.
+The concept of &quot;interestingness&quot; is abstract, but typically it is related to a novelty search (i.e. interesting inputs are those that reach a previously unseen edge in the control flow graph).</p>
+<p>As an example, given an Observer that reports all the sizes of memory allocations, a maximization Feedback can be used to maximize these sizes to sport pathological inputs in terms of memory consumption.</p>
+<p>In terms of code, the library offers the <a href="https://docs.rs/libafl/0/libafl/feedbacks/trait.Feedback.html"><code>Feedback</code></a> and the <a href="https://docs.rs/libafl/0/libafl/feedbacks/trait.FeedbackState.html"><code>FeedbackState</code></a> traits.
+The first is used to implement functors that, given the state of the obversers from the last execution, tells if the execution was interesting. The second is tied with <code>Feedback</code> and it is the state of the data that the feedback wants to persist in the fuzzers's state, for instance the cumulative map holding all the edges seen so far in the case of a feedback based on edge coverage.</p>
+<p>Multiple Feedbacks can be combined into boolean formula, considering for instance an execution as interesting if it triggers new code paths or execute in less time compared to the average execution time using <a href="https://docs.rs/libafl/0/libafl/macro.feedback_or.html"><code>feedback_or</code></a>.</p>
+<p>TODO objective feedbacks and fast feedback logic operators</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="input"><a class="header" href="#input">Input</a></h1>
+<p>Formally, the input of a program is the data taken from external sources that affect the program behaviour.</p>
+<p>In our model of an abstract fuzzer, we define the Input as the internal representation of the program input (or a part of it).</p>
+<p>In the straightforward case, the input of the program is a byte array and in fuzzers such as AFL we store and manipulate exactly these byte arrays.</p>
+<p>But it is not always the case. A program can expect inputs that are not byte arrays (e.g. a sequence of syscalls) and the fuzzer does not represent the Input in the same way that the program consumes it.</p>
+<p>In case of a grammar fuzzer for instance, the Input is generally an Abstract Syntax Tree because it is a data structure that can be easily manipulated while maintaining the validity, but the program expects a byte array as input, so just before the execution, the tree is serialized to a sequence of bytes.</p>
+<p>In the Rust code, an <a href="https://docs.rs/libafl/0/libafl/inputs/trait.Input.html"><code>Input</code></a> is a trait that can be implemented only by structures that are serializable and have only owned data as fields.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="corpus"><a class="header" href="#corpus">Corpus</a></h1>
+<p>The Corpus is where testcases are stored. We define a Testcase as an Input and a set of related metadata like execution time for instance.</p>
+<p>A Corpus can store testcases in diferent ways, for example on disk, or in memory, or implement a cache to speedup on disk storage.</p>
+<p>Usually, a testcase is added to the Corpus when it is considered as interesting, but a Corpus is used also to store testcases that fulfill an objective (like crashing the tested program for instance).</p>
+<p>Related to the Corpus, there is the way in which the fuzzer should ask for the next testcase to fuzz picking it from the Corpus. The taxonomy for this in LibAFL is CorpusScheduler, the entity representing the policy to pop testcases from the Corpus, FIFO for instance.</p>
+<p>Speaking about the code, <a href="https://docs.rs/libafl/0/libafl/corpus/trait.Corpus.html"><code>Corpus</code></a> and <a href="https://docs.rs/libafl/0/libafl/corpus/trait.CorpusScheduler.html"><code>CorpusScheduler</code></a> are traits.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="mutator"><a class="header" href="#mutator">Mutator</a></h1>
+<p>The Mutator is an entity that takes one or more Inputs and generates a new derived one.</p>
+<p>Mutators can be composed and they are generally linked to a specific Input type.</p>
+<p>There can be, for instance, a Mutator that applies more than a single type of mutation on the input. Consider a generic Mutator for a byte stream, bit flip is just one of the possible mutations but not the only one, there is also, for instance, the random replacement of a byte of the copy of a chunk.</p>
+<p>In LibAFL, <a href="https://docs.rs/libafl/0/libafl/mutators/trait.Mutator.html"><code>Mutator</code></a> is a trait.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="generator"><a class="header" href="#generator">Generator</a></h1>
+<p>A Generator is a component designed to generate an Input from scratch.</p>
+<p>Typically, a random generator is used to generate random inputs.</p>
+<p>Generators are traditionally less used in Feedback-driven Fuzzing, but there are exceptions, like Nautilus, that uses a Grammar generator to create the initial corpus and a sub-tree Generator as a mutation of its grammar Mutator.</p>
+<p>In the code, <a href="https://docs.rs/libafl/0/libafl/generators/trait.Generator.html"><code>Generator</code></a> is a trait.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="stage"><a class="header" href="#stage">Stage</a></h1>
+<p>A Stage is an entity that operates on a single Input got from the Corpus.</p>
+<p>For instance, a Mutational Stage, given an input of the corpus, applies a Mutator and executes the generated input one or more time. How many times this has to be done can be scheduled, AFL for instance uses a performance score of the input to choose how many times the havoc mutator should be invoked. This can depend also on other parameters, for instance, the length of the input if we want to just apply a sequential bitflip, or be a fixed value.</p>
+<p>A stage can also be an analysis stage, for instance, the Colorization stage of Redqueen that aims to introduce more entropy in a testcase or the Trimming stage of AFL that aims to reduce the size of a testcase.</p>
+<p>There are several stages in the LibAFL codebases implementing the <a href="https://docs.rs/libafl/0/libafl/stages/trait.Stage.html"><code>Stage</code></a> trait.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="design"><a class="header" href="#design">Design</a></h1>
+<p>In this chapter, we discuss how we designed the library taking into account the core concepts while allowing code reuse and extensibility.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="architecture"><a class="header" href="#architecture">Architecture</a></h1>
+<p>The LibAFL architecture is built around some entities to allow code reuse and low-cost abstractions.</p>
+<p>Initially, we started thinking to implement LibAFL in an Object Oriented language, such C++. When we landed to Rust, we immediately changed our idea as we realized that, while Rust allows a sort of OOP pattern, we can build the library using a more sane approach like the one described in <a href="https://kyren.github.io/2018/09/14/rustconf-talk.html">this blogpost</a> about game design in Rust.</p>
+<p>The LibAFL code reuse meachanism is so based on components rather than sub-classes, but there are still some OOP patterns in the library.</p>
+<p>Thinking about similar fuzzers, you can observe that most of the times the data structures that are modified are the ones related to testcases and the fuzzer global state.</p>
+<p>Beside the entities previously described, we introduce the <a href="https://docs.rs/libafl/0.6/libafl/corpus/testcase/struct.Testcase.html"><code>Testcase</code></a> and <a href="https://docs.rs/libafl/0.6/libafl/state/struct.StdState.html"><code>State</code></a> entities. The Testcase is a container for an Input stored in the Corpus and its metadata (so, in the implementation, the Corpus stores Testcases) and the State contains all the metadata that are evolved while running the fuzzer, Corpus included.</p>
+<p>The State, in the implementation, contains only owned objects that are serializable and it is serializable itself. Some fuzzers may want to serialize its state when pausing or just, when doing in-process fuzzing, serialize on crash and deserialize in the new process to continue to fuzz with all the metadata preserved.</p>
+<p>Additionally, we group the entities that are &quot;actions&quot;, like the CorpusScheduler and the Feedbacks, in a common place, the <a href="https://docs.rs/libafl/0.6.1/libafl/fuzzer/struct.StdFuzzer.html">`Fuzzer'</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="metadata"><a class="header" href="#metadata">Metadata</a></h1>
+<p>A metadata in LibAFL is a self contained structure that holds associated data to the State or to a Testcase.</p>
+<p>In terms of code, a metadata can be defined as a Rust struct registered in the SerdeAny register.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>extern crate libafl;
+extern crate serde;
+
+use libafl::SerdeAny;
+use serde::{Serialize, Deserialize};
+
+#[derive(Serialize, Deserialize, SerdeAny)]
+pub struct MyMetadata {
+    //...
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>The struct must be static, so it cannot hold references to borrowed objects.</p>
+<p>As an alternative to <code>derive(SerdeAny)</code> that is a proc-macro in <code>libafl_derive</code> the user can use <code>libafl::impl_serdeany!(MyMetadata);</code>.</p>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<p>Metadata objects are primarly intended to be used inside <a href="https://docs.rs/libafl/0.5.0/libafl/bolts/serdeany/serdeany_registry/struct.SerdeAnyMap.html"><code>SerdeAnyMap</code></a> and <a href="https://docs.rs/libafl/0.5.0/libafl/bolts/serdeany/serdeany_registry/struct.NamedSerdeAnyMap.html"><code>NamedSerdeAnyMap</code></a>.</p>
+<p>With these maps, the user can retrieve instances by type (and name). Internally, the instances are stored as SerdeAny trait objects.</p>
+<p>Structs that want to have a set of metadata must implement the <a href="https://docs.rs/libafl/0.5.0/libafl/state/trait.HasMetadata.html"><code>HasMetadata</code></a> trait.</p>
+<p>By default, Testcase and State implement it and hold a SerdeAnyMap testcase.</p>
+<h2 id="deserialization"><a class="header" href="#deserialization">(De)Serialization</a></h2>
+<p>We are interested to store State's Metadata to not lose them in case of crash or stop of a fuzzer. To do that, they must be serialized and unserialized using Serde.</p>
+<p>As Metadata is stored in a SerdeAnyMap as trait objects, they cannot be deserialized using Serde by default.</p>
+<p>To cope with this problem, in LibAFL each SerdeAny struct must be registered in a global registry that keeps track of types and allows the (de)serialization of the registered types.</p>
+<p>Normally, the <code>impl_serdeany</code> macro does that for the user creating a constructor function that fills the registry. However, when using LibAFL in no_std mode, this operation must be carried out manually before any other operation in the <code>main</code> function.</p>
+<p>To do that, the developer needs to know each metadata type that is used inside the fuzzer and call <code>RegistryBuilder::register::&lt;MyMetadata&gt;()</code> for each of them at the beginning of <code>main</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="message-passing"><a class="header" href="#message-passing">Message Passing</a></h1>
+<p>LibAFL offers a standard mechanism for message passing over processes and machines with a low overhead.
+We use message passing to inform the other connected clients/fuzzers/nodes about new testcases, metadata, and statistics about the current run.
+Depending on individual needs, LibAFL can also write testcase contents to disk, while still using events to notify other fuzzers, using an <code>OnDiskCorpus</code>.</p>
+<p>In our tests, message passing scales very well to share new testcases and metadata between multiple running fuzzer instances for multi-core fuzzing.
+Specifically, it scales <em>a lot</em> better than using memory locks on a shared corpus, and <em>a lot</em> better than sharing the testcases via the filesystem, as AFL traditionally does.
+Think &quot;all cores are green&quot; in <code>htop</code>, aka., no kernel interaction.</p>
+<p>The <code>EventManager</code> interface is used to send Events over the wire using <code>Low Level Message Passing</code>, a custom message passing mechanism over shared memory or TCP.</p>
+<h2 id="low-level-message-passing-llmp"><a class="header" href="#low-level-message-passing-llmp">Low Level Message Passing (LLMP)</a></h2>
+<p>LibAFL comes with a reasonably lock-free message passing mechanism that scales well across cores and, using its <em>broker2broker</em> mechanism, even to connected machines via TCP.
+Most example fuzzers use this mechanism, and it is the best <code>EventManager</code> if you want to fuzz on more than a single core.
+In the following, we will describe the inner workings of <code>LLMP</code>.</p>
+<p><code>LLMP</code> has one <code>broker</code> process that can forward messages sent by any client process to all other clients.
+The broker can also intercept and filter the messages it receives instead of forwarding them.
+A common use-case for messages filtered by the broker are the status messages sent from each client to the broker directly.
+The broker used this information to paint a simple UI, with up-to-date information about all clients, however the other clients don't need to receive this information.</p>
+<h3 id="speedy-local-messages-via-shared-maps"><a class="header" href="#speedy-local-messages-via-shared-maps">Speedy Local Messages via Shared Maps</a></h3>
+<p>Throughout LibAFL, we use a wrapper around different operating system's shared maps, called <code>ShMem</code>.
+Shared maps are the backbone of <code>LLMP</code>.
+Each client, usually a fuzzer trying to share stats and new testcases, maps an outgoing <code>ShMem</code> map.
+With very few exceptions, only this client writes to this map, therefore, we do not run in race conditions and can live without locks.
+The broker reas from all client's <code>ShMem</code> maps.
+It checks all incoming client maps periodically, and then forwards new messages to its outgoing broadcast-<code>ShMem</code>, mapped by all connected clients.</p>
+<p>To send new messages, a client places a new message at the end of their map, and then updates a static field to notify the broker.
+Once the outgoing map is full, the sender allocates a new <code>ShMem</code> using the respective <code>ShMemProvider</code>.
+It then sends the information needed to map the newly-allocated page in connected processes to the old page, using an end of page (<code>EOP</code>) message.
+Once the receiver maps the new page, flags it as safe for unmapping from the sending process (to avoid race conditions if we have more than a single EOP in a short time), and then continues to read from the new <code>ShMem</code>.</p>
+<p>The schema for client's maps to the broker is as follows:</p>
+<pre><code class="language-text">[client0]        [client1]    ...    [clientN]
+  |                  |                 /
+[client0_out] [client1_out] ... [clientN_out]
+  |                 /                /
+  |________________/                /
+  |________________________________/
+ \|/
+[broker]
+</code></pre>
+<p>The broker loops over all incoming maps, and checks for new messages.
+On <code>std</code> builds, the broker will sleep a few milliseconds after a loop, since we do not need the messages to arrive instantly.
+After the broker received a new message from clientN, (<code>clientN_out-&gt;current_id != last_message-&gt;message_id</code>) the broker copies the message content to its own broadcast map.</p>
+<p>The clients periodically, for example after finishing <code>n</code> mutations, check for new incoming messages by checking if (<code>current_broadcast_map-&gt;current_id != last_message-&gt;message_id</code>).
+While the broker uses the same EOP mechanism to map new <code>ShMem</code>s for its outgoing map, it never unmaps old pages.
+This additional memory overhead serves a good purpose: by keeping all broadcast pages around, we make sure that new clients can join in on a fuzzing campaign at a later point in time
+They just need to re-read all broadcasted messages from start to finish.</p>
+<p>So the outgoing messages flow like this over the outgoing broadcast <code>Shmem</code>:</p>
+<pre><code class="language-text">[broker]
+  |
+[current_broadcast_map]
+  |
+  |___________________________________
+  |_________________                  \
+  |                 \                  \
+  |                  |                  |
+ \|/                \|/                \|/
+[client0]        [client1]    ...    [clientN]
+</code></pre>
+<p>To use <code>LLMP</code> in LibAFL, you usually want to use an <code>LlmpEventManager</code> or its restarting variant.
+They are the default if using LibAFL's <code>Launcher</code>.</p>
+<p>If you should want to use <code>LLMP</code> in its raw form, without any <code>LibAFL</code> abstractions, take a look at the <code>llmp_test</code> example in <a href="https://github.com/AFLplusplus/LibAFL/blob/main/libafl/examples/llmp_test/main.rs">./libafl/examples</a>.
+You can run the example using <code>cargo run --example llmp_test</code> with the appropriate modes, as indicated by its help output.
+First, you will have to create a broker using <code>LlmpBroker::new()</code>.
+Then, create some <code>LlmpClient``s</code> in other threads and register them with the main thread using <code>LlmpBroker::register_client</code>.
+Finally, call <code>LlmpBroker::loop_forever()</code>.</p>
+<h3 id="b2b-connecting-fuzzers-via-tcp"><a class="header" href="#b2b-connecting-fuzzers-via-tcp">B2B: Connecting Fuzzers via TCP</a></h3>
+<p>For <code>broker2broker</code> communication, all broadcast messages are additionally forwarded via network sockets.
+To facilitate this, we spawn an additional client thread in the broker, that reads the broadcast map, just like any other client would.
+For broker2broker communication, this b2b client listens for TCP connections from other, remote brokers.
+It keeps a pool of open sockets to other, remote, b2b brokers around at any time.
+When receiving a new message on the local broker map, the b2b client will forward it to all connected remote brokers via TCP.
+Additionally, the broker can receive messages from all connected (remote) brokers, and forward them to the local broker over a client <code>ShMem</code>.</p>
+<p>As a sidenote, the tcp listener used for b2b communication is also used for an initial handshake when a new client tries to connect to a broker locally, simply exchanging the initial <code>ShMem</code> descriptions.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="spawning-instances"><a class="header" href="#spawning-instances">Spawning Instances</a></h1>
+<p>Multiple fuzzer instances can be spawned using different ways.</p>
+<h2 id="manually-via-a-tcp-port"><a class="header" href="#manually-via-a-tcp-port">Manually, via a TCP port</a></h2>
+<p>The straightforward way to do Multi-Threading is to use the <code>LlmpRestartingEventManager</code>, and specifically to use <code>setup_restarting_mgr_std</code>.
+It abstracts away all the pesky details about restarts on crash handling (for in-memory fuzzers) and multi-threading.
+With it, every instance you launch manually tries to connect to a TCP port on the local machine.</p>
+<p>If the port is not yet bound, this instance becomes the broker, itself binding to the port to await new clients.</p>
+<p>If the port is already bound, the EventManager will try to connect to it.
+The instance becomes a client and can now communicate with all other nodes.</p>
+<p>Launching nodes manually has the benefit that you can have multiple nodes with different configurations, such as clients fuzzing with and without ASAN.</p>
+<p>While it's called &quot;restarting&quot; manager, it uses <code>fork</code> on Unix operating systems as optimization and only actually restarts from scratch on Windows.</p>
+<h2 id="launcher"><a class="header" href="#launcher">Launcher</a></h2>
+<p>The Launcher is the lazy way to do multiprocessing.
+You can use the Launcher builder to create a fuzzer that spawns multiple nodes, all using restaring event managers.
+An example may look like this:</p>
+<pre><code class="language-rust ignore">    Launcher::builder()
+        .configuration(EventConfig::from_name(&amp;configuration))
+        .shmem_provider(shmem_provider)
+        .stats(stats)
+        .run_client(&amp;mut run_client)
+        .cores(cores)
+        .broker_port(broker_port)
+        .stdout_file(stdout_file)
+        .remote_broker_addr(broker_addr)
+        .build()
+        .launch()
+</code></pre>
+<p>This first starts a broker, then spawns <code>n</code> clients, according to the value passed to <code>cores</code>.
+The value is a string indicating the cores to bind to, for example, <code>0,2,5</code> or <code>0-3</code>.
+For each client, <code>run_client</code> will be called.
+On Windows, the Launcher will restart each client, while on Unix it will use <code>fork</code>.</p>
+<h2 id="other-ways"><a class="header" href="#other-ways">Other ways</a></h2>
+<p>The LlmpEvenManager family is the easiest way to do spawn instances, but for obscure targets, you may need to come up with other solutions.
+LLMP is even, in theory, <code>no_std</code> compatible, and even completely different EventManagers can be used for message passing.
+If you are in this situation, please either read through the current implementations and/or reach out to us.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="configurations"><a class="header" href="#configurations">Configurations</a></h1>
+<p>Configurations for individual fuzzer nodes are relevant for multi node fuzzing.
+The chapter describes how to run nodes with different configurations
+in one fuzzing cluster.
+This allows, for example, a node compiled with ASAN, to know that it needs to rerun new testcases for a node without ASAN, while the same binary/configuration does not.</p>
+<blockquote>
+<h2 id="under-construction"><a class="header" href="#under-construction">Under Construction!</a></h2>
+<p>This section is under construction.
+Please check back later (or open a PR)</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="tutorial"><a class="header" href="#tutorial">Tutorial</a></h1>
+<p>In this chapter, we will build a custom fuzzer using the <a href="https://github.com/microsoft/lain">Lain</a> mutator in Rust.</p>
+<p>This tutorial will introduce you in writing extensions to LibAFL like Feedbacks and Testcase's metadata.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-1"><a class="header" href="#introduction-1">Introduction</a></h1>
+<blockquote>
+<h2 id="under-construction-1"><a class="header" href="#under-construction-1">Under Construction!</a></h2>
+<p>This section is under construction.
+Please check back later (or open a PR)</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="advanced-features"><a class="header" href="#advanced-features">Advanced Features</a></h1>
+<p>In addition to core building blocks for fuzzers, LibAFL also has features for more advanced/niche fuzzing techniques.
+The following sections are dedicated to these features.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="concolic-tracing-and-hybrid-fuzzing"><a class="header" href="#concolic-tracing-and-hybrid-fuzzing">Concolic Tracing and Hybrid Fuzzing</a></h1>
+<p>LibAFL has support for concolic tracing based on the <a href="https://github.com/eurecom-s3/symcc">SymCC</a> instrumenting compiler.</p>
+<p>For those uninitiated, the following attempts to describe concolic tracing from the ground up using an example.
+Then, we'll go through the relationship of SymCC and LibAFL concolic tracing.
+Finally, we'll walk through building a basic hybrid fuzzer using LibAFL.</p>
+<h2 id="concolic-tracing-by-example"><a class="header" href="#concolic-tracing-by-example">Concolic Tracing by Example</a></h2>
+<p>Suppose you want to fuzz the following program:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn target(input: &amp;[u8]) -&gt; i32 {
+    match &amp;input {
+        // fictitious crashing input
+        &amp;[1, 3, 3, 7] =&gt; 1337,
+        // standard error handling code
+        &amp;[] =&gt; -1,
+        // representative of normal execution
+        _ =&gt; 0 
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>A simple coverage-maximizing fuzzer that generates new inputs somewhat randomly will have a hard time finding an input that triggers the fictitious crashing input.
+Many techniques have been proposed to make fuzzing less random and more directly attempt to mutate the input to flip specific branches, such as the ones involved in crashing the above program.</p>
+<p>Concolic tracing allows us to construct an input that exercises a new path in the program (such as the crashing one in the example) <strong>analytically</strong> instead of <strong>stochastically</strong> (ie. guessing).
+In principle, concolic tracing works by observing all executed instructions in an execution of the program that depend on the input.
+To understand what this entails, we'll run an example with the above program.</p>
+<p>First, we'll simplify the program to simple if-then-else-statements:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn target(input: &amp;[u8]) -&gt; i32 {
+    if input.len() == 4 {
+        if input[0] == 1 {
+            if input[1] == 3 {
+                if input[2] == 3 {
+                    if input[3] == 7 {
+                        return 1337;
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    } else {
+        if input.len() == 0 {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Next, we'll trace the program on the input <code>[]</code>.
+The trace would look like this:</p>
+<pre><code class="language-rust ignore">Branch { // if input.len() == 4
+    condition: Equals { 
+        left: Variable { name: &quot;input_len&quot; }, 
+        right: Integer { value: 4 } 
+    }, 
+    taken: false // This condition turned out to be false...
+}
+Branch { // if input.len() == 0
+    condition: Equals { 
+        left: Variable { name: &quot;input_len&quot; }, 
+        right: Integer { value: 0 } 
+    }, 
+    taken: true // This condition turned out to be true!
+}
+</code></pre>
+<p>Using this trace, we can easily deduce that we can force the program to take a different path by having an input of length 4 or having an input with non-zero length.
+We do this by negating each branch condition and analytically solving the resulting 'expression'.
+In fact, we can create these expressions for any computation and give them to an <a href="https://en.wikipedia.org/wiki/Satisfiability_modulo_theories">SMT</a>-Solver that will generate an input that satisfies the expression (as long as such an input exists).</p>
+<p>In hybrid fuzzing, we combine this tracing + solving approach with more traditional fuzzing techniques.</p>
+<h2 id="concolic-tracing-in-libafl-symcc-and-symqemu"><a class="header" href="#concolic-tracing-in-libafl-symcc-and-symqemu">Concolic Tracing in LibAFL, SymCC and SymQEMU</a></h2>
+<p>The concolic tracing support in LibAFL is implemented using SymCC.
+SymCC is a compiler plugin for clang that can be used as a drop-in replacement for a normal C or C++ compiler.
+SymCC will instrument the compiled code with callbacks into a runtime that can be supplied by the user.
+These callbacks allow the runtime to construct a trace that similar to the previous example.</p>
+<h3 id="symcc-and-its-runtimes"><a class="header" href="#symcc-and-its-runtimes">SymCC and its Runtimes</a></h3>
+<p>SymCC ships with 2 runtimes: </p>
+<ul>
+<li>a 'simple' runtime that attempts to solve any branches it comes across using <a href="https://github.com/Z3Prover/z3/wiki">Z3</a> and</li>
+<li>a <a href="https://github.com/sslab-gatech/qsym">QSym</a>-based runtime, which does a bit more filtering on the expressions and also solves using Z3.</li>
+</ul>
+<p>The integration with LibAFL, however, requires you to <strong>BYORT</strong> (<em>bring your own runtime</em>) using the <a href="https://docs.rs/symcc_runtime/0.1/symcc_runtime"><code>symcc_runtime</code></a> crate.
+This crate allows you to easily build a custom runtime out of the built-in building blocks or create entirely new runtimes with full flexibility.
+Checkout out the <code>symcc_runtime</code> docs for more information on how to build your own runtime.</p>
+<h3 id="symqemu"><a class="header" href="#symqemu">SymQEMU</a></h3>
+<p><a href="https://github.com/eurecom-s3/symqemu">SymQEMU</a> is a sibling project to SymCC.
+Instead of instrumenting the target at compile-time, it inserts instrumentation via dynamic binary translation, building on top of the <a href="https://www.qemu.org"><code>QEMU</code></a> emulation stack.
+This means that using SymQEMU, any (x86) binary can be traced without the need to build in instrumentation ahead of time.
+The <code>symcc_runtime</code> crate supports this use case and runtimes built with <code>symcc_runtime</code> also work with SymQEMU.</p>
+<h2 id="hybrid-fuzzing-in-libafl"><a class="header" href="#hybrid-fuzzing-in-libafl">Hybrid Fuzzing in LibAFL</a></h2>
+<p>The LibAFL repository contains an <a href="https://github.com/AFLplusplus/LibAFL/tree/main/fuzzers/libfuzzer_stb_image_concolic">example hybrid fuzzer</a>.</p>
+<p>There are three main steps involved with building a hybrid fuzzer using LibAFL:</p>
+<ol>
+<li>Building a runtime,</li>
+<li>choosing an instrumentation method and</li>
+<li>building the fuzzer.</li>
+</ol>
+<p>Note that the order of these steps is important.
+For example, we need to have runtime ready before we can do instrumentation with SymCC.</p>
+<h3 id="building-a-runtime"><a class="header" href="#building-a-runtime">Building a Runtime</a></h3>
+<p>Building a custom runtime can be done easily using the <code>symcc_runtime</code> crate.
+Note, that a custom runtime is a separate shared object file, which means that we need a separate crate for our runtime.
+Check out the <a href="https://github.com/AFLplusplus/LibAFL/tree/main/fuzzers/libfuzzer_stb_image_concolic/runtime">example hybrid fuzzer's runtime</a> and the <a href="https://docs.rs/symcc_runtime/0.1/symcc_runtime"><code>symcc_runtime</code> docs</a> for inspiration.</p>
+<h3 id="instrumentation"><a class="header" href="#instrumentation">Instrumentation</a></h3>
+<p>There are two main instrumentation methods to make use of concolic tracing in LibAFL:</p>
+<ul>
+<li>Using an <strong>compile-time</strong> instrumented target with <strong>SymCC</strong>. 
+This only works when the source is available for the target and the target is reasonably easy to build using the SymCC compiler wrapper.</li>
+<li>Using <strong>SymQEMU</strong> to dynamically instrument the target at <strong>runtime</strong>.
+This avoids a separate instrumented target with concolic tracing instrumentation and does not require source code.
+It should be noted, however, that the 'quality' of the generated expressions can be significantly worse and SymQEMU generally produces significantly more and significantly more convoluted expressions than SymCC.
+Therefore, it is recommended to use SymCC over SymQEMU when possible.</li>
+</ul>
+<h4 id="using-symcc"><a class="header" href="#using-symcc">Using SymCC</a></h4>
+<p>The target needs to be instrumented ahead of fuzzing using SymCC.
+How exactly this is done does not matter.
+However, the SymCC compiler needs to be made aware of the location of the runtime that it should instrument against.
+This is done by setting the <code>SYMCC_RUNTIME_DIR</code> environment variable to the directory which contains the runtime (typically the <code>target/(debug|release)</code> folder of your runtime crate).</p>
+<p>The example hybrid fuzzer instruments the target in its <a href="https://github.com/AFLplusplus/LibAFL/blob/main/fuzzers/libfuzzer_stb_image_concolic/fuzzer/build.rs#L50"><code>build.rs</code> build script</a>.
+It does this by cloning and building a copy of SymCC and then using this version to instrument the target.
+The <a href="https://docs.rs/symcc_libafl"><code>symcc_libafl</code> crate</a> contains helper functions for cloning and building SymCC.</p>
+<p>Make sure you satisfy the <a href="https://github.com/eurecom-s3/symcc#readme">build requirements</a> of SymCC before attempting to build it.</p>
+<h4 id="using-symqemu"><a class="header" href="#using-symqemu">Using SymQEMU</a></h4>
+<p>Build SymQEMU according to its <a href="https://github.com/eurecom-s3/symqemu#readme">build instructions</a>.
+By default, SymQEMU looks for the runtime in a sibling directory.
+Since we don't have a runtime there, we need to let it know the path to your runtime by setting <code>--symcc-build</code> argument of the <code>configure</code> script to the path of your runtime.</p>
+<h3 id="building-the-fuzzer"><a class="header" href="#building-the-fuzzer">Building the Fuzzer</a></h3>
+<p>No matter the instrumentation method, the interface between the fuzzer and the instrumented target should now be consistent.
+The only difference between using SymCC and SymQEMU should be the binary that represents the target:
+In the case of SymCC it will be the binary that was build with instrumentation and with SymQEMU it will be the emulator binary (eg. <code>x86_64-linux-user/symqemu-x86_64</code>), followed by your uninstrumented target binary and arguments.</p>
+<p>You can use the <a href="https://docs.rs/libafl/0.6.0/libafl/executors/command/struct.CommandExecutor.html"><code>CommandExecutor</code></a> to execute your target (<a href="https://github.com/AFLplusplus/LibAFL/blob/main/fuzzers/libfuzzer_stb_image_concolic/fuzzer/src/main.rs#L244">example</a>).
+When configuring the command, make sure you pass the <code>SYMCC_INPUT_FILE</code> environment variable the input file path, if your target reads input from a file (instead of standard input).</p>
+<h4 id="serialization-and-solving"><a class="header" href="#serialization-and-solving">Serialization and Solving</a></h4>
+<p>While it is perfectly possible to build a custom runtime that also performs the solving step of hybrid fuzzing in the context of the target process, the intended use of the LibAFL concolic tracing support is to serialize the (filtered and pre-processed) branch conditions using the <a href="https://docs.rs/symcc_runtime/0.1/symcc_runtime/tracing/struct.TracingRuntime.html"><code>TracingRuntime</code></a>.
+This serialized representation can be deserialized in the fuzzer process for solving using a <a href="https://docs.rs/libafl/0.6.0/libafl/observers/concolic/struct.ConcolicObserver.html"><code>ConcolicObserver</code></a> wrapped in a <a href="https://docs.rs/libafl/0.6.0/libafl/stages/concolic/struct.ConcolicTracingStage.html"><code>ConcolicTracingStage</code></a>, which will attach a <a href="https://docs.rs/libafl/0.6.0/libafl/observers/concolic/struct.ConcolicMetadata.html"><code>ConcolicMetadata</code></a> to every <a href="https://docs.rs/libafl/0.6.0/libafl/corpus/testcase/struct.Testcase.html"><code>TestCase</code></a>.</p>
+<p>The <code>ConcolicMetadata</code> can be used to replay the concolic trace and solved using an SMT-Solver.
+Most use-cases involving concolic tracing, however, will need to define some policy around which branches they want to solve.
+The <a href="https://docs.rs/libafl/0.6.0//libafl/stages/concolic/struct.SimpleConcolicMutationalStage.html"><code>SimpleConcolicMutationalStage</code></a> can be used for testing purposes.
+It will attempt to solve all branches, like the original simple backend from SymCC, using Z3.</p>
+<h3 id="example"><a class="header" href="#example">Example</a></h3>
+<p>The example fuzzer shows how to use the <a href="https://github.com/AFLplusplus/LibAFL/blob/main/fuzzers/libfuzzer_stb_image_concolic/fuzzer/src/main.rs#L203"><code>ConcolicTracingStage</code> together with the <code>SimpleConcolicMutationalStage</code></a> to build a basic hybrid fuzzer.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="using-libafl-in-no_std-environments"><a class="header" href="#using-libafl-in-no_std-environments">Using LibAFL in <code>no_std</code> environments</a></h1>
+<p>It is possible to use LibAFL in <code>no_std</code> environments e.g. custom platforms like microcontrolles, kernels, hypervisors, and more.</p>
+<p>You can simply add LibAFL to your <code>Cargo.toml</code> file:</p>
+<pre><code class="language-toml">libafl = { path = &quot;path/to/libafl/&quot;, default-features = false}
+</code></pre>
+<p>Then build your project e.g. for <code>aarch64-unknown-none</code> using</p>
+<pre><code class="language-sh">cargo build --no-default-features --target aarch64-unknown-none
+</code></pre>
+<h2 id="use-custom-timing"><a class="header" href="#use-custom-timing">Use custom timing</a></h2>
+<p>The minimum amount of input LibAFL needs for <code>no_std</code> is a monotonically increasing timestamp.
+For this, anywhere in your project you need to implement the <code>external_current_millis</code> function, which returns the current time in milliseconds.</p>
+<p>// Assume this a clock source from a custom stdlib, which you want to use, which returns current time in seconds.</p>
+<pre><code class="language-c">int my_real_seconds(void)
+{
+    return *CLOCK;
+}
+</code></pre>
+<p>and here we use it in Rust. <code>external_current_millis</code> is then called from LibAFL.
+Note that it needs to be <code>no_mangle</code> in order to get picked up by LibAFL at linktime.</p>
+<pre><code class="language-rust ignore">#[no_mangle]
+pub extern &quot;C&quot; fn external_current_millis() -&gt; u64 {
+    unsafe { my_real_seconds()*1000 }
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+    </body>
+</html>

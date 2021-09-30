@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.dbf0f82632afa86660ee1033ea3fe4be21d30807737079990826cb442b2f0b41.js" integrity="sha256-2/D4JjKvqGZg7hAz6j/kviHTCAdzcHmZCCbLRCsvC0E="></script>
+<script defer src="/en.search.min.aab11bfe026e770dca9ae9044fdc7196031a7669644b3c6a3c256dfc020ff823.js" integrity="sha256-qrEb/gJudw3KmukET9xxlgMadmlkSzxqPCVt/AIP&#43;CM="></script>
 
 <!--
 Made with Book Theme
@@ -149,7 +149,7 @@ https://github.com/alex-shpak/hugo-book
 
       
 <article class="markdown"><h1 id="afl-quick-start-guide">AFL quick start guide</h1>
-<p>You should read <a href="README.md">README.md</a> - it&rsquo;s pretty short. If you really can&rsquo;t, here&rsquo;s
+<p>You should read <a href="../README.md">README.md</a> - it&rsquo;s pretty short. If you really can&rsquo;t, here&rsquo;s
 how to hit the ground running:</p>
 <ol>
 <li>
@@ -168,11 +168,10 @@ custom SIGSEGV or SIGABRT handlers and background processes. For tips on
 detecting non-crashing flaws, see section 11 in <a href="README.md">README.md</a> .</p>
 </li>
 <li>
-<p>Compile the program / library to be fuzzed using afl-gcc. A common way to
+<p>Compile the program / library to be fuzzed using afl-cc. A common way to
 do this would be:</p>
-<p>CC=/path/to/afl-gcc CXX=/path/to/afl-g++ ./configure &ndash;disable-shared
+<p>CC=/path/to/afl-cc CXX=/path/to/afl-c++ ./configure &ndash;disable-shared
 make clean all</p>
-<p>If program build fails, ping <a href="mailto:afl-users@googlegroups.com">afl-users@googlegroups.com</a>.</p>
 </li>
 <li>
 <p>Get a small but valid input file that makes sense to the program. When
@@ -189,10 +188,6 @@ command line; AFL will put an auto-generated file name in there for you.</p>
 <li>
 <p>Investigate anything shown in red in the fuzzer UI by promptly consulting
 <a href="status_screen.md">status_screen.md</a>.</p>
-</li>
-<li>
-<p>compile and use llvm_mode (afl-clang-fast/afl-clang-fast++) as it is way
-faster and has a few cool features</p>
 </li>
 <li>
 <p>There is a basic docker build with &lsquo;docker build -t aflplusplus .&rsquo;</p>

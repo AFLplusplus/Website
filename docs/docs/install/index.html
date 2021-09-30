@@ -5,13 +5,13 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>I N S T a L L | AFLplusplus</title>
+<title>Install | AFLplusplus</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
-<meta property="og:title" content="I N S T a L L | AFLplusplus" />
-<meta name="twitter:title" content="I N S T a L L | AFLplusplus" />
-<meta itemprop="name" content="I N S T a L L | AFLplusplus" />
-<meta name="application-name" content="I N S T a L L | AFLplusplus" />
+<meta property="og:title" content="Install | AFLplusplus" />
+<meta name="twitter:title" content="Install | AFLplusplus" />
+<meta itemprop="name" content="Install | AFLplusplus" />
+<meta name="application-name" content="Install | AFLplusplus" />
 <meta property="og:site_name" content="AFLplusplus" />
 
 <meta name="description" content="The AFLplusplus website" />
@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.dbf0f82632afa86660ee1033ea3fe4be21d30807737079990826cb442b2f0b41.js" integrity="sha256-2/D4JjKvqGZg7hAz6j/kviHTCAdzcHmZCCbLRCsvC0E="></script>
+<script defer src="/en.search.min.aab11bfe026e770dca9ae9044fdc7196031a7669644b3c6a3c256dfc020ff823.js" integrity="sha256-qrEb/gJudw3KmukET9xxlgMadmlkSzxqPCVt/AIP&#43;CM="></script>
 
 <!--
 Made with Book Theme
@@ -127,7 +127,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <strong>I N S T a L L</strong>
+  <strong>Install</strong>
 
   <label for="toc-control">
     <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
@@ -143,7 +143,7 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li><a href="#1-linux-on-x86">1. Linux on x86</a></li>
     <li><a href="#2-openbsd-freebsd-netbsd-on-x86">2. OpenBSD, FreeBSD, NetBSD on x86</a></li>
-    <li><a href="#3-macos-x-on-x86">3. MacOS X on x86</a></li>
+    <li><a href="#3-macos-x-on-x86-and-arm64-m1">3. MacOS X on x86 and arm64 (M1)</a></li>
     <li><a href="#4-linux-or-bsd-on-non-x86-systems">4. Linux or *BSD on non-x86 systems</a></li>
     <li><a href="#5-solaris-on-x86">5. Solaris on x86</a></li>
     <li><a href="#6-everything-else">6. Everything else</a></li>
@@ -164,10 +164,10 @@ manual.</p>
 <h2 id="1-linux-on-x86">1. Linux on x86</h2>
 <hr>
 <p>This platform is expected to work well. Compile the program with:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">make
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">make
 </code></pre></div><p>You can start using the fuzzer without installation, but it is also possible to
 install it with:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo make install
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo make install
 </code></pre></div><p>There are no special dependencies to speak of; you will need GNU make and a
 working compiler (gcc or clang). Some of the optional scripts bundled with the
 program may depend on bash, gdb, and similar basic tools.</p>
@@ -181,11 +181,11 @@ afl-fuzz will guide you through that if necessary.</p>
 <h2 id="2-openbsd-freebsd-netbsd-on-x86">2. OpenBSD, FreeBSD, NetBSD on x86</h2>
 <p>Similarly to Linux, these platforms are expected to work well and are
 regularly tested. Compile everything with GNU make:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gmake
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gmake
 </code></pre></div><p>Note that BSD make will <em>not</em> work; if you do not have gmake on your system,
 please install it first. As on Linux, you can use the fuzzer itself without
 installation, or install it with:</p>
-<pre><code>sudo gmake install
+<pre tabindex="0"><code>sudo gmake install
 </code></pre><p>Keep in mind that if you are using csh as your shell, the syntax of some of the
 shell commands given in the README.md and other docs will be different.</p>
 <p>The <code>llvm</code> requires a dynamically linked, fully-operational installation of
@@ -196,22 +196,31 @@ follow the instructions in README.llvm.md.</p>
 <p>The QEMU mode is currently supported only on Linux. I think it&rsquo;s just a QEMU
 problem, I couldn&rsquo;t get a vanilla copy of user-mode emulation support working
 correctly on BSD at all.</p>
-<h2 id="3-macos-x-on-x86">3. MacOS X on x86</h2>
+<h2 id="3-macos-x-on-x86-and-arm64-m1">3. MacOS X on x86 and arm64 (M1)</h2>
 <p>MacOS X should work, but there are some gotchas due to the idiosyncrasies of
 the platform. On top of this, I have limited release testing capabilities
 and depend mostly on user feedback.</p>
-<p>To build AFL, install Xcode and follow the general instructions for Linux.</p>
-<p>The Xcode &lsquo;gcc&rsquo; tool is just a wrapper for clang, so be sure to use afl-clang
-to compile any instrumented binaries; afl-gcc will fail unless you have GCC
-installed from another source (in which case, please specify <code>AFL_CC</code> and
-<code>AFL_CXX</code> to point to the &ldquo;real&rdquo; GCC binaries).</p>
-<p>Only 64-bit compilation will work on the platform; porting the 32-bit
-instrumentation would require a fair amount of work due to the way OS X
-handles relocations, and today, virtually all MacOS X boxes are 64-bit.</p>
+<p>To build AFL, install llvm (and perhaps gcc) from brew and follow the general
+instructions for Linux. If possible avoid Xcode at all cost.</p>
+<p><code>brew install wget git make cmake llvm gdb</code></p>
+<p>Be sure to setup PATH to point to the correct clang binaries and use the
+freshly installed clang, clang++ and gmake, e.g.:</p>
+<pre tabindex="0"><code>export PATH=&quot;/usr/local/Cellar/llvm/12.0.1/bin/:$PATH&quot;
+export CC=clang
+export CXX=clang++
+gmake
+cd frida_mode
+gmake
+cd ..
+gmake install
+</code></pre><p>afl-gcc will fail unless you have GCC installed, but that is using outdated
+instrumentation anyway. You don&rsquo;t want that.
+Note that afl-clang-lto, afl-gcc-fast and qemu_mode are not working on MacOS.</p>
 <p>The crash reporting daemon that comes by default with MacOS X will cause
-problems with fuzzing. You need to turn it off by following the instructions
-provided here: <a href="http://goo.gl/CCcd5u">http://goo.gl/CCcd5u</a></p>
-<p>The <code>fork()</code> semantics on OS X are a bit unusual compared to other unix systems
+problems with fuzzing. You need to turn it off:</p>
+<pre tabindex="0"><code>launchctl unload -w /System/Library/LaunchAgents/com.apple.ReportCrash.plist
+sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.ReportCrash.Root.plist
+</code></pre><p>The <code>fork()</code> semantics on OS X are a bit unusual compared to other unix systems
 and definitely don&rsquo;t look POSIX-compliant. This means two things:</p>
 <ul>
 <li>Fuzzing will be probably slower than on Linux. In fact, some folks report
@@ -222,10 +231,30 @@ AFL forkserver. If you run into any problems, set <code>AFL_NO_FORKSRV=1</code> 
 environment before starting afl-fuzz.</li>
 </ul>
 <p>User emulation mode of QEMU does not appear to be supported on MacOS X, so
-black-box instrumentation mode (<code>-Q</code>) will not work.</p>
-<p>The llvm instrumentation requires a fully-operational installation of clang. The one that
-comes with Xcode is missing some of the essential headers and helper tools.
-See README.llvm.md for advice on how to build the compiler from scratch.</p>
+black-box instrumentation mode (<code>-Q</code>) will not work.
+However Frida mode (<code>-O</code>) should work on x86 and arm64 MacOS boxes.</p>
+<p>MacOS X supports SYSV shared memory used by AFL&rsquo;s instrumentation, but the
+default settings aren&rsquo;t usable with AFL++. The default settings on 10.14 seem
+to be:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ipcs -M
+IPC status from &lt;running system&gt; as of XXX
+shminfo:
+        shmmax: <span style="color:#ae81ff">4194304</span> <span style="color:#f92672">(</span>max shared memory segment size<span style="color:#f92672">)</span>
+        shmmin:       <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>min shared memory segment size<span style="color:#f92672">)</span>
+        shmmni:      <span style="color:#ae81ff">32</span> <span style="color:#f92672">(</span>max number of shared memory identifiers<span style="color:#f92672">)</span>
+        shmseg:       <span style="color:#ae81ff">8</span> <span style="color:#f92672">(</span>max shared memory segments per process<span style="color:#f92672">)</span>
+        shmall:    <span style="color:#ae81ff">1024</span> <span style="color:#f92672">(</span>max amount of shared memory in pages<span style="color:#f92672">)</span>
+</code></pre></div><p>To temporarily change your settings to something minimally usable with AFL++,
+run these commands as root:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sysctl kern.sysv.shmmax<span style="color:#f92672">=</span><span style="color:#ae81ff">8388608</span>
+sysctl kern.sysv.shmall<span style="color:#f92672">=</span><span style="color:#ae81ff">4096</span>
+</code></pre></div><p>If you&rsquo;re running more than one instance of AFL you likely want to make <code>shmall</code>
+bigger and increase <code>shmseg</code> as well:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sysctl kern.sysv.shmmax<span style="color:#f92672">=</span><span style="color:#ae81ff">8388608</span>
+sysctl kern.sysv.shmseg<span style="color:#f92672">=</span><span style="color:#ae81ff">48</span>
+sysctl kern.sysv.shmall<span style="color:#f92672">=</span><span style="color:#ae81ff">98304</span>
+</code></pre></div><p>See <a href="http://www.spy-hill.com/help/apple/SharedMemory.html">http://www.spy-hill.com/help/apple/SharedMemory.html</a> for documentation for
+these settings and how to make them permanent.</p>
 <h2 id="4-linux-or-bsd-on-non-x86-systems">4. Linux or *BSD on non-x86 systems</h2>
 <p>Standard build will fail on non-x86 systems, but you should be able to
 leverage two other options:</p>
@@ -249,7 +278,7 @@ being told that the stock version of GCC that comes with the platform does not
 work properly due to its reliance on a hardcoded location for &lsquo;as&rsquo; (completely
 ignoring the <code>-B</code> parameter or <code>$PATH</code>).</p>
 <p>To fix this, you may want to build stock GCC from the source, like so:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">./configure --prefix<span style="color:#f92672">=</span>$HOME/gcc --with-gnu-as --with-gnu-ld <span style="color:#ae81ff">\
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">./configure --prefix<span style="color:#f92672">=</span>$HOME/gcc --with-gnu-as --with-gnu-ld <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>  --with-gmp-include<span style="color:#f92672">=</span>/usr/include/gmp --with-mpfr-include<span style="color:#f92672">=</span>/usr/include/mpfr
 make
 sudo make install
@@ -259,7 +288,7 @@ ignores the <code>-B</code> flag and you will be back to square one.</p>
 problems with crashes being misinterpreted as hangs, similarly to the gotchas
 for Linux and MacOS X. AFL does not auto-detect crash reporting on this
 particular platform, but you may need to run the following command:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">coreadm -d global -d global-setid -d process -d proc-setid <span style="color:#ae81ff">\
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">coreadm -d global -d global-setid -d process -d proc-setid <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>  -d kzone -d log
 </code></pre></div><p>User emulation mode of QEMU is not available on Solaris, so black-box
 instrumentation mode (<code>-Q</code>) will not work.</p>
@@ -280,7 +309,7 @@ It&rsquo;s possible that all you need is this workaround:</p>
 <p>Joshua J. Drake notes that the Android linker adds a shim that automatically
 intercepts <code>SIGSEGV</code> and related signals. To fix this issue and be able to see
 crashes, you need to put this at the beginning of the fuzzed program:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">  signal<span style="color:#f92672">(</span>SIGILL, SIG_DFL<span style="color:#f92672">)</span>;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">  signal<span style="color:#f92672">(</span>SIGILL, SIG_DFL<span style="color:#f92672">)</span>;
   signal<span style="color:#f92672">(</span>SIGABRT, SIG_DFL<span style="color:#f92672">)</span>;
   signal<span style="color:#f92672">(</span>SIGBUS, SIG_DFL<span style="color:#f92672">)</span>;
   signal<span style="color:#f92672">(</span>SIGFPE, SIG_DFL<span style="color:#f92672">)</span>;
@@ -318,7 +347,7 @@ crashes, you need to put this at the beginning of the fuzzed program:</p>
   <ul>
     <li><a href="#1-linux-on-x86">1. Linux on x86</a></li>
     <li><a href="#2-openbsd-freebsd-netbsd-on-x86">2. OpenBSD, FreeBSD, NetBSD on x86</a></li>
-    <li><a href="#3-macos-x-on-x86">3. MacOS X on x86</a></li>
+    <li><a href="#3-macos-x-on-x86-and-arm64-m1">3. MacOS X on x86 and arm64 (M1)</a></li>
     <li><a href="#4-linux-or-bsd-on-non-x86-systems">4. Linux or *BSD on non-x86 systems</a></li>
     <li><a href="#5-solaris-on-x86">5. Solaris on x86</a></li>
     <li><a href="#6-everything-else">6. Everything else</a></li>

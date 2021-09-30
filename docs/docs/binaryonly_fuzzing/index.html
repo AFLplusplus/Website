@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.dbf0f82632afa86660ee1033ea3fe4be21d30807737079990826cb442b2f0b41.js" integrity="sha256-2/D4JjKvqGZg7hAz6j/kviHTCAdzcHmZCCbLRCsvC0E="></script>
+<script defer src="/en.search.min.aab11bfe026e770dca9ae9044fdc7196031a7669644b3c6a3c256dfc020ff823.js" integrity="sha256-qrEb/gJudw3KmukET9xxlgMadmlkSzxqPCVt/AIP&#43;CM="></script>
 
 <!--
 Made with Book Theme
@@ -143,16 +143,15 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li><a href="#tldr">TL;DR:</a></li>
     <li><a href="#qemu">QEMU</a></li>
+    <li><a href="#afl-frida">AFL FRIDA</a></li>
     <li><a href="#wineqemu">WINE+QEMU</a></li>
     <li><a href="#unicorn">UNICORN</a></li>
-    <li><a href="#afl-frida">AFL FRIDA</a></li>
     <li><a href="#afl-untracer">AFL UNTRACER</a></li>
     <li><a href="#dyninst">DYNINST</a></li>
-    <li><a href="#retrowrite">RETROWRITE</a></li>
+    <li><a href="#retrowrite-zafl--other-binary-rewriter">RETROWRITE, ZAFL, &hellip; other binary rewriter</a></li>
     <li><a href="#mcsema">MCSEMA</a></li>
     <li><a href="#intel-pt">INTEL-PT</a></li>
     <li><a href="#coresight">CORESIGHT</a></li>
-    <li><a href="#frida">FRIDA</a></li>
     <li><a href="#pin--dynamorio">PIN &amp; DYNAMORIO</a></li>
     <li><a href="#non-afl-solutions">Non-AFL solutions</a></li>
     <li><a href="#closing-words">Closing words</a></li>
@@ -166,12 +165,12 @@ https://github.com/alex-shpak/hugo-book
       </header>
 
       
-<article class="markdown"><h1 id="fuzzing-binary-only-programs-with-afl">Fuzzing binary-only programs with afl++</h1>
-<p>afl++, libfuzzer and others are great if you have the source code, and
+<article class="markdown"><h1 id="fuzzing-binary-only-programs-with-afl">Fuzzing binary-only programs with AFL++</h1>
+<p>AFL++, libfuzzer and others are great if you have the source code, and
 it allows for very fast and coverage guided fuzzing.</p>
 <p>However, if there is only the binary program and no source code available,
 then standard <code>afl-fuzz -n</code> (non-instrumented mode) is not effective.</p>
-<p>The following is a description of how these binaries can be fuzzed with afl++.</p>
+<p>The following is a description of how these binaries can be fuzzed with AFL++.</p>
 <h2 id="tldr">TL;DR:</h2>
 <p>qemu_mode in persistent mode is the fastest - if the stability is
 high enough. Otherwise try retrowrite, afl-dyninst and if these
@@ -195,23 +194,38 @@ qemu_mode speed!</li>
 </ul>
 <p>Note that there is also honggfuzz: <a href="https://github.com/google/honggfuzz">https://github.com/google/honggfuzz</a>
 which now has a qemu_mode, but its performance is just 1.5% &hellip;</p>
-<p>As it is included in afl++ this needs no URL.</p>
+<p>As it is included in AFL++ this needs no URL.</p>
+<p>If you like to code a customized fuzzer without much work, we highly
+recommend to check out our sister project libafl which will support QEMU
+too:
+<a href="https://github.com/AFLplusplus/LibAFL">https://github.com/AFLplusplus/LibAFL</a></p>
+<h2 id="afl-frida">AFL FRIDA</h2>
+<p>In frida_mode you can fuzz binary-only targets easily like with QEMU,
+with the advantage that frida_mode also works on MacOS (both intel and M1).</p>
+<p>If you want to fuzz a binary-only library then you can fuzz it with
+frida-gum via utils/afl_frida/, you will have to write a harness to
+call the target function in the library, use afl-frida.c as a template.</p>
+<p>Both come with AFL++ so this needs no URL.</p>
+<p>You can also perform remote fuzzing with frida, e.g. if you want to fuzz
+on iPhone or Android devices, for this you can use
+<a href="https://github.com/ttdennis/fpicker/">https://github.com/ttdennis/fpicker/</a>
+as an intermediate that uses AFL++ for fuzzing.</p>
+<p>If you like to code a customized fuzzer without much work, we highly
+recommend to check out our sister project libafl which supports Frida too:
+<a href="https://github.com/AFLplusplus/LibAFL">https://github.com/AFLplusplus/LibAFL</a>
+Working examples already exist :-)</p>
 <h2 id="wineqemu">WINE+QEMU</h2>
 <p>Wine mode can run Win32 PE binaries with the QEMU instrumentation.
 It needs Wine, python3 and the pefile python package installed.</p>
-<p>As it is included in afl++ this needs no URL.</p>
+<p>As it is included in AFL++ this needs no URL.</p>
 <h2 id="unicorn">UNICORN</h2>
 <p>Unicorn is a fork of QEMU. The instrumentation is, therefore, very similar.
 In contrast to QEMU, Unicorn does not offer a full system or even userland
 emulation. Runtime environment and/or loaders have to be written from scratch,
 if needed. On top, block chaining has been removed. This means the speed boost
-introduced in  the patched QEMU Mode of afl++ cannot simply be ported over to
+introduced in  the patched QEMU Mode of AFL++ cannot simply be ported over to
 Unicorn. For further information, check out <a href="../unicorn_mode/README.md">unicorn_mode/README.md</a>.</p>
-<p>As it is included in afl++ this needs no URL.</p>
-<h2 id="afl-frida">AFL FRIDA</h2>
-<p>If you want to fuzz a binary-only shared library then you can fuzz it with
-frida-gum via utils/afl_frida/, you will have to write a harness to
-call the target function in the library, use afl-frida.c as a template.</p>
+<p>As it is included in AFL++ this needs no URL.</p>
 <h2 id="afl-untracer">AFL UNTRACER</h2>
 <p>If you want to fuzz a binary-only shared library then you can fuzz it with
 utils/afl_untracer/, use afl-untracer.c as a template.
@@ -235,13 +249,14 @@ used with afl-dyninst.</p>
 <p>So if Dyninst works, it is the best option available. Otherwise it just
 doesn&rsquo;t work well.</p>
 <p><a href="https://github.com/vanhauser-thc/afl-dyninst">https://github.com/vanhauser-thc/afl-dyninst</a></p>
-<h2 id="retrowrite">RETROWRITE</h2>
+<h2 id="retrowrite-zafl--other-binary-rewriter">RETROWRITE, ZAFL, &hellip; other binary rewriter</h2>
 <p>If you have an x86/x86_64 binary that still has its symbols, is compiled
 with position independant code (PIC/PIE) and does not use most of the C++
 features then the retrowrite solution might be for you.
 It decompiles to ASM files which can then be instrumented with afl-gcc.</p>
 <p>It is at about 80-85% performance.</p>
-<p><a href="https://github.com/HexHive/retrowrite">https://github.com/HexHive/retrowrite</a></p>
+<p><a href="https://git.zephyr-software.com/opensrc/zafl">https://git.zephyr-software.com/opensrc/zafl</a>
+<a href="https://github.com/HexHive/retrowrite">https://github.com/HexHive/retrowrite</a></p>
 <h2 id="mcsema">MCSEMA</h2>
 <p>Theoretically you can also decompile to llvm IR with mcsema, and then
 use llvm_mode to instrument the binary.
@@ -254,7 +269,7 @@ encoding of the debug information collected through PT.
 This makes the decoding very CPU intensive and hence slow.
 As a result, the overall speed decrease is about 70-90% (depending on
 the implementation and other factors).</p>
-<p>There are two afl intel-pt implementations:</p>
+<p>There are two AFL intel-pt implementations:</p>
 <ol>
 <li>
 <p><a href="https://github.com/junxzm1990/afl-pt">https://github.com/junxzm1990/afl-pt</a>
@@ -275,15 +290,7 @@ it working on an ARM Linux is very difficult due to custom kernel building
 on embedded systems is difficult. And finding one that has coresight in
 the ARM chip is difficult too.
 My guess is that it is slower than Qemu, but faster than Intel PT.</p>
-<p>If anyone finds any coresight implementation for afl please ping me: <a href="mailto:vh@thc.org">vh@thc.org</a></p>
-<h2 id="frida">FRIDA</h2>
-<p>Frida is a dynamic instrumentation engine like Pintool, Dyninst and Dynamorio.
-What is special is that it is written Python, and scripted with Javascript.
-It is mostly used to reverse binaries on mobile phones however can be used
-everywhere.</p>
-<p>There is a WIP fuzzer available at <a href="https://github.com/andreafioraldi/frida-fuzzer">https://github.com/andreafioraldi/frida-fuzzer</a></p>
-<p>There is also an early implementation in an AFL++ test branch:
-<a href="https://github.com/AFLplusplus/AFLplusplus/tree/frida">https://github.com/AFLplusplus/AFLplusplus/tree/frida</a></p>
+<p>If anyone finds any coresight implementation for AFL please ping me: <a href="mailto:vh@thc.org">vh@thc.org</a></p>
 <h2 id="pin--dynamorio">PIN &amp; DYNAMORIO</h2>
 <p>Pintool and Dynamorio are dynamic instrumentation engines, and they can be
 used for getting basic block information at runtime.
@@ -315,7 +322,8 @@ slow but have good path discovery, some are very hard to set-up &hellip;</p>
 <li>QSYM: <a href="https://github.com/sslab-gatech/qsym">https://github.com/sslab-gatech/qsym</a></li>
 <li>Manticore: <a href="https://github.com/trailofbits/manticore">https://github.com/trailofbits/manticore</a></li>
 <li>S2E: <a href="https://github.com/S2E">https://github.com/S2E</a></li>
-<li>Tinyinst <a href="https://github.com/googleprojectzero/TinyInst">https://github.com/googleprojectzero/TinyInst</a> (Mac/Windows only)</li>
+<li>Tinyinst: <a href="https://github.com/googleprojectzero/TinyInst">https://github.com/googleprojectzero/TinyInst</a> (Mac/Windows only)</li>
+<li>Jackalope: <a href="https://github.com/googleprojectzero/Jackalope">https://github.com/googleprojectzero/Jackalope</a></li>
 <li>&hellip; please send me any missing that are good</li>
 </ul>
 <h2 id="closing-words">Closing words</h2>
@@ -352,16 +360,15 @@ slow but have good path discovery, some are very hard to set-up &hellip;</p>
   <ul>
     <li><a href="#tldr">TL;DR:</a></li>
     <li><a href="#qemu">QEMU</a></li>
+    <li><a href="#afl-frida">AFL FRIDA</a></li>
     <li><a href="#wineqemu">WINE+QEMU</a></li>
     <li><a href="#unicorn">UNICORN</a></li>
-    <li><a href="#afl-frida">AFL FRIDA</a></li>
     <li><a href="#afl-untracer">AFL UNTRACER</a></li>
     <li><a href="#dyninst">DYNINST</a></li>
-    <li><a href="#retrowrite">RETROWRITE</a></li>
+    <li><a href="#retrowrite-zafl--other-binary-rewriter">RETROWRITE, ZAFL, &hellip; other binary rewriter</a></li>
     <li><a href="#mcsema">MCSEMA</a></li>
     <li><a href="#intel-pt">INTEL-PT</a></li>
     <li><a href="#coresight">CORESIGHT</a></li>
-    <li><a href="#frida">FRIDA</a></li>
     <li><a href="#pin--dynamorio">PIN &amp; DYNAMORIO</a></li>
     <li><a href="#non-afl-solutions">Non-AFL solutions</a></li>
     <li><a href="#closing-words">Closing words</a></li>

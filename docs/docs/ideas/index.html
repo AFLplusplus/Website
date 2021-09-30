@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.dbf0f82632afa86660ee1033ea3fe4be21d30807737079990826cb442b2f0b41.js" integrity="sha256-2/D4JjKvqGZg7hAz6j/kviHTCAdzcHmZCCbLRCsvC0E="></script>
+<script defer src="/en.search.min.aab11bfe026e770dca9ae9044fdc7196031a7669644b3c6a3c256dfc020ff823.js" integrity="sha256-qrEb/gJudw3KmukET9xxlgMadmlkSzxqPCVt/AIP&#43;CM="></script>
 
 <!--
 Made with Book Theme
@@ -156,7 +156,7 @@ https://github.com/alex-shpak/hugo-book
       </header>
 
       
-<article class="markdown"><h1 id="ideas-for-afl">Ideas for afl++</h1>
+<article class="markdown"><h1 id="ideas-for-afl">Ideas for AFL++</h1>
 <p>In the following, we describe a variety of ideas that could be implemented
 for future AFL++ versions.</p>
 <h2 id="analysis-software">Analysis software</h2>
@@ -182,6 +182,10 @@ the current Unicorn instrumentation.</p>
 <h2 id="support-other-programming-languages">Support other programming languages</h2>
 <p>Other programming languages also use llvm hence they could (easily?) supported
 for fuzzing, e.g. mono, swift, go, kotlin native, fortran, &hellip;</p>
+<p>GCC also supports: Objective-C, Fortran, Ada, Go, and D
+(according to <a href="https://gcc.gnu.org/">Gcc homepage</a>)</p>
+<p>LLVM is also used by: Rust, LLGo (Go), kaleidoscope (Haskell), flang (Fortran), emscripten (JavaScript, WASM), ilwasm (CIL (C#))
+(according to <a href="https://gist.github.com/axic/62d66fb9d8bccca6cc48fa9841db9241">LLVM frontends</a>)</p>
 <p>Mentor: vanhauser-thc</p>
 <h2 id="machine-learning">Machine Learning</h2>
 <p>Something with machine learning, better than <a href="https://github.com/dongdongshe/neuzz">NEUZZ</a> :-)

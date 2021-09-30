@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.dbf0f82632afa86660ee1033ea3fe4be21d30807737079990826cb442b2f0b41.js" integrity="sha256-2/D4JjKvqGZg7hAz6j/kviHTCAdzcHmZCCbLRCsvC0E="></script>
+<script defer src="/en.search.min.aab11bfe026e770dca9ae9044fdc7196031a7669644b3c6a3c256dfc020ff823.js" integrity="sha256-qrEb/gJudw3KmukET9xxlgMadmlkSzxqPCVt/AIP&#43;CM="></script>
 
 <!--
 Made with Book Theme
@@ -189,17 +189,17 @@ to comment out USE_COLORS, then do <code>make clean all</code>.</p>
 other side effects - sorry about that.</p>
 <p>With that out of the way, let&rsquo;s talk about what&rsquo;s actually on the screen&hellip;</p>
 <h3 id="the-status-bar">The status bar</h3>
-<pre><code>american fuzzy lop ++3.01a (default) [fast] {0}
+<pre tabindex="0"><code>american fuzzy lop ++3.01a (default) [fast] {0}
 </code></pre><p>The top line shows you which mode afl-fuzz is running in
 (normal: &ldquo;american fuzy lop&rdquo;, crash exploration mode: &ldquo;peruvian rabbit mode&rdquo;)
-and the version of afl++.
+and the version of AFL++.
 Next to the version is the banner, which, if not set with -T by hand, will
 either show the binary name being fuzzed, or the -M/-S main/secondary name for
 parallel fuzzing.
 Second to last is the power schedule mode being run (default: fast).
 Finally, the last item is the CPU id.</p>
 <h3 id="process-timing">Process timing</h3>
-<pre><code>  +----------------------------------------------------+
+<pre tabindex="0"><code>  +----------------------------------------------------+
   |        run time : 0 days, 8 hrs, 32 min, 43 sec    |
   |   last new path : 0 days, 0 hrs, 6 min, 40 sec     |
   | last uniq crash : none seen yet                    |
@@ -223,7 +223,7 @@ fail a basic header check.</p>
 <p>If there are no new paths showing up for a while, you will eventually see a big
 red warning in this section, too :-)</p>
 <h3 id="overall-results">Overall results</h3>
-<pre><code>  +-----------------------+
+<pre tabindex="0"><code>  +-----------------------+
   |  cycles done : 0      |
   |  total paths : 2095   |
   | uniq crashes : 0      |
@@ -245,7 +245,7 @@ there&rsquo;s the number of test cases (&ldquo;paths&rdquo;) discovered so far, 
 unique faults. The test cases, crashes, and hangs can be explored in real-time
 by browsing the output directory, as discussed in README.md.</p>
 <h3 id="cycle-progress">Cycle progress</h3>
-<pre><code>  +-------------------------------------+
+<pre tabindex="0"><code>  +-------------------------------------+
   |  now processing : 1296 (61.86%)     |
   | paths timed out : 0 (0.00%)         |
   +-------------------------------------+
@@ -255,7 +255,7 @@ inputs it decided to ditch because they were persistently timing out.</p>
 <p>The &ldquo;*&rdquo; suffix sometimes shown in the first line means that the currently
 processed path is not &ldquo;favored&rdquo; (a property discussed later on).</p>
 <h3 id="map-coverage">Map coverage</h3>
-<pre><code>  +--------------------------------------+
+<pre tabindex="0"><code>  +--------------------------------------+
   |    map density : 10.15% / 29.07%     |
   | count coverage : 4.03 bits/tuple     |
   +--------------------------------------+
@@ -290,7 +290,7 @@ reach that extreme.</p>
 <p>Together, the values can be useful for comparing the coverage of several
 different fuzzing jobs that rely on the same instrumented binary.</p>
 <h3 id="stage-progress">Stage progress</h3>
-<pre><code>  +-------------------------------------+
+<pre tabindex="0"><code>  +-------------------------------------+
   |  now trying : interest 32/8         |
   | stage execs : 3996/34.4k (11.62%)   |
   | total execs : 27.4M                 |
@@ -341,7 +341,7 @@ long.</p>
 see the <a href="perf_tips.md">perf_tips.md</a> file included with the fuzzer for ideas on how to speed
 things up.</p>
 <h3 id="findings-in-depth">Findings in depth</h3>
-<pre><code>  +--------------------------------------+
+<pre tabindex="0"><code>  +--------------------------------------+
   | favored paths : 879 (41.96%)         |
   |  new edges on : 423 (20.19%)         |
   | total crashes : 0 (0 unique)         |
@@ -357,7 +357,7 @@ additional, more detailed counters for crashes and timeouts.</p>
 one includes all test cases that exceeded the timeout, even if they did not
 exceed it by a margin sufficient to be classified as hangs.</p>
 <h3 id="fuzzing-strategy-yields">Fuzzing strategy yields</h3>
-<pre><code>  +-----------------------------------------------------+
+<pre tabindex="0"><code>  +-----------------------------------------------------+
   |   bit flips : 57/289k, 18/289k, 18/288k             |
   |  byte flips : 0/36.2k, 4/35.7k, 7/34.6k             |
   | arithmetics : 53/2.54M, 0/537k, 0/55.2k             |
@@ -379,10 +379,10 @@ not possible to remove, were deemed to have no effect and were excluded from
 some of the more expensive deterministic fuzzing steps.</p>
 <p>Note that when deterministic mutation mode is off (which is the default
 because it is not very efficient) the first five lines display
-&ldquo;disabled (default, enable with -D)&quot;.</p>
+&ldquo;disabled (default, enable with -D)&rdquo;.</p>
 <p>Only what is activated will have counter shown.</p>
 <h3 id="path-geometry">Path geometry</h3>
-<pre><code>  +---------------------+
+<pre tabindex="0"><code>  +---------------------+
   |    levels : 5       |
   |   pending : 1570    |
   |  pend fav : 583     |
@@ -449,7 +449,7 @@ to waste.</li>
 in the <code>&lt;out_dir&gt;/queue/.state/variable_behavior/</code> directory, so you can look
 them up easily.</p>
 <h3 id="cpu-load">CPU load</h3>
-<pre><code>  [cpu: 25%]
+<pre tabindex="0"><code>  [cpu: 25%]
 </code></pre><p>This tiny widget shows the apparent CPU utilization on the local system. It is
 calculated by taking the number of processes in the &ldquo;runnable&rdquo; state, and then
 comparing it to the number of logical cores on the system.</p>
@@ -499,7 +499,7 @@ directory. This includes:</p>
 <li><code>edges_found</code>       - how many edges have been found</li>
 <li><code>var_byte_count</code>    - how many edges are non-deterministic</li>
 <li><code>afl_banner</code>        - banner text (e.g. the target name)</li>
-<li><code>afl_version</code>       - the version of afl used</li>
+<li><code>afl_version</code>       - the version of AFL used</li>
 <li><code>target_mode</code>       - default, persistent, qemu, unicorn, non-instrumented</li>
 <li><code>command_line</code>      - full command line used for the fuzzing session</li>
 </ul>

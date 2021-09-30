@@ -21,7 +21,7 @@ fuzzing by using libraries that perform mutations according to a given grammar.
 
 The custom mutator is passed to `afl-fuzz` via the `AFL_CUSTOM_MUTATOR_LIBRARY`
 or `AFL_PYTHON_MODULE` environment variable, and must export a fuzz function.
-Now afl also supports multiple custom mutators which can be specified in the same `AFL_CUSTOM_MUTATOR_LIBRARY` environment variable like this.
+Now AFL also supports multiple custom mutators which can be specified in the same `AFL_CUSTOM_MUTATOR_LIBRARY` environment variable like this.
 ```bash
 export AFL_CUSTOM_MUTATOR_LIBRARY="full/path/to/mutator_first.so;full/path/to/mutator_second.so"
 ```
@@ -47,7 +47,7 @@ int afl_custom_post_trim(void *data, unsigned char success);
 size_t afl_custom_havoc_mutation(void *data, unsigned char *buf, size_t buf_size, unsigned char **out_buf, size_t max_size);
 unsigned char afl_custom_havoc_mutation_probability(void *data);
 unsigned char afl_custom_queue_get(void *data, const unsigned char *filename);
-void afl_custom_queue_new_entry(void *data, const unsigned char *filename_new_queue, const unsigned int *filename_orig_queue);
+u8 afl_custom_queue_new_entry(void *data, const unsigned char *filename_new_queue, const unsigned int *filename_orig_queue);
 const char* afl_custom_introspection(my_mutator_t *data);
 void afl_custom_deinit(void *data);
 ```
@@ -88,10 +88,13 @@ def queue_get(filename):
     return True
 
 def queue_new_entry(filename_new_queue, filename_orig_queue):
-    pass
+    return False
 
 def introspection():
     return string
+
+def deinit():  # optional for Python
+    pass
 ```
 
 ### Custom Mutation
@@ -120,6 +123,7 @@ def introspection():
     Note that this function is optional - but it makes sense to use it.
     You would only skip this if `post_process` is used to fix checksums etc.
     so if you are using it e.g. as a post processing library.
+    Note that a length > 0 *must* be returned!
 
 - `describe` (optional):
 
@@ -152,6 +156,7 @@ def introspection():
 - `queue_new_entry` (optional):
 
     This methods is called after adding a new test case to the queue.
+    If the contents of the file was changed return True, False otherwise.
 
 - `introspection` (optional):
 
@@ -200,9 +205,7 @@ trimmed input. Here's a quick API description:
     arguments because we already have the initial buffer from `init_trim` and we
     can memorize the current state in the data variables. This can also save
     reparsing steps for each iteration. It should return the trimmed input
-    buffer, where the returned data must not exceed the initial input data in
-    length. Returning anything that is larger than the original data (passed to
-    `init_trim`) will result in a fatal abort of AFL++.
+    buffer.
 
 - `post_trim` (optional)
 
@@ -285,8 +288,8 @@ afl-fuzz /path/to/program
 
 ## 4) Example
 
-Please see [example.c](../utils/custom_mutators/example.c) and
-[example.py](../utils/custom_mutators/example.py)
+Please see [example.c](../custom_mutators/examples/example.c) and
+[example.py](../custom_mutators/examples/example.py)
 
 ## 5) Other Resources
 

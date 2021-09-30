@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.dbf0f82632afa86660ee1033ea3fe4be21d30807737079990826cb442b2f0b41.js" integrity="sha256-2/D4JjKvqGZg7hAz6j/kviHTCAdzcHmZCCbLRCsvC0E="></script>
+<script defer src="/en.search.min.aab11bfe026e770dca9ae9044fdc7196031a7669644b3c6a3c256dfc020ff823.js" integrity="sha256-qrEb/gJudw3KmukET9xxlgMadmlkSzxqPCVt/AIP&#43;CM="></script>
 
 <!--
 Made with Book Theme
@@ -143,7 +143,9 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
-        <li><a href="#version-313a-development">Version ++3.13a (development)</a></li>
+        <li><a href="#version-315a-dev">Version ++3.15a (dev)</a></li>
+        <li><a href="#version-314c-release">Version ++3.14c (release)</a></li>
+        <li><a href="#version-313c-release">Version ++3.13c (release)</a></li>
         <li><a href="#version-312c-release">Version ++3.12c (release)</a></li>
         <li><a href="#version-311c-release">Version ++3.11c (release)</a></li>
         <li><a href="#version-310c-release">Version ++3.10c (release)</a></li>
@@ -411,9 +413,106 @@ the tool. See README.md for the general instruction manual.</p>
 <h2 id="staying-informed">Staying informed</h2>
 <p>Want to stay in the loop on major new features? Join our mailing list by
 sending a mail to <a href="mailto:afl-users+subscribe@googlegroups.com">afl-users+subscribe@googlegroups.com</a>.</p>
-<h3 id="version-313a-development">Version ++3.13a (development)</h3>
+<h3 id="version-315a-dev">Version ++3.15a (dev)</h3>
 <ul>
+<li>
+<p>afl-fuzz:</p>
+<ul>
+<li>added AFL_IGNORE_PROBLEMS plus checks to identify and abort on
+incorrect LTO usage setups and enhanced the READMEs for better
+information on how to deal with instrumenting libraries</li>
+<li>fix a regression introduced in 3.10 that resulted in less
+coverage being detected. thanks to Collin May for reporting!</li>
+</ul>
+</li>
+<li>
+<p>afl-cc:</p>
+<ul>
+<li>fix for shared linking on MacOS</li>
+<li>llvm and LTO mode verified to work with new llvm 14-dev</li>
+</ul>
+</li>
+<li>
+<p>added the very good grammar mutator &ldquo;GramaTron&rdquo; to the
+custom_mutators</p>
+</li>
+<li>
+<p>added optimin, a faster and better corpus minimizer by
+Adrian Herrera. Thank you!</p>
+</li>
+<li>
+<p>added afl-persistent-config script to set perform permanent system
+configuration settings for fuzzing, for Linux and Macos.
+thanks to jhertz!</p>
+</li>
+<li>
+<p>added xml, curl and exotic string functions to llvm dictionary features</p>
+</li>
+<li>
+<p>fix AFL_PRELOAD issues on MacOS</p>
+</li>
+<li>
+<p>removed utils/afl_frida because frida_mode/ is now so much better</p>
+</li>
+<li>
+<p>added uninstall target to makefile (todo: update new readme!)</p>
+</li>
+</ul>
+<h3 id="version-314c-release">Version ++3.14c (release)</h3>
+<ul>
+<li>afl-fuzz:
+<ul>
+<li>fix -F when a &lsquo;/&rsquo; was part of the parameter</li>
+<li>fixed a crash for cmplog for very slow inputs</li>
+<li>fix for AFLfast schedule counting</li>
+<li>removed implied -D determinstic from -M main</li>
+<li>if the target becomes unavailable check out out/default/error.txt
+for an indicator why</li>
+<li>AFL_CAL_FAST was a dead env, now does the same as AFL_FAST_CAL</li>
+<li>reverse read the queue on resumes (more effective)</li>
+<li>fix custom mutator trimming</li>
+</ul>
+</li>
+<li>afl-cc:
+<ul>
+<li>Update to COMPCOV/laf-intel that speeds up the instrumentation
+process a lot - thanks to Michael Rodler/f0rki for the PR!</li>
+<li>Fix for failures for some sized string instrumentations</li>
+<li>Fix to instrument global namespace functions in c++</li>
+<li>Fix for llvm 13</li>
+<li>support partial linking</li>
+<li>do honor AFL_LLVM_{ALLOW/DENY}LIST for LTO autodictionary and DICT2FILE</li>
+<li>We do support llvm versions from 3.8 to 5.0 again</li>
+</ul>
+</li>
+<li>frida_mode:
+<ul>
+<li>several fixes for cmplog</li>
+<li>remove need for AFL_FRIDA_PERSISTENT_RETADDR_OFFSET</li>
+<li>less coverage collision</li>
+<li>feature parity of aarch64 with intel now (persistent, cmplog,
+in-memory testcases, asan)</li>
+</ul>
+</li>
+<li>afl-cmin and afl-showmap -i do now descend into subdirectories
+(like afl-fuzz does) - note that afl-cmin.bash does not!</li>
+<li>afl_analyze:
+<ul>
+<li>fix timeout handling</li>
+<li>add forkserver support for better performance</li>
+</ul>
+</li>
+<li>ensure afl-compiler-rt is built for gcc_module</li>
+<li>always build aflpp_driver for libfuzzer harnesses</li>
+<li>added <code>AFL_NO_FORKSRV</code> env variable support to
+afl-cmin, afl-tmin, and afl-showmap, by @jhertz</li>
+<li>removed outdated documents, improved existing documentation</li>
+</ul>
+<h3 id="version-313c-release">Version ++3.13c (release)</h3>
+<ul>
+<li>Note: plot_data switched to relative time from unix time in 3.10</li>
 <li>frida_mode - new mode that uses frida to fuzz binary-only targets,
+it currently supports persistent mode and cmplog.
 thanks to @WorksButNotTested!</li>
 <li>create a fuzzing dictionary with the help of CodeQL thanks to
 @microsvuln! see utils/autodict_ql</li>
@@ -424,28 +523,60 @@ options, e.g. <code>afl-fuzz ... -- ./target --infile=@@</code></li>
 <li>add recording of previous fuzz attempts for persistent mode
 to allow replay of non-reproducable crashes, see
 AFL_PERSISTENT_RECORD in config.h and docs/envs.h</li>
-<li>default cmplog level (-l) is now 2, better efficiency.</li>
-<li>cmplog level 3 (-l 3) now performs redqueen on everything.
-use with care.</li>
-<li>better fuzzing strategy yields for enabled options</li>
+<li>fixed a bug when trimming for stdin targets</li>
+<li>cmplog -l: default cmplog level is now 2, better efficiency.
+level 3 now performs redqueen on everything. use with care.</li>
+<li>better fuzzing strategy yield display for enabled options</li>
 <li>ensure one fuzzer sync per cycle</li>
 <li>fix afl_custom_queue_new_entry original file name when syncing
 from fuzzers</li>
+<li>fixed a crash when more than one custom mutator was used together
+with afl_custom_post_process</li>
+<li>on a crashing seed potentially the wrong input was disabled</li>
 <li>added AFL_EXIT_ON_SEED_ISSUES env that will exit if a seed in
 -i dir crashes the target or results in a timeout. By default
-afl++ ignores these and uses them for splicing instead.</li>
+AFL++ ignores these and uses them for splicing instead.</li>
+<li>added AFL_EXIT_ON_TIME env that will make afl-fuzz exit fuzzing
+after no new paths have been found for n seconds</li>
+<li>when AFL_FAST_CAL is set a variable path will now be calibrated
+8 times instead of originally 40. Long calibration is now 20.</li>
+<li>added AFL_TRY_AFFINITY to try to bind to CPUs but don&rsquo;t error if
+it fails</li>
 </ul>
 </li>
 <li>afl-cc:
 <ul>
 <li>We do not support llvm versions prior 6.0 anymore</li>
+<li>added thread safe counters to all modes (<code>AFL_LLVM_THREADSAFE_INST</code>),
+note that this disables NeverZero counters.</li>
+<li>Fix for -pie compiled binaries with default afl-clang-fast PCGUARD</li>
 <li>Leak Sanitizer (AFL_USE_LSAN) added by Joshua Rogers, thanks!</li>
 <li>Removed InsTrim instrumentation as it is not as good as PCGUARD</li>
 <li>Removed automatic linking with -lc++ for LTO mode</li>
+<li>Fixed a crash in llvm dict2file when a strncmp length was -1</li>
+<li>added &ndash;afl-noopt support</li>
 </ul>
 </li>
-<li>utils/aflpp_driver/aflpp_qemu_driver_hook fixed to work with qemu mode</li>
+<li>utils/aflpp_driver:
+<ul>
+<li>aflpp_qemu_driver_hook fixed to work with qemu_mode</li>
+<li>aflpp_driver now compiled with -fPIC</li>
+</ul>
+</li>
+<li>unicornafl:
+<ul>
+<li>fix MIPS delay slot caching, thanks @JackGrence</li>
+<li>fixed aarch64 exit address</li>
+<li>execution no longer stops at address 0x0</li>
+</ul>
+</li>
+<li>updated afl-system-config to support Arch Linux weirdness and increase
+MacOS shared memory</li>
+<li>updated the grammar custom mutator to the newest version</li>
 <li>add -d (add dead fuzzer stats) to afl-whatsup</li>
+<li>added AFL_PRINT_FILENAMES to afl-showmap/cmin to print the
+current filename</li>
+<li>afl-showmap/cmin will now process queue items in alphabetical order</li>
 </ul>
 <h3 id="version-312c-release">Version ++3.12c (release)</h3>
 <ul>
@@ -605,7 +736,7 @@ See qemu_mode/libqasan/README.md</li>
 <li>Updated utils/afl_frida to be 5% faster, 7% on x86_x64</li>
 <li>Added <code>AFL_KILL_SIGNAL</code> env variable (thanks @v-p-b)</li>
 <li>@Edznux added a nice documentation on how to use rpc.statsd with
-afl++ in docs/rpc_statsd.md, thanks!</li>
+AFL++ in docs/rpc_statsd.md, thanks!</li>
 </ul>
 <h3 id="version-300c-release">Version ++3.00c (release)</h3>
 <ul>
@@ -669,7 +800,7 @@ std::string compare + find + ==, bcmp</li>
 <ul>
 <li>added a new custom mutator: symcc -&gt; <a href="https://github.com/eurecom-s3/symcc/">https://github.com/eurecom-s3/symcc/</a></li>
 <li>added a new custom mutator: libfuzzer that integrates libfuzzer mutations</li>
-<li>Our afl++ Grammar-Mutator is now better integrated into custom_mutators/</li>
+<li>Our AFL++ Grammar-Mutator is now better integrated into custom_mutators/</li>
 <li>added INTROSPECTION support for custom modules</li>
 <li>python fuzz function was not optional, fixed</li>
 <li>some python mutator speed improvements</li>
@@ -682,7 +813,7 @@ std::string compare + find + ==, bcmp</li>
 </ul>
 <h3 id="version-268c-release">Version ++2.68c (release)</h3>
 <ul>
-<li>added the GSoC excellent afl++ grammar mutator by Shengtuo to our
+<li>added the GSoC excellent AFL++ grammar mutator by Shengtuo to our
 custom_mutators/ (see custom_mutators/README.md) - or get it here:
 <a href="https://github.com/AFLplusplus/Grammar-Mutator">https://github.com/AFLplusplus/Grammar-Mutator</a></li>
 <li>a few QOL changes for Apple and its outdated gmake</li>
@@ -712,14 +843,14 @@ the number of fuzz attempts for custom_fuzz</li>
 <ul>
 <li>ported SanCov to LTO, and made it the default for LTO. better
 instrumentation locations</li>
-<li>Further llvm 12 support (fast moving target like afl++ :-) )</li>
+<li>Further llvm 12 support (fast moving target like AFL++ :-) )</li>
 <li>deprecated LLVM SKIPSINGLEBLOCK env environment</li>
 </ul>
 </li>
 </ul>
 <h3 id="version-267c-release">Version ++2.67c (release)</h3>
 <ul>
-<li>Support for improved afl++ snapshot module:
+<li>Support for improved AFL++ snapshot module:
 <a href="https://github.com/AFLplusplus/AFL-Snapshot-LKM">https://github.com/AFLplusplus/AFL-Snapshot-LKM</a></li>
 <li>Due to the instrumentation needing more memory, the initial memory sizes
 for -m have been increased</li>
@@ -836,7 +967,7 @@ compiled by default anymore.</li>
 files/stdin) - 10-100% performance increase</li>
 <li>General support for 64 bit PowerPC, RiscV, Sparc etc.</li>
 <li>fix afl-cmin.bash</li>
-<li>slightly better performance compilation options for afl++ and targets</li>
+<li>slightly better performance compilation options for AFL++ and targets</li>
 <li>fixed afl-gcc/afl-as that could break on fast systems reusing pids in
 the same second</li>
 <li>added lots of dictionaries from oss-fuzz, go-fuzz and Jakub Wilk</li>
@@ -850,7 +981,7 @@ gcc 10 so afl-clang-lto can be build</li>
 <ul>
 <li>AFL_MAP_SIZE was not working correctly</li>
 <li>better python detection</li>
-<li>an old, old bug in afl that would show negative stability in rare
+<li>an old, old bug in AFL that would show negative stability in rare
 circumstances is now hopefully fixed</li>
 <li>AFL_POST_LIBRARY was deprecated, use AFL_CUSTOM_MUTATOR_LIBRARY
 instead (see docs/custom_mutators.md)</li>
@@ -932,8 +1063,8 @@ static global and local variable comparisons (cannot find all though)</li>
 <li>extended forkserver: map_size and more information is communicated to
 afl-fuzz (and afl-fuzz acts accordingly)</li>
 <li>new environment variable: AFL_MAP_SIZE to specify the size of the shared map</li>
-<li>if AFL_CC/AFL_CXX is set but empty afl compilers did fail, fixed
-(this bug is in vanilla afl too)</li>
+<li>if AFL_CC/AFL_CXX is set but empty AFL compilers did fail, fixed
+(this bug is in vanilla AFL too)</li>
 <li>added NO_PYTHON flag to disable python support when building afl-fuzz</li>
 <li>more refactoring</li>
 </ul>
@@ -947,7 +1078,7 @@ and only occasionally when everything is fine we PR to master</p>
 <ul>
 <li>big code changes to make afl-fuzz thread-safe so afl-fuzz can spawn
 multiple fuzzing threads in the future or even become a library</li>
-<li>afl basic tools now report on the environment variables picked up</li>
+<li>AFL basic tools now report on the environment variables picked up</li>
 <li>more tools get environment variable usage info in the help output</li>
 <li>force all output to stdout (some OK/SAY/WARN messages were sent to
 stdout, some to stderr)</li>
@@ -1142,7 +1273,7 @@ for the retrorewrite project</li>
 <li>qemu and unicorn download scripts now try to download until the full
 download succeeded. f*ckin travis fails downloading 40% of the time!</li>
 <li>more support for Android (please test!)</li>
-<li>added the few Android stuff we didnt have already from Google afl repository</li>
+<li>added the few Android stuff we didnt have already from Google AFL repository</li>
 <li>removed unnecessary warnings</li>
 </ul>
 <h3 id="version-258c-release">Version ++2.58c (release):</h3>
@@ -1188,7 +1319,7 @@ installed to the &hellip;/lib/afl directory when present during make install</li
 <li>big code refactoring:
 <ul>
 <li>all includes are now in include/</li>
-<li>all afl sources are now in src/ - see src/README.md</li>
+<li>all AFL sources are now in src/ - see src/README.md</li>
 <li>afl-fuzz was split up in various individual files for including
 functionality in other programs (e.g. forkserver, memory map, etc.)
 for better readability.</li>
@@ -1206,7 +1337,7 @@ for better readability.</li>
 <li>fix building on *BSD (thanks to tobias.kortkamp for the patch)</li>
 <li>fix for a few features to support different map sized than 2^16</li>
 <li>afl-showmap: new option -r now shows the real values in the buckets (stock
-afl never did), plus shows tuple content summary information now</li>
+AFL never did), plus shows tuple content summary information now</li>
 <li>small docu updates</li>
 <li>NeverZero counters for QEMU</li>
 <li>NeverZero counters for Unicorn</li>
@@ -1248,7 +1379,7 @@ see docs/python_mutators.txt (originally by choller@mozilla)</li>
 debugging</li>
 <li>added -V time and -E execs option to better comparison runs, runs afl-fuzz
 for a specific time/executions.</li>
-<li>added a -s seed switch to allow afl run with a fixed initial
+<li>added a -s seed switch to allow AFL run with a fixed initial
 seed that is not updated. This is good for performance and path discovery
 tests as the random numbers are deterministic then</li>
 <li>llvm_mode LAF_&hellip; env variables can now be specified as AFL_LLVM_LAF_&hellip;
@@ -2338,7 +2469,7 @@ Reported by Jonathan Neuschafer.</p>
 <ul>
 <li>
 <p>Updated cgroups_asan/ with a new version from Sam, made a couple changes
-to streamline it and keep parallel afl instances in separate groups.</p>
+to streamline it and keep parallel AFL instances in separate groups.</p>
 </li>
 <li>
 <p>Fixed typos, thanks to Jakub Wilk.</p>
@@ -2406,7 +2537,7 @@ consistency.</p>
 <h3 id="version-159b">Version 1.59b:</h3>
 <ul>
 <li>
-<p>Imported Laszlo Szekeres&rsquo; experimental LLVM instrumentation into
+<p>Imported Laszlo Szekeres' experimental LLVM instrumentation into
 examples/llvm_instrumentation. I&rsquo;ll work on including it in the
 &ldquo;mainstream&rdquo; version soon.</p>
 </li>
@@ -3426,7 +3557,7 @@ Based on feedback from Ryan Govostes.</p>
 <p>Added AFL_KEEP_ASSEMBLY for easier troubleshooting.</p>
 </li>
 <li>
-<p>Added an override for AFL_USE_ASAN if set at afl compile time. Requested by
+<p>Added an override for AFL_USE_ASAN if set at AFL compile time. Requested by
 Hanno Boeck.</p>
 </li>
 </ul>
@@ -4300,7 +4431,9 @@ the environment variable AFL_CUSTOM_MUTATOR_LIBRARY.</p>
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
-        <li><a href="#version-313a-development">Version ++3.13a (development)</a></li>
+        <li><a href="#version-315a-dev">Version ++3.15a (dev)</a></li>
+        <li><a href="#version-314c-release">Version ++3.14c (release)</a></li>
+        <li><a href="#version-313c-release">Version ++3.13c (release)</a></li>
         <li><a href="#version-312c-release">Version ++3.12c (release)</a></li>
         <li><a href="#version-311c-release">Version ++3.11c (release)</a></li>
         <li><a href="#version-310c-release">Version ++3.10c (release)</a></li>

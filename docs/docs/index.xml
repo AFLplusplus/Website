@@ -5,20 +5,16 @@
     <link>https://aflplus.plus/docs/</link>
     <description>Recent content on AFLplusplus</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    
-	<atom:link href="https://aflplus.plus/docs/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en-us</language><atom:link href="https://aflplus.plus/docs/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title></title>
       <link>https://aflplus.plus/docs/binaryonly_fuzzing/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/binaryonly_fuzzing/</guid>
-      <description>Fuzzing binary-only programs with afl++ afl++, libfuzzer and others are great if you have the source code, and it allows for very fast and coverage guided fuzzing.
+      <description>Fuzzing binary-only programs with AFL++ AFL++, libfuzzer and others are great if you have the source code, and it allows for very fast and coverage guided fuzzing.
 However, if there is only the binary program and no source code available, then standard afl-fuzz -n (non-instrumented mode) is not effective.
-The following is a description of how these binaries can be fuzzed with afl++.
+The following is a description of how these binaries can be fuzzed with AFL++.
 TL;DR: qemu_mode in persistent mode is the fastest - if the stability is high enough.</description>
     </item>
     
@@ -30,7 +26,8 @@ TL;DR: qemu_mode in persistent mode is the fastest - if the stability is high en
       <guid>https://aflplus.plus/docs/changelog/</guid>
       <description>Changelog This is the list of all noteworthy changes made in every public release of the tool. See README.md for the general instruction manual.
 Staying informed Want to stay in the loop on major new features? Join our mailing list by sending a mail to afl-users+subscribe@googlegroups.com.
-Version ++3.13a (development)  frida_mode - new mode that uses frida to fuzz binary-only targets, thanks to @WorksButNotTested! create a fuzzing dictionary with the help of CodeQL thanks to @microsvuln!</description>
+Version ++3.15a (dev)   afl-fuzz:
+ added AFL_IGNORE_PROBLEMS plus checks to identify and abort on incorrect LTO usage setups and enhanced the READMEs for better information on how to deal with instrumenting libraries fix a regression introduced in 3.</description>
     </item>
     
     <item>
@@ -63,7 +60,7 @@ Implemented by
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/docs/</guid>
-      <description>Restructure afl++&#39;s documentation About us We are dedicated to everything around fuzzing, our main and most well known contribution is the fuzzer afl++ which is part of all major Unix distributions (e.g. Debian, Arch, FreeBSD, etc.) and is deployed on Google&amp;rsquo;s oss-fuzz and clusterfuzz. It is rated the top fuzzer on Google&amp;rsquo;s fuzzbench.
+      <description>Restructure AFL++&amp;rsquo;s documentation About us We are dedicated to everything around fuzzing, our main and most well known contribution is the fuzzer AFL++ which is part of all major Unix distributions (e.g. Debian, Arch, FreeBSD, etc.) and is deployed on Google&amp;rsquo;s oss-fuzz and clusterfuzz. It is rated the top fuzzer on Google&amp;rsquo;s fuzzbench.
 We are four individuals from Europe supported by a large community.
 All our tools are open source.</description>
     </item>
@@ -84,8 +81,7 @@ Note that most tools will warn on any unknown AFL environment variables. This is
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/faq/</guid>
-      <description>Frequently asked questions about afl++ Contents  What is the difference between afl and afl++? How to improve the fuzzing speed? How do I fuzz a network service? How do I fuzz a GUI program? What is an edge? Why is my stability below 100%? How can I improve the stability value?  If you find an interesting or important question missing, submit it via https://github.com/AFLplusplus/AFLplusplus/issues
-What is the difference between afl and afl++?</description>
+      <description>Frequently asked questions about AFL++ Contents  What is the difference between AFL and AFL++? I got a weird compile error from clang How to improve the fuzzing speed? How do I fuzz a network service? How do I fuzz a GUI program? What is an edge? Why is my stability below 100%? How can I improve the stability value?  If you find an interesting or important question missing, submit it via https://github.</description>
     </item>
     
     <item>
@@ -104,7 +100,7 @@ What is the difference between afl and afl++?</description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/ideas/</guid>
-      <description>Ideas for afl++ In the following, we describe a variety of ideas that could be implemented for future AFL++ versions.
+      <description>Ideas for AFL++ In the following, we describe a variety of ideas that could be implemented for future AFL++ versions.
 Analysis software Currently analysis is done by using afl-plot, which is rather outdated. A GTK or browser tool to create run-time analysis based on fuzzer_stats, queue/id* information and plot_data that allows for zooming in and out, changing min/max display values etc. and doing that for a single run, different runs and campaigns vs campaigns.</description>
     </item>
     
@@ -150,6 +146,7 @@ Because of this, fuzzing with ASAN is recommended only in four scenarios:</descr
       
       <guid>https://aflplus.plus/docs/parallel_fuzzing/</guid>
       <description>Tips for parallel fuzzing This document talks about synchronizing afl-fuzz jobs on a single machine or across a fleet of systems. See README.md for the general instruction manual.
+Note that this document is rather outdated. please refer to the main document section on multiple core usage ../README.md#Using multiple cores for up to date strategies!
 1) Introduction Every copy of afl-fuzz will take up one CPU core. This means that on an n-core system, you can almost always run around n concurrent fuzzing jobs with virtually no performance hit (you can use the afl-gotcpu tool to make sure).</description>
     </item>
     
@@ -180,7 +177,7 @@ To illustrate, let&amp;rsquo;s say that you&amp;rsquo;re randomly flipping bits 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/power_schedules/</guid>
-      <description>afl++&#39;s power schedules based on AFLfast Power schedules implemented by Marcel Böhme &amp;lt;marcel.boehme@acm.org&amp;gt;. AFLFast is an extension of AFL which is written and maintained by Michal Zalewski &amp;lt;lcamtuf@google.com&amp;gt;.
+      <description>afl++&amp;rsquo;s power schedules based on AFLfast Power schedules implemented by Marcel Böhme &amp;lt;marcel.boehme@acm.org&amp;gt;. AFLFast is an extension of AFL which is written and maintained by Michal Zalewski &amp;lt;lcamtuf@google.com&amp;gt;.
 AFLfast has helped in the success of Team Codejitsu at the finals of the DARPA Cyber Grand Challenge where their bot Galactica took 2nd place in terms of #POVs proven (see red bar at https://www.cybergrandchallenge.com/event#results). AFLFast exposed several previously unreported CVEs that could not be exposed by AFL in 24 hours and otherwise exposed vulnerabilities significantly faster than AFL while generating orders of magnitude more unique crashes.</description>
     </item>
     
@@ -285,7 +282,8 @@ Unfortunately, the UI will render correctly only if your terminal is using tradi
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/technical_details/</guid>
-      <description>Technical &amp;ldquo;whitepaper&amp;rdquo; for afl-fuzz This document provides a quick overview of the guts of American Fuzzy Lop. See README.md for the general instruction manual; and for a discussion of motivations and design goals behind AFL, see historical_notes.md.
+      <description>Technical &amp;ldquo;whitepaper&amp;rdquo; for afl-fuzz NOTE: this document is rather outdated!
+This document provides a quick overview of the guts of American Fuzzy Lop. See README.md for the general instruction manual; and for a discussion of motivations and design goals behind AFL, see historical_notes.md.
 0. Design statement American Fuzzy Lop does its best not to focus on any singular principle of operation and not be a proof-of-concept for any specific theory. The tool can be thought of as a collection of hacks that have been tested in practice, found to be surprisingly effective, and have been implemented in the simplest, most robust way I could think of at the time.</description>
     </item>
     

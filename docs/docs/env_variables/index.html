@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.dbf0f82632afa86660ee1033ea3fe4be21d30807737079990826cb442b2f0b41.js" integrity="sha256-2/D4JjKvqGZg7hAz6j/kviHTCAdzcHmZCCbLRCsvC0E="></script>
+<script defer src="/en.search.min.aab11bfe026e770dca9ae9044fdc7196031a7669644b3c6a3c256dfc020ff823.js" integrity="sha256-qrEb/gJudw3KmukET9xxlgMadmlkSzxqPCVt/AIP&#43;CM="></script>
 
 <!--
 Made with Book Theme
@@ -150,6 +150,7 @@ https://github.com/alex-shpak/hugo-book
         <li><a href="#ctx">CTX</a></li>
         <li><a href="#laf-intel">LAF-INTEL</a></li>
         <li><a href="#instrument-list-selectively-instrument-files-and-functions">INSTRUMENT LIST (selectively instrument files and functions)</a></li>
+        <li><a href="#thread-safe-instrumentation-counters-in-all-modes">Thread safe instrumentation counters (in all modes)</a></li>
         <li><a href="#not_zero">NOT_ZERO</a></li>
         <li><a href="#cmplog">CMPLOG</a></li>
       </ul>
@@ -182,7 +183,7 @@ instruction manual.</p>
 This is for warning on typos that can happen. If you want to disable this
 check then set the <code>AFL_IGNORE_UNKNOWN_ENVS</code> environment variable.</p>
 <h2 id="1-settings-for-all-compilers">1) Settings for all compilers</h2>
-<p>Starting with afl++ 3.0 there is only one compiler: afl-cc
+<p>Starting with AFL++ 3.0 there is only one compiler: afl-cc
 To select the different instrumentation modes this can be done by</p>
 <ol>
 <li>passing the &ndash;afl-MODE command line option to the compiler</li>
@@ -194,13 +195,13 @@ afl-gcc-fast, afl-g++-fast</li>
 <p><code>MODE</code> can be one of <code>LTO</code> (afl-clang-lto*), <code>LLVM</code> (afl-clang-fast*), <code>GCC_PLUGIN</code>
 (afl-g*-fast) or <code>GCC</code> (afl-gcc/afl-g++).</p>
 <p>Because (with the exception of the &ndash;afl-MODE command line option) the
-compile-time tools do not accept afl specific command-line options, they
+compile-time tools do not accept AFL specific command-line options, they
 make fairly broad use of environmental variables instead:</p>
 <ul>
-<li>Some build/configure scripts break with afl++ compilers. To be able to
+<li>Some build/configure scripts break with AFL++ compilers. To be able to
 pass them, do:</li>
 </ul>
-<pre><code>       export CC=afl-cc
+<pre tabindex="0"><code>       export CC=afl-cc
        export CXX=afl-c++
        export AFL_NOOPT=1
        ./configure --disable-shared --disabler-werror
@@ -208,7 +209,7 @@ pass them, do:</li>
        make
 </code></pre><ul>
 <li>
-<p>Most afl tools do not print any output if stdout/stderr are redirected.
+<p>Most AFL tools do not print any output if stdout/stderr are redirected.
 If you want to get the output into a file then set the <code>AFL_DEBUG</code>
 environment variable.
 This is sadly necessary for various build processes which fail otherwise.</p>
@@ -229,10 +230,7 @@ overridden.</p>
 </li>
 <li>
 <p>Setting <code>AFL_USE_ASAN</code> automatically enables ASAN, provided that your
-compiler supports it. Note that fuzzing with ASAN is mildly challenging</p>
-<ul>
-<li>see <a href="notes_for_asan.md">notes_for_asan.md</a>.</li>
-</ul>
+compiler supports it.</p>
 <p>(You can also enable MSAN via <code>AFL_USE_MSAN</code>; ASAN and MSAN come with the
 same gotchas; the modes are mutually exclusive. UBSAN can be enabled
 similarly by setting the environment variable <code>AFL_USE_UBSAN=1</code>. Finally
@@ -288,10 +286,6 @@ text files then use the <code>AFL_AS_FORCE_INSTRUMENT</code> variable:
 <p>Setting <code>AFL_QUIET</code> will prevent afl-cc and afl-as banners from being
 displayed during compilation, in case you find them distracting.</p>
 </li>
-<li>
-<p>Setting <code>AFL_CAL_FAST</code> will speed up the initial calibration, if the
-application is very slow.</p>
-</li>
 </ul>
 <h2 id="2-settings-for-llvm-and-lto-afl-clang-fast--afl-clang-fast--afl-clang-lto--afl-clang-lto">2) Settings for LLVM and LTO: afl-clang-fast / afl-clang-fast++ / afl-clang-lto / afl-clang-lto++</h2>
 <p>The native instrumentation helpers (instrumentation and gcc_plugin) accept a subset
@@ -300,7 +294,7 @@ of the settings discussed in section 1, with the exception of:</p>
 <li>
 <p>LLVM modes support <code>AFL_LLVM_DICT2FILE=/absolute/path/file.txt</code> which will
 write all constant string comparisons  to this file to be used later with
-afl-fuzz&rsquo; <code>-x</code> option.</p>
+afl-fuzz' <code>-x</code> option.</p>
 </li>
 <li>
 <p><code>AFL_AS</code>, since this toolchain does not directly invoke GNU as.</p>
@@ -335,7 +329,7 @@ Not all passes support this option though as it is an outdated feature.</p>
 <p>This is a different kind way of instrumentation: first it compiles all
 code in LTO (link time optimization) and then performs an edge inserting
 instrumentation which is 100% collision free (collisions are a big issue
-in afl and afl-like instrumentations). This is performed by using
+in AFL and AFL-like instrumentations). This is performed by using
 afl-clang-lto/afl-clang-lto++ instead of afl-clang-fast, but is only
 built if LLVM 11 or newer is used.</p>
 <ul>
@@ -353,7 +347,7 @@ to which function. This helps to identify functions with variable bytes
 or which functions were touched by an input.</li>
 <li><code>AFL_LLVM_MAP_ADDR</code> sets the fixed map address to a different address than
 the default <code>0x10000</code>. A value of 0 or empty sets the map address to be
-dynamic (the original afl way, which is slower)</li>
+dynamic (the original AFL way, which is slower)</li>
 <li><code>AFL_LLVM_MAP_DYNAMIC</code> sets the shared memory address to be dynamic</li>
 <li><code>AFL_LLVM_LTO_STARTID</code> sets the starting location ID for the instrumentation.
 This defaults to 1</li>
@@ -413,6 +407,12 @@ function will only instrument (or skip) those files that match the names
 listed in the specified file.</li>
 </ul>
 <p>See <a href="../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a> for more information.</p>
+<h3 id="thread-safe-instrumentation-counters-in-all-modes">Thread safe instrumentation counters (in all modes)</h3>
+<ul>
+<li>Setting <code>AFL_LLVM_THREADSAFE_INST</code> will inject code that implements thread
+safe counters. The overhead is a little bit higher compared to the older
+non-thread safe case. Note that this disables neverzero (see below).</li>
+</ul>
 <h3 id="not_zero">NOT_ZERO</h3>
 <ul>
 <li>
@@ -444,7 +444,7 @@ assembly files. Useful for troubleshooting problems or understanding how
 the tool works. (GCC mode only)
 To get them in a predictable place, try something like:</li>
 </ul>
-<pre><code>    mkdir assembly_here
+<pre tabindex="0"><code>    mkdir assembly_here
     TMPDIR=$PWD/assembly_here AFL_KEEP_ASSEMBLY=1 make clean all
 </code></pre><ul>
 <li>Setting <code>AFL_GCC_INSTRUMENT_FILE</code> with a filename will only instrument those
@@ -466,6 +466,11 @@ system) and are OK with some performance loss.</p>
 have been fuzzed and there were no new finds for a while. This would be
 normally indicated by the cycle counter in the UI turning green. May be
 convenient for some types of automated jobs.</p>
+</li>
+<li>
+<p><code>AFL_EXIT_ON_TIME</code> Causes afl-fuzz to terminate if no new paths were
+found within a specified period of time (in seconds). May be convenient
+for some types of automated jobs.</p>
 </li>
 <li>
 <p><code>AFL_EXIT_ON_SEED_ISSUES</code> will restore the vanilla afl-fuzz behaviour
@@ -498,14 +503,12 @@ on Linux systems. This slows things down, but lets you run more instances
 of afl-fuzz than would be prudent (if you really want to).</p>
 </li>
 <li>
-<p>Setting <code>AFL_NO_AUTODICT</code> will not load an LTO generated auto dictionary
-that is compiled into the target.</p>
+<p>Setting <code>AFL_TRY_AFFINITY</code> tries to attempt binding to a specific CPU core
+on Linux systems, but will not terminate if that fails.</p>
 </li>
 <li>
-<p><code>AFL_SKIP_CRASHES</code> causes AFL++ to tolerate crashing files in the input
-queue. This can help with rare situations where a program crashes only
-intermittently, but it&rsquo;s not really recommended under normal operating
-conditions.</p>
+<p>Setting <code>AFL_NO_AUTODICT</code> will not load an LTO generated auto dictionary
+that is compiled into the target.</p>
 </li>
 <li>
 <p>Setting <code>AFL_HANG_TMOUT</code> allows you to specify a different timeout for
@@ -548,7 +551,8 @@ reduces the stress on SSDs.</p>
 <code>AFL_SKIP_BIN_CHECK</code> to inhibit the checks for non-instrumented binaries
 and shell scripts; and <code>AFL_DUMB_FORKSRV</code> in conjunction with the <code>-n</code>
 setting to instruct afl-fuzz to still follow the fork server protocol
-without expecting any instrumentation data in return.</p>
+without expecting any instrumentation data in return.
+Note that this also turns off auto map size detection.</p>
 </li>
 <li>
 <p>When running in the <code>-M</code> or <code>-S</code> mode, setting <code>AFL_IMPORT_FIRST</code> causes the
@@ -568,7 +572,7 @@ By default, on timeout and on exit, <code>SIGKILL</code> (<code>AFL_KILL_SIGNAL=
 <li>
 <p>Setting <code>AFL_CUSTOM_MUTATOR_LIBRARY</code> to a shared library with
 afl_custom_fuzz() creates additional mutations through this library.
-If afl-fuzz is compiled with Python (which is autodetected during builing
+If afl-fuzz is compiled with Python (which is autodetected during building
 afl-fuzz), setting <code>AFL_PYTHON_MODULE</code> to a Python module can also provide
 additional mutations.
 If <code>AFL_CUSTOM_MUTATOR_ONLY</code> is also set, all mutations will solely be
@@ -579,7 +583,8 @@ Please see <a href="custom_mutators.md">custom_mutators.md</a>.</p>
 </li>
 <li>
 <p><code>AFL_FAST_CAL</code> keeps the calibration stage about 2.5x faster (albeit less
-precise), which can help when starting a session against a slow target.</p>
+precise), which can help when starting a session against a slow target.
+<code>AFL_CAL_FAST</code> works too.</p>
 </li>
 <li>
 <p>The CPU widget shown at the bottom of the screen is fairly simplistic and
@@ -641,6 +646,11 @@ and RECORD:000000,cnt:000009 being the crash case.
 NOTE: This option needs to be enabled in config.h first!</p>
 </li>
 <li>
+<p>If afl-fuzz encounters an incorrect fuzzing setup during a fuzzing session
+(not at startup), it will terminate. If you do not want this then you can
+set <code>AFL_IGNORE_PROBLEMS</code>.</p>
+</li>
+<li>
 <p>If you are Jakub, you may need <code>AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES</code>.
 Others need not apply, unless they also want to disable the
 <code>/proc/sys/kernel/core_pattern</code> check.</p>
@@ -669,8 +679,8 @@ Without this setting, afl-fuzz will refuse execution for a long-fuzzed out dir.<
 <li>
 <p>Setting <code>AFL_MAX_DET_EXRAS</code> will change the threshold at what number of elements
 in the <code>-x</code> dictionary and LTO autodict (combined) the probabilistic mode will
-kick off. In probabilistic mode not all dictionary entires will be used all
-of the times for fuzzing mutations to not slow down fuzzing.
+kick off. In probabilistic mode, not all dictionary entries will be used all
+of the time for fuzzing mutations to not slow down fuzzing.
 The default count is <code>200</code> elements. So for the 200 + 1st element, there is a
 1 in 201 chance, that one of the dictionary entries will not be used directly.</p>
 </li>
@@ -695,12 +705,12 @@ your StatsD server (see <code>AFL_STATSD_TAGS_FLAVOR</code>)</p>
 allows you to add tags to your fuzzing instances. This is especially useful when running
 multiple instances (<code>-M/-S</code> for example). Applied tags are <code>banner</code> and <code>afl_version</code>.
 <code>banner</code> corresponds to the name of the fuzzer provided through <code>-M/-S</code>.
-<code>afl_version</code> corresponds to the currently running afl version (e.g <code>++3.0c</code>).
+<code>afl_version</code> corresponds to the currently running AFL version (e.g <code>++3.0c</code>).
 Default (empty/non present) will add no tags to the metrics.
 See <a href="rpc_statsd.md">rpc_statsd.md</a> for more information.</p>
 </li>
 <li>
-<p>Setting <code>AFL_CRASH_EXITCODE</code> sets the exit code afl treats as crash.
+<p>Setting <code>AFL_CRASH_EXITCODE</code> sets the exit code AFL treats as crash.
 For example, if <code>AFL_CRASH_EXITCODE='-1'</code> is set, each input resulting
 in an <code>-1</code> return code (i.e. <code>exit(-1)</code> got called), will be treated
 as if a crash had ocurred.
@@ -803,6 +813,10 @@ minimization and normally deleted at exit. The files can be found in the
 a modest security risk on multi-user systems with rogue users, but should
 be safe on dedicated fuzzing boxes.</p>
 </li>
+<li>
+<p><code>AFL_PRINT_FILENAMES</code> prints each filename to stdout, as it gets processed.
+This can help when embedding <code>afl-cmin</code> or <code>afl-showmap</code> in other scripts scripting.</p>
+</li>
 </ul>
 <h2 id="7-settings-for-afl-tmin">7) Settings for afl-tmin</h2>
 <p>Virtually nothing to play with. Well, in QEMU mode (<code>-Q</code>), <code>AFL_PATH</code> will be
@@ -859,7 +873,7 @@ certainly pointless.</p>
 <p>By default, <code>ASAN_OPTIONS</code> are set to (among others):</p>
 </li>
 </ul>
-<pre><code>    abort_on_error=1
+<pre tabindex="0"><code>    abort_on_error=1
     detect_leaks=0
     malloc_context_size=0
     symbolize=0
@@ -871,7 +885,7 @@ difficulty telling crashes and hangs apart.</p>
 <ul>
 <li>In the same vein, by default, <code>MSAN_OPTIONS</code> are set to:</li>
 </ul>
-<pre><code>    exit_code=86 (required for legacy reasons)
+<pre tabindex="0"><code>    exit_code=86 (required for legacy reasons)
     abort_on_error=1
     symbolize=0
     msan_track_origins=0
@@ -879,7 +893,7 @@ difficulty telling crashes and hangs apart.</p>
 </code></pre><ul>
 <li>Similarly, the default <code>LSAN_OPTIONS</code> are set to:</li>
 </ul>
-<pre><code>    exit_code=23
+<pre tabindex="0"><code>    exit_code=23
     fast_unwind_on_malloc=0
     symbolize=0
     print_suppressions=0
@@ -925,6 +939,7 @@ error, and we need a way to detect faults.</p>
         <li><a href="#ctx">CTX</a></li>
         <li><a href="#laf-intel">LAF-INTEL</a></li>
         <li><a href="#instrument-list-selectively-instrument-files-and-functions">INSTRUMENT LIST (selectively instrument files and functions)</a></li>
+        <li><a href="#thread-safe-instrumentation-counters-in-all-modes">Thread safe instrumentation counters (in all modes)</a></li>
         <li><a href="#not_zero">NOT_ZERO</a></li>
         <li><a href="#cmplog">CMPLOG</a></li>
       </ul>
