@@ -696,7 +696,7 @@ The broker used this information to paint a simple UI, with up-to-date informati
 Shared maps are the backbone of <code>LLMP</code>.
 Each client, usually a fuzzer trying to share stats and new testcases, maps an outgoing <code>ShMem</code> map.
 With very few exceptions, only this client writes to this map, therefore, we do not run in race conditions and can live without locks.
-The broker reas from all client's <code>ShMem</code> maps.
+The broker reads from all client's <code>ShMem</code> maps.
 It checks all incoming client maps periodically, and then forwards new messages to its outgoing broadcast-<code>ShMem</code>, mapped by all connected clients.</p>
 <p>To send new messages, a client places a new message at the end of their map, and then updates a static field to notify the broker.
 Once the outgoing map is full, the sender allocates a new <code>ShMem</code> using the respective <code>ShMemProvider</code>.
