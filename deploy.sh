@@ -8,6 +8,7 @@ hugo --theme book
 
 git add .
 
+
 msg="rebuilding site $(date)"
 if [ -n "$*" ]; then
 	msg="$*"
