@@ -152,7 +152,7 @@ An example may look like this:</p>
 <pre><code class="language-rust ignore">    Launcher::builder()
         .configuration(EventConfig::from_name(&amp;configuration))
         .shmem_provider(shmem_provider)
-        .stats(stats)
+        .monitor(mon)
         .run_client(&amp;mut run_client)
         .cores(cores)
         .broker_port(broker_port)

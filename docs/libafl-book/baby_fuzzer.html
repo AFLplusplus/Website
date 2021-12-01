@@ -232,13 +232,13 @@ let mut state = StdState::new(
 <p>It takes a random number generator, that is part of the fuzzer state, in this case, we use the default one <code>StdRand</code> but you can choose a different one. We seed it with the current nanoseconds.</p>
 <p>As the second parameter, it takes an instance of something implementing the Corpus trait, InMemoryCorpus in this case. The corpus is the container of the testcases evolved by the fuzzer, in this case, we keep it all in memory.</p>
 <p>We will discuss the last parameter later. The third parameter is another corpus, in this case, to store the testcases that are considered as &quot;solutions&quot; for the fuzzer. For our purpose, the solution is the input that triggers the panic. In this case, we want to store it to disk under the <code>crashes</code> directory, so we can inspect it.</p>
-<p>Another required component is the EventManager. It handles some events such as the addition of a testcase to the corpus during the fuzzing process. For our purpose, we use the simplest one that just displays the information about these events to the user using a Stats instance.</p>
-<pre><code class="language-rust ignore">// The Stats trait define how the fuzzer stats are reported to the user
-let stats = SimpleStats::new(|s| println!(&quot;{}&quot;, s));
+<p>Another required component is the EventManager. It handles some events such as the addition of a testcase to the corpus during the fuzzing process. For our purpose, we use the simplest one that just displays the information about these events to the user using a <code>Monitor</code> instance.</p>
+<pre><code class="language-rust ignore">// The Monitor trait defines how the fuzzer stats are displayed to the user
+let mon = SimpleMonitor::new(|s| println!(&quot;{}&quot;, s));
 
 // The event manager handle the various events generated during the fuzzing loop
 // such as the notification of the addition of a new item to the corpus
-let mut mgr = SimpleEventManager::new(stats);
+let mut mgr = SimpleEventManager::new(mon);
 </code></pre>
 <p>In addition, we have the Fuzzer, an entity that contains some actions that alter the State. One of these actions is the scheduling of the testcases to the fuzzer using a CorpusScheduler.
 We create it as QueueCorpusScheduler, a scheduler that serves testcases to the fuzzer in a FIFO fashion.</p>
@@ -270,7 +270,7 @@ let mut generator = RandPrintablesGenerator::new(32);
 
 // Generate 8 initial inputs
 state
-    .generate_initial_inputs(&amp;mut executor, &amp;mut generator, &amp;mut mgr, &amp;scheduler, 8)
+    .generate_initial_inputs(&amp;mut fuzzer, &amp;mut executor, &amp;mut generator, &amp;mut mgr, 8)
     .expect(&quot;Failed to generate the initial corpus&quot;.into());
 </code></pre>
 <p>Now you can prepend the necessary <code>use</code> directives to your main.rs and compile the fuzzer.</p>
@@ -285,10 +285,11 @@ use libafl::{
     corpus::{InMemoryCorpus, OnDiskCorpus, QueueCorpusScheduler},
     events::SimpleEventManager,
     executors::{inprocess::InProcessExecutor, ExitKind},
+    fuzzer::StdFuzzer,
     generators::RandPrintablesGenerator,
     inputs::{BytesInput, HasTargetBytes},
+    monitors::SimpleMonitor,
     state::StdState,
-    stats::SimpleStats,
 };
 <span class="boring">}
 </span></code></pre></pre>
@@ -344,21 +345,27 @@ let observer = StdMapObserver::new(&quot;signals&quot;, unsafe { &amp;mut SIGNAL
 </code></pre>
 <p>The observers are usually kept in the corresponding executor as they keep track of information that is valid for just one run. We have then to modify our InProcessExecutor creation to include the observer as follows:</p>
 <pre><code class="language-rust ignore">// Create the executor for an in-process function with just one observer
-let mut executor =
-    InProcessExecutor::new(&amp;mut harness, tuple_list!(observer), &amp;mut state, &amp;mut mgr)
-        .expect(&quot;Failed to create the Executor&quot;.into());
+let mut executor = InProcessExecutor::new(
+    &amp;mut harness,
+    tuple_list!(observer),
+    &amp;mut fuzzer,
+    &amp;mut state,
+    &amp;mut mgr,
+)
+.expect(&quot;Failed to create the Executor&quot;.into());
 </code></pre>
 <p>Now that the fuzzer can observe which condition is satisfied, we need a way to rate an input as interesting (i.e. worth of addition to the corpus) based on this observation. Here comes the notion of Feedback. The Feedback is part of the State and provides a way to rate input and its corresponding execution as interesting looking for the information in the observers. Feedbacks can maintain a cumulative state of the information seen so far in a so-called FeedbackState instance, in our case it maintains the set of conditions satisfied in the previous runs.</p>
 <p>We use MaxMapFeedback, a feedback that implements a novelty search over the map of the MapObserver. Basically, if there is a value in the observer's map that is greater than the maximum value registered so far for the same entry, it rates the input as interesting and updates its state.</p>
-<p>Feedbacks are used also to decide if an input is a &quot;solution&quot;. The feedback that does that is called the Objective Feedback and when it rates an input as interested it is not saved to the corpus but to the solutions, written in the <code>crashes</code> folder in our case. We use the CrashFeedback to tell the fuzzer that if an input causes the program to crash it is a solution for us.</p>
+<p>Feedbacks are used also to decide if an input is a &quot;solution&quot;. The feedback that does that is called the Objective Feedback and when it rates an input as interesting it is not saved to the corpus but to the solutions, written in the <code>crashes</code> folder in our case. We use the CrashFeedback to tell the fuzzer that if an input causes the program to crash it is a solution for us.</p>
 <p>We need to update our State creation including the feedback state and the Fuzzer including the feedback and the objective:</p>
 <pre><code class="language-rust ignore">extern crate libafl;
 use libafl::{
-    bolts::{rands::StdRand,
-    corpus::{InMemoryCorpus, OnDiskCorpus, RandCorpusScheduler},
-    events::{setup_restarting_mgr_std, EventConfig, EventRestarter},
+    bolts::{current_nanos, rands::StdRand, tuples::tuple_list},
+    corpus::{InMemoryCorpus, OnDiskCorpus},
     feedbacks::{MapFeedbackState, MaxMapFeedback, CrashFeedback},
-    fuzzer::{StdFuzzer},
+    fuzzer::StdFuzzer,
+    state::StdState,
+    observers::StdMapObserver,
 };
 
 // The state of the edges feedback.
@@ -393,7 +400,15 @@ let mut fuzzer = StdFuzzer::new(scheduler, feedback, objective);
 <p>Now, after including the correct <code>use</code>, we can run the program, but the outcome is not so different from the previous one as the random generator does not take into account what we save as interesting in the corpus. To do that, we need to plug a Mutator.</p>
 <p>Another central component of LibAFL are the Stages, that are actions done on individual inputs taken from the corpus. The MutationalStage mutates the input and executes it several times for instance.</p>
 <p>As the last step, we create a MutationalStage that uses a mutator inspired by the havoc mutator of AFL.</p>
-<pre><code class="language-rust ignore">// Setup a mutational stage with a basic bytes mutator
+<pre><code class="language-rust ignore">use libafl::{
+    mutators::scheduled::{havoc_mutations, StdScheduledMutator},
+    stages::mutational::StdMutationalStage,
+    fuzzer::Fuzzer,
+};
+
+// ...
+
+// Setup a mutational stage with a basic bytes mutator
 let mutator = StdScheduledMutator::new(havoc_mutations());
 let mut stages = tuple_list!(StdMutationalStage::new(mutator));
 
