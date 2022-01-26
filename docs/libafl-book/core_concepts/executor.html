@@ -143,6 +143,41 @@ For instance, for in-memory fuzzers like libFuzzer an execution is a call to an 
 <p>In Rust, we bind this concept to the <a href="https://docs.rs/libafl/0/libafl/executors/trait.Executor.html"><code>Executor</code></a> trait. A structure implementing this trait must implement <a href="https://docs.rs/libafl/0/libafl/executors/trait.HasObservers.html"><code>HasObservers</code></a> too if wants to hold a set of Observers.</p>
 <p>By default, we implement some commonly used Executors such as <a href="https://docs.rs/libafl/0/libafl/executors/inprocess/struct.InProcessExecutor.html"><code>InProcessExecutor</code></a> is which the target is a harness function providing in-process crash detection. Another Executor is the <a href="https://docs.rs/libafl/0/libafl/executors/forkserver/struct.ForkserverExecutor.html"><code>ForkserverExecutor</code></a> that implements an AFL-like mechanism to spawn child processes to fuzz.</p>
 <p>A common pattern when creating an Executor is wrapping an existing one, for instance <a href="https://docs.rs/libafl/0.6.1/libafl/executors/timeout/struct.TimeoutExecutor.html"><code>TimeoutExecutor</code></a> wraps an executor and install a timeout callback before calling the original run function of the wrapped executor.</p>
+<h2 id="inprocessexecutor"><a class="header" href="#inprocessexecutor">InProcessExecutor</a></h2>
+<p>Let's begin with the base case; <code>InProcessExecutor</code>.
+This executor uses <a href="https://clang.llvm.org/docs/SanitizerCoverage.html"><em>SanitizerCoverage</em></a> as its backend, as you can find the related code in <code>libafl_targets/src/sancov_pcguards</code>. Here we allocate a map called <code>EDGES_MAP</code> and then our compiler wrapper compiles the harness to write the coverage into this map. 
+When you want to execute the harness as fast as possible, you will most probably want to use this <code>InprocessExecutor</code>.<br />
+One thing to note here is, when your harness is likely to have heap corruption bugs, you want to use another allocator so that corrupted heap does not affect the fuzzer itself. (For example, we adopt MiMalloc in some of our fuzzers.). Alternatively you can compile your harness with address sanitizer to make sure you can catch these heap bugs.</p>
+<h2 id="forkserverexecutor"><a class="header" href="#forkserverexecutor">ForkserverExecutor</a></h2>
+<p>Next, we'll take a look at the <code>ForkserverExecutor</code>. In this case, it is <code>afl-cc</code> (from AFLplusplus/AFLplusplus) that compiles the harness code, and therefore, we can't use <code>EDGES_MAP</code> anymore. Hopefully, we have <a href="https://github.com/AFLplusplus/AFLplusplus/blob/2e15661f184c77ac1fbb6f868c894e946cbb7f17/instrumentation/afl-compiler-rt.o.c#L270"><em>a way</em></a> to tell the forkserver which map to record the coverage.
+As you can see from the forkserver example,</p>
+<pre><code class="language-rust ignore">//Coverage map shared between observer and executor
+let mut shmem = StdShMemProvider::new().unwrap().new_shmem(MAP_SIZE).unwrap();
+//let the forkserver know the shmid
+shmem.write_to_env(&quot;__AFL_SHM_ID&quot;).unwrap();
+let mut shmem_buf = shmem.as_mut_slice();
+</code></pre>
+<p>Here we make a shared memory region; <code>shmem</code>, and write this to environmental variable <code>__AFL_SHM_ID</code>. Then the instrumented binary, or the forkserver, finds this shared memory region (from the aforementioned env var) to record its coverage. On your fuzzer side, you can pass this shmem map to your <code>Observer</code> to obtain coverage feedbacks combined with any <code>Feedback</code>.</p>
+<p>Another feature of the <code>ForkserverExecutor</code> to mention is the shared memory testcases. In normal cases, the mutated input is passed between the forkserver and the instrumented binary via <code>.cur_input</code> file. You can improve your forkserver fuzzer's performance by passing the input with shared memory.
+See AFL++'s <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/instrumentation/README.persistent_mode.md#5-shared-memory-fuzzing"><em>documentation</em></a> or the fuzzer example in <code>forkserver_simple/src/program.c</code> for reference.<br />
+It is very simple, when you call <code>ForkserverExecutor::new()</code> with <code>use_shmem_testcase</code> true, the <code>ForkserverExecutor</code> sets things up and your harness can just fetch the input from <code>__AFL_FUZZ_TESTCASE_BUF</code></p>
+<h2 id="inprocessforkexecutor"><a class="header" href="#inprocessforkexecutor">InprocessForkExecutor</a></h2>
+<p>Finally, we'll talk about the <code>InProcessForkExecutor</code>.
+<code>InProcessForkExecutor</code> has only one difference from <code>InprocessExecutor</code>; It forks before running the harness and that's it.<br />
+But why do we want to do so? well, under some circumstances, you may find your harness pretty unstable or your harness wreaks havoc on the global states. In this case, you want to fork it before executing the harness runs in the child process so that it doesn't break things.<br />
+However, we have to take care of the shared memory, it's the child process that runs the harness code and writes the coverage to the map.<br />
+We have to make the map shared between the parent process and the child process, so we'll use shared memory again. You should compile your harness with <code>pointer_maps</code> (for <code>libafl_targes</code>) features enabled, this way, we can have a pointer; <code>EDGES_MAP_PTR</code> that can point to any coverage map.
+On your fuzzer side, you can allocate a shared memory region and make the <code>EDGES_MAP_PTR</code> point to your shared memory.</p>
+<pre><code class="language-rust ignore">let mut shmem;
+unsafe{
+    shmem = StdShMemProvider::new().unwrap().new_shmem(MAX_EDGES_NUM).unwrap();
+}
+let shmem_buf = shmem.as_mut_slice();
+unsafe{
+    EDGES_PTR = shmem_buf.as_ptr();
+}
+</code></pre>
+<p>Again, you can pass this shmem map to your <code>Observer</code> and <code>Feedback</code> to obtain coverage feedbacks.</p>
 
                     </main>
 

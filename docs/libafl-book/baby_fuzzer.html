@@ -195,7 +195,10 @@ To start, we create the closure that we want to fuzz. It takes a buffer as input
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>extern crate libafl;
-use libafl::inputs::{BytesInput, HasTargetBytes};
+use libafl::{
+    bolts::AsSlice,
+    inputs::{BytesInput, HasTargetBytes},
+};
 
 let mut harness = |input: &amp;BytesInput| {
     let target = input.target_bytes();
@@ -310,6 +313,7 @@ As we don't rely on any instrumentation engine, we have to manually track the sa
 </span><span class="boring">fn main() {
 </span>extern crate libafl;
 use libafl::{
+    bolts::AsSlice,
     inputs::{BytesInput, HasTargetBytes},
     executors::ExitKind,
 };

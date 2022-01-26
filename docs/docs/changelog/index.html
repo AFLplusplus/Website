@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.45c3c97332aab3536ee02bd089547e4307fa969c7ccb9a8ac572fd934646fd9c.js" integrity="sha256-RcPJczKqs1Nu4CvQiVR&#43;Qwf6lpx8y5qKxXL9k0ZG/Zw="></script>
+<script defer src="/en.search.min.98017fc2c814317564cf48cd3a16619740d1fd268faf2788ed0810ccb6f6c5f1.js" integrity="sha256-mAF/wsgUMXVkz0jNOhZhl0DR/SaPryeI7QgQzLb2xfE="></script>
 
 <!--
 Made with Book Theme
@@ -83,7 +83,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.14c">Release 3.14c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.00c">Release 4.00c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -143,7 +143,7 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
-        <li><a href="#version-315a-dev">Version ++3.15a (dev)</a></li>
+        <li><a href="#version-400c-release">Version ++4.00c (release)</a></li>
         <li><a href="#version-314c-release">Version ++3.14c (release)</a></li>
         <li><a href="#version-313c-release">Version ++3.13c (release)</a></li>
         <li><a href="#version-312c-release">Version ++3.12c (release)</a></li>
@@ -408,55 +408,99 @@ https://github.com/alex-shpak/hugo-book
 
       
 <article class="markdown"><h1 id="changelog">Changelog</h1>
-<p>This is the list of all noteworthy changes made in every public release of
-the tool. See README.md for the general instruction manual.</p>
+<p>This is the list of all noteworthy changes made in every public
+release of the tool. See README.md for the general instruction manual.</p>
 <h2 id="staying-informed">Staying informed</h2>
 <p>Want to stay in the loop on major new features? Join our mailing list by
 sending a mail to <a href="mailto:afl-users+subscribe@googlegroups.com">afl-users+subscribe@googlegroups.com</a>.</p>
-<h3 id="version-315a-dev">Version ++3.15a (dev)</h3>
+<h3 id="version-400c-release">Version ++4.00c (release)</h3>
 <ul>
-<li>
-<p>afl-fuzz:</p>
+<li>complete documentation restructuring, made possible by Google Season
+of Docs :) thank you Jana!</li>
+<li>we renamed several UI and fuzzer_stat entries to be more precise,
+e.g. &ldquo;unique crashes&rdquo; -&gt; &ldquo;saved crashes&rdquo;, &ldquo;total paths&rdquo; -&gt;
+&ldquo;corpus count&rdquo;, &ldquo;current path&rdquo; -&gt; &ldquo;current item&rdquo;.
+This might need changing custom scripting!</li>
+<li>Nyx mode (full system emulation with snapshot capability) has been
+added - thanks to @schumilo and @eqv!</li>
+<li>unicorn_mode:
 <ul>
-<li>added AFL_IGNORE_PROBLEMS plus checks to identify and abort on
-incorrect LTO usage setups and enhanced the READMEs for better
-information on how to deal with instrumenting libraries</li>
+<li>Moved to unicorn2! by Ziqiao Kong (@lazymio)</li>
+<li>Faster, more accurate emulation (newer QEMU base), risc-v support</li>
+<li>removed indirections in rust callbacks</li>
+</ul>
+</li>
+<li>new binary-only fuzzing mode: coresight_mode for aarch64 CPUs :)
+thanks to RICSecLab submitting!</li>
+<li>if instrumented libaries are dlopen()&lsquo;ed after the forkserver you
+will now see a crash. Before you would have colliding coverage.
+We changed this to force fixing a broken setup rather then allowing
+ineffective fuzzing.
+See docs/best_practices.md how to fix such setups.</li>
+<li>afl-fuzz:
+<ul>
+<li>cmplog binaries will need to be recompiled for this version
+(it is better!)</li>
 <li>fix a regression introduced in 3.10 that resulted in less
 coverage being detected. thanks to Collin May for reporting!</li>
+<li>ensure all spawned targets are killed on exit</li>
+<li>added AFL_IGNORE_PROBLEMS, plus checks to identify and abort on
+incorrect LTO usage setups and enhanced the READMEs for better
+information on how to deal with instrumenting libraries</li>
+<li>fix -n dumb mode (nobody should use this mode though)</li>
+<li>fix stability issue with LTO and cmplog</li>
+<li>better banner</li>
+<li>more effective cmplog mode</li>
+<li>more often update the UI when in input2stage mode</li>
 </ul>
 </li>
-<li>
-<p>afl-cc:</p>
+<li>qemu_mode/unicorn_mode: fixed OOB write when using libcompcov,
+thanks to kotee4ko for reporting!</li>
+<li>frida_mode:
 <ul>
-<li>fix for shared linking on MacOS</li>
-<li>llvm and LTO mode verified to work with new llvm 14-dev</li>
+<li>better performance, bug fixes</li>
+<li>David Carlier added Android support :)</li>
 </ul>
 </li>
-<li>
-<p>added the very good grammar mutator &ldquo;GramaTron&rdquo; to the
-custom_mutators</p>
+<li>afl-showmap, afl-tmin and afl-analyze:
+<ul>
+<li>honor persistent mode for more speed. thanks to dloffre-snl
+for reporting!</li>
+<li>fix bug where targets are not killed on timeouts</li>
+<li>moved hidden afl-showmap -A option to -H to be used for
+coresight_mode</li>
+</ul>
 </li>
-<li>
-<p>added optimin, a faster and better corpus minimizer by
-Adrian Herrera. Thank you!</p>
+<li>Prevent accidentaly killing non-afl/fuzz services when aborting
+afl-showmap and other tools.</li>
+<li>afl-cc:
+<ul>
+<li>detect overflow reads on initial input buffer for asan</li>
+<li>new cmplog mode (incompatible with older afl++ versions)</li>
+<li>support llvm IR select instrumentation for default PCGUARD and LTO</li>
+<li>fix for shared linking on MacOS</li>
+<li>better selective instrumentation AFL_LLVM_{ALLOW|DENY}LIST
+on filename matching (requires llvm 11 or newer)</li>
+<li>fixed a potential crash in targets for LAF string handling</li>
+<li>fixed a bad assert in LAF split switches</li>
+<li>added AFL_USE_TSAN thread sanitizer support</li>
+<li>llvm and LTO mode modified to work with new llvm 14-dev (again.)</li>
+<li>fix for AFL_REAL_LD</li>
+<li>more -z defs filtering</li>
+<li>make -v without options work</li>
+</ul>
 </li>
-<li>
-<p>added afl-persistent-config script to set perform permanent system
+<li>added the very good grammar mutator &ldquo;GramaTron&rdquo; to the
+custom_mutators</li>
+<li>added optimin, a faster and better corpus minimizer by
+Adrian Herrera. Thank you!</li>
+<li>added afl-persistent-config script to set perform permanent system
 configuration settings for fuzzing, for Linux and Macos.
-thanks to jhertz!</p>
-</li>
-<li>
-<p>added xml, curl and exotic string functions to llvm dictionary features</p>
-</li>
-<li>
-<p>fix AFL_PRELOAD issues on MacOS</p>
-</li>
-<li>
-<p>removed utils/afl_frida because frida_mode/ is now so much better</p>
-</li>
-<li>
-<p>added uninstall target to makefile (todo: update new readme!)</p>
-</li>
+thanks to jhertz!</li>
+<li>added xml, curl &amp; exotic string functions to llvm dictionary feature</li>
+<li>fix AFL_PRELOAD issues on MacOS</li>
+<li>removed utils/afl_frida because frida_mode/ is now so much better</li>
+<li>added uninstall target to makefile (todo: update new readme!)</li>
 </ul>
 <h3 id="version-314c-release">Version ++3.14c (release)</h3>
 <ul>
@@ -481,7 +525,7 @@ process a lot - thanks to Michael Rodler/f0rki for the PR!</li>
 <li>Fix to instrument global namespace functions in c++</li>
 <li>Fix for llvm 13</li>
 <li>support partial linking</li>
-<li>do honor AFL_LLVM_{ALLOW/DENY}LIST for LTO autodictionary and DICT2FILE</li>
+<li>do honor AFL_LLVM_{ALLOW/DENY}LIST for LTO autodictionary andDICT2FILE</li>
 <li>We do support llvm versions from 3.8 to 5.0 again</li>
 </ul>
 </li>
@@ -2371,7 +2415,7 @@ Kai Zhao.</p>
 by G.M. Lime.</p>
 </li>
 <li>
-<p>Added last path / crash / hang times to fuzzer_stats, suggested by
+<p>Added last find / crash / hang times to fuzzer_stats, suggested by
 Richard Hipp.</p>
 </li>
 <li>
@@ -2537,7 +2581,7 @@ consistency.</p>
 <h3 id="version-159b">Version 1.59b:</h3>
 <ul>
 <li>
-<p>Imported Laszlo Szekeres' experimental LLVM instrumentation into
+<p>Imported Laszlo Szekeres&rsquo; experimental LLVM instrumentation into
 examples/llvm_instrumentation. I&rsquo;ll work on including it in the
 &ldquo;mainstream&rdquo; version soon.</p>
 </li>
@@ -4016,7 +4060,7 @@ by Richard W. M. Jones.</p>
 from Hanno Boeck, Ben Laurie, and others.</p>
 </li>
 <li>
-<p>Moved the project to <a href="http://lcamtuf.coredump.cx/afl/">http://lcamtuf.coredump.cx/afl/</a>.</p>
+<p>Moved the project to <a href="https://lcamtuf.coredump.cx/afl/">https://lcamtuf.coredump.cx/afl/</a>.</p>
 </li>
 </ul>
 <h3 id="version-046b">Version 0.46b:</h3>
@@ -4431,7 +4475,7 @@ the environment variable AFL_CUSTOM_MUTATOR_LIBRARY.</p>
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
-        <li><a href="#version-315a-dev">Version ++3.15a (dev)</a></li>
+        <li><a href="#version-400c-release">Version ++4.00c (release)</a></li>
         <li><a href="#version-314c-release">Version ++3.14c (release)</a></li>
         <li><a href="#version-313c-release">Version ++3.13c (release)</a></li>
         <li><a href="#version-312c-release">Version ++3.12c (release)</a></li>

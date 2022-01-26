@@ -351,7 +351,10 @@ To start, we create the closure that we want to fuzz. It takes a buffer as input
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>extern crate libafl;
-use libafl::inputs::{BytesInput, HasTargetBytes};
+use libafl::{
+    bolts::AsSlice,
+    inputs::{BytesInput, HasTargetBytes},
+};
 
 let mut harness = |input: &amp;BytesInput| {
     let target = input.target_bytes();
@@ -466,6 +469,7 @@ As we don't rely on any instrumentation engine, we have to manually track the sa
 </span><span class="boring">fn main() {
 </span>extern crate libafl;
 use libafl::{
+    bolts::AsSlice,
     inputs::{BytesInput, HasTargetBytes},
     executors::ExitKind,
 };
@@ -610,6 +614,41 @@ For instance, for in-memory fuzzers like libFuzzer an execution is a call to an 
 <p>In Rust, we bind this concept to the <a href="https://docs.rs/libafl/0/libafl/executors/trait.Executor.html"><code>Executor</code></a> trait. A structure implementing this trait must implement <a href="https://docs.rs/libafl/0/libafl/executors/trait.HasObservers.html"><code>HasObservers</code></a> too if wants to hold a set of Observers.</p>
 <p>By default, we implement some commonly used Executors such as <a href="https://docs.rs/libafl/0/libafl/executors/inprocess/struct.InProcessExecutor.html"><code>InProcessExecutor</code></a> is which the target is a harness function providing in-process crash detection. Another Executor is the <a href="https://docs.rs/libafl/0/libafl/executors/forkserver/struct.ForkserverExecutor.html"><code>ForkserverExecutor</code></a> that implements an AFL-like mechanism to spawn child processes to fuzz.</p>
 <p>A common pattern when creating an Executor is wrapping an existing one, for instance <a href="https://docs.rs/libafl/0.6.1/libafl/executors/timeout/struct.TimeoutExecutor.html"><code>TimeoutExecutor</code></a> wraps an executor and install a timeout callback before calling the original run function of the wrapped executor.</p>
+<h2 id="inprocessexecutor"><a class="header" href="#inprocessexecutor">InProcessExecutor</a></h2>
+<p>Let's begin with the base case; <code>InProcessExecutor</code>.
+This executor uses <a href="https://clang.llvm.org/docs/SanitizerCoverage.html"><em>SanitizerCoverage</em></a> as its backend, as you can find the related code in <code>libafl_targets/src/sancov_pcguards</code>. Here we allocate a map called <code>EDGES_MAP</code> and then our compiler wrapper compiles the harness to write the coverage into this map. 
+When you want to execute the harness as fast as possible, you will most probably want to use this <code>InprocessExecutor</code>.<br />
+One thing to note here is, when your harness is likely to have heap corruption bugs, you want to use another allocator so that corrupted heap does not affect the fuzzer itself. (For example, we adopt MiMalloc in some of our fuzzers.). Alternatively you can compile your harness with address sanitizer to make sure you can catch these heap bugs.</p>
+<h2 id="forkserverexecutor"><a class="header" href="#forkserverexecutor">ForkserverExecutor</a></h2>
+<p>Next, we'll take a look at the <code>ForkserverExecutor</code>. In this case, it is <code>afl-cc</code> (from AFLplusplus/AFLplusplus) that compiles the harness code, and therefore, we can't use <code>EDGES_MAP</code> anymore. Hopefully, we have <a href="https://github.com/AFLplusplus/AFLplusplus/blob/2e15661f184c77ac1fbb6f868c894e946cbb7f17/instrumentation/afl-compiler-rt.o.c#L270"><em>a way</em></a> to tell the forkserver which map to record the coverage.
+As you can see from the forkserver example,</p>
+<pre><code class="language-rust ignore">//Coverage map shared between observer and executor
+let mut shmem = StdShMemProvider::new().unwrap().new_shmem(MAP_SIZE).unwrap();
+//let the forkserver know the shmid
+shmem.write_to_env(&quot;__AFL_SHM_ID&quot;).unwrap();
+let mut shmem_buf = shmem.as_mut_slice();
+</code></pre>
+<p>Here we make a shared memory region; <code>shmem</code>, and write this to environmental variable <code>__AFL_SHM_ID</code>. Then the instrumented binary, or the forkserver, finds this shared memory region (from the aforementioned env var) to record its coverage. On your fuzzer side, you can pass this shmem map to your <code>Observer</code> to obtain coverage feedbacks combined with any <code>Feedback</code>.</p>
+<p>Another feature of the <code>ForkserverExecutor</code> to mention is the shared memory testcases. In normal cases, the mutated input is passed between the forkserver and the instrumented binary via <code>.cur_input</code> file. You can improve your forkserver fuzzer's performance by passing the input with shared memory.
+See AFL++'s <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/instrumentation/README.persistent_mode.md#5-shared-memory-fuzzing"><em>documentation</em></a> or the fuzzer example in <code>forkserver_simple/src/program.c</code> for reference.<br />
+It is very simple, when you call <code>ForkserverExecutor::new()</code> with <code>use_shmem_testcase</code> true, the <code>ForkserverExecutor</code> sets things up and your harness can just fetch the input from <code>__AFL_FUZZ_TESTCASE_BUF</code></p>
+<h2 id="inprocessforkexecutor"><a class="header" href="#inprocessforkexecutor">InprocessForkExecutor</a></h2>
+<p>Finally, we'll talk about the <code>InProcessForkExecutor</code>.
+<code>InProcessForkExecutor</code> has only one difference from <code>InprocessExecutor</code>; It forks before running the harness and that's it.<br />
+But why do we want to do so? well, under some circumstances, you may find your harness pretty unstable or your harness wreaks havoc on the global states. In this case, you want to fork it before executing the harness runs in the child process so that it doesn't break things.<br />
+However, we have to take care of the shared memory, it's the child process that runs the harness code and writes the coverage to the map.<br />
+We have to make the map shared between the parent process and the child process, so we'll use shared memory again. You should compile your harness with <code>pointer_maps</code> (for <code>libafl_targes</code>) features enabled, this way, we can have a pointer; <code>EDGES_MAP_PTR</code> that can point to any coverage map.
+On your fuzzer side, you can allocate a shared memory region and make the <code>EDGES_MAP_PTR</code> point to your shared memory.</p>
+<pre><code class="language-rust ignore">let mut shmem;
+unsafe{
+    shmem = StdShMemProvider::new().unwrap().new_shmem(MAX_EDGES_NUM).unwrap();
+}
+let shmem_buf = shmem.as_mut_slice();
+unsafe{
+    EDGES_PTR = shmem_buf.as_ptr();
+}
+</code></pre>
+<p>Again, you can pass this shmem map to your <code>Observer</code> and <code>Feedback</code> to obtain coverage feedbacks.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="feedback"><a class="header" href="#feedback">Feedback</a></h1>
 <p>The Feedback is an entity that classifies the outcome of an execution of the program under test as interesting or not.
 Typically, if an execution is interesting, the corresponding input used to feed the target program is added to a corpus.</p>
@@ -671,7 +710,7 @@ extern crate serde;
 use libafl::SerdeAny;
 use serde::{Serialize, Deserialize};
 
-#[derive(Serialize, Deserialize, SerdeAny)]
+#[derive(Debug, Serialize, Deserialize, SerdeAny)]
 pub struct MyMetadata {
     //...
 }
@@ -706,14 +745,14 @@ In the following, we will describe the inner workings of <code>LLMP</code>.</p>
 The broker can also intercept and filter the messages it receives instead of forwarding them.
 A common use-case for messages filtered by the broker are the status messages sent from each client to the broker directly.
 The broker used this information to paint a simple UI, with up-to-date information about all clients, however the other clients don't need to receive this information.</p>
-<h3 id="speedy-local-messages-via-shared-maps"><a class="header" href="#speedy-local-messages-via-shared-maps">Speedy Local Messages via Shared Maps</a></h3>
+<h3 id="speedy-local-messages-via-shared-memory"><a class="header" href="#speedy-local-messages-via-shared-memory">Speedy Local Messages via Shared Memory</a></h3>
 <p>Throughout LibAFL, we use a wrapper around different operating system's shared maps, called <code>ShMem</code>.
-Shared maps are the backbone of <code>LLMP</code>.
+Shared maps, called shared memory for the sake of not colliding with Rust's <code>map()</code> functions, are the backbone of <code>LLMP</code>.
 Each client, usually a fuzzer trying to share stats and new testcases, maps an outgoing <code>ShMem</code> map.
 With very few exceptions, only this client writes to this map, therefore, we do not run in race conditions and can live without locks.
 The broker reads from all client's <code>ShMem</code> maps.
-It checks all incoming client maps periodically, and then forwards new messages to its outgoing broadcast-<code>ShMem</code>, mapped by all connected clients.</p>
-<p>To send new messages, a client places a new message at the end of their map, and then updates a static field to notify the broker.
+It checks all incoming client maps periodically and then forwards new messages to its outgoing broadcast-<code>ShMem</code>, mapped by all connected clients.</p>
+<p>To send new messages, a client places a new message at the end of their shared memory and then updates a static field to notify the broker.
 Once the outgoing map is full, the sender allocates a new <code>ShMem</code> using the respective <code>ShMemProvider</code>.
 It then sends the information needed to map the newly-allocated page in connected processes to the old page, using an end of page (<code>EOP</code>) message.
 Once the receiver maps the new page, flags it as safe for unmapping from the sending process (to avoid race conditions if we have more than a single EOP in a short time), and then continues to read from the new <code>ShMem</code>.</p>
@@ -729,7 +768,7 @@ Once the receiver maps the new page, flags it as safe for unmapping from the sen
 </code></pre>
 <p>The broker loops over all incoming maps, and checks for new messages.
 On <code>std</code> builds, the broker will sleep a few milliseconds after a loop, since we do not need the messages to arrive instantly.
-After the broker received a new message from clientN, (<code>clientN_out-&gt;current_id != last_message-&gt;message_id</code>) the broker copies the message content to its own broadcast map.</p>
+After the broker received a new message from clientN, (<code>clientN_out-&gt;current_id != last_message-&gt;message_id</code>) the broker copies the message content to its own broadcast shared memory.</p>
 <p>The clients periodically, for example after finishing <code>n</code> mutations, check for new incoming messages by checking if (<code>current_broadcast_map-&gt;current_id != last_message-&gt;message_id</code>).
 While the broker uses the same EOP mechanism to map new <code>ShMem</code>s for its outgoing map, it never unmaps old pages.
 This additional memory overhead serves a good purpose: by keeping all broadcast pages around, we make sure that new clients can join in on a fuzzing campaign at a later point in time
@@ -737,7 +776,7 @@ They just need to re-read all broadcasted messages from start to finish.</p>
 <p>So the outgoing messages flow like this over the outgoing broadcast <code>Shmem</code>:</p>
 <pre><code class="language-text">[broker]
   |
-[current_broadcast_map]
+[current_broadcast_shmem]
   |
   |___________________________________
   |_________________                  \
@@ -755,16 +794,16 @@ Then, create some <code>LlmpClient``s</code> in other threads and register them 
 Finally, call <code>LlmpBroker::loop_forever()</code>.</p>
 <h3 id="b2b-connecting-fuzzers-via-tcp"><a class="header" href="#b2b-connecting-fuzzers-via-tcp">B2B: Connecting Fuzzers via TCP</a></h3>
 <p>For <code>broker2broker</code> communication, all broadcast messages are additionally forwarded via network sockets.
-To facilitate this, we spawn an additional client thread in the broker, that reads the broadcast map, just like any other client would.
+To facilitate this, we spawn an additional client thread in the broker, that reads the broadcast shared memory, just like any other client would.
 For broker2broker communication, this b2b client listens for TCP connections from other, remote brokers.
 It keeps a pool of open sockets to other, remote, b2b brokers around at any time.
-When receiving a new message on the local broker map, the b2b client will forward it to all connected remote brokers via TCP.
+When receiving a new message on the local broker shared memory, the b2b client will forward it to all connected remote brokers via TCP.
 Additionally, the broker can receive messages from all connected (remote) brokers, and forward them to the local broker over a client <code>ShMem</code>.</p>
 <p>As a sidenote, the tcp listener used for b2b communication is also used for an initial handshake when a new client tries to connect to a broker locally, simply exchanging the initial <code>ShMem</code> descriptions.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="spawning-instances"><a class="header" href="#spawning-instances">Spawning Instances</a></h1>
 <p>Multiple fuzzer instances can be spawned using different ways.</p>
 <h2 id="manually-via-a-tcp-port"><a class="header" href="#manually-via-a-tcp-port">Manually, via a TCP port</a></h2>
-<p>The straightforward way to do Multi-Threading is to use the <code>LlmpRestartingEventManager</code>, and specifically to use <code>setup_restarting_mgr_std</code>.
+<p>The straightforward way to do Multi-Threading is to use the <code>LlmpRestartingEventManager</code>, specifically to use <code>setup_restarting_mgr_std</code>.
 It abstracts away all the pesky details about restarts on crash handling (for in-memory fuzzers) and multi-threading.
 With it, every instance you launch manually tries to connect to a TCP port on the local machine.</p>
 <p>If the port is not yet bound, this instance becomes the broker, itself binding to the port to await new clients.</p>
@@ -774,7 +813,7 @@ The instance becomes a client and can now communicate with all other nodes.</p>
 <p>While it's called &quot;restarting&quot; manager, it uses <code>fork</code> on Unix operating systems as optimization and only actually restarts from scratch on Windows.</p>
 <h2 id="launcher"><a class="header" href="#launcher">Launcher</a></h2>
 <p>The Launcher is the lazy way to do multiprocessing.
-You can use the Launcher builder to create a fuzzer that spawns multiple nodes, all using restaring event managers.
+You can use the Launcher builder to create a fuzzer that spawns multiple nodes, all using restarting event managers.
 An example may look like this:</p>
 <pre><code class="language-rust ignore">    Launcher::builder()
         .configuration(EventConfig::from_name(&amp;configuration))
@@ -791,7 +830,7 @@ An example may look like this:</p>
 <p>This first starts a broker, then spawns <code>n</code> clients, according to the value passed to <code>cores</code>.
 The value is a string indicating the cores to bind to, for example, <code>0,2,5</code> or <code>0-3</code>.
 For each client, <code>run_client</code> will be called.
-On Windows, the Launcher will restart each client, while on Unix it will use <code>fork</code>.</p>
+On Windows, the Launcher will restart each client, while on Unix, it will use <code>fork</code>.</p>
 <h2 id="other-ways"><a class="header" href="#other-ways">Other ways</a></h2>
 <p>The LlmpEvenManager family is the easiest way to do spawn instances, but for obscure targets, you may need to come up with other solutions.
 LLMP is even, in theory, <code>no_std</code> compatible, and even completely different EventManagers can be used for message passing.

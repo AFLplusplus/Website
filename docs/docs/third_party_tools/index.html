@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Third Party Tools | AFLplusplus</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+<meta property="og:title" content="Third Party Tools | AFLplusplus" />
+<meta name="twitter:title" content="Third Party Tools | AFLplusplus" />
+<meta itemprop="name" content="Third Party Tools | AFLplusplus" />
+<meta name="application-name" content="Third Party Tools | AFLplusplus" />
+<meta property="og:site_name" content="AFLplusplus" />
+
+<meta name="description" content="The AFLplusplus website" />
+<meta itemprop="description" content="The AFLplusplus website" />
+<meta property="og:description" content="The AFLplusplus website" />
+<meta name="twitter:description" content="The AFLplusplus website" />
+
+<base href="https://aflplus.plus/docs/third_party_tools/">
+<link rel="canonical" href="https://aflplus.plus/docs/third_party_tools/" itemprop="url" /> 
+<meta name="url" content="https://aflplus.plus/docs/third_party_tools/" />
+<meta name="twitter:url" content="https://aflplus.plus/docs/third_party_tools/" /> 
+<meta property="og:url" content="https://aflplus.plus/docs/third_party_tools/" />
+
+ 
+  <meta itemprop="image" content="https://aflplus.plus/ogimage.png" />
+  <meta property="og:image" content="https://aflplus.plus/ogimage.png" /> 
+  <meta name="twitter:image" content="https://aflplus.plus/ogimage.png" />
+  <meta name="twitter:image:src" content="https://aflplus.plus/ogimage.png" /> 
+
+
+
+<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
+
+
+<script defer src="/en.search.min.98017fc2c814317564cf48cd3a16619740d1fd268faf2788ed0810ccb6f6c5f1.js" integrity="sha256-mAF/wsgUMXVkz0jNOhZhl0DR/SaPryeI7QgQzLb2xfE="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><img src="/logo_256x256.png" alt="Logo" /><span>AFLplusplus</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+  <ul>
+<li><strong>Site map</strong>
+<ul>
+<li><a href="/features/">Features</a></li>
+<li><a href="/building/">Build &amp; Install</a></li>
+<li><a href="/docs/">Documentation</a></li>
+<li><a href="/docs/tutorials/">Tutorials</a></li>
+<li><a href="/papers/">Papers</a></li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li><strong>Downloads</strong>
+<ul>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.00c">Release 4.00c</a>
+</li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
+<li><a href="https://raw.githubusercontent.com/AFLplusplus/AFLplusplus/master/docs/COPYING">License</a></li>
+</ul>
+</li>
+<li><strong>Links</strong>
+<ul>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus">Repo (GitHub)</a></li>
+<li><a href="https://opencollective.com/AFLplusplusEU">Donations</a></li>
+<li><a href="https://groups.google.com/group/afl-users">Mailing list</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Third Party Tools</strong>
+
+  <label for="toc-control">
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents"></nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+<article class="markdown"><h1 id="tools-that-help-fuzzing-with-afl">Tools that help fuzzing with AFL++</h1>
+<p>Speeding up fuzzing:</p>
+<ul>
+<li><a href="https://github.com/marekzmyslowski/libfiowrapper">libfiowrapper</a> - if the
+function you want to fuzz requires loading a file, this allows using the
+shared memory test case feature :-) - recommended.</li>
+</ul>
+<p>Minimization of test cases:</p>
+<ul>
+<li><a href="https://github.com/ilsani/afl-pytmin">afl-pytmin</a> - a wrapper for afl-tmin
+that tries to speed up the process of minimization of a single test case by
+using many CPU cores.</li>
+<li><a href="https://github.com/MarkusTeufelberger/afl-ddmin-mod">afl-ddmin-mod</a> - a
+variation of afl-tmin based on the ddmin algorithm.</li>
+<li><a href="https://github.com/googleprojectzero/halfempty">halfempty</a> -  is a fast
+utility for minimizing test cases by Tavis Ormandy based on parallelization.</li>
+</ul>
+<p>Distributed execution:</p>
+<ul>
+<li><a href="https://github.com/MartijnB/disfuzz-afl">disfuzz-afl</a> - distributed fuzzing
+for AFL.</li>
+<li><a href="https://github.com/quantumvm/AFLDFF">AFLDFF</a> - AFL distributed fuzzing
+framework.</li>
+<li><a href="https://github.com/bnagy/afl-launch">afl-launch</a> - a tool for the execution
+of many AFL instances.</li>
+<li><a href="https://github.com/afl-mothership/afl-mothership">afl-mothership</a> -
+management and execution of many synchronized AFL fuzzers on AWS cloud.</li>
+<li><a href="https://github.com/abhisek/afl-in-the-cloud">afl-in-the-cloud</a> - another
+script for running AFL in AWS.</li>
+</ul>
+<p>Deployment, management, monitoring, reporting</p>
+<ul>
+<li><a href="https://gitlab.com/rc0r/afl-utils">afl-utils</a> - a set of utilities for
+automatic processing/analysis of crashes and reducing the number of test
+cases.</li>
+<li><a href="https://github.com/shellphish/afl-other-arch">afl-other-arch</a> - is a set of
+patches and scripts for easily adding support for various non-x86
+architectures for AFL.</li>
+<li><a href="https://github.com/bnagy/afl-trivia">afl-trivia</a> - a few small scripts to
+simplify the management of AFL.</li>
+<li><a href="https://github.com/reflare/afl-monitor">afl-monitor</a> - a script for
+monitoring AFL.</li>
+<li><a href="https://github.com/zx1340/afl-manager">afl-manager</a> - a web server on Python
+for managing multi-afl.</li>
+<li><a href="https://github.com/block8437/afl-remote">afl-remote</a> - a web server for the
+remote management of AFL instances.</li>
+<li><a href="https://github.com/fekir/afl-extras">afl-extras</a> - shell scripts to
+parallelize afl-tmin, startup, and data collection.</li>
+</ul>
+<p>Crash processing</p>
+<ul>
+<li><a href="https://github.com/quic/AFLTriage">AFLTriage</a> -
+triage crashing input files using gdb.</li>
+<li><a href="https://github.com/floyd-fuh/afl-crash-analyzer">afl-crash-analyzer</a> -
+another crash analyzer for AFL.</li>
+<li><a href="https://github.com/ThePatrickStar/fuzzer-utils">fuzzer-utils</a> - a set of
+scripts for the analysis of results.</li>
+<li><a href="https://github.com/Ayrx/atriage">atriage</a> - a simple triage tool.</li>
+<li><a href="https://github.com/kcwu/afl-kit">afl-kit</a> - afl-cmin on Python.</li>
+<li><a href="https://github.com/d33tah/aflize">AFLize</a> - a tool that automatically
+generates builds of debian packages suitable for AFL.</li>
+<li><a href="https://github.com/FoRTE-Research/afl-fid">afl-fid</a> - a set of tools for
+working with input data.</li>
+</ul>
+</article>
+ 
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+      </footer>
+      
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents"></nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,24 +1,74 @@
 # Changelog
 
-  This is the list of all noteworthy changes made in every public release of
-  the tool. See README.md for the general instruction manual.
+  This is the list of all noteworthy changes made in every public
+  release of the tool. See README.md for the general instruction manual.
 
 ## Staying informed
 
 Want to stay in the loop on major new features? Join our mailing list by
 sending a mail to <afl-users+subscribe@googlegroups.com>.
 
-### Version ++3.15a (dev)
+### Version ++4.00c (release)
+  - complete documentation restructuring, made possible by Google Season
+    of Docs :) thank you Jana!
+  - we renamed several UI and fuzzer_stat entries to be more precise,
+    e.g. "unique crashes" -> "saved crashes", "total paths" ->
+    "corpus count", "current path" -> "current item".
+    This might need changing custom scripting!
+  - Nyx mode (full system emulation with snapshot capability) has been
+    added - thanks to @schumilo and @eqv!
+  - unicorn_mode:
+    - Moved to unicorn2! by Ziqiao Kong (@lazymio)
+    - Faster, more accurate emulation (newer QEMU base), risc-v support
+    - removed indirections in rust callbacks
+  - new binary-only fuzzing mode: coresight_mode for aarch64 CPUs :)
+    thanks to RICSecLab submitting!
+  - if instrumented libaries are dlopen()'ed after the forkserver you
+    will now see a crash. Before you would have colliding coverage.
+    We changed this to force fixing a broken setup rather then allowing
+    ineffective fuzzing.
+    See docs/best_practices.md how to fix such setups.
   - afl-fuzz:
-    - added AFL_IGNORE_PROBLEMS plus checks to identify and abort on
-      incorrect LTO usage setups and enhanced the READMEs for better
-      information on how to deal with instrumenting libraries
+    - cmplog binaries will need to be recompiled for this version
+      (it is better!)
     - fix a regression introduced in 3.10 that resulted in less
       coverage being detected. thanks to Collin May for reporting!
-
+    - ensure all spawned targets are killed on exit
+    - added AFL_IGNORE_PROBLEMS, plus checks to identify and abort on
+      incorrect LTO usage setups and enhanced the READMEs for better
+      information on how to deal with instrumenting libraries
+    - fix -n dumb mode (nobody should use this mode though)
+    - fix stability issue with LTO and cmplog
+    - better banner
+    - more effective cmplog mode
+    - more often update the UI when in input2stage mode
+  - qemu_mode/unicorn_mode: fixed OOB write when using libcompcov,
+      thanks to kotee4ko for reporting!
+  - frida_mode:
+    - better performance, bug fixes
+    - David Carlier added Android support :)
+  - afl-showmap, afl-tmin and afl-analyze:
+    - honor persistent mode for more speed. thanks to dloffre-snl
+      for reporting!
+    - fix bug where targets are not killed on timeouts
+    - moved hidden afl-showmap -A option to -H to be used for
+      coresight_mode
+  - Prevent accidentaly killing non-afl/fuzz services when aborting
+    afl-showmap and other tools.
   - afl-cc:
+    - detect overflow reads on initial input buffer for asan
+    - new cmplog mode (incompatible with older afl++ versions)
+    - support llvm IR select instrumentation for default PCGUARD and LTO
     - fix for shared linking on MacOS
-    - llvm and LTO mode verified to work with new llvm 14-dev
+    - better selective instrumentation AFL_LLVM_{ALLOW|DENY}LIST
+      on filename matching (requires llvm 11 or newer)
+    - fixed a potential crash in targets for LAF string handling
+    - fixed a bad assert in LAF split switches
+    - added AFL_USE_TSAN thread sanitizer support
+    - llvm and LTO mode modified to work with new llvm 14-dev (again.)
+    - fix for AFL_REAL_LD
+    - more -z defs filtering
+    - make -v without options work
   - added the very good grammar mutator "GramaTron" to the
     custom_mutators
   - added optimin, a faster and better corpus minimizer by
@@ -26,11 +76,10 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
   - added afl-persistent-config script to set perform permanent system
     configuration settings for fuzzing, for Linux and Macos.
     thanks to jhertz!
-  - added xml, curl and exotic string functions to llvm dictionary features
+  - added xml, curl & exotic string functions to llvm dictionary feature
   - fix AFL_PRELOAD issues on MacOS
   - removed utils/afl_frida because frida_mode/ is now so much better
   - added uninstall target to makefile (todo: update new readme!)
-
 
 ### Version ++3.14c (release)
   - afl-fuzz:
@@ -50,7 +99,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
     - Fix to instrument global namespace functions in c++
     - Fix for llvm 13
     - support partial linking
-    - do honor AFL_LLVM_{ALLOW/DENY}LIST for LTO autodictionary and DICT2FILE
+    - do honor AFL_LLVM_{ALLOW/DENY}LIST for LTO autodictionary andDICT2FILE
     - We do support llvm versions from 3.8 to 5.0 again
   - frida_mode:
     - several fixes for cmplog
@@ -1536,7 +1585,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
   - Fixed a bug with installed copies of AFL trying to use QEMU mode. Spotted
     by G.M. Lime.
 
-  - Added last path / crash / hang times to fuzzer_stats, suggested by
+  - Added last find / crash / hang times to fuzzer_stats, suggested by
     Richard Hipp.
 
   - Fixed a typo, thanks to Jakub Wilk.
@@ -2748,7 +2797,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
   - Updated the documentation and added notes_for_asan.txt. Based on feedback
     from Hanno Boeck, Ben Laurie, and others.
 
-  - Moved the project to http://lcamtuf.coredump.cx/afl/.
+  - Moved the project to https://lcamtuf.coredump.cx/afl/.
 
 ### Version 0.46b:
 

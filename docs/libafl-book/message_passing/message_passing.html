@@ -150,14 +150,14 @@ In the following, we will describe the inner workings of <code>LLMP</code>.</p>
 The broker can also intercept and filter the messages it receives instead of forwarding them.
 A common use-case for messages filtered by the broker are the status messages sent from each client to the broker directly.
 The broker used this information to paint a simple UI, with up-to-date information about all clients, however the other clients don't need to receive this information.</p>
-<h3 id="speedy-local-messages-via-shared-maps"><a class="header" href="#speedy-local-messages-via-shared-maps">Speedy Local Messages via Shared Maps</a></h3>
+<h3 id="speedy-local-messages-via-shared-memory"><a class="header" href="#speedy-local-messages-via-shared-memory">Speedy Local Messages via Shared Memory</a></h3>
 <p>Throughout LibAFL, we use a wrapper around different operating system's shared maps, called <code>ShMem</code>.
-Shared maps are the backbone of <code>LLMP</code>.
+Shared maps, called shared memory for the sake of not colliding with Rust's <code>map()</code> functions, are the backbone of <code>LLMP</code>.
 Each client, usually a fuzzer trying to share stats and new testcases, maps an outgoing <code>ShMem</code> map.
 With very few exceptions, only this client writes to this map, therefore, we do not run in race conditions and can live without locks.
 The broker reads from all client's <code>ShMem</code> maps.
-It checks all incoming client maps periodically, and then forwards new messages to its outgoing broadcast-<code>ShMem</code>, mapped by all connected clients.</p>
-<p>To send new messages, a client places a new message at the end of their map, and then updates a static field to notify the broker.
+It checks all incoming client maps periodically and then forwards new messages to its outgoing broadcast-<code>ShMem</code>, mapped by all connected clients.</p>
+<p>To send new messages, a client places a new message at the end of their shared memory and then updates a static field to notify the broker.
 Once the outgoing map is full, the sender allocates a new <code>ShMem</code> using the respective <code>ShMemProvider</code>.
 It then sends the information needed to map the newly-allocated page in connected processes to the old page, using an end of page (<code>EOP</code>) message.
 Once the receiver maps the new page, flags it as safe for unmapping from the sending process (to avoid race conditions if we have more than a single EOP in a short time), and then continues to read from the new <code>ShMem</code>.</p>
@@ -173,7 +173,7 @@ Once the receiver maps the new page, flags it as safe for unmapping from the sen
 </code></pre>
 <p>The broker loops over all incoming maps, and checks for new messages.
 On <code>std</code> builds, the broker will sleep a few milliseconds after a loop, since we do not need the messages to arrive instantly.
-After the broker received a new message from clientN, (<code>clientN_out-&gt;current_id != last_message-&gt;message_id</code>) the broker copies the message content to its own broadcast map.</p>
+After the broker received a new message from clientN, (<code>clientN_out-&gt;current_id != last_message-&gt;message_id</code>) the broker copies the message content to its own broadcast shared memory.</p>
 <p>The clients periodically, for example after finishing <code>n</code> mutations, check for new incoming messages by checking if (<code>current_broadcast_map-&gt;current_id != last_message-&gt;message_id</code>).
 While the broker uses the same EOP mechanism to map new <code>ShMem</code>s for its outgoing map, it never unmaps old pages.
 This additional memory overhead serves a good purpose: by keeping all broadcast pages around, we make sure that new clients can join in on a fuzzing campaign at a later point in time
@@ -181,7 +181,7 @@ They just need to re-read all broadcasted messages from start to finish.</p>
 <p>So the outgoing messages flow like this over the outgoing broadcast <code>Shmem</code>:</p>
 <pre><code class="language-text">[broker]
   |
-[current_broadcast_map]
+[current_broadcast_shmem]
   |
   |___________________________________
   |_________________                  \
@@ -199,10 +199,10 @@ Then, create some <code>LlmpClient``s</code> in other threads and register them 
 Finally, call <code>LlmpBroker::loop_forever()</code>.</p>
 <h3 id="b2b-connecting-fuzzers-via-tcp"><a class="header" href="#b2b-connecting-fuzzers-via-tcp">B2B: Connecting Fuzzers via TCP</a></h3>
 <p>For <code>broker2broker</code> communication, all broadcast messages are additionally forwarded via network sockets.
-To facilitate this, we spawn an additional client thread in the broker, that reads the broadcast map, just like any other client would.
+To facilitate this, we spawn an additional client thread in the broker, that reads the broadcast shared memory, just like any other client would.
 For broker2broker communication, this b2b client listens for TCP connections from other, remote brokers.
 It keeps a pool of open sockets to other, remote, b2b brokers around at any time.
-When receiving a new message on the local broker map, the b2b client will forward it to all connected remote brokers via TCP.
+When receiving a new message on the local broker shared memory, the b2b client will forward it to all connected remote brokers via TCP.
 Additionally, the broker can receive messages from all connected (remote) brokers, and forward them to the local broker over a client <code>ShMem</code>.</p>
 <p>As a sidenote, the tcp listener used for b2b communication is also used for an initial handshake when a new client tries to connect to a broker locally, simply exchanging the initial <code>ShMem</code> descriptions.</p>
 

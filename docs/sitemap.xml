@@ -15,6 +15,10 @@
     <loc>https://aflplus.plus/aflpp_fuzzing_framework_proposal/</loc>
     <priority>0</priority>
   </url><url>
+    <loc>https://aflplus.plus/docs/afl-fuzz_approach/</loc>
+  </url><url>
+    <loc>https://aflplus.plus/docs/best_practices/</loc>
+  </url><url>
     <loc>https://aflplus.plus/docs/binaryonly_fuzzing/</loc>
   </url><url>
     <loc>https://aflplus.plus/docs/changelog/</loc>
@@ -29,9 +33,17 @@
   </url><url>
     <loc>https://aflplus.plus/docs/faq/</loc>
   </url><url>
+    <loc>https://aflplus.plus/docs/features/</loc>
+  </url><url>
+    <loc>https://aflplus.plus/docs/fuzzing_binary-only_targets/</loc>
+  </url><url>
+    <loc>https://aflplus.plus/docs/fuzzing_in_depth/</loc>
+  </url><url>
     <loc>https://aflplus.plus/docs/historical_notes/</loc>
   </url><url>
     <loc>https://aflplus.plus/docs/ideas/</loc>
+  </url><url>
+    <loc>https://aflplus.plus/docs/important_changes/</loc>
   </url><url>
     <loc>https://aflplus.plus/docs/install/</loc>
   </url><url>
@@ -64,6 +76,10 @@
     <loc>https://aflplus.plus/docs/status_screen/</loc>
   </url><url>
     <loc>https://aflplus.plus/docs/technical_details/</loc>
+  </url><url>
+    <loc>https://aflplus.plus/docs/third_party_tools/</loc>
+  </url><url>
+    <loc>https://aflplus.plus/docs/tutorials/</loc>
   </url><url>
     <loc>https://aflplus.plus/docs/tutorials/libxml2_tutorial/</loc>
   </url><url>

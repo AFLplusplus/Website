@@ -137,7 +137,7 @@
                         <h1 id="spawning-instances"><a class="header" href="#spawning-instances">Spawning Instances</a></h1>
 <p>Multiple fuzzer instances can be spawned using different ways.</p>
 <h2 id="manually-via-a-tcp-port"><a class="header" href="#manually-via-a-tcp-port">Manually, via a TCP port</a></h2>
-<p>The straightforward way to do Multi-Threading is to use the <code>LlmpRestartingEventManager</code>, and specifically to use <code>setup_restarting_mgr_std</code>.
+<p>The straightforward way to do Multi-Threading is to use the <code>LlmpRestartingEventManager</code>, specifically to use <code>setup_restarting_mgr_std</code>.
 It abstracts away all the pesky details about restarts on crash handling (for in-memory fuzzers) and multi-threading.
 With it, every instance you launch manually tries to connect to a TCP port on the local machine.</p>
 <p>If the port is not yet bound, this instance becomes the broker, itself binding to the port to await new clients.</p>
@@ -147,7 +147,7 @@ The instance becomes a client and can now communicate with all other nodes.</p>
 <p>While it's called &quot;restarting&quot; manager, it uses <code>fork</code> on Unix operating systems as optimization and only actually restarts from scratch on Windows.</p>
 <h2 id="launcher"><a class="header" href="#launcher">Launcher</a></h2>
 <p>The Launcher is the lazy way to do multiprocessing.
-You can use the Launcher builder to create a fuzzer that spawns multiple nodes, all using restaring event managers.
+You can use the Launcher builder to create a fuzzer that spawns multiple nodes, all using restarting event managers.
 An example may look like this:</p>
 <pre><code class="language-rust ignore">    Launcher::builder()
         .configuration(EventConfig::from_name(&amp;configuration))
@@ -164,7 +164,7 @@ An example may look like this:</p>
 <p>This first starts a broker, then spawns <code>n</code> clients, according to the value passed to <code>cores</code>.
 The value is a string indicating the cores to bind to, for example, <code>0,2,5</code> or <code>0-3</code>.
 For each client, <code>run_client</code> will be called.
-On Windows, the Launcher will restart each client, while on Unix it will use <code>fork</code>.</p>
+On Windows, the Launcher will restart each client, while on Unix, it will use <code>fork</code>.</p>
 <h2 id="other-ways"><a class="header" href="#other-ways">Other ways</a></h2>
 <p>The LlmpEvenManager family is the easiest way to do spawn instances, but for obscure targets, you may need to come up with other solutions.
 LLMP is even, in theory, <code>no_std</code> compatible, and even completely different EventManagers can be used for message passing.

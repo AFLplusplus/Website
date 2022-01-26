@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.45c3c97332aab3536ee02bd089547e4307fa969c7ccb9a8ac572fd934646fd9c.js" integrity="sha256-RcPJczKqs1Nu4CvQiVR&#43;Qwf6lpx8y5qKxXL9k0ZG/Zw="></script>
+<script defer src="/en.search.min.98017fc2c814317564cf48cd3a16619740d1fd268faf2788ed0810ccb6f6c5f1.js" integrity="sha256-mAF/wsgUMXVkz0jNOhZhl0DR/SaPryeI7QgQzLb2xfE="></script>
 
 <!--
 Made with Book Theme
@@ -83,7 +83,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.14c">Release 3.14c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.00c">Release 4.00c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -157,45 +157,45 @@ https://github.com/alex-shpak/hugo-book
 
       
 <article class="markdown"><h1 id="ideas-for-afl">Ideas for AFL++</h1>
-<p>In the following, we describe a variety of ideas that could be implemented
-for future AFL++ versions.</p>
+<p>In the following, we describe a variety of ideas that could be implemented for
+future AFL++ versions.</p>
 <h2 id="analysis-software">Analysis software</h2>
-<p>Currently analysis is done by using afl-plot, which is rather outdated.
-A GTK or browser tool to create run-time analysis based on fuzzer_stats,
-queue/id* information and plot_data that allows for zooming in and out,
-changing min/max display values etc. and doing that for a single run,
-different runs and campaigns vs campaigns.
-Interesting values are execs, and execs/s, edges discovered (total, when
-each edge was discovered and which other fuzzer share finding that edge),
-test cases executed.
-It should be clickable which value is X and Y axis, zoom factor, log scaling
-on-off, etc.</p>
+<p>Currently analysis is done by using afl-plot, which is rather outdated. A GTK or
+browser tool to create run-time analysis based on fuzzer_stats, queue/id*
+information and plot_data that allows for zooming in and out, changing min/max
+display values etc. and doing that for a single run, different runs and
+campaigns vs. campaigns. Interesting values are execs, and execs/s, edges
+discovered (total, when each edge was discovered and which other fuzzer share
+finding that edge), test cases executed. It should be clickable which value is X
+and Y axis, zoom factor, log scaling on-off, etc.</p>
 <p>Mentor: vanhauser-thc</p>
 <h2 id="wasm-instrumentation">WASM Instrumentation</h2>
 <p>Currently, AFL++ can be used for source code fuzzing and traditional binaries.
-With the rise of WASM as compile target, however, a novel way of
-instrumentation needs to be implemented for binaries compiled to Webassembly.
-This can either be done by inserting instrumentation directly into the
-WASM AST, or by patching feedback into a WASM VMs of choice, similar to
-the current Unicorn instrumentation.</p>
+With the rise of WASM as a compile target, however, a novel way of instrumentation
+needs to be implemented for binaries compiled to Webassembly. This can either be
+done by inserting instrumentation directly into the WASM AST, or by patching
+feedback into a WASM VM of choice, similar to the current Unicorn
+instrumentation.</p>
 <p>Mentor: any</p>
 <h2 id="support-other-programming-languages">Support other programming languages</h2>
-<p>Other programming languages also use llvm hence they could (easily?) supported
-for fuzzing, e.g. mono, swift, go, kotlin native, fortran, &hellip;</p>
-<p>GCC also supports: Objective-C, Fortran, Ada, Go, and D
-(according to <a href="https://gcc.gnu.org/">Gcc homepage</a>)</p>
-<p>LLVM is also used by: Rust, LLGo (Go), kaleidoscope (Haskell), flang (Fortran), emscripten (JavaScript, WASM), ilwasm (CIL (C#))
-(according to <a href="https://gist.github.com/axic/62d66fb9d8bccca6cc48fa9841db9241">LLVM frontends</a>)</p>
+<p>Other programming languages also use llvm hence they could be (easily?) supported
+for fuzzing, e.g., mono, swift, go, kotlin native, fortran, &hellip;</p>
+<p>GCC also supports: Objective-C, Fortran, Ada, Go, and D (according to
+<a href="https://gcc.gnu.org/">Gcc homepage</a>)</p>
+<p>LLVM is also used by: Rust, LLGo (Go), kaleidoscope (Haskell), flang (Fortran),
+emscripten (JavaScript, WASM), ilwasm (CIL (C#)) (according to
+<a href="https://gist.github.com/axic/62d66fb9d8bccca6cc48fa9841db9241">LLVM frontends</a>)</p>
 <p>Mentor: vanhauser-thc</p>
 <h2 id="machine-learning">Machine Learning</h2>
-<p>Something with machine learning, better than <a href="https://github.com/dongdongshe/neuzz">NEUZZ</a> :-)
-Either improve a single mutator thorugh learning of many different bugs
-(a bug class) or gather deep insights about a single target beforehand
-(CFG, DFG, VFG, &hellip;?) and improve performance for a single target.</p>
+<p>Something with machine learning, better than
+<a href="https://github.com/dongdongshe/neuzz">NEUZZ</a> :-) Either improve a single
+mutator through learning of many different bugs (a bug class) or gather deep
+insights about a single target beforehand (CFG, DFG, VFG, &hellip;?) and improve
+performance for a single target.</p>
 <p>Mentor: domenukk</p>
 <h2 id="your-idea">Your idea!</h2>
-<p>Finally, we are open to proposals!
-Create an issue at <a href="https://github.com/AFLplusplus/AFLplusplus/issues">https://github.com/AFLplusplus/AFLplusplus/issues</a> and let&rsquo;s discuss :-)</p>
+<p>Finally, we are open to proposals! Create an issue at
+<a href="https://github.com/AFLplusplus/AFLplusplus/issues">https://github.com/AFLplusplus/AFLplusplus/issues</a> and let&rsquo;s discuss :-)</p>
 </article>
  
 
