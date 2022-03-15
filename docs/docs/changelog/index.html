@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.98017fc2c814317564cf48cd3a16619740d1fd268faf2788ed0810ccb6f6c5f1.js" integrity="sha256-mAF/wsgUMXVkz0jNOhZhl0DR/SaPryeI7QgQzLb2xfE="></script>
+<script defer src="/en.search.min.1fe83abf9e0213389fb0a7bfcd9f289bb6ca1940999ec4688f5ce324db29cf0b.js" integrity="sha256-H&#43;g6v54CEzifsKe/zZ8om7bKGUCZnsRoj1zjJNspzws="></script>
 
 <!--
 Made with Book Theme
@@ -143,6 +143,7 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
+        <li><a href="#version-401a-dev">Version ++4.01a (dev)</a></li>
         <li><a href="#version-400c-release">Version ++4.00c (release)</a></li>
         <li><a href="#version-314c-release">Version ++3.14c (release)</a></li>
         <li><a href="#version-313c-release">Version ++3.13c (release)</a></li>
@@ -413,6 +414,28 @@ release of the tool. See README.md for the general instruction manual.</p>
 <h2 id="staying-informed">Staying informed</h2>
 <p>Want to stay in the loop on major new features? Join our mailing list by
 sending a mail to <a href="mailto:afl-users+subscribe@googlegroups.com">afl-users+subscribe@googlegroups.com</a>.</p>
+<h3 id="version-401a-dev">Version ++4.01a (dev)</h3>
+<ul>
+<li>fix */build_&hellip;sh scripts to work outside of git</li>
+<li>new custom_mutator: libafl with token fuzzing :)</li>
+<li>afl-fuzz:
+<ul>
+<li>new commandline options -g/G to set min/max length of generated
+fuzz inputs</li>
+<li>reintroduced AFL_PERSISTENT and AFL_DEFER_FORKSRV to allow
+persistent mode and manual forkserver support if these are not
+in the target binary (e.g. are in a shared library)</li>
+<li>add AFL_EARY_FORKSERVER to install the forkserver as earliest as
+possible in the target (for afl-gcc-fast/afl-clang-fast/
+afl-clang-lto)</li>
+</ul>
+</li>
+<li>frida_mode:
+<ul>
+<li>update to new frida release, handles now c++ throw/catch</li>
+</ul>
+</li>
+</ul>
 <h3 id="version-400c-release">Version ++4.00c (release)</h3>
 <ul>
 <li>complete documentation restructuring, made possible by Google Season
@@ -432,7 +455,7 @@ added - thanks to @schumilo and @eqv!</li>
 </li>
 <li>new binary-only fuzzing mode: coresight_mode for aarch64 CPUs :)
 thanks to RICSecLab submitting!</li>
-<li>if instrumented libaries are dlopen()&lsquo;ed after the forkserver you
+<li>if instrumented libaries are dlopen()&rsquo;ed after the forkserver you
 will now see a crash. Before you would have colliding coverage.
 We changed this to force fixing a broken setup rather then allowing
 ineffective fuzzing.
@@ -471,7 +494,7 @@ for reporting!</li>
 coresight_mode</li>
 </ul>
 </li>
-<li>Prevent accidentaly killing non-afl/fuzz services when aborting
+<li>Prevent accidentally killing non-afl/fuzz services when aborting
 afl-showmap and other tools.</li>
 <li>afl-cc:
 <ul>
@@ -3241,7 +3264,7 @@ with SQL and the like.</p>
 <h3 id="version-109b">Version 1.09b:</h3>
 <ul>
 <li>
-<p>Corrected a cosmetic problem with &lsquo;extras&rsquo; stage count not always being
+<p>Corrected a cosmetic problem with &rsquo;extras&rsquo; stage count not always being
 accurate in the stage yields view.</p>
 </li>
 <li>
@@ -4475,6 +4498,7 @@ the environment variable AFL_CUSTOM_MUTATOR_LIBRARY.</p>
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
+        <li><a href="#version-401a-dev">Version ++4.01a (dev)</a></li>
         <li><a href="#version-400c-release">Version ++4.00c (release)</a></li>
         <li><a href="#version-314c-release">Version ++3.14c (release)</a></li>
         <li><a href="#version-313c-release">Version ++3.13c (release)</a></li>

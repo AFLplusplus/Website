@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.98017fc2c814317564cf48cd3a16619740d1fd268faf2788ed0810ccb6f6c5f1.js" integrity="sha256-mAF/wsgUMXVkz0jNOhZhl0DR/SaPryeI7QgQzLb2xfE="></script>
+<script defer src="/en.search.min.1fe83abf9e0213389fb0a7bfcd9f289bb6ca1940999ec4688f5ce324db29cf0b.js" integrity="sha256-H&#43;g6v54CEzifsKe/zZ8om7bKGUCZnsRoj1zjJNspzws="></script>
 
 <!--
 Made with Book Theme
@@ -256,19 +256,19 @@ the machine.
 It is best to use a naming scheme that includes host name and it&rsquo;s being
 a main node (e.g. main1, main2) in the fuzzer ID, so that you can do
 something like:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#66d9ef">for</span> host in <span style="color:#e6db74">`</span>cat HOSTLIST<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
-  ssh user@$host <span style="color:#e6db74">&#34;tar -czf - sync/</span>$host_main<span style="color:#e6db74">*/&#34;</span> &gt; $host.tgz
-<span style="color:#66d9ef">done</span>
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> host in <span style="color:#e6db74">`</span>cat HOSTLIST<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>  ssh user@$host <span style="color:#e6db74">&#34;tar -czf - sync/</span>$host_main<span style="color:#e6db74">*/&#34;</span> &gt; $host.tgz
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
+</span></span></code></pre></div></li>
 <li>
 <p>Distributes and unpacks these files on all the remaining machines, e.g.:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#66d9ef">for</span> srchost in <span style="color:#e6db74">`</span>cat HOSTLIST<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
-  <span style="color:#66d9ef">for</span> dsthost in <span style="color:#e6db74">`</span>cat HOSTLIST<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
-    test <span style="color:#e6db74">&#34;</span>$srchost<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span>$dsthost<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#66d9ef">continue</span>
-    ssh user@$srchost <span style="color:#e6db74">&#39;tar -kxzf -&#39;</span> &lt; $dsthost.tgz
-  <span style="color:#66d9ef">done</span>
-<span style="color:#66d9ef">done</span>
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> srchost in <span style="color:#e6db74">`</span>cat HOSTLIST<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> dsthost in <span style="color:#e6db74">`</span>cat HOSTLIST<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    test <span style="color:#e6db74">&#34;</span>$srchost<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span>$dsthost<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>    ssh user@$srchost <span style="color:#e6db74">&#39;tar -kxzf -&#39;</span> &lt; $dsthost.tgz
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
+</span></span></code></pre></div></li>
 </ul>
 <p>There is an example of such a script in utils/distributed_fuzzing/.</p>
 <p>There are other (older) more featured, experimental tools:</p>

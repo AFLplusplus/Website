@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.98017fc2c814317564cf48cd3a16619740d1fd268faf2788ed0810ccb6f6c5f1.js" integrity="sha256-mAF/wsgUMXVkz0jNOhZhl0DR/SaPryeI7QgQzLb2xfE="></script>
+<script defer src="/en.search.min.1fe83abf9e0213389fb0a7bfcd9f289bb6ca1940999ec4688f5ce324db29cf0b.js" integrity="sha256-H&#43;g6v54CEzifsKe/zZ8om7bKGUCZnsRoj1zjJNspzws="></script>
 
 <!--
 Made with Book Theme
@@ -202,9 +202,9 @@ cross-platform binaries.</p>
 <p>For linux programs and its libraries, this is accomplished with a version of
 QEMU running in the lesser-known &ldquo;user space emulation&rdquo; mode. QEMU is a project
 separate from AFL++, but you can conveniently build the feature by doing:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd qemu_mode
-./build_qemu_support.sh
-</code></pre></div><p>The following setup to use QEMU mode is recommended:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cd qemu_mode
+</span></span><span style="display:flex;"><span>./build_qemu_support.sh
+</span></span></code></pre></div><p>The following setup to use QEMU mode is recommended:</p>
 <ul>
 <li>run 1 afl-fuzz -Q instance with CMPLOG (<code>-c 0</code> + <code>AFL_COMPCOV_LEVEL=2</code>)</li>
 <li>run 1 afl-fuzz -Q instance with QASAN (<code>AFL_USE_QASAN=1</code>)</li>
@@ -253,9 +253,9 @@ FRIDA mode is most of the times slightly faster than QEMU mode. It is also
 newer, lacks COMPCOV, and has the advantage that it works on MacOS (both intel
 and M1).</p>
 <p>To build FRIDA mode:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd frida_mode
-gmake
-</code></pre></div><p>For additional instructions and caveats, see
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cd frida_mode
+</span></span><span style="display:flex;"><span>gmake
+</span></span></code></pre></div><p>For additional instructions and caveats, see
 <a href="../frida_mode/README.md">frida_mode/README.md</a>.</p>
 <p>If possible, you should use the persistent mode, see
 <a href="../instrumentation/README.persistent_mode.md">instrumentation/README.persistent_mode.md</a>.
@@ -288,9 +288,9 @@ introduced in the patched QEMU Mode of AFL++ cannot be ported over to Unicorn.</
 <p>For non-Linux binaries, you can use AFL++&rsquo;s unicorn_mode which can emulate
 anything you want - for the price of speed and user written scripts.</p>
 <p>To build unicorn_mode:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd unicorn_mode
-./build_unicorn_support.sh
-</code></pre></div><p>For further information, check out
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cd unicorn_mode
+</span></span><span style="display:flex;"><span>./build_unicorn_support.sh
+</span></span></code></pre></div><p>For further information, check out
 <a href="../unicorn_mode/README.md">unicorn_mode/README.md</a>.</p>
 <h3 id="shared-libraries">Shared libraries</h3>
 <p>If the goal is to fuzz a dynamic library, then there are two options available.

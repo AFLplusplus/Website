@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.98017fc2c814317564cf48cd3a16619740d1fd268faf2788ed0810ccb6f6c5f1.js" integrity="sha256-mAF/wsgUMXVkz0jNOhZhl0DR/SaPryeI7QgQzLb2xfE="></script>
+<script defer src="/en.search.min.1fe83abf9e0213389fb0a7bfcd9f289bb6ca1940999ec4688f5ce324db29cf0b.js" integrity="sha256-H&#43;g6v54CEzifsKe/zZ8om7bKGUCZnsRoj1zjJNspzws="></script>
 
 <!--
 Made with Book Theme
@@ -213,8 +213,8 @@ accuracy of afl. See instrumentation/README.instrument_list.md</p>
 <p>Check for any parameters or settings that obviously improve performance. For
 example, the djpeg utility that comes with IJG jpeg and libjpeg-turbo can be
 called with:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  -dct fast -nosmooth -onepass -dither none -scale 1/4
-</code></pre></div><p>&hellip;and that will speed things up. There is a corresponding drop in the quality
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>  -dct fast -nosmooth -onepass -dither none -scale 1/4
+</span></span></code></pre></div><p>&hellip;and that will speed things up. There is a corresponding drop in the quality
 of decoded images, but it&rsquo;s probably not something you care about.</p>
 <p>In some programs, it is possible to disable output altogether, or at least use
 an output format that is computationally inexpensive. For example, with image
@@ -297,9 +297,9 @@ on a particular schedule and is known to underestimate the needs of
 short-lived processes spawned by <code>afl-fuzz</code> (or any other fuzzer). On Linux,
 this can be fixed with:</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">    cd /sys/devices/system/cpu
-    echo performance | tee cpu*/cpufreq/scaling_governor
-</code></pre></div><pre><code>On other systems, the impact of CPU scaling will be different; when fuzzing,
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>    cd /sys/devices/system/cpu
+</span></span><span style="display:flex;"><span>    echo performance | tee cpu*/cpufreq/scaling_governor
+</span></span></code></pre></div><pre><code>On other systems, the impact of CPU scaling will be different; when fuzzing,
 use OS-specific tools to find out if all cores are running at full speed.
 </code></pre>
 <ul>
@@ -307,15 +307,15 @@ use OS-specific tools to find out if all cores are running at full speed.
 heavy fuzzing penalty when transparent huge pages (THP) are enabled in the
 kernel. You can disable this via:</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">    echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>    echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled
+</span></span></code></pre></div><ul>
 <li>Suboptimal scheduling strategies. The significance of this will vary from
 one target to another, but on Linux, you may want to make sure that the
 following options are set:</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">    echo <span style="color:#ae81ff">1</span> &gt;/proc/sys/kernel/sched_child_runs_first
-    echo <span style="color:#ae81ff">1</span> &gt;/proc/sys/kernel/sched_autogroup_enabled
-</code></pre></div><pre><code>Setting a different scheduling policy for the fuzzer process - say
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>    echo <span style="color:#ae81ff">1</span> &gt;/proc/sys/kernel/sched_child_runs_first
+</span></span><span style="display:flex;"><span>    echo <span style="color:#ae81ff">1</span> &gt;/proc/sys/kernel/sched_autogroup_enabled
+</span></span></code></pre></div><pre><code>Setting a different scheduling policy for the fuzzer process - say
 `SCHED_RR` - can usually speed things up, too, but needs to be done with
 care.
 </code></pre>

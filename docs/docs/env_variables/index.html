@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.98017fc2c814317564cf48cd3a16619740d1fd268faf2788ed0810ccb6f6c5f1.js" integrity="sha256-mAF/wsgUMXVkz0jNOhZhl0DR/SaPryeI7QgQzLb2xfE="></script>
+<script defer src="/en.search.min.1fe83abf9e0213389fb0a7bfcd9f289bb6ca1940999ec4688f5ce324db29cf0b.js" integrity="sha256-H&#43;g6v54CEzifsKe/zZ8om7bKGUCZnsRoj1zjJNspzws="></script>
 
 <!--
 Made with Book Theme
@@ -309,7 +309,7 @@ all passes support this option though as it is an outdated feature.</p>
 <li>
 <p>LLVM modes support <code>AFL_LLVM_DICT2FILE=/absolute/path/file.txt</code> which will
 write all constant string comparisons to this file to be used later with
-afl-fuzz' <code>-x</code> option.</p>
+afl-fuzz&rsquo; <code>-x</code> option.</p>
 </li>
 <li>
 <p><code>TMPDIR</code> and <code>AFL_KEEP_ASSEMBLY</code>, since no temporary assembly files are
@@ -597,6 +597,11 @@ This makes the &ldquo;own finds&rdquo; counter in the UI more accurate. Beyond c
 aesthetics, not much else should change.</p>
 </li>
 <li>
+<p>Setting <code>AFL_INPUT_LEN_MIN</code> and <code>AFL_INPUT_LEN_MAX</code> are an alternative to
+the afl-fuzz -g/-G command line option to control the minimum/maximum
+of fuzzing input generated.</p>
+</li>
+<li>
 <p><code>AFL_KILL_SIGNAL</code>: Set the signal ID to be delivered to child processes on
 timeout. Unless you implement your own targets or instrumentation, you
 likely don&rsquo;t have to set it. By default, on timeout and on exit, <code>SIGKILL</code>
@@ -729,7 +734,7 @@ see <a href="rpc_statsd.md">rpc_statsd.md</a>.</p>
 <li>
 <p>Setting <code>AFL_TARGET_ENV</code> causes AFL++ to set extra environment variables for
 the target binary. Example: <code>AFL_TARGET_ENV=&quot;VAR1=1 VAR2='a b c'&quot; afl-fuzz ... </code>. This exists mostly for things like <code>LD_LIBRARY_PATH</code> but it would
-theoretically allow fuzzing of AFL++ itself (with &lsquo;target&rsquo; AFL++ using some
+theoretically allow fuzzing of AFL++ itself (with &rsquo;target&rsquo; AFL++ using some
 AFL_ vars that would disrupt work of &lsquo;fuzzer&rsquo; AFL++).</p>
 </li>
 <li>
@@ -747,11 +752,20 @@ the stress on SSDs.</p>
 on Linux systems, but will not terminate if that fails.</p>
 </li>
 <li>
-<p>Outdated environment variables that are not supported anymore:</p>
+<p>The following environment variables are only needed if you implemented
+your own forkserver or persistent mode, or if __AFL_LOOP or __AFL_INIT
+are in a shared library and not the main binary:</p>
 <ul>
-<li><code>AFL_DEFER_FORKSRV</code></li>
-<li><code>AFL_PERSISTENT</code></li>
+<li><code>AFL_DEFER_FORKSRV</code> enforces a deferred forkserver even if none was
+detected in the target binary</li>
+<li><code>AFL_PERSISTENT</code> enforces persistent mode even if none was detected
+in the target binary</li>
 </ul>
+</li>
+<li>
+<p>If you need an early forkserver in your target because of early
+constructors in your target you can set <code>AFL_EARLY_FORKSERVER</code>.
+Note that this is not a compile time option but a runtime option :-)</p>
 </li>
 </ul>
 <h2 id="5-settings-for-afl-qemu-trace">5) Settings for afl-qemu-trace</h2>

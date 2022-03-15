@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.98017fc2c814317564cf48cd3a16619740d1fd268faf2788ed0810ccb6f6c5f1.js" integrity="sha256-mAF/wsgUMXVkz0jNOhZhl0DR/SaPryeI7QgQzLb2xfE="></script>
+<script defer src="/en.search.min.1fe83abf9e0213389fb0a7bfcd9f289bb6ca1940999ec4688f5ce324db29cf0b.js" integrity="sha256-H&#43;g6v54CEzifsKe/zZ8om7bKGUCZnsRoj1zjJNspzws="></script>
 
 <!--
 Made with Book Theme
@@ -197,11 +197,11 @@ dlopen() after the forkserver has been activated and non-colliding coverage
 instrumentation is used (PCGUARD (which is the default), or LTO), then this
 an issue, because this would enlarge the coverage map, but afl-fuzz doesn&rsquo;t
 know about it.</p>
-<p>The solution is to use <code>AFL_PRELOAD</code> for all dlopen()&lsquo;ed libraries to
+<p>The solution is to use <code>AFL_PRELOAD</code> for all dlopen()&rsquo;ed libraries to
 ensure that all coverage targets are present on startup in the target,
 even if accessed only later with dlopen().</p>
 <p>For PCGUARD instrumentation <code>abort()</code> is called if this is detected, for LTO
-there will either be no coverage for the instrumented dlopen()&lsquo;ed libraries or
+there will either be no coverage for the instrumented dlopen()&rsquo;ed libraries or
 you will see lots of crashes in the UI.</p>
 <p>Note that this is not an issue if you use the inferiour <code>afl-gcc-fast</code>,
 <code>afl-gcc</code> or<code>AFL_LLVM_INSTRUMENT=CLASSIC/NGRAM/CTX afl-clang-fast</code>
