@@ -30,6 +30,8 @@ type: docs
 
 + Prashast Srivastava and Mathias Payer. ["Gramatron: Effective Grammar-Aware Fuzzing"](http://nebelwelt.net/files/21ISSTA.pdf). *InProceedings of the 30th ACM SIGSOFT International Sympo-sium on Software Testing and Analysis (ISSTA ’21)*, July 11–17, 2021, Virtual, Denmark.
 
++ Luca Borzacchiello, Emilio Coppa and Camil Demetrescu. ["FUZZOLIC: Mixing fuzzing and concolic execution"](https://github.com/ecoppa/ecoppa.github.io/raw/master/assets/pdf/FUZZOLIC-PREPRINT-COSE21.pdf). *Computers & Security*, Vol. 108, 2021.
+
 ## Works citing AFL++
 
 [Bibtex]({{% rel %}}papers_citing_aflpp.bib{{% /rel %}})
@@ -44,7 +46,7 @@ type: docs
 
 + Ahmad Hazimeh, Adrian Herrera, and Mathias Payer. ["Magma: A Ground-Truth Fuzzing Benchmark"](https://dl.acm.org/doi/pdf/10.1145/3428334). *Proc. ACM Meas. Anal. Comput. Syst. 4*, 3, Article 49 (December 2020), 29 pages.
 
-+ Vishnyakov A., Fedotov A., Kuts D., Novikov A., Parygina D., Kobrin E., Logunova V., Belecky P., Kurmangaleev Sh. ["Sydr: Cutting Edge Dynamic Symbolic Execution"](https://arxiv.org/pdf/2011.09269.pdf). 2020 Ivannikov ISPRAS Open Conference (ISPRAS), IEEE, 2020, pp. 46-54.
++ Vishnyakov A., Fedotov A., Kuts D., Novikov A., Parygina D., Kobrin E., Logunova V., Belecky P., Kurmangaleev Sh. ["Sydr: Cutting Edge Dynamic Symbolic Execution"](https://arxiv.org/pdf/2011.09269.pdf). *2020 Ivannikov ISPRAS Open Conference (ISPRAS)*, IEEE, 2020, pp. 46-54.
 
 ### 2021
 
@@ -54,4 +56,14 @@ type: docs
 
 + Yu-Chuan Liang and Hsu-Chun Hsiao. ["icLibFuzzer: Isolated-context libFuzzer for Improving Fuzzer Comparability"](https://www.ndss-symposium.org/wp-content/uploads/bar2021_23013_paper.pdf). *Workshop on Binary Analysis Research (BAR)*. Vol. 2021. 2021.
 
-+ Adrian Herrera, Hendra Gunadi, Shane Magrath, Michael Norrish, MathiasPayer, and Antony L. Hosking. ["Seed Selection for Successful Fuzzing"](http://nebelwelt.net/files/21ISSTA2.pdf). *InProceedings of the 30th ACM SIGSOFT International Symposium on Software Testing and Analysis (ISSTA ’21)*, July 11–17, 2021, Virtual, Denmark.
++ Adrian Herrera, Hendra Gunadi, Shane Magrath, Michael Norrish, Mathias Payer, and Antony L. Hosking. ["Seed Selection for Successful Fuzzing"](http://nebelwelt.net/files/21ISSTA2.pdf). *In Proceedings of the 30th ACM SIGSOFT International Symposium on Software Testing and Analysis (ISSTA ’21)*, July 11–17, 2021, Virtual, Denmark.
+
++ Robin David, Jonathan Salwan, Justin Bourroux. ["From source code to crash test-case through software testing automation"](http://ceur-ws.org/Vol-3056/paper-02.pdf). *Proceedings of the 28th C&ESAR*, Rennes, France, 2021.
+
++ Daniil Kuts. ["Towards Symbolic Pointers Reasoning in Dynamic Symbolic Execution"](https://arxiv.org/pdf/2109.03698). *2021 Ivannikov Memorial Workshop (IVMEM)*, IEEE, 2021, pp. 42-49.
+
++ Nurmukhametov, A., Vishnyakov, A., Logunova V., Kurmangaleev Sh. ["MAJORCA: Multi-Architecture JOP and ROP Chain Assembler"](https://arxiv.org/pdf/2111.05781). *2021 Ivannikov ISPRAS Open Conference (ISPRAS)*, IEEE, 2021, pp. 37-46.
+
++ Georgy Savidov and Andrey Fedotov. ["Casr-Cluster: Crash Clustering for Linux Applications"](https://arxiv.org/pdf/2112.13719). *2021 Ivannikov ISPRAS Open Conference (ISPRAS)*, IEEE, 2021, pp. 47-51.
+
++ Vishnyakov A., Logunova V., Kobrin E., Kuts D., Parygina D., Fedotov A. ["Symbolic Security Predicates: Hunt Program Weaknesses"](https://arxiv.org/pdf/2111.05770). *2021 Ivannikov ISPRAS Open Conference (ISPRAS)*, IEEE, 2021, pp. 76-85.
