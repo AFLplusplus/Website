@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.85088e3d7dbad61116b625fb5752c76442cbcc64e28a98a04f7831f8fe12e977.js" integrity="sha256-hQiOPX261hEWtiX7V1LHZELLzGTiipigT3gx&#43;P4S6Xc="></script>
+<script defer src="/en.search.min.55d88fec982aa3f5097be652331046a67e9f15d3d98021ac28d1a4e98a7acee6.js" integrity="sha256-VdiP7Jgqo/UJe&#43;ZSMxBGpn6fFdPZgCGsKNGk6Yp6zuY="></script>
 
 <!--
 Made with Book Theme
@@ -535,6 +535,10 @@ deprecated.</p>
 usually a bad idea!</p>
 </li>
 <li>
+<p>Setting <code>AFL_KEEP_TIMEOUTS</code> will keep longer running inputs if they reach
+new coverage</p>
+</li>
+<li>
 <p><code>AFL_EXIT_ON_SEED_ISSUES</code> will restore the vanilla afl-fuzz behavior which
 does not allow crashes or timeout seeds in the initial -i corpus.</p>
 </li>
@@ -735,7 +739,12 @@ see <a href="rpc_statsd.md">rpc_statsd.md</a>.</p>
 <p>Setting <code>AFL_TARGET_ENV</code> causes AFL++ to set extra environment variables for
 the target binary. Example: <code>AFL_TARGET_ENV=&quot;VAR1=1 VAR2='a b c'&quot; afl-fuzz ... </code>. This exists mostly for things like <code>LD_LIBRARY_PATH</code> but it would
 theoretically allow fuzzing of AFL++ itself (with &rsquo;target&rsquo; AFL++ using some
-AFL_ vars that would disrupt work of &lsquo;fuzzer&rsquo; AFL++).</p>
+AFL_ vars that would disrupt work of &lsquo;fuzzer&rsquo; AFL++). Note that when using
+QEMU mode, the <code>AFL_TARGET_ENV</code> environment variables will apply to QEMU, as
+well as the target binary. Therefore, in this case, you might want to use
+QEMU&rsquo;s <code>QEMU_SET_ENV</code> environment variable (see QEMU&rsquo;s documentation because
+the format is different from <code>AFL_TARGET_ENV</code>) to apply the environment
+variables to the target and not QEMU.</p>
 </li>
 <li>
 <p><code>AFL_TESTCACHE_SIZE</code> allows you to override the size of <code>#define TESTCASE_CACHE</code> in config.h. Recommended values are 50-250MB - or more if
@@ -766,6 +775,10 @@ in the target binary</li>
 <p>If you need an early forkserver in your target because of early
 constructors in your target you can set <code>AFL_EARLY_FORKSERVER</code>.
 Note that this is not a compile time option but a runtime option :-)</p>
+</li>
+<li>
+<p>set <code>AFL_PIZZA_MODE</code> to 1 to enable the April 1st stats menu, set to 0
+to disable although it is 1st of April.</p>
 </li>
 </ul>
 <h2 id="5-settings-for-afl-qemu-trace">5) Settings for afl-qemu-trace</h2>

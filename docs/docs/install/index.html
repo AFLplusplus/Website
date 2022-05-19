@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.85088e3d7dbad61116b625fb5752c76442cbcc64e28a98a04f7831f8fe12e977.js" integrity="sha256-hQiOPX261hEWtiX7V1LHZELLzGTiipigT3gx&#43;P4S6Xc="></script>
+<script defer src="/en.search.min.55d88fec982aa3f5097be652331046a67e9f15d3d98021ac28d1a4e98a7acee6.js" integrity="sha256-VdiP7Jgqo/UJe&#43;ZSMxBGpn6fFdPZgCGsKNGk6Yp6zuY="></script>
 
 <!--
 Made with Book Theme
@@ -167,9 +167,9 @@ You will find your target source code in <code>/src</code> in the container.</p>
 is to build and install everything:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo apt-get update
 </span></span><span style="display:flex;"><span>sudo apt-get install -y build-essential python3-dev automake cmake git flex bison libglib2.0-dev libpixman-1-dev python3-setuptools
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># try to install llvm 11 and install the distro default if that fails</span>
-</span></span><span style="display:flex;"><span>sudo apt-get install -y lld-11 llvm-11 llvm-11-dev clang-11 <span style="color:#f92672">||</span> sudo apt-get install -y lld llvm llvm-dev clang
-</span></span><span style="display:flex;"><span>sudo apt-get install -y gcc-<span style="color:#66d9ef">$(</span>gcc --version|head -n1|sed <span style="color:#e6db74">&#39;s/.* //&#39;</span>|sed <span style="color:#e6db74">&#39;s/\..*//&#39;</span><span style="color:#66d9ef">)</span>-plugin-dev libstdc++-<span style="color:#66d9ef">$(</span>gcc --version|head -n1|sed <span style="color:#e6db74">&#39;s/.* //&#39;</span>|sed <span style="color:#e6db74">&#39;s/\..*//&#39;</span><span style="color:#66d9ef">)</span>-dev
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># try to install llvm 12 and install the distro default if that fails</span>
+</span></span><span style="display:flex;"><span>sudo apt-get install -y lld-12 llvm-12 llvm-12-dev clang-12 <span style="color:#f92672">||</span> sudo apt-get install -y lld llvm llvm-dev clang
+</span></span><span style="display:flex;"><span>sudo apt-get install -y gcc-<span style="color:#66d9ef">$(</span>gcc --version|head -n1|sed <span style="color:#e6db74">&#39;s/\..*//&#39;</span>|sed <span style="color:#e6db74">&#39;s/.* //&#39;</span><span style="color:#66d9ef">)</span>-plugin-dev libstdc++-<span style="color:#66d9ef">$(</span>gcc --version|head -n1|sed <span style="color:#e6db74">&#39;s/\..*//&#39;</span>|sed <span style="color:#e6db74">&#39;s/.* //&#39;</span><span style="color:#66d9ef">)</span>-dev
 </span></span><span style="display:flex;"><span>sudo apt-get install -y ninja-build <span style="color:#75715e"># for QEMU mode</span>
 </span></span><span style="display:flex;"><span>git clone https://github.com/AFLplusplus/AFLplusplus
 </span></span><span style="display:flex;"><span>cd AFLplusplus
@@ -215,6 +215,7 @@ the <code>STATIC=1</code> argument to make:</p>
 <li>NO_PYTHON - disable python support</li>
 <li>NO_SPLICING - disables splicing mutation in afl-fuzz, not recommended for
 normal fuzzing</li>
+<li>NO_NYX - disable building nyx mode dependencies</li>
 <li>AFL_NO_X86 - if compiling on non-intel/amd platforms</li>
 <li>LLVM_CONFIG - if your distro doesn&rsquo;t use the standard name for llvm-config
 (e.g., Debian)</li>

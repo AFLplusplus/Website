@@ -349,6 +349,9 @@ checks or alter some of the more exotic semantics of the tool:
   - Setting `AFL_DISABLE_TRIM` tells afl-fuzz not to trim test cases. This is
     usually a bad idea!
 
+  - Setting `AFL_KEEP_TIMEOUTS` will keep longer running inputs if they reach
+    new coverage
+
   - `AFL_EXIT_ON_SEED_ISSUES` will restore the vanilla afl-fuzz behavior which
     does not allow crashes or timeout seeds in the initial -i corpus.
 
@@ -518,7 +521,12 @@ checks or alter some of the more exotic semantics of the tool:
     the target binary. Example: `AFL_TARGET_ENV="VAR1=1 VAR2='a b c'" afl-fuzz
     ... `. This exists mostly for things like `LD_LIBRARY_PATH` but it would
     theoretically allow fuzzing of AFL++ itself (with 'target' AFL++ using some
-    AFL_ vars that would disrupt work of 'fuzzer' AFL++).
+    AFL_ vars that would disrupt work of 'fuzzer' AFL++). Note that when using
+    QEMU mode, the `AFL_TARGET_ENV` environment variables will apply to QEMU, as
+    well as the target binary. Therefore, in this case, you might want to use
+    QEMU's `QEMU_SET_ENV` environment variable (see QEMU's documentation because
+    the format is different from `AFL_TARGET_ENV`) to apply the environment
+    variables to the target and not QEMU.
 
   - `AFL_TESTCACHE_SIZE` allows you to override the size of `#define
     TESTCASE_CACHE` in config.h. Recommended values are 50-250MB - or more if
@@ -543,6 +551,9 @@ checks or alter some of the more exotic semantics of the tool:
   - If you need an early forkserver in your target because of early
     constructors in your target you can set `AFL_EARLY_FORKSERVER`.
     Note that this is not a compile time option but a runtime option :-)
+
+  - set `AFL_PIZZA_MODE` to 1 to enable the April 1st stats menu, set to 0
+    to disable although it is 1st of April.
 
 ## 5) Settings for afl-qemu-trace
 
