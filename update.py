@@ -51,6 +51,7 @@ for fname in os.listdir("content/docs/"):
         f.write('''---
 bookCollapseSection: true
 weight: 20
+type: docs
 ---
 
 ''' + data)
