@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.55d88fec982aa3f5097be652331046a67e9f15d3d98021ac28d1a4e98a7acee6.js" integrity="sha256-VdiP7Jgqo/UJe&#43;ZSMxBGpn6fFdPZgCGsKNGk6Yp6zuY="></script>
+<script defer src="/en.search.min.27ca7e0c081e567a47139167fd21c9ab2930d7a53e2c463eb94af09683d77010.js" integrity="sha256-J8p&#43;DAgeVnpHE5Fn/SHJqykw16U&#43;LEY&#43;uUrwloPXcBA="></script>
 
 <!--
 Made with Book Theme
@@ -192,7 +192,7 @@ https://github.com/alex-shpak/hugo-book
 <article class="markdown"><h1 id="fuzzing-with-afl">Fuzzing with AFL++</h1>
 <p>The following describes how to fuzz with a target if source code is available.
 If you have a binary-only target, go to
-<a href="fuzzing_binary-only_targets.md">fuzzing_binary-only_targets.md</a>.</p>
+<a href="/docs/fuzzing_binary-only_targets/">/docs/fuzzing_binary-only_targets/</a>.</p>
 <p>Fuzzing source code is a three-step process:</p>
 <ol>
 <li>Compile the target with a special compiler that prepares the target to be
@@ -243,22 +243,22 @@ evaluation flow will help you to select the best possible.</p>
 anything below 9 is not recommended.</p>
 <pre tabindex="0"><code>+--------------------------------+
 | clang/clang++ 11+ is available | --&gt; use LTO mode (afl-clang-lto/afl-clang-lto++)
-+--------------------------------+     see [instrumentation/README.lto.md](instrumentation/README.lto.md)
++--------------------------------+     see [https://github.com/AFLplusplus/AFLplusplus/blob/stable/instrumentation/README.lto.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/instrumentation/README.lto.md)
     |
     | if not, or if the target fails with LTO afl-clang-lto/++
     |
     v
 +---------------------------------+
 | clang/clang++ 3.8+ is available | --&gt; use LLVM mode (afl-clang-fast/afl-clang-fast++)
-+---------------------------------+     see [instrumentation/README.llvm.md](instrumentation/README.llvm.md)
++---------------------------------+     see [https://github.com/AFLplusplus/AFLplusplus/blob/stable/instrumentation/README.llvm.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/instrumentation/README.llvm.md)
     |
     | if not, or if the target fails with LLVM afl-clang-fast/++
     |
     v
  +--------------------------------+
  | gcc 5+ is available            | -&gt; use GCC_PLUGIN mode (afl-gcc-fast/afl-g++-fast)
- +--------------------------------+    see [instrumentation/README.gcc_plugin.md](instrumentation/README.gcc_plugin.md) and
-                                       [instrumentation/README.instrument_list.md](instrumentation/README.instrument_list.md)
+ +--------------------------------+    see [https://github.com/AFLplusplus/AFLplusplus/blob/stable/instrumentation/README.gcc_plugin.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/instrumentation/README.gcc_plugin.md) and
+                                       [https://github.com/AFLplusplus/AFLplusplus/blob/stable/instrumentation/README.instrument_list.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/instrumentation/README.instrument_list.md)
     |
     | if not, or if you do not have a gcc with plugin support
     |
@@ -266,9 +266,9 @@ anything below 9 is not recommended.</p>
    use GCC mode (afl-gcc/afl-g++) (or afl-clang/afl-clang++ for clang)
 </code></pre><p>Clickable README links for the chosen compiler:</p>
 <ul>
-<li><a href="../instrumentation/README.lto.md">LTO mode - afl-clang-lto</a></li>
-<li><a href="../instrumentation/README.llvm.md">LLVM mode - afl-clang-fast</a></li>
-<li><a href="../instrumentation/README.gcc_plugin.md">GCC_PLUGIN mode - afl-gcc-fast</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.lto.md">LTO mode - afl-clang-lto</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md">LLVM mode - afl-clang-fast</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.gcc_plugin.md">GCC_PLUGIN mode - afl-gcc-fast</a></li>
 <li>GCC/CLANG modes (afl-gcc/afl-clang) have no README as they have no own
 features</li>
 </ul>
@@ -291,7 +291,7 @@ afl-gcc-fast, afl-g++-fast (recommended!).</li>
 <p>Because no AFL++ specific command-line options are accepted (beside the
 &ndash;afl-MODE command), the compile-time tools make fairly broad use of environment
 variables, which can be listed with <code>afl-cc -hh</code> or looked up in
-<a href="env_variables.md">env_variables.md</a>.</p>
+<a href="/docs/env_variables/">/docs/env_variables/</a>.</p>
 <h3 id="b-selecting-instrumentation-options">b) Selecting instrumentation options</h3>
 <p>If you instrument with LTO mode (afl-clang-fast/afl-clang-lto), the following
 options are available:</p>
@@ -301,7 +301,7 @@ solve these. This is an important option if you do not have a very good and
 large input corpus. This technique is called laf-intel or COMPCOV. To use
 this, set the following environment variable before compiling the target:
 <code>export AFL_LLVM_LAF_ALL=1</code>. You can read more about this in
-<a href="../instrumentation/README.laf-intel.md">instrumentation/README.laf-intel.md</a>.</li>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.laf-intel.md">instrumentation/README.laf-intel.md</a>.</li>
 <li>A different technique (and usually a better one than laf-intel) is to
 instrument the target so that any compare values in the target are sent to
 AFL++ which then tries to put these values into the fuzzing data at different
@@ -313,7 +313,7 @@ setting <code>AFL_LLVM_CMPLOG=1</code>, and pass this binary to afl-fuzz via the
 parameter. Note that you can compile also just a cmplog binary and use that
 for both, however, there will be a performance penalty. You can read more
 about this in
-<a href="../instrumentation/README.cmplog.md">instrumentation/README.cmplog.md</a>.</li>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.cmplog.md">instrumentation/README.cmplog.md</a>.</li>
 </ul>
 <p>If you use LTO, LLVM, or GCC_PLUGIN mode
 (afl-clang-fast/afl-clang-lto/afl-gcc-fast), you have the option to selectively
@@ -359,17 +359,17 @@ instrumentation.</p>
 </ul>
 <p><strong>NOTE:</strong> During optimization functions might be
 inlined and then would not match the list! See
-<a href="../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a>.</p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a>.</p>
 <p>There are many more options and modes available, however, these are most of the
 time less effective. See:</p>
 <ul>
-<li><a href="../instrumentation/README.llvm.md#6-afl-context-sensitive-branch-coverage">instrumentation/README.llvm.md#6) AFL++ Context Sensitive Branch Coverage</a></li>
-<li><a href="../instrumentation/README.llvm.md#7-afl-n-gram-branch-coverage">instrumentation/README.llvm.md#7) AFL++ N-Gram Branch Coverage</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md#6-afl-context-sensitive-branch-coverage">instrumentation/README.llvm.md#6) AFL++ Context Sensitive Branch Coverage</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md#7-afl-n-gram-branch-coverage">instrumentation/README.llvm.md#7) AFL++ N-Gram Branch Coverage</a></li>
 </ul>
 <p>AFL++ performs &ldquo;never zero&rdquo; counting in its bitmap. You can read more about this
 here:</p>
 <ul>
-<li><a href="../instrumentation/README.llvm.md#8-neverzero-counters">instrumentation/README.llvm.md#8-neverzero-counters</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md#8-neverzero-counters">instrumentation/README.llvm.md#8-neverzero-counters</a></li>
 </ul>
 <h3 id="c-selecting-sanitizers">c) Selecting sanitizers</h3>
 <p>It is possible to use sanitizers when instrumenting targets for fuzzing, which
@@ -463,13 +463,13 @@ afterwards this option has to be unset again!</p>
 <pre tabindex="0"><code>CC=afl-clang-fast CXX=afl-clang-fast++ ./configure --disable-shared
 </code></pre><p>Note that if you are using the (better) afl-clang-lto compiler, you also have to
 set <code>AR</code> to llvm-ar[-VERSION] and <code>RANLIB</code> to llvm-ranlib[-VERSION] - as is
-described in <a href="../instrumentation/README.lto.md">instrumentation/README.lto.md</a>.</p>
+described in <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.lto.md">instrumentation/README.lto.md</a>.</p>
 <h4 id="cmake">CMake</h4>
 <p>For CMake build systems, this is usually done by:</p>
 <pre tabindex="0"><code>mkdir build; cd build; cmake -DCMAKE_C_COMPILER=afl-cc -DCMAKE_CXX_COMPILER=afl-c++ ..
 </code></pre><p>Note that if you are using the (better) afl-clang-lto compiler you also have to
 set AR to llvm-ar[-VERSION] and RANLIB to llvm-ranlib[-VERSION] - as is
-described in <a href="../instrumentation/README.lto.md">instrumentation/README.lto.md</a>.</p>
+described in <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.lto.md">instrumentation/README.lto.md</a>.</p>
 <h4 id="meson-build-system">Meson Build System</h4>
 <p>For the Meson Build System, you have to set the AFL++ compiler with the very
 first command!</p>
@@ -500,7 +500,7 @@ afl-gcc-fast.</p>
 <p>It is the so-called <code>persistent mode</code>, which is much, much faster but requires
 that you code a source file that is specifically calling the target functions
 that you want to fuzz, plus a few specific AFL++ functions around it. See
-<a href="../instrumentation/README.persistent_mode.md">instrumentation/README.persistent_mode.md</a>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.persistent_mode.md">instrumentation/README.persistent_mode.md</a>
 for details.</p>
 <p>Basically, if you do not fuzz a target in persistent mode, then you are just
 doing it for a hobby and not professionally :-).</p>
@@ -515,7 +515,7 @@ fuzzing, and they can be used with AFL++ (and honggfuzz) as well!</p>
 <p>Bonus: the target is already optimized for fuzzing due to persistent mode and
 shared-memory test cases and hence gives you the fastest speed possible.</p>
 <p>For more information, see
-<a href="../utils/aflpp_driver/README.md">utils/aflpp_driver/README.md</a>.</p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../utils/aflpp_driver/README.md">utils/aflpp_driver/README.md</a>.</p>
 <h2 id="2-preparing-the-fuzzing-campaign">2. Preparing the fuzzing campaign</h2>
 <p>As you fuzz the target with mutated input, having as diverse inputs for the
 target as possible improves the efficiency a lot.</p>
@@ -530,7 +530,7 @@ data - from all kind of PNG software.</p>
 <p>If the input format is not known, you can also modify a target program to write
 normal data it receives and processes to a file and use these.</p>
 <p>You can find many good examples of starting files in the
-<a href="../testcases">testcases/</a> subdirectory that comes with this tool.</p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../testcases">testcases/</a> subdirectory that comes with this tool.</p>
 <h3 id="b-making-the-input-corpus-unique">b) Making the input corpus unique</h3>
 <p>Use the AFL++ tool <code>afl-cmin</code> to remove inputs from the corpus that do not
 produce a new path/coverage in the target:</p>
@@ -614,7 +614,7 @@ mode!) and switch the input directory with a dash (<code>-</code>):</p>
 </code></pre><p>Adding a dictionary is helpful. You have to following options:</p>
 <ul>
 <li>See the directory
-<a href="../dictionaries/">dictionaries/</a>, if something is already included for your
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../dictionaries/">dictionaries/</a>, if something is already included for your
 data format, and tell afl-fuzz to load that dictionary by adding <code>-x dictionaries/FORMAT.dict</code>.</li>
 <li>With <code>afl-clang-lto</code>, you have an autodictionary generation for which you need
 to do nothing except to use afl-clang-lto as the compiler.</li>
@@ -623,7 +623,7 @@ to do nothing except to use afl-clang-lto as the compiler.</li>
 dictionary during target compilation.</li>
 <li>You also have the option to generate a dictionary yourself during an
 independent run of the target, see
-<a href="../utils/libtokencap/README.md">utils/libtokencap/README.md</a>.</li>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../utils/libtokencap/README.md">utils/libtokencap/README.md</a>.</li>
 <li>Finally, you can also write a dictionary file manually, of course.</li>
 </ul>
 <p>afl-fuzz has a variety of options that help to workaround target quirks like
@@ -640,9 +640,9 @@ send a signal SIGINT. You can limit the number of executions or approximate
 runtime in seconds with options also.</p>
 <p>When you start afl-fuzz, you will see a user interface that shows what the
 status is:</p>
-<p><img src="resources/screenshot.png" alt="resources/screenshot.png"></p>
+<p><img src="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/resources/screenshot.png" alt="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/resources/screenshot.png"></p>
 <p>All labels are explained in
-<a href="afl-fuzz_approach.md#understanding-the-status-screen">afl-fuzz_approach.md#understanding-the-status-screen</a>.</p>
+<a href="/docs/afl-fuzz_approach/#understanding-the-status-screen">/docs/afl-fuzz_approach/#understanding-the-status-screen</a>.</p>
 <h3 id="b-keeping-memory-use-and-timeouts-in-check">b) Keeping memory use and timeouts in check</h3>
 <p>Memory limits are not enforced by afl-fuzz by default and the system may run out
 of memory. You can decrease the memory with the <code>-m</code> option, the value is in MB.
@@ -690,7 +690,7 @@ be one of them! (Although this is not really recommended.)</li>
 <li>run with a different power schedule, recommended are: <code>fast</code> (default),
 <code>explore</code>, <code>coe</code>, <code>lin</code>, <code>quad</code>, <code>exploit</code>, and <code>rare</code> which you can set with
 the <code>-p</code> option, e.g., <code>-p explore</code>. See the
-<a href="FAQ.md#what-are-power-schedules">FAQ</a> for details.</li>
+<a href="/docs/faq/#what-are-power-schedules">FAQ</a> for details.</li>
 <li>a few instances should use the old queue cycling with <code>-Z</code></li>
 </ul>
 <p>Also, it is recommended to set <code>export AFL_IMPORT_FIRST=1</code> to load test cases
@@ -746,7 +746,7 @@ servers, plus you have an ssh key deployed to all of them, then run:</p>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
 </span></span></code></pre></div><p>You can run this manually, per cron job - as you need it. There is a more
 complex and configurable script in
-<a href="../utils/distributed_fuzzing">utils/distributed_fuzzing</a>.</p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../utils/distributed_fuzzing">utils/distributed_fuzzing</a>.</p>
 <h3 id="e-the-status-of-the-fuzz-campaign">e) The status of the fuzz campaign</h3>
 <p>AFL++ comes with the <code>afl-whatsup</code> script to show the status of the fuzzing
 campaign.</p>
@@ -806,10 +806,10 @@ and use them to seed other good fuzzers like libfuzzer with the -entropic switch
 or honggfuzz.</p>
 <h3 id="i-improve-the-speed">i) Improve the speed!</h3>
 <ul>
-<li>Use <a href="../instrumentation/README.persistent_mode.md">persistent mode</a> (x2-x20
+<li>Use <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.persistent_mode.md">persistent mode</a> (x2-x20
 speed increase).</li>
 <li>If you do not use shmem persistent mode, use <code>AFL_TMPDIR</code> to point the input
-file on a tempfs location, see <a href="env_variables.md">env_variables.md</a>.</li>
+file on a tempfs location, see <a href="/docs/env_variables/">/docs/env_variables/</a>.</li>
 <li>Linux: Improve kernel performance: modify <code>/etc/default/grub</code>, set
 <code>GRUB_CMDLINE_LINUX_DEFAULT=&quot;ibpb=off ibrs=off kpti=off l1tf=off mds=off mitigations=off no_stf_barrier noibpb noibrs nopcid nopti nospec_store_bypass_disable nospectre_v1 nospectre_v2 pcid=off pti=off spec_store_bypass_disable=off spectre_v2=off stf_barrier=off&quot;</code>; then
 <code>update-grub</code> and <code>reboot</code> (warning: makes the system more insecure) - you can
@@ -864,7 +864,7 @@ wholly wrap the actual data format to be tested.</p>
 <p>To work around this, you can comment out the relevant checks (see
 utils/libpng_no_checksum/ for inspiration); if this is not possible, you can
 also write a postprocessor, one of the hooks of custom mutators. See
-<a href="custom_mutators.md">custom_mutators.md</a> on how to use
+<a href="/docs/custom_mutators/">/docs/custom_mutators/</a> on how to use
 <code>AFL_CUSTOM_MUTATOR_LIBRARY</code>.</p>
 </li>
 <li>
@@ -886,7 +886,7 @@ to you, please consult
 <a href="https://lcamtuf.coredump.cx/prep/">https://lcamtuf.coredump.cx/prep/</a>.</p>
 </li>
 </ul>
-<p>Beyond this, see <a href="INSTALL.md">INSTALL.md</a> for platform-specific tips.</p>
+<p>Beyond this, see <a href="/docs/install/">/docs/install/</a> for platform-specific tips.</p>
 <h2 id="4-triaging-crashes">4. Triaging crashes</h2>
 <p>The coverage-based grouping of crashes usually produces a small data set that
 can be quickly triaged manually or with a very simple GDB or Valgrind script.
@@ -968,14 +968,14 @@ campaign but not good for short CI runs.</p>
 and
 <a href="https://github.com/google/clusterfuzz/blob/master/src/clusterfuzz/_internal/bot/fuzzers/afl/launcher.py">clusterfuzz</a>.</p>
 <h2 id="the-end">The End</h2>
-<p>Check out the <a href="FAQ.md">FAQ</a>. Maybe it answers your question (that you might not
+<p>Check out the <a href="/docs/faq/">FAQ</a>. Maybe it answers your question (that you might not
 even have known you had ;-) ).</p>
 <p>This is basically all you need to know to professionally run fuzzing campaigns.
-If you want to know more, the tons of texts in <a href="./">docs/</a> will have you
+If you want to know more, the tons of texts in <a href="/docs/">docs/</a> will have you
 covered.</p>
 <p>Note that there are also a lot of tools out there that help fuzzing with AFL++
 (some might be deprecated or unsupported), see
-<a href="third_party_tools.md">third_party_tools.md</a>.</p>
+<a href="/docs/third_party_tools/">/docs/third_party_tools/</a>.</p>
 </article>
  
 

@@ -25,20 +25,8 @@ Simplifying a bit, the overall algorithm can be summed up as:
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/best_practices/</guid>
-      <description>Best practices Contents Targets  Fuzzing a target with source code available Fuzzing a target with dlopen() instrumented libraries Fuzzing a binary-only target Fuzzing a GUI program Fuzzing a network service  Improvements  Improving speed Improving stability  Targets Fuzzing a target with source code available To learn how to fuzz a target if source code is available, see fuzzing_in_depth.md.
+      <description>Best practices Contents Targets  Fuzzing a target with source code available Fuzzing a target with dlopen() instrumented libraries Fuzzing a binary-only target Fuzzing a GUI program Fuzzing a network service  Improvements  Improving speed Improving stability  Targets Fuzzing a target with source code available To learn how to fuzz a target if source code is available, see /docs/fuzzing_in_depth/.
 Fuzzing a target with dlopen instrumented libraries If a source code based fuzzing target loads instrumented libraries with dlopen() after the forkserver has been activated and non-colliding coverage instrumentation is used (PCGUARD (which is the default), or LTO), then this an issue, because this would enlarge the coverage map, but afl-fuzz doesn&amp;rsquo;t know about it.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://aflplus.plus/docs/binaryonly_fuzzing/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://aflplus.plus/docs/binaryonly_fuzzing/</guid>
-      <description>Fuzzing binary-only programs with AFL++ AFL++, libfuzzer and others are great if you have the source code, and it allows for very fast and coverage guided fuzzing.
-However, if there is only the binary program and no source code available, then standard afl-fuzz -n (non-instrumented mode) is not effective.
-The following is a description of how these binaries can be fuzzed with AFL++.
-TL;DR: qemu_mode in persistent mode is the fastest - if the stability is high enough.</description>
     </item>
     
     <item>
@@ -54,18 +42,6 @@ Version ++4.01a (dev)  fix */build_&amp;hellip;sh scripts to work outside of git
     
     <item>
       <title></title>
-      <link>https://aflplus.plus/docs/custom_mutator/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://aflplus.plus/docs/custom_mutator/</guid>
-      <description>Adding custom mutators to AFL This file describes how you can implement custom mutations to be used in AFL.
-Implemented by Khaled Yakdan from Code Intelligence yakdan@code-intelligence.de
-1) Description Custom mutator libraries can be passed to afl-fuzz to perform custom mutations on test cases beyond those available in AFL - for example, to enable structure-aware fuzzing by using libraries that perform mutations according to a given grammar.
-The custom mutator library is passed to afl-fuzz via the AFL_CUSTOM_MUTATOR_LIBRARY environment variable.</description>
-    </item>
-    
-    <item>
-      <title></title>
       <link>https://aflplus.plus/docs/custom_mutators/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
@@ -74,17 +50,6 @@ The custom mutator library is passed to afl-fuzz via the AFL_CUSTOM_MUTATOR_LIBR
 There is also experimental support for Rust in custom_mutators/rust. For documentation, refer to that directory. Run cargo doc -p custom_mutator --open in that directory to view the documentation in your web browser.
 Implemented by
  C/C++ library (*.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://aflplus.plus/docs/docs/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://aflplus.plus/docs/docs/</guid>
-      <description>Restructure AFL++&amp;rsquo;s documentation About us We are dedicated to everything around fuzzing, our main and most well known contribution is the fuzzer AFL++ which is part of all major Unix distributions (e.g. Debian, Arch, FreeBSD, etc.) and is deployed on Google&amp;rsquo;s oss-fuzz and clusterfuzz. It is rated the top fuzzer on Google&amp;rsquo;s fuzzbench.
-We are four individuals from Europe supported by a large community.
-All our tools are open source.</description>
     </item>
     
     <item>
@@ -137,19 +102,9 @@ For fast, on-the-fly instrumentation of black-box binaries, AFL++ still offers v
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/fuzzing_in_depth/</guid>
-      <description>Fuzzing with AFL++ The following describes how to fuzz with a target if source code is available. If you have a binary-only target, go to fuzzing_binary-only_targets.md.
+      <description>Fuzzing with AFL++ The following describes how to fuzz with a target if source code is available. If you have a binary-only target, go to /docs/fuzzing_binary-only_targets/.
 Fuzzing source code is a three-step process:
  Compile the target with a special compiler that prepares the target to be fuzzed efficiently. This step is called &amp;ldquo;instrumenting a target&amp;rdquo;. Prepare the fuzzing by selecting and optimizing the input corpus for the target. Perform the fuzzing of the target by randomly mutating input and assessing if that input was processed on a new path in the target binary.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://aflplus.plus/docs/historical_notes/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://aflplus.plus/docs/historical_notes/</guid>
-      <description>Historical notes This doc talks about the rationale of some of the high-level design decisions for American Fuzzy Lop. It&amp;rsquo;s adopted from a discussion with Rob Graham. See README.md for the general instruction manual, and technical_details.md for additional implementation-level insights.
-1) Influences In short, afl-fuzz is inspired chiefly by the work done by Tavis Ormandy back in 2007. Tavis did some very persuasive experiments using gcov block coverage to select optimal test cases out of a large corpus of data, and then using them as a starting point for traditional fuzzing workflows.</description>
     </item>
     
     <item>
@@ -185,126 +140,15 @@ docker pull aflplusplus/aflplusplus docker run -ti -v /location/of/your/target:/
     
     <item>
       <title></title>
-      <link>https://aflplus.plus/docs/life_pro_tips/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://aflplus.plus/docs/life_pro_tips/</guid>
-      <description>AFL &amp;ldquo;Life Pro Tips&amp;rdquo; Bite-sized advice for those who understand the basics, but can&amp;rsquo;t be bothered to read or memorize every other piece of documentation for AFL.
-Get more bang for your buck by using fuzzing dictionaries. See dictionaries/README.md to learn how.
-You can get the most out of your hardware by parallelizing AFL jobs. See parallel_fuzzing.md for step-by-step tips.
-Improve the odds of spotting memory corruption bugs with libdislocator.so! It&amp;rsquo;s easy.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://aflplus.plus/docs/notes_for_asan/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://aflplus.plus/docs/notes_for_asan/</guid>
-      <description>Notes for using ASAN with afl-fuzz This file discusses some of the caveats for fuzzing under ASAN, and suggests a handful of alternatives. See README.md for the general instruction manual.
-1) Short version ASAN on 64-bit systems requests a lot of memory in a way that can&amp;rsquo;t be easily distinguished from a misbehaving program bent on crashing your system.
-Because of this, fuzzing with ASAN is recommended only in four scenarios:</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://aflplus.plus/docs/parallel_fuzzing/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://aflplus.plus/docs/parallel_fuzzing/</guid>
-      <description>Tips for parallel fuzzing This document talks about synchronizing afl-fuzz jobs on a single machine or across a fleet of systems. See README.md for the general instruction manual.
-Note that this document is rather outdated. please refer to the main document section on multiple core usage ../README.md#Using multiple cores for up to date strategies!
-1) Introduction Every copy of afl-fuzz will take up one CPU core. This means that on an n-core system, you can almost always run around n concurrent fuzzing jobs with virtually no performance hit (you can use the afl-gotcpu tool to make sure).</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://aflplus.plus/docs/patches/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://aflplus.plus/docs/patches/</guid>
-      <description>Applied Patches The following patches from https://github.com/vanhauser-thc/afl-patches have been installed or not installed:
-INSTALLED afl-llvm-fix.diff	by kcwu(at)csie(dot)org afl-sort-all_uniq-fix.diff	by legarrec(dot)vincent(at)gmail(dot)com laf-intel.diff	by heiko(dot)eissfeldt(at)hexco(dot)de afl-llvm-optimize.diff	by mh(at)mh-sec(dot)de afl-fuzz-tmpdir.diff	by mh(at)mh-sec(dot)de afl-fuzz-79x24.diff	by heiko(dot)eissfeldt(at)hexco(dot)de afl-fuzz-fileextensionopt.diff	tbd afl-as-AFL_INST_RATIO.diff	by legarrec(dot)vincent(at)gmail(dot)com afl-qemu-ppc64.diff	by william(dot)barsse(at)airbus(dot)com afl-qemu-optimize-entrypoint.diff	by mh(at)mh-sec(dot)de afl-qemu-speed.diff	by abiondo on github afl-qemu-optimize-map.diff	by mh(at)mh-sec(dot)de  llvm_mode ngram prev_loc coverage (github.com/adrianherrera/afl-ngram-pass) Custom mutator (native library) (by kyakdan) unicorn_mode (modernized and updated by domenukk) instrim (https://github.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://aflplus.plus/docs/perf_tips/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://aflplus.plus/docs/perf_tips/</guid>
-      <description>Tips for performance optimization This file provides tips for troubleshooting slow or wasteful fuzzing jobs. See README.md for the general instruction manual.
-1. Keep your test cases small This is probably the single most important step to take! Large test cases do not merely take more time and memory to be parsed by the tested binary, but also make the fuzzing process dramatically less efficient in several other ways.
-To illustrate, let&amp;rsquo;s say that you&amp;rsquo;re randomly flipping bits in a file, one bit at a time.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://aflplus.plus/docs/power_schedules/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://aflplus.plus/docs/power_schedules/</guid>
-      <description>afl++&amp;rsquo;s power schedules based on AFLfast Power schedules implemented by Marcel Böhme &amp;lt;marcel.boehme@acm.org&amp;gt;. AFLFast is an extension of AFL which is written and maintained by Michal Zalewski &amp;lt;lcamtuf@google.com&amp;gt;.
-AFLfast has helped in the success of Team Codejitsu at the finals of the DARPA Cyber Grand Challenge where their bot Galactica took 2nd place in terms of #POVs proven (see red bar at https://www.cybergrandchallenge.com/event#results). AFLFast exposed several previously unreported CVEs that could not be exposed by AFL in 24 hours and otherwise exposed vulnerabilities significantly faster than AFL while generating orders of magnitude more unique crashes.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://aflplus.plus/docs/python_mutators/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://aflplus.plus/docs/python_mutators/</guid>
-      <description>Adding custom mutators to AFL using Python modules This file describes how you can utilize the external Python API to write your own custom mutation routines.
-Note: This feature is highly experimental. Use at your own risk.
-Implemented by Christian Holler (:decoder) choller@mozilla.com.
-NOTE: Only cPython 2.7, 3.7 and above are supported, although others may work. Depending on with which version afl-fuzz was compiled against, you must use python2 or python3 syntax in your scripts!</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://aflplus.plus/docs/quickstartguide/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://aflplus.plus/docs/quickstartguide/</guid>
-      <description>AFL quick start guide You should read README.md - it&amp;rsquo;s pretty short. If you really can&amp;rsquo;t, here&amp;rsquo;s how to hit the ground running:
-  Compile AFL with &amp;lsquo;make&amp;rsquo;. If build fails, see INSTALL.md for tips.
-  Find or write a reasonably fast and simple program that takes data from a file or stdin, processes it in a test-worthy way, then exits cleanly. If testing a network service, modify it to run in the foreground and read from stdin.</description>
-    </item>
-    
-    <item>
-      <title></title>
       <link>https://aflplus.plus/docs/readme/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/readme/</guid>
       <description>AFL++ documentation This is the overview of the AFL++ docs content.
 For general information on AFL++, see the README.md of the repository.
-Also take a look at our FAQ.md and best_practices.md.
+Also take a look at our /docs/faq/ and /docs/best_practices/.
 Fuzzing targets with the source code available You can find a quickstart for fuzzing targets with the source code available in the README.md of the repository.
-For in-depth information on the steps of the fuzzing process, see fuzzing_in_depth.md or click on the following image and select a step.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://aflplus.plus/docs/readme.mopt/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://aflplus.plus/docs/readme.mopt/</guid>
-      <description>MOpt(imized) AFL by puppet@zju.edu.cn 1. Description MOpt-AFL is a AFL-based fuzzer that utilizes a customized Particle Swarm Optimization (PSO) algorithm to find the optimal selection probability distribution of operators with respect to fuzzing effectiveness. More details can be found in the technical report.
-2. Cite Information Chenyang Lyu, Shouling Ji, Chao Zhang, Yuwei Li, Wei-Han Lee, Yu Song and Raheem Beyah, MOPT: Optimized Mutation Scheduling for Fuzzers, USENIX Security 2019.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://aflplus.plus/docs/readme.radamsa/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://aflplus.plus/docs/readme.radamsa/</guid>
-      <description>libradamsa Pretranslated radamsa library. This code belongs to the radamsa author.
- Original repository: https://gitlab.com/akihe/radamsa
-  Source commit: 7b2cc2d0
-  The code here is adapted for AFL++ with minor changes respect the original version
- </description>
+For in-depth information on the steps of the fuzzing process, see /docs/fuzzing_in_depth/ or click on the following image and select a step.</description>
     </item>
     
     <item>
@@ -315,41 +159,6 @@ For in-depth information on the steps of the fuzzing process, see fuzzing_in_dep
       <guid>https://aflplus.plus/docs/rpc_statsd/</guid>
       <description>Remote monitoring and metrics visualization AFL++ can send out metrics as StatsD messages. For remote monitoring and visualization of the metrics, you can set up a tool chain. For example, with Prometheus and Grafana. All tools are free and open source.
 This enables you to create nice and readable dashboards containing all the information you need on your fuzzer instances. There is no need to write your own statistics parsing system, deploy and maintain it to all your instances, and sync with your graph rendering system.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://aflplus.plus/docs/sister_projects/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://aflplus.plus/docs/sister_projects/</guid>
-      <description>Sister projects This doc lists some of the projects that are inspired by, derived from, designed for, or meant to integrate with AFL. See README.md for the general instruction manual.
-!!! !!! This list is outdated and needs an update, missing: e.g. Angora, FairFuzz !!!
-Support for other languages / environments: Python AFL (Jakub Wilk) Allows fuzz-testing of Python programs. Uses custom instrumentation and its own forkserver.
-http://jwilk.net/software/python-afl
-Go-fuzz (Dmitry Vyukov) AFL-inspired guided fuzzing approach for Go targets:</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://aflplus.plus/docs/status_screen/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://aflplus.plus/docs/status_screen/</guid>
-      <description>Understanding the status screen This document provides an overview of the status screen - plus tips for troubleshooting any warnings and red text shown in the UI. See README.md for the general instruction manual.
-A note about colors The status screen and error messages use colors to keep things readable and attract your attention to the most important details. For example, red almost always means &amp;ldquo;consult this doc&amp;rdquo; :-)
-Unfortunately, the UI will render correctly only if your terminal is using traditional un*x palette (white text on black background) or something close to that.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://aflplus.plus/docs/technical_details/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://aflplus.plus/docs/technical_details/</guid>
-      <description>Technical &amp;ldquo;whitepaper&amp;rdquo; for afl-fuzz NOTE: this document is rather outdated!
-This document provides a quick overview of the guts of American Fuzzy Lop. See README.md for the general instruction manual; and for a discussion of motivations and design goals behind AFL, see historical_notes.md.
-0. Design statement American Fuzzy Lop does its best not to focus on any singular principle of operation and not be a proof-of-concept for any specific theory. The tool can be thought of as a collection of hacks that have been tested in practice, found to be surprisingly effective, and have been implemented in the simplest, most robust way I could think of at the time.</description>
     </item>
     
     <item>

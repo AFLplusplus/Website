@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.55d88fec982aa3f5097be652331046a67e9f15d3d98021ac28d1a4e98a7acee6.js" integrity="sha256-VdiP7Jgqo/UJe&#43;ZSMxBGpn6fFdPZgCGsKNGk6Yp6zuY="></script>
+<script defer src="/en.search.min.27ca7e0c081e567a47139167fd21c9ab2930d7a53e2c463eb94af09683d77010.js" integrity="sha256-J8p&#43;DAgeVnpHE5Fn/SHJqykw16U&#43;LEY&#43;uUrwloPXcBA="></script>
 
 <!--
 Made with Book Theme
@@ -215,7 +215,7 @@ superior to blind fuzzing or coverage-only tools.</p>
 <h2 id="understanding-the-status-screen">Understanding the status screen</h2>
 <p>This section provides an overview of the status screen - plus tips for
 troubleshooting any warnings and red text shown in the UI.</p>
-<p>For the general instruction manual, see <a href="README.md">README.md</a>.</p>
+<p>For the general instruction manual, see <a href="/docs/readme/">/docs/readme/</a>.</p>
 <h3 id="a-note-about-colors">A note about colors</h3>
 <p>The status screen and error messages use colors to keep things readable and
 attract your attention to the most important details. For example, red almost
@@ -324,7 +324,7 @@ this in pink, just to make you aware.</li>
 make heavy use of template-generated code. Because high bitmap density makes
 it harder for the fuzzer to reliably discern new program states, we recommend
 recompiling the binary with <code>AFL_INST_RATIO=10</code> or so and trying again (see
-<a href="env_variables.md">env_variables.md</a>). The fuzzer will flag high percentages
+<a href="/docs/env_variables/">/docs/env_variables/</a>). The fuzzer will flag high percentages
 in red. Chances are, you will never see that unless you&rsquo;re fuzzing extremely
 hairy software (say, v8, perl, ffmpeg).</li>
 </ul>
@@ -374,7 +374,7 @@ with no new paths. It is equivalent to &lsquo;havoc&rsquo;, except that it first
 together two random inputs from the queue at some arbitrarily selected
 midpoint.</li>
 <li>sync - a stage used only when <code>-M</code> or <code>-S</code> is set (see
-<a href="fuzzing_in_depth.md#c-using-multiple-cores">fuzzing_in_depth.md:3c) Using multiple cores</a>).
+<a href="/docs/fuzzing_in_depth/#c-using-multiple-cores">fuzzing_in_depth.md:3c) Using multiple cores</a>).
 No real fuzzing is involved, but the tool scans the output from other fuzzers
 and imports test cases as necessary. The first time this is done, it may take
 several minutes or so.</li>
@@ -385,7 +385,7 @@ for the current program execution speed. This may fluctuate from one test case
 to another, but the benchmark should be ideally over 500 execs/sec most of the
 time - and if it stays below 100, the job will probably take very long.</p>
 <p>The fuzzer will explicitly warn you about slow targets, too. If this happens,
-see the <a href="best_practices.md#improving-speed">best_practices.md#improving-speed</a>
+see the <a href="/docs/best_practices/#improving-speed">/docs/best_practices/#improving-speed</a>
 for ideas on how to speed things up.</p>
 <h3 id="findings-in-depth">Findings in depth</h3>
 <pre tabindex="0"><code>  +--------------------------------------+
@@ -475,7 +475,7 @@ Generally harmless. For example, when fuzzing sqlite, an input like <code>select
 the &lsquo;stability&rsquo; metric stays over 90% or so, but can become an issue if not.
 Here&rsquo;s what to try:
 <ul>
-<li>Use afl-clang-fast from <a href="../instrumentation/">instrumentation</a> - it uses a
+<li>Use afl-clang-fast from <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/">instrumentation</a> - it uses a
 thread-local tracking model that is less prone to concurrency issues,</li>
 <li>See if the target can be compiled or run without threads. Common
 <code>./configure</code> options include <code>--without-threads</code>, <code>--disable-pthreads</code>, or
@@ -501,7 +501,7 @@ comparing it to the number of logical cores on the system.</p>
 <p>If the value is shown in green, you are using fewer CPU cores than available on
 your system and can probably parallelize to improve performance; for tips on how
 to do that, see
-<a href="fuzzing_in_depth.md#c-using-multiple-cores">fuzzing_in_depth.md:3c) Using multiple cores</a>.</p>
+<a href="/docs/fuzzing_in_depth/#c-using-multiple-cores">fuzzing_in_depth.md:3c) Using multiple cores</a>.</p>
 <p>If the value is shown in red, your CPU is <em>possibly</em> oversubscribed, and running
 additional fuzzers may not give you any benefits.</p>
 <p>Of course, this benchmark is very simplistic; it tells you how many processes
@@ -561,7 +561,7 @@ You can build and install it as follows:</p>
 </span></span><span style="display:flex;"><span>cd ../../
 </span></span><span style="display:flex;"><span>sudo make install
 </span></span></code></pre></div><p>To learn more about remote monitoring and metrics visualization with StatsD, see
-<a href="rpc_statsd.md">rpc_statsd.md</a>.</p>
+<a href="/docs/rpc_statsd/">/docs/rpc_statsd/</a>.</p>
 <h3 id="addendum-status-and-plot-files">Addendum: status and plot files</h3>
 <p>For unattended operation, some of the key status screen information can be also
 found in a machine-readable format in the fuzzer_stats file in the output

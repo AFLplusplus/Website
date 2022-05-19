@@ -1,3 +1,8 @@
+---
+bookCollapseSection: true
+weight: 20
+---
+
 # Changelog
 
   This is the list of all noteworthy changes made in every public

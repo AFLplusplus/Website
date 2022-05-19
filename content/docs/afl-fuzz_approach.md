@@ -1,3 +1,8 @@
+---
+bookCollapseSection: true
+weight: 20
+---
+
 # The afl-fuzz approach
 
 AFL++ is a brute-force fuzzer coupled with an exceedingly simple but rock-solid
@@ -40,7 +45,7 @@ superior to blind fuzzing or coverage-only tools.
 This section provides an overview of the status screen - plus tips for
 troubleshooting any warnings and red text shown in the UI.
 
-For the general instruction manual, see [README.md](README.md).
+For the general instruction manual, see [{{< relref "README.md" >}}]({{< relref "README.md" >}}).
 
 ### A note about colors
 
@@ -142,7 +147,7 @@ The remaining fields in this part of the screen should be pretty obvious:
 there's the number of test cases ("paths") discovered so far, and the number of
 unique faults. The test cases, crashes, and hangs can be explored in real-time
 by browsing the output directory, see
-[#interpreting-output](#interpreting-output).
+[{{< relref "#interpreting-output" >}}]({{< relref "#interpreting-output" >}}).
 
 ### Cycle progress
 
@@ -187,7 +192,7 @@ Be wary of extremes:
   make heavy use of template-generated code. Because high bitmap density makes
   it harder for the fuzzer to reliably discern new program states, we recommend
   recompiling the binary with `AFL_INST_RATIO=10` or so and trying again (see
-  [env_variables.md](env_variables.md)). The fuzzer will flag high percentages
+  [{{< relref "env_variables.md" >}}]({{< relref "env_variables.md" >}})). The fuzzer will flag high percentages
   in red. Chances are, you will never see that unless you're fuzzing extremely
   hairy software (say, v8, perl, ffmpeg).
 
@@ -243,7 +248,7 @@ now. It tells you about the current stage, which can be any of:
   together two random inputs from the queue at some arbitrarily selected
   midpoint.
 - sync - a stage used only when `-M` or `-S` is set (see
-  [fuzzing_in_depth.md:3c) Using multiple cores](fuzzing_in_depth.md#c-using-multiple-cores)).
+  [fuzzing_in_depth.md:3c) Using multiple cores]({{< relref "fuzzing_in_depth.md#c-using-multiple-cores" >}})).
   No real fuzzing is involved, but the tool scans the output from other fuzzers
   and imports test cases as necessary. The first time this is done, it may take
   several minutes or so.
@@ -255,7 +260,7 @@ to another, but the benchmark should be ideally over 500 execs/sec most of the
 time - and if it stays below 100, the job will probably take very long.
 
 The fuzzer will explicitly warn you about slow targets, too. If this happens,
-see the [best_practices.md#improving-speed](best_practices.md#improving-speed)
+see the [{{< relref "best_practices.md#improving-speed" >}}]({{< relref "best_practices.md#improving-speed" >}})
 for ideas on how to speed things up.
 
 ### Findings in depth
@@ -368,7 +373,7 @@ there are several things to look at:
 - Multiple threads executing at once in semi-random order. This is harmless when
   the 'stability' metric stays over 90% or so, but can become an issue if not.
   Here's what to try:
-  * Use afl-clang-fast from [instrumentation](../instrumentation/) - it uses a
+  * Use afl-clang-fast from [instrumentation](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/) - it uses a
     thread-local tracking model that is less prone to concurrency issues,
   * See if the target can be compiled or run without threads. Common
     `./configure` options include `--without-threads`, `--disable-pthreads`, or
@@ -398,7 +403,7 @@ comparing it to the number of logical cores on the system.
 If the value is shown in green, you are using fewer CPU cores than available on
 your system and can probably parallelize to improve performance; for tips on how
 to do that, see
-[fuzzing_in_depth.md:3c) Using multiple cores](fuzzing_in_depth.md#c-using-multiple-cores).
+[fuzzing_in_depth.md:3c) Using multiple cores]({{< relref "fuzzing_in_depth.md#c-using-multiple-cores" >}}).
 
 If the value is shown in red, your CPU is *possibly* oversubscribed, and running
 additional fuzzers may not give you any benefits.
@@ -413,7 +418,7 @@ from the command line.
 
 ## Interpreting output
 
-See [#understanding-the-status-screen](#understanding-the-status-screen) for
+See [{{< relref "#understanding-the-status-screen" >}}]({{< relref "#understanding-the-status-screen" >}}) for
 information on how to interpret the displayed stats and monitor the health of
 the process. Be sure to consult this file especially if any UI elements are
 highlighted in red.
@@ -469,7 +474,7 @@ sudo make install
 ```
 
 To learn more about remote monitoring and metrics visualization with StatsD, see
-[rpc_statsd.md](rpc_statsd.md).
+[{{< relref "rpc_statsd.md" >}}]({{< relref "rpc_statsd.md" >}}).
 
 ### Addendum: status and plot files
 

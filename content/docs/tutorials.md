@@ -1,3 +1,8 @@
+---
+bookCollapseSection: true
+weight: 20
+---
+
 # Tutorials
 
 Here are some good write-ups to show how to effectively use AFL++:

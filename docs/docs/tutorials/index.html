@@ -36,9 +36,8 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.55d88fec982aa3f5097be652331046a67e9f15d3d98021ac28d1a4e98a7acee6.js" integrity="sha256-VdiP7Jgqo/UJe&#43;ZSMxBGpn6fFdPZgCGsKNGk6Yp6zuY="></script>
+<script defer src="/en.search.min.27ca7e0c081e567a47139167fd21c9ab2930d7a53e2c463eb94af09683d77010.js" integrity="sha256-J8p&#43;DAgeVnpHE5Fn/SHJqykw16U&#43;LEY&#43;uUrwloPXcBA="></script>
 
-<link rel="alternate" type="application/rss+xml" href="https://aflplus.plus/docs/tutorials/index.xml" title="AFLplusplus" />
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -142,7 +141,7 @@ https://github.com/alex-shpak/hugo-book
       
   <nav id="TableOfContents">
   <ul>
-    <li><a href="#third-party">Third party</a></li>
+    <li><a href="#video-tutorials">Video Tutorials</a></li>
   </ul>
 </nav>
 
@@ -153,17 +152,46 @@ https://github.com/alex-shpak/hugo-book
       </header>
 
       
-<article class="markdown"><h1 id="afl-tutorials">AFL++ Tutorials</h1>
-<ol>
-<li><a href="https://aflplus.plus/docs/tutorials/libxml2_tutorial/">Fuzzing libxml2 with AFL++</a></li>
-</ol>
-<h2 id="third-party">Third party</h2>
-<ol>
-<li><a href="https://securitylab.github.com/research/fuzzing-challenges-solutions-1">Fuzzing software: common challenges and potential solutions (Github Security Lab)</a></li>
-<li><a href="https://securitylab.github.com/research/fuzzing-sockets-FTP">Fuzzing sockets, part 1: FTP servers</a></li>
-<li><a href="https://bananamafia.dev/post/gb-fuzz/">Fuzzing a Gameboy Emulator with AFL++ (bananamafia)</a></li>
-<li><a href="https://www.pentagrid.ch/en/blog/pentagrid-aflplusplus-suite-docker-images/">AFL++ Docker suite images (Pentagrid)</a></li>
-</ol>
+<article class="markdown"><h1 id="tutorials">Tutorials</h1>
+<p>Here are some good write-ups to show how to effectively use AFL++:</p>
+<ul>
+<li><a href="https://aflplus.plus/docs/tutorials/libxml2_tutorial/">https://aflplus.plus/docs/tutorials/libxml2_tutorial/</a></li>
+<li><a href="https://bananamafia.dev/post/gb-fuzz/">https://bananamafia.dev/post/gb-fuzz/</a></li>
+<li><a href="https://securitylab.github.com/research/fuzzing-challenges-solutions-1">https://securitylab.github.com/research/fuzzing-challenges-solutions-1</a></li>
+<li><a href="https://securitylab.github.com/research/fuzzing-software-2">https://securitylab.github.com/research/fuzzing-software-2</a></li>
+<li><a href="https://securitylab.github.com/research/fuzzing-sockets-FTP">https://securitylab.github.com/research/fuzzing-sockets-FTP</a></li>
+<li><a href="https://securitylab.github.com/research/fuzzing-sockets-FreeRDP">https://securitylab.github.com/research/fuzzing-sockets-FreeRDP</a></li>
+<li><a href="https://securitylab.github.com/research/fuzzing-apache-1">https://securitylab.github.com/research/fuzzing-apache-1</a></li>
+<li><a href="https://mmmds.pl/fuzzing-map-parser-part-1-teeworlds/">https://mmmds.pl/fuzzing-map-parser-part-1-teeworlds/</a></li>
+</ul>
+<p>If you do not want to follow a tutorial but rather try an exercise type of
+training, then we can highly recommend the following:</p>
+<ul>
+<li><a href="https://github.com/antonio-morales/Fuzzing101">https://github.com/antonio-morales/Fuzzing101</a></li>
+</ul>
+<p>If you are interested in fuzzing structured data (where you define what the
+structure is), these links have you covered:</p>
+<ul>
+<li>libprotobuf for AFL++:
+<a href="https://github.com/P1umer/AFLplusplus-protobuf-mutator">https://github.com/P1umer/AFLplusplus-protobuf-mutator</a></li>
+<li>libprotobuf raw:
+<a href="https://github.com/bruce30262/libprotobuf-mutator_fuzzing_learning/tree/master/4_libprotobuf_aflpp_custom_mutator">https://github.com/bruce30262/libprotobuf-mutator_fuzzing_learning/tree/master/4_libprotobuf_aflpp_custom_mutator</a></li>
+<li>libprotobuf for old AFL++ API:
+<a href="https://github.com/thebabush/afl-libprotobuf-mutator">https://github.com/thebabush/afl-libprotobuf-mutator</a></li>
+<li>Superion for AFL++:
+<a href="https://github.com/adrian-rt/superion-mutator">https://github.com/adrian-rt/superion-mutator</a></li>
+</ul>
+<h2 id="video-tutorials">Video Tutorials</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=5dCvhkbi3RA">Install AFL++ Ubuntu</a></li>
+<li><a href="https://www.youtube.com/watch?v=9wRVo0kYSlc">[Fuzzing with AFLplusplus] Installing AFLPlusplus and fuzzing a simple C program</a></li>
+<li><a href="https://www.youtube.com/watch?v=LGPJdEO02p4">[Fuzzing with AFLplusplus] How to fuzz a binary with no source code on Linux in persistent mode</a></li>
+<li><a href="https://www.youtube.com/watch?v=sjLFf9q2NRc">Blackbox Fuzzing #1: Start Binary-Only Fuzzing using AFL++ QEMU mode</a></li>
+<li><a href="https://www.youtube.com/watch?v=A8ex1hqaQ7E">HOPE 2020 (2020): Hunting Bugs in Your Sleep - How to Fuzz (Almost) Anything With AFL/AFL++</a></li>
+<li><a href="https://www.youtube.com/watch?v=COHUWuLTbdk">How Fuzzing with AFL works!</a></li>
+<li><a href="https://www.youtube.com/watch?v=cZidm6I7KWU">WOOT &lsquo;20 - AFL++ : Combining Incremental Steps of Fuzzing Research</a></li>
+</ul>
+<p>If you find other good ones, please send them to us :-)</p>
 </article>
  
 
@@ -194,7 +222,7 @@ https://github.com/alex-shpak/hugo-book
       
   <nav id="TableOfContents">
   <ul>
-    <li><a href="#third-party">Third party</a></li>
+    <li><a href="#video-tutorials">Video Tutorials</a></li>
   </ul>
 </nav>
 

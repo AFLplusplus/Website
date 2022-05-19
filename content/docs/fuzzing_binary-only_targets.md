@@ -1,3 +1,8 @@
+---
+bookCollapseSection: true
+weight: 20
+---
+
 # Fuzzing binary-only targets
 
 AFL++, libfuzzer, and other fuzzers are great if you have the source code of the
@@ -60,15 +65,15 @@ to increase the speed:
 - using AFL_ENTRYPOINT to move the forkserver entry to a later basic block in
   the binary (+5-10% speed)
 - using persistent mode
-  [qemu_mode/README.persistent.md](../qemu_mode/README.persistent.md) this will
+  [qemu_mode/README.persistent.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../qemu_mode/README.persistent.md) this will
   result in a 150-300% overall speed increase - so 3-8x the original QEMU mode
   speed!
 - using AFL_CODE_START/AFL_CODE_END to only instrument specific parts
 
 For additional instructions and caveats, see
-[qemu_mode/README.md](../qemu_mode/README.md). If possible, you should use the
+[qemu_mode/README.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../qemu_mode/README.md). If possible, you should use the
 persistent mode, see
-[qemu_mode/README.persistent.md](../qemu_mode/README.persistent.md). The mode is
+[qemu_mode/README.persistent.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../qemu_mode/README.persistent.md). The mode is
 approximately 2-5x slower than compile-time instrumentation, and is less
 conducive to parallelization.
 
@@ -88,7 +93,7 @@ Wine, python3, and the pefile python package installed.
 It is included in AFL++.
 
 For more information, see
-[qemu_mode/README.wine.md](../qemu_mode/README.wine.md).
+[qemu_mode/README.wine.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../qemu_mode/README.wine.md).
 
 ### FRIDA mode
 
@@ -105,10 +110,10 @@ gmake
 ```
 
 For additional instructions and caveats, see
-[frida_mode/README.md](../frida_mode/README.md).
+[frida_mode/README.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../frida_mode/README.md).
 
 If possible, you should use the persistent mode, see
-[instrumentation/README.persistent_mode.md](../instrumentation/README.persistent_mode.md).
+[instrumentation/README.persistent_mode.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.persistent_mode.md).
 The mode is approximately 2-5x slower than compile-time instrumentation, and is
 less conducive to parallelization. But for binary-only fuzzing, it gives a huge
 speed improvement if it is possible to use.
@@ -135,7 +140,7 @@ to x86_x64.
 
 For binary-only fuzzing a special 5.10 kernel is required.
 
-See [nyx_mode/README.md](../nyx_mode/README.md).
+See [nyx_mode/README.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../nyx_mode/README.md).
 
 ### Unicorn
 
@@ -156,7 +161,7 @@ cd unicorn_mode
 ```
 
 For further information, check out
-[unicorn_mode/README.md](../unicorn_mode/README.md).
+[unicorn_mode/README.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../unicorn_mode/README.md).
 
 ### Shared libraries
 
@@ -169,7 +174,7 @@ Another, less precise and slower option is to fuzz it with utils/afl_untracer/
 and use afl-untracer.c as a template. It is slower than FRIDA mode.
 
 For more information, see
-[utils/afl_untracer/README.md](../utils/afl_untracer/README.md).
+[utils/afl_untracer/README.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../utils/afl_untracer/README.md).
 
 ### Coresight
 
@@ -179,7 +184,7 @@ however, cannot run in parallel. Currently, only one process can be traced, it
 is WIP.
 
 Fore more information, see
-[coresight_mode/README.md](../coresight_mode/README.md).
+[coresight_mode/README.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../coresight_mode/README.md).
 
 ## Binary rewriters
 

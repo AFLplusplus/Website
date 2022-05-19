@@ -1,26 +1,31 @@
+---
+bookCollapseSection: true
+weight: 20
+---
+
 # Best practices
 
 ## Contents
 
 ### Targets
 
-* [Fuzzing a target with source code available](#fuzzing-a-target-with-source-code-available)
-* [Fuzzing a target with dlopen() instrumented libraries](#fuzzing-a-target-with-dlopen-instrumented-libraries)
-* [Fuzzing a binary-only target](#fuzzing-a-binary-only-target)
-* [Fuzzing a GUI program](#fuzzing-a-gui-program)
-* [Fuzzing a network service](#fuzzing-a-network-service)
+* [Fuzzing a target with source code available]({{< relref "#fuzzing-a-target-with-source-code-available" >}})
+* [Fuzzing a target with dlopen() instrumented libraries]({{< relref "#fuzzing-a-target-with-dlopen-instrumented-libraries" >}})
+* [Fuzzing a binary-only target]({{< relref "#fuzzing-a-binary-only-target" >}})
+* [Fuzzing a GUI program]({{< relref "#fuzzing-a-gui-program" >}})
+* [Fuzzing a network service]({{< relref "#fuzzing-a-network-service" >}})
 
 ### Improvements
 
-* [Improving speed](#improving-speed)
-* [Improving stability](#improving-stability)
+* [Improving speed]({{< relref "#improving-speed" >}})
+* [Improving stability]({{< relref "#improving-stability" >}})
 
 ## Targets
 
 ### Fuzzing a target with source code available
 
 To learn how to fuzz a target if source code is available, see
-[fuzzing_in_depth.md](fuzzing_in_depth.md).
+[{{< relref "fuzzing_in_depth.md" >}}]({{< relref "fuzzing_in_depth.md" >}}).
 
 ### Fuzzing a target with dlopen instrumented libraries
 
@@ -45,7 +50,7 @@ instrumentation.
 ### Fuzzing a binary-only target
 
 For a comprehensive guide, see
-[fuzzing_binary-only_targets.md](fuzzing_binary-only_targets.md).
+[{{< relref "fuzzing_binary-only_targets.md" >}}]({{< relref "fuzzing_binary-only_targets.md" >}}).
 
 ### Fuzzing a GUI program
 
@@ -74,14 +79,14 @@ Using a network channel is inadequate for several reasons:
 The established method to fuzz network services is to modify the source code to
 read from a file or stdin (fd 0) (or even faster via shared memory, combine this
 with persistent mode
-[instrumentation/README.persistent_mode.md](../instrumentation/README.persistent_mode.md)
+[instrumentation/README.persistent_mode.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.persistent_mode.md)
 and you have a performance gain of x10 instead of a performance loss of over x10
 - that is a x100 difference!).
 
 If modifying the source is not an option (e.g., because you only have a binary
 and perform binary fuzzing) you can also use a shared library with AFL_PRELOAD
 to emulate the network. This is also much faster than the real network would be.
-See [utils/socket_fuzzing/](../utils/socket_fuzzing/).
+See [utils/socket_fuzzing/](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../utils/socket_fuzzing/).
 
 There is an outdated AFL++ branch that implements networking if you are
 desperate though:
@@ -94,15 +99,15 @@ allows you to define network state with different type of data packets.
 
 ### Improving speed
 
-1. Use [llvm_mode](../instrumentation/README.llvm.md): afl-clang-lto (llvm >=
+1. Use [llvm_mode](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md): afl-clang-lto (llvm >=
    11) or afl-clang-fast (llvm >= 9 recommended).
-2. Use [persistent mode](../instrumentation/README.persistent_mode.md) (x2-x20
+2. Use [persistent mode](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.persistent_mode.md) (x2-x20
    speed increase).
 3. Instrument just what you are interested in, see
-   [instrumentation/README.instrument_list.md](../instrumentation/README.instrument_list.md).
+   [instrumentation/README.instrument_list.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.instrument_list.md).
 4. If you do not use shmem persistent mode, use `AFL_TMPDIR` to put the input
    file directory on a tempfs location, see
-   [env_variables.md](env_variables.md).
+   [{{< relref "env_variables.md" >}}]({{< relref "env_variables.md" >}}).
 5. Improve Linux kernel performance: modify `/etc/default/grub`, set
    `GRUB_CMDLINE_LINUX_DEFAULT="ibpb=off ibrs=off kpti=off l1tf=off mds=off
    mitigations=off no_stf_barrier noibpb noibrs nopcid nopti
@@ -112,7 +117,7 @@ allows you to define network state with different type of data packets.
 6. Running on an `ext2` filesystem with `noatime` mount option will be a bit
    faster than on any other journaling filesystem.
 7. Use your cores
-   ([fuzzing_in_depth.md:3c) Using multiple cores](fuzzing_in_depth.md#c-using-multiple-cores))!
+   ([fuzzing_in_depth.md:3c) Using multiple cores]({{< relref "fuzzing_in_depth.md#c-using-multiple-cores" >}}))!
 
 ### Improving stability
 
@@ -172,7 +177,7 @@ coding and/or disassembly and is effectively possible only with `afl-clang-fast`
      for instrumentation. Note that optimization might inline functions!
 
      Follow this document on how to do this:
-     [instrumentation/README.instrument_list.md](../instrumentation/README.instrument_list.md).
+     [instrumentation/README.instrument_list.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.instrument_list.md).
 
      If `PCGUARD` is used, then you need to follow this guide (needs llvm 12+!):
      [https://clang.llvm.org/docs/SanitizerCoverage.html#partially-disabling-instrumentation](https://clang.llvm.org/docs/SanitizerCoverage.html#partially-disabling-instrumentation)

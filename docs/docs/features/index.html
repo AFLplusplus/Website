@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.55d88fec982aa3f5097be652331046a67e9f15d3d98021ac28d1a4e98a7acee6.js" integrity="sha256-VdiP7Jgqo/UJe&#43;ZSMxBGpn6fFdPZgCGsKNGk6Yp6zuY="></script>
+<script defer src="/en.search.min.27ca7e0c081e567a47139167fd21c9ab2930d7a53e2c463eb94af09683d77010.js" integrity="sha256-J8p&#43;DAgeVnpHE5Fn/SHJqykw16U&#43;LEY&#43;uUrwloPXcBA="></script>
 
 <!--
 Made with Book Theme
@@ -311,42 +311,42 @@ QEMU 5.1 with laf-intel and Redqueen, FRIDA mode, unicorn mode, gcc plugin, full
 </table>
 <h2 id="more-information-about-features">More information about features</h2>
 <p>A. Default is not thread-safe coverage counter updates for better performance,
-see <a href="../instrumentation/README.llvm.md">instrumentation/README.llvm.md</a></p>
+see <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md">instrumentation/README.llvm.md</a></p>
 <p>B. On wrapping coverage counters (255 + 1), skip the 0 value and jump to 1
 instead. This has shown to give better coverage data and is the default; see
-<a href="../instrumentation/README.llvm.md">instrumentation/README.llvm.md</a>.</p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md">instrumentation/README.llvm.md</a>.</p>
 <p>C. Instead of forking, reiterate the fuzz target function in a loop (like
 <code>LLVMFuzzerTestOneInput</code>. Great speed increase but only works with target
 functions that do not keep state, leak memory, or exit; see
-<a href="../instrumentation/README.persistent_mode.md">instrumentation/README.persistent_mode.md</a></p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.persistent_mode.md">instrumentation/README.persistent_mode.md</a></p>
 <p>D. Split any non-8-bit comparison to 8-bit comparison; see
-<a href="../instrumentation/README.laf-intel.md">instrumentation/README.laf-intel.md</a></p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.laf-intel.md">instrumentation/README.laf-intel.md</a></p>
 <p>E. CmpLog is our enhanced
 <a href="https://www.ndss-symposium.org/ndss-paper/redqueen-fuzzing-with-input-to-state-correspondence/">Redqueen</a>
 implementation, see
-<a href="../instrumentation/README.cmplog.md">instrumentation/README.cmplog.md</a></p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.cmplog.md">instrumentation/README.cmplog.md</a></p>
 <p>F. Similar and compatible to clang 13+ sancov sanitize-coverage-allow/deny but
 for all llvm versions and all our compile modes, only instrument what should
 be instrumented, for more speed, directed fuzzing and less instability; see
-<a href="../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a></p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a></p>
 <p>G. Vanilla AFL uses coverage where edges could collide to the same coverage
 bytes the larger the target is. Our default instrumentation in LTO and
 afl-clang-fast (PCGUARD) uses non-colliding coverage that also makes it
 faster. Vanilla AFL style is available with <code>AFL_LLVM_INSTRUMENT=AFL</code>; see
-<a href="../instrumentation/README.llvm.md">instrumentation/README.llvm.md</a>.</p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md">instrumentation/README.llvm.md</a>.</p>
 <p>H.+I. Alternative coverage based on previous edges (NGRAM) or depending on the
 caller (CTX), based on
 <a href="https://www.usenix.org/system/files/raid2019-wang-jinghan.pdf">https://www.usenix.org/system/files/raid2019-wang-jinghan.pdf</a>;
-see <a href="../instrumentation/README.llvm.md">instrumentation/README.llvm.md</a>.</p>
+see <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md">instrumentation/README.llvm.md</a>.</p>
 <p>J. An LTO feature that creates a fuzzing dictionary based on comparisons found
 during compilation/instrumentation. Automatic feature :) See
-<a href="../instrumentation/README.lto.md">instrumentation/README.lto.md</a></p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.lto.md">instrumentation/README.lto.md</a></p>
 <p>K. The snapshot feature requires a kernel module that was a lot of work to get
 right and maintained so it is no longer supported. We have
-<a href="../nyx_mode/README.md">nyx_mode</a> instead.</p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../nyx_mode/README.md">nyx_mode</a> instead.</p>
 <p>L. Faster fuzzing and less kernel syscall overhead by in-memory fuzz testcase
 delivery, see
-<a href="../instrumentation/README.persistent_mode.md">instrumentation/README.persistent_mode.md</a></p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.persistent_mode.md">instrumentation/README.persistent_mode.md</a></p>
 <h2 id="more-information-about-instrumentation">More information about instrumentation</h2>
 <ol>
 <li>Default for LLVM &gt;= 9.0, environment variable for older version due an

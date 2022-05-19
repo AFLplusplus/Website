@@ -1,3 +1,8 @@
+---
+bookCollapseSection: true
+weight: 20
+---
+
 # Important changes in AFL++
 
 This document lists important changes in AFL++, for example, major behavior

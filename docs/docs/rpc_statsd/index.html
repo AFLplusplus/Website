@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.55d88fec982aa3f5097be652331046a67e9f15d3d98021ac28d1a4e98a7acee6.js" integrity="sha256-VdiP7Jgqo/UJe&#43;ZSMxBGpn6fFdPZgCGsKNGk6Yp6zuY="></script>
+<script defer src="/en.search.min.27ca7e0c081e567a47139167fd21c9ab2930d7a53e2c463eb94af09683d77010.js" integrity="sha256-J8p&#43;DAgeVnpHE5Fn/SHJqykw16U&#43;LEY&#43;uUrwloPXcBA="></script>
 
 <!--
 Made with Book Theme
@@ -168,9 +168,9 @@ trends and the fuzzing state over time. You might be able to see when the
 fuzzing process has reached a state of no progress and visualize what are the
 &ldquo;best strategies&rdquo; for your targets (according to your own criteria). You can do
 so without logging into each instance individually.</p>
-<p><img src="resources/statsd-grafana.png" alt="example visualization with Grafana"></p>
+<p><img src="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/resources/statsd-grafana.png" alt="example visualization with Grafana"></p>
 <p>This is an example visualization with Grafana. The dashboard can be imported
-with <a href="resources/grafana-afl++.json">this JSON template</a>.</p>
+with <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/resources/grafana-afl++.json">this JSON template</a>.</p>
 <h2 id="afl-metrics-and-statsd">AFL++ metrics and StatsD</h2>
 <p>StatsD allows you to receive and aggregate metrics from a wide range of
 applications and retransmit them to a backend of your choice.</p>
@@ -219,7 +219,7 @@ default, no tags will be added to the metrics.</p>
 <li><code>signalfx</code></li>
 </ul>
 <p>For more information on environment variables, see
-<a href="env_variables.md">env_variables.md</a>.</p>
+<a href="/docs/env_variables/">/docs/env_variables/</a>.</p>
 <p>Note: When using multiple fuzzer instances with StatsD it is <em>strongly</em>
 recommended to set up <code>AFL_STATSD_TAGS_FLAVOR</code> to match your StatsD server.
 This will allow you to see individual fuzzer performance, detect bad ones,

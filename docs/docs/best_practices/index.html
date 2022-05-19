@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.55d88fec982aa3f5097be652331046a67e9f15d3d98021ac28d1a4e98a7acee6.js" integrity="sha256-VdiP7Jgqo/UJe&#43;ZSMxBGpn6fFdPZgCGsKNGk6Yp6zuY="></script>
+<script defer src="/en.search.min.27ca7e0c081e567a47139167fd21c9ab2930d7a53e2c463eb94af09683d77010.js" integrity="sha256-J8p&#43;DAgeVnpHE5Fn/SHJqykw16U&#43;LEY&#43;uUrwloPXcBA="></script>
 
 <!--
 Made with Book Theme
@@ -190,7 +190,7 @@ https://github.com/alex-shpak/hugo-book
 <h2 id="targets-1">Targets</h2>
 <h3 id="fuzzing-a-target-with-source-code-available">Fuzzing a target with source code available</h3>
 <p>To learn how to fuzz a target if source code is available, see
-<a href="fuzzing_in_depth.md">fuzzing_in_depth.md</a>.</p>
+<a href="/docs/fuzzing_in_depth/">/docs/fuzzing_in_depth/</a>.</p>
 <h3 id="fuzzing-a-target-with-dlopen-instrumented-libraries">Fuzzing a target with dlopen instrumented libraries</h3>
 <p>If a source code based fuzzing target loads instrumented libraries with
 dlopen() after the forkserver has been activated and non-colliding coverage
@@ -208,7 +208,7 @@ you will see lots of crashes in the UI.</p>
 instrumentation.</p>
 <h3 id="fuzzing-a-binary-only-target">Fuzzing a binary-only target</h3>
 <p>For a comprehensive guide, see
-<a href="fuzzing_binary-only_targets.md">fuzzing_binary-only_targets.md</a>.</p>
+<a href="/docs/fuzzing_binary-only_targets/">/docs/fuzzing_binary-only_targets/</a>.</p>
 <h3 id="fuzzing-a-gui-program">Fuzzing a GUI program</h3>
 <p>If the GUI program can read the fuzz data from a file (via the command line, a
 fixed location or via an environment variable) without needing any user
@@ -231,7 +231,7 @@ coverage aware fuzzers).</li>
 <p>The established method to fuzz network services is to modify the source code to
 read from a file or stdin (fd 0) (or even faster via shared memory, combine this
 with persistent mode
-<a href="../instrumentation/README.persistent_mode.md">instrumentation/README.persistent_mode.md</a>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.persistent_mode.md">instrumentation/README.persistent_mode.md</a>
 and you have a performance gain of x10 instead of a performance loss of over x10</p>
 <ul>
 <li>that is a x100 difference!).</li>
@@ -239,7 +239,7 @@ and you have a performance gain of x10 instead of a performance loss of over x10
 <p>If modifying the source is not an option (e.g., because you only have a binary
 and perform binary fuzzing) you can also use a shared library with AFL_PRELOAD
 to emulate the network. This is also much faster than the real network would be.
-See <a href="../utils/socket_fuzzing/">utils/socket_fuzzing/</a>.</p>
+See <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../utils/socket_fuzzing/">utils/socket_fuzzing/</a>.</p>
 <p>There is an outdated AFL++ branch that implements networking if you are
 desperate though:
 <a href="https://github.com/AFLplusplus/AFLplusplus/tree/networking">https://github.com/AFLplusplus/AFLplusplus/tree/networking</a></p>
@@ -251,22 +251,22 @@ allows you to define network state with different type of data packets.</li>
 <h2 id="improvements-1">Improvements</h2>
 <h3 id="improving-speed">Improving speed</h3>
 <ol>
-<li>Use <a href="../instrumentation/README.llvm.md">llvm_mode</a>: afl-clang-lto (llvm &gt;=
+<li>Use <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md">llvm_mode</a>: afl-clang-lto (llvm &gt;=
 11) or afl-clang-fast (llvm &gt;= 9 recommended).</li>
-<li>Use <a href="../instrumentation/README.persistent_mode.md">persistent mode</a> (x2-x20
+<li>Use <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.persistent_mode.md">persistent mode</a> (x2-x20
 speed increase).</li>
 <li>Instrument just what you are interested in, see
-<a href="../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a>.</li>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a>.</li>
 <li>If you do not use shmem persistent mode, use <code>AFL_TMPDIR</code> to put the input
 file directory on a tempfs location, see
-<a href="env_variables.md">env_variables.md</a>.</li>
+<a href="/docs/env_variables/">/docs/env_variables/</a>.</li>
 <li>Improve Linux kernel performance: modify <code>/etc/default/grub</code>, set
 <code>GRUB_CMDLINE_LINUX_DEFAULT=&quot;ibpb=off ibrs=off kpti=off l1tf=off mds=off mitigations=off no_stf_barrier noibpb noibrs nopcid nopti nospec_store_bypass_disable nospectre_v1 nospectre_v2 pcid=off pti=off spec_store_bypass_disable=off spectre_v2=off stf_barrier=off&quot;</code>; then
 <code>update-grub</code> and <code>reboot</code> (warning: makes the system less secure).</li>
 <li>Running on an <code>ext2</code> filesystem with <code>noatime</code> mount option will be a bit
 faster than on any other journaling filesystem.</li>
 <li>Use your cores
-(<a href="fuzzing_in_depth.md#c-using-multiple-cores">fuzzing_in_depth.md:3c) Using multiple cores</a>)!</li>
+(<a href="/docs/fuzzing_in_depth/#c-using-multiple-cores">fuzzing_in_depth.md:3c) Using multiple cores</a>)!</li>
 </ol>
 <h3 id="improving-stability">Improving stability</h3>
 <p>For fuzzing, a 100% stable target that covers all edges is the best case. A 90%
@@ -318,7 +318,7 @@ responsible for the instability</p>
 remove from instrumentation, or just specify the functions you want to skip
 for instrumentation. Note that optimization might inline functions!</p>
 <p>Follow this document on how to do this:
-<a href="../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a>.</p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a>.</p>
 <p>If <code>PCGUARD</code> is used, then you need to follow this guide (needs llvm 12+!):
 <a href="https://clang.llvm.org/docs/SanitizerCoverage.html#partially-disabling-instrumentation">https://clang.llvm.org/docs/SanitizerCoverage.html#partially-disabling-instrumentation</a></p>
 <p>Only exclude those functions from instrumentation that provide no value for

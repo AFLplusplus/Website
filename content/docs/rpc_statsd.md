@@ -1,3 +1,8 @@
+---
+bookCollapseSection: true
+weight: 20
+---
+
 # Remote monitoring and metrics visualization
 
 AFL++ can send out metrics as StatsD messages. For remote monitoring and
@@ -15,10 +20,10 @@ fuzzing process has reached a state of no progress and visualize what are the
 "best strategies" for your targets (according to your own criteria). You can do
 so without logging into each instance individually.
 
-![example visualization with Grafana](resources/statsd-grafana.png)
+![example visualization with Grafana](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/resources/statsd-grafana.png)
 
 This is an example visualization with Grafana. The dashboard can be imported
-with [this JSON template](resources/grafana-afl++.json).
+with [this JSON template](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/resources/grafana-afl++.json).
 
 ## AFL++ metrics and StatsD
 
@@ -68,7 +73,7 @@ new build, threshold of crashes, time since last crash > X, and so on).
     -  `signalfx`
 
     For more information on environment variables, see
-    [env_variables.md](env_variables.md).
+    [{{< relref "env_variables.md" >}}]({{< relref "env_variables.md" >}}).
 
     Note: When using multiple fuzzer instances with StatsD it is *strongly*
     recommended to set up `AFL_STATSD_TAGS_FLAVOR` to match your StatsD server.

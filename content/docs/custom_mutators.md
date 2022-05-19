@@ -1,3 +1,8 @@
+---
+bookCollapseSection: true
+weight: 20
+---
+
 # Custom Mutators in AFL++
 
 This file describes how you can implement custom mutations to be used in AFL.
@@ -28,7 +33,7 @@ same `AFL_CUSTOM_MUTATOR_LIBRARY` environment variable like this.
 export AFL_CUSTOM_MUTATOR_LIBRARY="full/path/to/mutator_first.so;full/path/to/mutator_second.so"
 ```
 
-For details, see [APIs](#2-apis) and [Usage](#3-usage).
+For details, see [APIs]({{< relref "#2-apis" >}}) and [Usage]({{< relref "#3-usage" >}}).
 
 The custom mutation stage is set to be the first non-deterministic stage (right
 before the havoc stage).
@@ -299,8 +304,8 @@ afl-fuzz /path/to/program
 
 ## 4) Example
 
-See [example.c](../custom_mutators/examples/example.c) and
-[example.py](../custom_mutators/examples/example.py).
+See [example.c](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../custom_mutators/examples/example.c) and
+[example.py](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../custom_mutators/examples/example.py).
 
 ## 5) Other Resources
 

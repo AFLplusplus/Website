@@ -1,3 +1,8 @@
+---
+bookCollapseSection: true
+weight: 20
+---
+
 # Frequently asked questions (FAQ)
 
 If you find an interesting or important question missing, submit it via
@@ -50,7 +55,7 @@ If you find an interesting or important question missing, submit it via
   <summary id="where-can-i-find-tutorials">Where can I find tutorials?</summary><p>
 
   We compiled a list of tutorials and exercises, see
-  [tutorials.md](tutorials.md).
+  [{{< relref "tutorials.md" >}}]({{< relref "tutorials.md" >}}).
 </p></details>
 
 <details>
@@ -114,7 +119,7 @@ If you find an interesting or important question missing, submit it via
   then the standard non-instrumented mode is not effective.
 
   To learn how these binaries can be fuzzed, read
-  [fuzzing_binary-only_targets.md](fuzzing_binary-only_targets.md).
+  [{{< relref "fuzzing_binary-only_targets.md" >}}]({{< relref "fuzzing_binary-only_targets.md" >}}).
 </p></details>
 
 <details>
@@ -123,7 +128,7 @@ If you find an interesting or important question missing, submit it via
   The short answer is - you cannot, at least not "out of the box".
 
   For more information on fuzzing network services, see
-  [best_practices.md#fuzzing-a-network-service](best_practices.md#fuzzing-a-network-service).
+  [{{< relref "best_practices.md#fuzzing-a-network-service" >}}]({{< relref "best_practices.md#fuzzing-a-network-service" >}}).
 </p></details>
 
 <details>
@@ -134,7 +139,7 @@ If you find an interesting or important question missing, submit it via
   suitable for fuzzing.
 
   For more information on fuzzing GUI programs, see
-  [best_practices.md#fuzzing-a-gui-program](best_practices.md#fuzzing-a-gui-program).
+  [{{< relref "best_practices.md#fuzzing-a-gui-program" >}}]({{< relref "best_practices.md#fuzzing-a-gui-program" >}}).
 </p></details>
 
 ## Performance
@@ -152,7 +157,7 @@ If you find an interesting or important question missing, submit it via
   <summary id="how-can-i-improve-the-fuzzing-speed">How can I improve the fuzzing speed?</summary><p>
 
   There are a few things you can do to improve the fuzzing speed, see
-  [best_practices.md#improving-speed](best_practices.md#improving-speed).
+  [{{< relref "best_practices.md#improving-speed" >}}]({{< relref "best_practices.md#improving-speed" >}}).
 </p></details>
 
 <details>
@@ -177,7 +182,7 @@ If you find an interesting or important question missing, submit it via
   countermeasures to improve stability.
 
   For more information on stability and how to improve the stability value, see
-  [best_practices.md#improving-stability](best_practices.md#improving-stability).
+  [{{< relref "best_practices.md#improving-stability" >}}]({{< relref "best_practices.md#improving-stability" >}}).
 </p></details>
 
 <details>

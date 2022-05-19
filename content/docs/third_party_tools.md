@@ -1,3 +1,8 @@
+---
+bookCollapseSection: true
+weight: 20
+---
+
 # Tools that help fuzzing with AFL++
 
 Speeding up fuzzing:

@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.55d88fec982aa3f5097be652331046a67e9f15d3d98021ac28d1a4e98a7acee6.js" integrity="sha256-VdiP7Jgqo/UJe&#43;ZSMxBGpn6fFdPZgCGsKNGk6Yp6zuY="></script>
+<script defer src="/en.search.min.27ca7e0c081e567a47139167fd21c9ab2930d7a53e2c463eb94af09683d77010.js" integrity="sha256-J8p&#43;DAgeVnpHE5Fn/SHJqykw16U&#43;LEY&#43;uUrwloPXcBA="></script>
 
 <!--
 Made with Book Theme
@@ -171,7 +171,7 @@ https://github.com/alex-shpak/hugo-book
 <p>This document discusses the environment variables used by AFL++ to expose
 various exotic functions that may be (rarely) useful for power users or for
 some types of custom fuzzing setups. For general information about AFL++, see
-<a href="../README.md">README.md</a>.</p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../README.md">README.md</a>.</p>
 <p>Note: Most tools will warn on any unknown AFL++ environment variables; for
 example, because of typos. If you want to disable this check, then set the
 <code>AFL_IGNORE_UNKNOWN_ENVS</code> environment variable.</p>
@@ -354,7 +354,7 @@ then, e.g.: <code>AFL_LLVM_INSTRUMENT=CLASSIC,CTX,NGRAM-4</code></p>
 <p>Setting <code>AFL_LLVM_CMPLOG=1</code> during compilation will tell afl-clang-fast to
 produce a CmpLog binary.</p>
 <p>For more information, see
-<a href="../instrumentation/README.cmplog.md">instrumentation/README.cmplog.md</a>.</p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.cmplog.md">instrumentation/README.cmplog.md</a>.</p>
 <h4 id="ctx">CTX</h4>
 <p>Setting <code>AFL_LLVM_CTX</code> or <code>AFL_LLVM_INSTRUMENT=CTX</code> activates context sensitive
 branch coverage - meaning that each edge is additionally combined with its
@@ -362,14 +362,14 @@ caller. It is highly recommended to increase the <code>MAP_SIZE_POW2</code> defi
 config.h to at least 18 and maybe up to 20 for this as otherwise too many map
 collisions occur.</p>
 <p>For more information, see
-<a href="../instrumentation/README.llvm.md#6-afl-context-sensitive-branch-coverage">instrumentation/README.llvm.md#6) AFL++ Context Sensitive Branch Coverage</a>.</p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md#6-afl-context-sensitive-branch-coverage">instrumentation/README.llvm.md#6) AFL++ Context Sensitive Branch Coverage</a>.</p>
 <h4 id="instrument-list-selectively-instrument-files-and-functions">INSTRUMENT LIST (selectively instrument files and functions)</h4>
 <p>This feature allows selective instrumentation of the source.</p>
 <p>Setting <code>AFL_LLVM_ALLOWLIST</code> or <code>AFL_LLVM_DENYLIST</code> with a file name and/or
 function will only instrument (or skip) those files that match the names listed
 in the specified file.</p>
 <p>For more information, see
-<a href="../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a>.</p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a>.</p>
 <h4 id="laf-intel">LAF-INTEL</h4>
 <p>This great feature will split compares into series of single byte comparisons to
 allow afl-fuzz to find otherwise rather impossible paths. It is not restricted
@@ -395,7 +395,7 @@ functions.</p>
 </li>
 </ul>
 <p>For more information, see
-<a href="../instrumentation/README.laf-intel.md">instrumentation/README.laf-intel.md</a>.</p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.laf-intel.md">instrumentation/README.laf-intel.md</a>.</p>
 <h4 id="lto">LTO</h4>
 <p>This is a different way of instrumentation: first it compiles all code in LTO
 (link time optimization) and then performs an edge inserting instrumentation
@@ -423,7 +423,7 @@ dynamic (the original AFL way, which is slower).</li>
 <li><code>AFL_LLVM_MAP_DYNAMIC</code> sets the shared memory address to be dynamic.</li>
 </ul>
 <p>For more information, see
-<a href="../instrumentation/README.lto.md">instrumentation/README.lto.md</a>.</p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.lto.md">instrumentation/README.lto.md</a>.</p>
 <h4 id="ngram">NGRAM</h4>
 <p>Setting <code>AFL_LLVM_INSTRUMENT=NGRAM-{value}</code> or <code>AFL_LLVM_NGRAM_SIZE</code> activates
 ngram prev_loc coverage. Good values are 2, 4, or 8 (any value between 2 and 16
@@ -431,7 +431,7 @@ is valid). It is highly recommended to increase the <code>MAP_SIZE_POW2</code> d
 in config.h to at least 18 and maybe up to 20 for this as otherwise too many map
 collisions occur.</p>
 <p>For more information, see
-<a href="../instrumentation/README.llvm.md#7-afl-n-gram-branch-coverage">instrumentation/README.llvm.md#7) AFL++ N-Gram Branch Coverage</a>.</p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md#7-afl-n-gram-branch-coverage">instrumentation/README.llvm.md#7) AFL++ N-Gram Branch Coverage</a>.</p>
 <h4 id="not_zero">NOT_ZERO</h4>
 <ul>
 <li>
@@ -470,7 +470,7 @@ match the names listed in this file (one filename per line).</p>
 <p>Setting <code>AFL_GCC_DENYLIST</code> or <code>AFL_GCC_BLOCKLIST</code> with a file name and/or
 function will only skip those files that match the names listed in the
 specified file. See
-<a href="../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a>
 for more information.</p>
 <p>Setting <code>AFL_GCC_OUT_OF_LINE=1</code> will instruct afl-gcc-fast to instrument the
 code with calls to an injected subroutine instead of the much more efficient
@@ -516,7 +516,7 @@ additional mutations. If <code>AFL_CUSTOM_MUTATOR_ONLY</code> is also set, all
 mutations will solely be performed with the custom mutator. This feature
 allows to configure custom mutators which can be very helpful, e.g., fuzzing
 XML or other highly flexible structured input. For details, see
-<a href="custom_mutators.md">custom_mutators.md</a>.</p>
+<a href="/docs/custom_mutators/">/docs/custom_mutators/</a>.</p>
 </li>
 <li>
 <p>Setting <code>AFL_CYCLE_SCHEDULES</code> will switch to a different schedule every time
@@ -674,7 +674,7 @@ afl-qemu-trace and afl-frida-trace.so.</p>
 </li>
 <li>
 <p>If you are using persistent mode (you should, see
-<a href="../instrumentation/README.persistent_mode.md">instrumentation/README.persistent_mode.md</a>),
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.persistent_mode.md">instrumentation/README.persistent_mode.md</a>),
 some targets keep inherent state due which a detected crash test case does
 not crash the target again when the test case is given. To be able to still
 re-trigger these crashes, you can use the <code>AFL_PERSISTENT_RECORD</code> variable
@@ -733,7 +733,7 @@ example). Applied tags are <code>banner</code> and <code>afl_version</code>. <co
 to the name of the fuzzer provided through <code>-M/-S</code>. <code>afl_version</code>
 corresponds to the currently running AFL++ version (e.g., <code>++3.0c</code>). Default
 (empty/non present) will add no tags to the metrics. For more information,
-see <a href="rpc_statsd.md">rpc_statsd.md</a>.</p>
+see <a href="/docs/rpc_statsd/">/docs/rpc_statsd/</a>.</p>
 </li>
 <li>
 <p>Setting <code>AFL_TARGET_ENV</code> causes AFL++ to set extra environment variables for
@@ -788,7 +788,7 @@ to disable although it is 1st of April.</p>
 <p>Setting <code>AFL_COMPCOV_LEVEL</code> enables the CompareCoverage tracing of all cmp
 and sub in x86 and x86_64 and memory comparison functions (e.g., strcmp,
 memcmp, &hellip;) when libcompcov is preloaded using <code>AFL_PRELOAD</code>. More info at
-<a href="../qemu_mode/libcompcov/README.md">qemu_mode/libcompcov/README.md</a>.</p>
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../qemu_mode/libcompcov/README.md">qemu_mode/libcompcov/README.md</a>.</p>
 <p>There are two levels at the moment, <code>AFL_COMPCOV_LEVEL=1</code> that instruments
 only comparisons with immediate values / read-only memory and
 <code>AFL_COMPCOV_LEVEL=2</code> that instruments all the comparisons. Level 2 is more
@@ -856,9 +856,9 @@ reason to touch them.</p>
 <p>The FRIDA wrapper used to instrument binary-only code supports many of the same
 options as <code>afl-qemu-trace</code>, but also has a number of additional advanced
 options. These are listed in brief below (see
-<a href="../frida_mode/README.md">frida_mode/README.md</a> for more details). These
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../frida_mode/README.md">frida_mode/README.md</a> for more details). These
 settings are provided for compatibility with QEMU mode, the preferred way to
-configure FRIDA mode is through its <a href="../frida_mode/Scripting.md">scripting</a>
+configure FRIDA mode is through its <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../frida_mode/Scripting.md">scripting</a>
 support.</p>
 <ul>
 <li><code>AFL_FRIDA_DEBUG_MAPS</code> - See <code>AFL_QEMU_DEBUG_MAPS</code></li>
@@ -900,7 +900,7 @@ is logged only once, requires <code>AFL_FRIDA_INST_NO_OPTIMIZE</code>.</li>
 coverage information for unstable edges (e.g., to be loaded within IDA
 lighthouse).</li>
 <li><code>AFL_FRIDA_JS_SCRIPT</code> - Set the script to be loaded by the FRIDA scripting
-engine. See <a href="../frida_mode/Scripting.md">frida_mode/Scripting.md</a> for details.</li>
+engine. See <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../frida_mode/Scripting.md">frida_mode/Scripting.md</a> for details.</li>
 <li><code>AFL_FRIDA_OUTPUT_STDOUT</code> - Redirect the standard output of the target
 application to the named file (supersedes the setting of <code>AFL_DEBUG_CHILD</code>)</li>
 <li><code>AFL_FRIDA_OUTPUT_STDERR</code> - Redirect the standard error of the target

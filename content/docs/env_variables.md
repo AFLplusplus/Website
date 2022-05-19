@@ -1,9 +1,14 @@
+---
+bookCollapseSection: true
+weight: 20
+---
+
 # Environment variables
 
   This document discusses the environment variables used by AFL++ to expose
   various exotic functions that may be (rarely) useful for power users or for
   some types of custom fuzzing setups. For general information about AFL++, see
-  [README.md](../README.md).
+  [README.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../README.md).
 
   Note: Most tools will warn on any unknown AFL++ environment variables; for
   example, because of typos. If you want to disable this check, then set the
@@ -161,7 +166,7 @@ Setting `AFL_LLVM_CMPLOG=1` during compilation will tell afl-clang-fast to
 produce a CmpLog binary.
 
 For more information, see
-[instrumentation/README.cmplog.md](../instrumentation/README.cmplog.md).
+[instrumentation/README.cmplog.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.cmplog.md).
 
 #### CTX
 
@@ -172,7 +177,7 @@ config.h to at least 18 and maybe up to 20 for this as otherwise too many map
 collisions occur.
 
 For more information, see
-[instrumentation/README.llvm.md#6) AFL++ Context Sensitive Branch Coverage](../instrumentation/README.llvm.md#6-afl-context-sensitive-branch-coverage).
+[instrumentation/README.llvm.md#6) AFL++ Context Sensitive Branch Coverage](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md#6-afl-context-sensitive-branch-coverage).
 
 #### INSTRUMENT LIST (selectively instrument files and functions)
 
@@ -183,7 +188,7 @@ function will only instrument (or skip) those files that match the names listed
 in the specified file.
 
 For more information, see
-[instrumentation/README.instrument_list.md](../instrumentation/README.instrument_list.md).
+[instrumentation/README.instrument_list.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.instrument_list.md).
 
 #### LAF-INTEL
 
@@ -205,7 +210,7 @@ to Intel CPUs. ;-)
   - Setting `AFL_LLVM_LAF_ALL` sets all of the above.
 
 For more information, see
-[instrumentation/README.laf-intel.md](../instrumentation/README.laf-intel.md).
+[instrumentation/README.laf-intel.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.laf-intel.md).
 
 #### LTO
 
@@ -237,7 +242,7 @@ combined.
   - `AFL_LLVM_MAP_DYNAMIC` sets the shared memory address to be dynamic.
 
   For more information, see
-  [instrumentation/README.lto.md](../instrumentation/README.lto.md).
+  [instrumentation/README.lto.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.lto.md).
 
 #### NGRAM
 
@@ -248,7 +253,7 @@ in config.h to at least 18 and maybe up to 20 for this as otherwise too many map
 collisions occur.
 
 For more information, see
-[instrumentation/README.llvm.md#7) AFL++ N-Gram Branch Coverage](../instrumentation/README.llvm.md#7-afl-n-gram-branch-coverage).
+[instrumentation/README.llvm.md#7) AFL++ N-Gram Branch Coverage](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md#7-afl-n-gram-branch-coverage).
 
 #### NOT_ZERO
 
@@ -291,7 +296,7 @@ mode.
     Setting `AFL_GCC_DENYLIST` or `AFL_GCC_BLOCKLIST` with a file name and/or
     function will only skip those files that match the names listed in the
     specified file. See
-    [instrumentation/README.instrument_list.md](../instrumentation/README.instrument_list.md)
+    [instrumentation/README.instrument_list.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.instrument_list.md)
     for more information.
 
     Setting `AFL_GCC_OUT_OF_LINE=1` will instruct afl-gcc-fast to instrument the
@@ -334,7 +339,7 @@ checks or alter some of the more exotic semantics of the tool:
     mutations will solely be performed with the custom mutator. This feature
     allows to configure custom mutators which can be very helpful, e.g., fuzzing
     XML or other highly flexible structured input. For details, see
-    [custom_mutators.md](custom_mutators.md).
+    [{{< relref "custom_mutators.md" >}}]({{< relref "custom_mutators.md" >}}).
 
   - Setting `AFL_CYCLE_SCHEDULES` will switch to a different schedule every time
     a cycle is finished.
@@ -464,7 +469,7 @@ checks or alter some of the more exotic semantics of the tool:
     afl-qemu-trace and afl-frida-trace.so.
 
   - If you are using persistent mode (you should, see
-    [instrumentation/README.persistent_mode.md](../instrumentation/README.persistent_mode.md)),
+    [instrumentation/README.persistent_mode.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.persistent_mode.md)),
     some targets keep inherent state due which a detected crash test case does
     not crash the target again when the test case is given. To be able to still
     re-trigger these crashes, you can use the `AFL_PERSISTENT_RECORD` variable
@@ -515,7 +520,7 @@ checks or alter some of the more exotic semantics of the tool:
     to the name of the fuzzer provided through `-M/-S`. `afl_version`
     corresponds to the currently running AFL++ version (e.g., `++3.0c`). Default
     (empty/non present) will add no tags to the metrics. For more information,
-    see [rpc_statsd.md](rpc_statsd.md).
+    see [{{< relref "rpc_statsd.md" >}}]({{< relref "rpc_statsd.md" >}}).
 
   - Setting `AFL_TARGET_ENV` causes AFL++ to set extra environment variables for
     the target binary. Example: `AFL_TARGET_ENV="VAR1=1 VAR2='a b c'" afl-fuzz
@@ -562,7 +567,7 @@ The QEMU wrapper used to instrument binary-only code supports several settings:
   - Setting `AFL_COMPCOV_LEVEL` enables the CompareCoverage tracing of all cmp
     and sub in x86 and x86_64 and memory comparison functions (e.g., strcmp,
     memcmp, ...) when libcompcov is preloaded using `AFL_PRELOAD`. More info at
-    [qemu_mode/libcompcov/README.md](../qemu_mode/libcompcov/README.md).
+    [qemu_mode/libcompcov/README.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../qemu_mode/libcompcov/README.md).
 
     There are two levels at the moment, `AFL_COMPCOV_LEVEL=1` that instruments
     only comparisons with immediate values / read-only memory and
@@ -620,9 +625,9 @@ The QEMU wrapper used to instrument binary-only code supports several settings:
 The FRIDA wrapper used to instrument binary-only code supports many of the same
 options as `afl-qemu-trace`, but also has a number of additional advanced
 options. These are listed in brief below (see
-[frida_mode/README.md](../frida_mode/README.md) for more details). These
+[frida_mode/README.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../frida_mode/README.md) for more details). These
 settings are provided for compatibility with QEMU mode, the preferred way to
-configure FRIDA mode is through its [scripting](../frida_mode/Scripting.md)
+configure FRIDA mode is through its [scripting](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../frida_mode/Scripting.md)
 support.
 
 * `AFL_FRIDA_DEBUG_MAPS` - See `AFL_QEMU_DEBUG_MAPS`
@@ -664,7 +669,7 @@ support.
   coverage information for unstable edges (e.g., to be loaded within IDA
   lighthouse).
 * `AFL_FRIDA_JS_SCRIPT` - Set the script to be loaded by the FRIDA scripting
-  engine. See [frida_mode/Scripting.md](../frida_mode/Scripting.md) for details.
+  engine. See [frida_mode/Scripting.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../frida_mode/Scripting.md) for details.
 * `AFL_FRIDA_OUTPUT_STDOUT` - Redirect the standard output of the target
   application to the named file (supersedes the setting of `AFL_DEBUG_CHILD`)
 * `AFL_FRIDA_OUTPUT_STDERR` - Redirect the standard error of the target

@@ -1,3 +1,8 @@
+---
+bookCollapseSection: true
+weight: 20
+---
+
 # Important features of AFL++
 
 AFL++ supports llvm from 3.8 up to version 12, very fast binary fuzzing with
@@ -24,52 +29,52 @@ QEMU 5.1 with laf-intel and Redqueen, FRIDA mode, unicorn mode, gcc plugin, full
 ## More information about features
 
 A. Default is not thread-safe coverage counter updates for better performance,
-   see [instrumentation/README.llvm.md](../instrumentation/README.llvm.md)
+   see [instrumentation/README.llvm.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md)
 
 B. On wrapping coverage counters (255 + 1), skip the 0 value and jump to 1
    instead. This has shown to give better coverage data and is the default; see
-   [instrumentation/README.llvm.md](../instrumentation/README.llvm.md).
+   [instrumentation/README.llvm.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md).
 
 C. Instead of forking, reiterate the fuzz target function in a loop (like
    `LLVMFuzzerTestOneInput`. Great speed increase but only works with target
    functions that do not keep state, leak memory, or exit; see
-   [instrumentation/README.persistent_mode.md](../instrumentation/README.persistent_mode.md)
+   [instrumentation/README.persistent_mode.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.persistent_mode.md)
 
 D. Split any non-8-bit comparison to 8-bit comparison; see
-   [instrumentation/README.laf-intel.md](../instrumentation/README.laf-intel.md)
+   [instrumentation/README.laf-intel.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.laf-intel.md)
 
 E. CmpLog is our enhanced
    [Redqueen](https://www.ndss-symposium.org/ndss-paper/redqueen-fuzzing-with-input-to-state-correspondence/)
    implementation, see
-   [instrumentation/README.cmplog.md](../instrumentation/README.cmplog.md)
+   [instrumentation/README.cmplog.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.cmplog.md)
 
 F. Similar and compatible to clang 13+ sancov sanitize-coverage-allow/deny but
    for all llvm versions and all our compile modes, only instrument what should
    be instrumented, for more speed, directed fuzzing and less instability; see
-   [instrumentation/README.instrument_list.md](../instrumentation/README.instrument_list.md)
+   [instrumentation/README.instrument_list.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.instrument_list.md)
 
 G. Vanilla AFL uses coverage where edges could collide to the same coverage
    bytes the larger the target is. Our default instrumentation in LTO and
    afl-clang-fast (PCGUARD) uses non-colliding coverage that also makes it
    faster. Vanilla AFL style is available with `AFL_LLVM_INSTRUMENT=AFL`; see
-   [instrumentation/README.llvm.md](../instrumentation/README.llvm.md).
+   [instrumentation/README.llvm.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md).
 
 H.+I. Alternative coverage based on previous edges (NGRAM) or depending on the
    caller (CTX), based on
    [https://www.usenix.org/system/files/raid2019-wang-jinghan.pdf](https://www.usenix.org/system/files/raid2019-wang-jinghan.pdf);
-   see [instrumentation/README.llvm.md](../instrumentation/README.llvm.md).
+   see [instrumentation/README.llvm.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md).
 
 J. An LTO feature that creates a fuzzing dictionary based on comparisons found
    during compilation/instrumentation. Automatic feature :) See
-   [instrumentation/README.lto.md](../instrumentation/README.lto.md)
+   [instrumentation/README.lto.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.lto.md)
 
 K. The snapshot feature requires a kernel module that was a lot of work to get
    right and maintained so it is no longer supported. We have
-   [nyx_mode](../nyx_mode/README.md) instead.
+   [nyx_mode](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../nyx_mode/README.md) instead.
 
 L. Faster fuzzing and less kernel syscall overhead by in-memory fuzz testcase
    delivery, see
-   [instrumentation/README.persistent_mode.md](../instrumentation/README.persistent_mode.md)
+   [instrumentation/README.persistent_mode.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.persistent_mode.md)
 
 ## More information about instrumentation
 

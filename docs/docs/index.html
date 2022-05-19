@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.55d88fec982aa3f5097be652331046a67e9f15d3d98021ac28d1a4e98a7acee6.js" integrity="sha256-VdiP7Jgqo/UJe&#43;ZSMxBGpn6fFdPZgCGsKNGk6Yp6zuY="></script>
+<script defer src="/en.search.min.27ca7e0c081e567a47139167fd21c9ab2930d7a53e2c463eb94af09683d77010.js" integrity="sha256-J8p&#43;DAgeVnpHE5Fn/SHJqykw16U&#43;LEY&#43;uUrwloPXcBA="></script>
 
 <link rel="alternate" type="application/rss+xml" href="https://aflplus.plus/docs/index.xml" title="AFLplusplus" />
 <!--
@@ -140,7 +140,20 @@ https://github.com/alex-shpak/hugo-book
     <input type="checkbox" class="hidden" id="toc-control" />
     <aside class="hidden clearfix">
       
-  <nav id="TableOfContents"></nav>
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#fuzzing-targets-with-the-source-code-available">Fuzzing targets with the source code available</a>
+      <ul>
+        <li><a href="#instrumenting-the-target">Instrumenting the target</a></li>
+        <li><a href="#preparing-the-fuzzing-campaign">Preparing the fuzzing campaign</a></li>
+        <li><a href="#fuzzing-the-target">Fuzzing the target</a></li>
+        <li><a href="#managing-the-fuzzing-campaign">Managing the fuzzing campaign</a></li>
+      </ul>
+    </li>
+    <li><a href="#fuzzing-other-targets">Fuzzing other targets</a></li>
+    <li><a href="#additional-information">Additional information</a></li>
+  </ul>
+</nav>
 
 
     </aside>
@@ -149,19 +162,49 @@ https://github.com/alex-shpak/hugo-book
       </header>
 
       
-<article class="markdown"><h1 id="afl-documentation">AFL++ Documentation</h1>
-<p>You can browse a part of the AFL++ doc here.</p>
+<article class="markdown"><h1 id="afl-documentation">AFL++ documentation</h1>
+<p>This is the overview of the AFL++ docs content.</p>
+<p>For general information on AFL++, see the
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../README.md">README.md of the repository</a>.</p>
+<p>Also take a look at our <a href="/docs/faq/">/docs/faq/</a> and
+<a href="/docs/best_practices/">/docs/best_practices/</a>.</p>
+<h2 id="fuzzing-targets-with-the-source-code-available">Fuzzing targets with the source code available</h2>
+<p>You can find a quickstart for fuzzing targets with the source code available in
+the <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../README.md#quick-start-fuzzing-with-afl">README.md of the repository</a>.</p>
+<p>For in-depth information on the steps of the fuzzing process, see
+<a href="/docs/fuzzing_in_depth/">/docs/fuzzing_in_depth/</a> or click on the following
+image and select a step.</p>
+<p><img src="https://raw.githubusercontent.com/AFLplusplus/AFLplusplus/dev/docs/resources/0_fuzzing_process_overview.drawio.svg" alt="Fuzzing process overview" title="Fuzzing process overview"></p>
+<p>For further information on instrumentation, see the
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/">READMEs in the instrumentation/ folder</a>.</p>
+<h3 id="instrumenting-the-target">Instrumenting the target</h3>
+<p>For more information, click on the following image and select a step.</p>
+<p><img src="https://raw.githubusercontent.com/AFLplusplus/AFLplusplus/dev/docs/resources/1_instrument_target.drawio.svg" alt="Instrumenting the target" title="Instrumenting the target"></p>
+<h3 id="preparing-the-fuzzing-campaign">Preparing the fuzzing campaign</h3>
+<p>For more information, click on the following image and select a step.</p>
+<p><img src="https://raw.githubusercontent.com/AFLplusplus/AFLplusplus/dev/docs/resources/2_prepare_campaign.drawio.svg" alt="Preparing the fuzzing campaign" title="Preparing the fuzzing campaign"></p>
+<h3 id="fuzzing-the-target">Fuzzing the target</h3>
+<p>For more information, click on the following image and select a step.</p>
+<p><img src="https://raw.githubusercontent.com/AFLplusplus/AFLplusplus/dev/docs/resources/3_fuzz_target.drawio.svg" alt="Fuzzing the target" title="Fuzzing the target"></p>
+<h3 id="managing-the-fuzzing-campaign">Managing the fuzzing campaign</h3>
+<p>For more information, click on the following image and select a step.</p>
+<p><img src="https://raw.githubusercontent.com/AFLplusplus/AFLplusplus/dev/docs/resources/4_manage_campaign.drawio.svg" alt="Managing the fuzzing campaign" title="Managing the fuzzing campaign"></p>
+<h2 id="fuzzing-other-targets">Fuzzing other targets</h2>
+<p>To learn about fuzzing other targets, see:</p>
 <ul>
-<li><a href="https://aflplus.plus/docs/binaryonly_fuzzing/">Binary-only fuzzing</a></li>
-<li><a href="https://aflplus.plus/docs/env_variables/">Environment variables</a></li>
-<li><a href="https://aflplus.plus/docs/status_screen/">Status screen</a></li>
-<li><a href="https://aflplus.plus/docs/parallel_fuzzing/">Parallel fuzzing</a></li>
-<li><a href="https://aflplus.plus/docs/perf_tips/">Performance tips</a></li>
-<li><a href="https://aflplus.plus/docs/notes_for_asan/">Note for ASan</a></li>
-<li><a href="https://aflplus.plus/docs/power_schedules/">Power schedules</a></li>
-<li><a href="https://aflplus.plus/docs/custom_mutators/">Custom mutators</a></li>
-<li><a href="https://aflplus.plus/docs/technical_details/">Technical Details</a></li>
-<li><a href="https://aflplus.plus/docs/historical_notes/">Historical Notes</a></li>
+<li>Binary-only: <a href="/docs/fuzzing_binary-only_targets/">/docs/fuzzing_binary-only_targets/</a></li>
+<li>GUI programs:
+<a href="/docs/best_practices/#fuzzing-a-gui-program">/docs/best_practices/#fuzzing-a-gui-program</a></li>
+<li>Libraries: <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../frida_mode/README.md">frida_mode/README.md</a></li>
+<li>Network services:
+<a href="/docs/best_practices/#fuzzing-a-network-service">/docs/best_practices/#fuzzing-a-network-service</a></li>
+<li>Non-linux: <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../unicorn_mode/README.md">unicorn_mode/README.md</a></li>
+</ul>
+<h2 id="additional-information">Additional information</h2>
+<ul>
+<li>Tools that help fuzzing with AFL++:
+<a href="/docs/third_party_tools/">/docs/third_party_tools/</a></li>
+<li>Tutorials: <a href="/docs/tutorials/">/docs/tutorials/</a></li>
 </ul>
 </article>
  
@@ -191,7 +234,20 @@ https://github.com/alex-shpak/hugo-book
     
     <aside class="book-toc">
       
-  <nav id="TableOfContents"></nav>
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#fuzzing-targets-with-the-source-code-available">Fuzzing targets with the source code available</a>
+      <ul>
+        <li><a href="#instrumenting-the-target">Instrumenting the target</a></li>
+        <li><a href="#preparing-the-fuzzing-campaign">Preparing the fuzzing campaign</a></li>
+        <li><a href="#fuzzing-the-target">Fuzzing the target</a></li>
+        <li><a href="#managing-the-fuzzing-campaign">Managing the fuzzing campaign</a></li>
+      </ul>
+    </li>
+    <li><a href="#fuzzing-other-targets">Fuzzing other targets</a></li>
+    <li><a href="#additional-information">Additional information</a></li>
+  </ul>
+</nav>
 
  
     </aside>
