@@ -1,6 +1,7 @@
 ---
 bookCollapseSection: true
 weight: 20
+type: docs
 ---
 
 # Tools that help fuzzing with AFL++

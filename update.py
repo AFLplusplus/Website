@@ -19,7 +19,7 @@ publishDir = "docs"
   image = "ogimage.png"
   ogimage = "ogimage.png"
   BookMenuBundle = "/menu"
-  BookLogo = 'logo_256x256.png'
+  BookLogo = 'aflpp_logo_256x256_w.png'
   ReleaseName = "__REL_NAME__"
   ReleaseURL = "__REL_URL__"
 """

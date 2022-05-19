@@ -1,6 +1,7 @@
 ---
 bookCollapseSection: true
 weight: 20
+type: docs
 ---
 
 # Custom Mutators in AFL++

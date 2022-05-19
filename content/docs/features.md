@@ -1,6 +1,7 @@
 ---
 bookCollapseSection: true
 weight: 20
+type: docs
 ---
 
 # Important features of AFL++
