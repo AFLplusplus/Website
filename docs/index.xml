@@ -212,8 +212,7 @@ Additionally the following features and patches have been integrated:
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/papers/</guid>
-      <description>Papers Works based on AFL++ Bibtex
-2020   Andrea Fioraldi, Dominik Maier, Heiko Eißfeldt, and Marc Heuse. &amp;ldquo;AFL++: Combining incremental steps of fuzzing research&amp;rdquo;. In 14th USENIX Workshop on Offensive Technologies (WOOT 20). USENIX Association, Aug. 2020.
+      <description>Papers Works based on AFL++ 2020   Andrea Fioraldi, Dominik Maier, Heiko Eißfeldt, and Marc Heuse. &amp;ldquo;AFL++: Combining incremental steps of fuzzing research&amp;rdquo;. In 14th USENIX Workshop on Offensive Technologies (WOOT 20). USENIX Association, Aug. 2020.
   Andrea Fioraldi, Daniele Cono D’Elia, and Leonardo Querzoni. &amp;ldquo;Fuzzing binaries for memory safety errors with QASan&amp;rdquo;. In 2020 IEEE Secure Development Conference (SecDev), 2020.
   Dominik Maier, Lukas Seidel, and Shinjo Park.</description>
     </item>
