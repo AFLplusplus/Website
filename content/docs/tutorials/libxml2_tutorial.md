@@ -54,12 +54,10 @@ $ sudo ~/AFLplusplus/afl-system-config
 Here we are!
 
 ```shell
-$ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -- ./xmllint_cov @@
+$ ~/AFLplusplus/afl-fuzz -i in/ -o out -- ./xmllint_cov @@
 ```
 
-Beware of the `-m none`. We built it using AddressSanitizer that maps a lot of pages for the shadow memory so we have to remove the memory limit to have it up and running.
-
-XML is a highly structured input so `-d` is a good choice. It enables FidgetyAFL, a modality that skips the deterministic stages (that are well suited for binary formats) in favor of the random stages.
+This is AFL++ in its default configuration, without deterministic mutations and any memory limit.
 
 ![screen1]({{% rel %}}libxml_screen1.png{{% /rel %}})
 
@@ -116,12 +114,12 @@ Now restart the fuzzer
 
 ```shell
 $ cd fuzz
-$ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -- ./xmllint_persistent @@
+$ ~/AFLplusplus/afl-fuzz -i in/ -o out -- ./xmllint_persistent @@
 ```
 
 ![screen1]({{% rel %}}libxml_screen2.png{{% /rel %}})
 
-As you can see, the speedup is impressive.
+As you can see, the speedup is impressive. 
 
 Now we'll fuzz xmllint using the binary-only instrumentation with QEMU.
 
@@ -140,7 +138,7 @@ To fuzz it in the simple fork-based fashion under QEMU, just add the `-Q` flag t
 
 ```shell
 $ cd fuzz
-$ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -Q -- ./xmllint @@
+$ ~/AFLplusplus/afl-fuzz -i in/ -o out -Q -- ./xmllint @@
 ```
 
 ![screen1]({{% rel %}}libxml_screen3.png{{% /rel %}})
@@ -197,7 +195,7 @@ $ export AFL_QEMU_PERSISTENT_GPR=1
 Here we go, rerun the previous afl-fuzz command:
 
 ```shell
-$ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -Q -- ./xmllint @@
+$ ~/AFLplusplus/afl-fuzz -i in/ -o out -Q -- ./xmllint @@
 ```
 
 ![screen1]({{% rel %}}libxml_screen4.png{{% /rel %}})

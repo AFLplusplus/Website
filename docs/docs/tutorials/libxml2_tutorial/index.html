@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.792b7ac4b7924b91c2e286516f971cd477c079e1dd0b129f30a219b444fa74fe.js" integrity="sha256-eSt6xLeSS5HC4oZRb5cc1HfAeeHdCxKfMKIZtET6dP4="></script>
+<script defer src="/en.search.min.47c84ba78144b82b127602706238e4d9759a248d06c5f68eecde73aa76d5261e.js" integrity="sha256-R8hLp4FEuCsSdgJwYjjk2XWaJI0GxfaO7N5zqnbVJh4="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.00c">Release 4.00c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.01c">Release 4.01c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -175,9 +175,8 @@ https://github.com/alex-shpak/hugo-book
 </span></span></code></pre></div><p>Make sure to configure your system with our script before start afl-fuzz</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ sudo ~/AFLplusplus/afl-system-config
 </span></span></code></pre></div><p>Here we are!</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -- ./xmllint_cov @@
-</span></span></code></pre></div><p>Beware of the <code>-m none</code>. We built it using AddressSanitizer that maps a lot of pages for the shadow memory so we have to remove the memory limit to have it up and running.</p>
-<p>XML is a highly structured input so <code>-d</code> is a good choice. It enables FidgetyAFL, a modality that skips the deterministic stages (that are well suited for binary formats) in favor of the random stages.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ ~/AFLplusplus/afl-fuzz -i in/ -o out -- ./xmllint_cov @@
+</span></span></code></pre></div><p>This is AFL++ in its default configuration, without deterministic mutations and any memory limit.</p>
 <p><img src="https://aflplus.plus//libxml_screen1.png" alt="screen1"></p>
 <p>Now, knowing that libxml2 is a library and so the code is reentrant, we can speedup our fuzzing process using persistent mode.</p>
 <p>Persistent mode avoids the overhead of forking and gives a lot of speedup.</p>
@@ -217,7 +216,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>$ cp xmllint fuzz/xmllint_persistent
 </span></span></code></pre></div><p>Now restart the fuzzer</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ cd fuzz
-</span></span><span style="display:flex;"><span>$ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -- ./xmllint_persistent @@
+</span></span><span style="display:flex;"><span>$ ~/AFLplusplus/afl-fuzz -i in/ -o out -- ./xmllint_persistent @@
 </span></span></code></pre></div><p><img src="https://aflplus.plus//libxml_screen2.png" alt="screen1"></p>
 <p>As you can see, the speedup is impressive.</p>
 <p>Now we&rsquo;ll fuzz xmllint using the binary-only instrumentation with QEMU.</p>
@@ -229,7 +228,7 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>$ cp xmllint fuzz/
 </span></span></code></pre></div><p>To fuzz it in the simple fork-based fashion under QEMU, just add the <code>-Q</code> flag to afl-fuzz.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ cd fuzz
-</span></span><span style="display:flex;"><span>$ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -Q -- ./xmllint @@
+</span></span><span style="display:flex;"><span>$ ~/AFLplusplus/afl-fuzz -i in/ -o out -Q -- ./xmllint @@
 </span></span></code></pre></div><p><img src="https://aflplus.plus//libxml_screen3.png" alt="screen1"></p>
 <p>You&rsquo;ve probably noticed that the speed is faster than the LLVM fork-based fuzzing. This is because we used ASan+UBSan in the previous steps based on LLVM (so a 2x slowdown in average).</p>
 <p>Note that so the slowdown of QEMU is circa 2x in this specific case, quite good.</p>
@@ -257,7 +256,7 @@ When, at the end of the function, we return to the starting address, the registe
 <p>To avoid that, we can save and restore the state of the general-purpose registers at each iteration setting AFL_QEMU_PERSISTENT_GPR.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ export AFL_QEMU_PERSISTENT_GPR<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
 </span></span></code></pre></div><p>Here we go, rerun the previous afl-fuzz command:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ ~/AFLplusplus/afl-fuzz -i in/ -o out -m none -d -Q -- ./xmllint @@
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ ~/AFLplusplus/afl-fuzz -i in/ -o out -Q -- ./xmllint @@
 </span></span></code></pre></div><p><img src="https://aflplus.plus//libxml_screen4.png" alt="screen1"></p>
 <p>As for persistent LLVM, the speedup is incredible.</p>
 <p>Enjoy AFL++, stay tuned for other beginners tutorial of this kind in the future.</p>

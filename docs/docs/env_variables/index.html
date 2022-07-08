@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.792b7ac4b7924b91c2e286516f971cd477c079e1dd0b129f30a219b444fa74fe.js" integrity="sha256-eSt6xLeSS5HC4oZRb5cc1HfAeeHdCxKfMKIZtET6dP4="></script>
+<script defer src="/en.search.min.47c84ba78144b82b127602706238e4d9759a248d06c5f68eecde73aa76d5261e.js" integrity="sha256-R8hLp4FEuCsSdgJwYjjk2XWaJI0GxfaO7N5zqnbVJh4="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.00c">Release 4.00c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.01c">Release 4.01c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -737,6 +737,11 @@ corresponds to the currently running AFL++ version (e.g., <code>++3.0c</code>). 
 see <a href="/docs/rpc_statsd/">/docs/rpc_statsd/</a>.</p>
 </li>
 <li>
+<p><code>AFL_SYNC_TIME</code> allows you to specify a different minimal time (in minutes)
+between fuzzing instances synchronization. Default sync time is 30 minutes,
+note that time is halved for -M main nodes.</p>
+</li>
+<li>
 <p>Setting <code>AFL_TARGET_ENV</code> causes AFL++ to set extra environment variables for
 the target binary. Example: <code>AFL_TARGET_ENV=&quot;VAR1=1 VAR2='a b c'&quot; afl-fuzz ... </code>. This exists mostly for things like <code>LD_LIBRARY_PATH</code> but it would
 theoretically allow fuzzing of AFL++ itself (with &rsquo;target&rsquo; AFL++ using some
@@ -851,6 +856,11 @@ linked binaries.</p>
 <p>The underlying QEMU binary will recognize any standard &ldquo;user space
 emulation&rdquo; variables (e.g., <code>QEMU_STACK_SIZE</code>), but there should be no
 reason to touch them.</p>
+</li>
+<li>
+<p>Normally a <code>README.txt</code> is written to the <code>crashes/</code> directory when a first
+crash is found. Setting <code>AFL_NO_CRASH_README</code> will prevent this. Useful when
+counting crashes based on a file count in that directory.</p>
 </li>
 </ul>
 <h2 id="7-settings-for-afl-frida-trace">7) Settings for afl-frida-trace</h2>

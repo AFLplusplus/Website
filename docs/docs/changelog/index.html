@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.792b7ac4b7924b91c2e286516f971cd477c079e1dd0b129f30a219b444fa74fe.js" integrity="sha256-eSt6xLeSS5HC4oZRb5cc1HfAeeHdCxKfMKIZtET6dP4="></script>
+<script defer src="/en.search.min.47c84ba78144b82b127602706238e4d9759a248d06c5f68eecde73aa76d5261e.js" integrity="sha256-R8hLp4FEuCsSdgJwYjjk2XWaJI0GxfaO7N5zqnbVJh4="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.00c">Release 4.00c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.01c">Release 4.01c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -144,7 +144,7 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
-        <li><a href="#version-401a-dev">Version ++4.01a (dev)</a></li>
+        <li><a href="#version-401c-release">Version ++4.01c (release)</a></li>
         <li><a href="#version-400c-release">Version ++4.00c (release)</a></li>
         <li><a href="#version-314c-release">Version ++3.14c (release)</a></li>
         <li><a href="#version-313c-release">Version ++3.13c (release)</a></li>
@@ -415,9 +415,9 @@ release of the tool. See README.md for the general instruction manual.</p>
 <h2 id="staying-informed">Staying informed</h2>
 <p>Want to stay in the loop on major new features? Join our mailing list by
 sending a mail to <a href="mailto:afl-users+subscribe@googlegroups.com">afl-users+subscribe@googlegroups.com</a>.</p>
-<h3 id="version-401a-dev">Version ++4.01a (dev)</h3>
+<h3 id="version-401c-release">Version ++4.01c (release)</h3>
 <ul>
-<li>fix */build_&hellip;sh scripts to work outside of git</li>
+<li>fixed */build_&hellip;sh scripts to work outside of git</li>
 <li>new custom_mutator: libafl with token fuzzing :)</li>
 <li>afl-fuzz:
 <ul>
@@ -426,6 +426,8 @@ set -c 0 to tell afl-fuzz that the fuzzing binary is also for
 CMPLOG.</li>
 <li>new commandline options -g/G to set min/max length of generated
 fuzz inputs</li>
+<li>you can set the time for syncing to other fuzzer now with
+AFL_SYNC_TIME</li>
 <li>reintroduced AFL_PERSISTENT and AFL_DEFER_FORKSRV to allow
 persistent mode and manual forkserver support if these are not
 in the target binary (e.g. are in a shared library)</li>
@@ -437,6 +439,7 @@ away by default even if they have new coverage (hangs are always
 kept), unless AFL_KEEP_TIMEOUTS are set</li>
 <li>AFL never implemented auto token inserts (but user token inserts,
 user token overwrite and auto token overwrite), added now!</li>
+<li>fixed a mutation type in havoc mode</li>
 <li>Mopt fix to always select the correct algorithm</li>
 <li>fix effector map calculation (deterministic mode)</li>
 <li>fix custom mutator post_process functionality</li>
@@ -459,6 +462,12 @@ user token overwrite and auto token overwrite), added now!</li>
 <li>unicorn_mode:
 <ul>
 <li>update unicorn engine, fix C example</li>
+</ul>
+</li>
+<li>utils:
+<ul>
+<li>removed optimin because it looses coverage due to a bug and is
+unmaintained :-(</li>
 </ul>
 </li>
 </ul>
@@ -4524,7 +4533,7 @@ the environment variable AFL_CUSTOM_MUTATOR_LIBRARY.</p>
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
-        <li><a href="#version-401a-dev">Version ++4.01a (dev)</a></li>
+        <li><a href="#version-401c-release">Version ++4.01c (release)</a></li>
         <li><a href="#version-400c-release">Version ++4.00c (release)</a></li>
         <li><a href="#version-314c-release">Version ++3.14c (release)</a></li>
         <li><a href="#version-313c-release">Version ++3.13c (release)</a></li>
