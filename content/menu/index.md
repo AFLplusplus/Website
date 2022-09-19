@@ -7,7 +7,7 @@ bookMenuLevels: 2
    - [Features]({{< relref "/features" >}})
    - [Build & Install]({{< relref "/building" >}})
    - [Documentation]({{< relref "/docs/_index.md" >}})
-   - [Tutorials]({{< relref "/docs/tutorials/_index.md" >}})
+   - [Tutorials]({{< relref "/docs/tutorials.md" >}})
    - [Papers]({{< relref "/papers" >}})
    - [LibAFL Book](https://aflplus.plus/libafl-book/)
 <!--- [Blog](< relref "/posts" >)-->
