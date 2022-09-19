@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.47c84ba78144b82b127602706238e4d9759a248d06c5f68eecde73aa76d5261e.js" integrity="sha256-R8hLp4FEuCsSdgJwYjjk2XWaJI0GxfaO7N5zqnbVJh4="></script>
+<script defer src="/en.search.min.3448f041b0cf80ce7a97413afb6095bdcb4f90e0808b528a3c5498e92b27431d.js" integrity="sha256-NEjwQbDPgM56l0E6&#43;2CVvctPkOCAi1KKPFSY6SsnQx0="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.01c">Release 4.01c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.02c">Release 4.02c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -612,7 +612,7 @@ information on screen or tmux, check their documentation.</p>
 (or even change them by selecting a different power schedule or another mutation
 mode!) and switch the input directory with a dash (<code>-</code>):</p>
 <pre tabindex="0"><code>afl-fuzz -i - -o output -- bin/target -someopt @@
-</code></pre><p>Adding a dictionary is helpful. You have to following options:</p>
+</code></pre><p>Adding a dictionary is helpful. You have the following options:</p>
 <ul>
 <li>See the directory
 <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../dictionaries/">dictionaries/</a>, if something is already included for your
@@ -697,7 +697,10 @@ the <code>-p</code> option, e.g., <code>-p explore</code>. See the
 <p>Also, it is recommended to set <code>export AFL_IMPORT_FIRST=1</code> to load test cases
 from other fuzzers in the campaign first.</p>
 <p>If you have a large corpus, a corpus from a previous run or are fuzzing in a CI,
-then also set <code>export AFL_CMPLOG_ONLY_NEW=1</code> and <code>export AFL_FAST_CAL=1</code>.</p>
+then also set <code>export AFL_CMPLOG_ONLY_NEW=1</code> and <code>export AFL_FAST_CAL=1</code>.
+If the queue in the CI is huge and/or the execution time is slow then you can
+also add <code>AFL_NO_STARTUP_CALIBRATION=1</code> to skip the initial queue calibration
+phase and start fuzzing at once.</p>
 <p>You can also use different fuzzers. If you are using AFL spinoffs or AFL
 conforming fuzzers, then just use the same -o directory and give it a unique
 <code>-S</code> name. Examples are:</p>
@@ -737,7 +740,7 @@ another found progress this is handed over making it unstuck.</li>
 <p>The syncing process itself is very simple. As the <code>-M main-$HOSTNAME</code> instance
 syncs to all <code>-S</code> secondaries as well as to other fuzzers, you have to copy only
 this directory to the other machines.</p>
-<p>Lets say all servers have the <code>-o out</code> directory in /target/foo/out, and you
+<p>Let&rsquo;s say all servers have the <code>-o out</code> directory in /target/foo/out, and you
 created a file <code>servers.txt</code> which contains the hostnames of all participating
 servers, plus you have an ssh key deployed to all of them, then run:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> FROM in <span style="color:#e6db74">`</span>cat servers.txt<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
@@ -875,9 +878,10 @@ isn&rsquo;t due to any specific fault of afl-fuzz.</p>
 <li>
 <p>There is no direct support for fuzzing network services, background daemons,
 or interactive apps that require UI interaction to work. You may need to make
-simple code changes to make them behave in a more traditional way. Preeny or libdesock may
-offer a relatively simple option, too - see:
-<a href="https://github.com/zardus/preeny">https://github.com/zardus/preeny</a> or <a href="https://github.com/fkie-cad/libdesock">https://github.com/fkie-cad/libdesock</a></p>
+simple code changes to make them behave in a more traditional way. Preeny or
+libdesock may offer a relatively simple option, too - see:
+<a href="https://github.com/zardus/preeny">https://github.com/zardus/preeny</a> or
+<a href="https://github.com/fkie-cad/libdesock">https://github.com/fkie-cad/libdesock</a></p>
 <p>Some useful tips for modifying network-based services can be also found at:
 <a href="https://www.fastly.com/blog/how-to-fuzz-server-american-fuzzy-lop">https://www.fastly.com/blog/how-to-fuzz-server-american-fuzzy-lop</a></p>
 </li>
@@ -923,6 +927,9 @@ complex file formats.</p>
 <h2 id="5-ci-fuzzing">5. CI fuzzing</h2>
 <p>Some notes on continuous integration (CI) fuzzing - this fuzzing is different to
 normal fuzzing campaigns as these are much shorter runnings.</p>
+<p>If the queue in the CI is huge and/or the execution time is slow then you can
+also add <code>AFL_NO_STARTUP_CALIBRATION=1</code> to skip the initial queue calibration
+phase and start fuzzing at once.</p>
 <ol>
 <li>
 <p>Always:</p>

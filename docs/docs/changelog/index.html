@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.47c84ba78144b82b127602706238e4d9759a248d06c5f68eecde73aa76d5261e.js" integrity="sha256-R8hLp4FEuCsSdgJwYjjk2XWaJI0GxfaO7N5zqnbVJh4="></script>
+<script defer src="/en.search.min.3448f041b0cf80ce7a97413afb6095bdcb4f90e0808b528a3c5498e92b27431d.js" integrity="sha256-NEjwQbDPgM56l0E6&#43;2CVvctPkOCAi1KKPFSY6SsnQx0="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.01c">Release 4.01c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.02c">Release 4.02c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -144,6 +144,8 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
+        <li><a href="#version-403a-dev">Version ++4.03a (dev)</a></li>
+        <li><a href="#version-402c-release">Version ++4.02c (release)</a></li>
         <li><a href="#version-401c-release">Version ++4.01c (release)</a></li>
         <li><a href="#version-400c-release">Version ++4.00c (release)</a></li>
         <li><a href="#version-314c-release">Version ++3.14c (release)</a></li>
@@ -415,6 +417,76 @@ release of the tool. See README.md for the general instruction manual.</p>
 <h2 id="staying-informed">Staying informed</h2>
 <p>Want to stay in the loop on major new features? Join our mailing list by
 sending a mail to <a href="mailto:afl-users+subscribe@googlegroups.com">afl-users+subscribe@googlegroups.com</a>.</p>
+<h3 id="version-403a-dev">Version ++4.03a (dev)</h3>
+<ul>
+<li>Building now gives a build summary what succeeded and what not</li>
+<li>afl-fuzz:
+<ul>
+<li>added AFL_NO_STARTUP_CALIBRATION to start fuzzing at once instead
+of calibrating all initial seeds first. Good for large queues
+and long execution times, especially in CIs.</li>
+<li>default calibration cycles set to 7 from 8, and only add 5 cycles
+to variables queue items instead of 12.</li>
+</ul>
+</li>
+<li>afl-cc:
+<ul>
+<li>fixed off-by-one bug in our pcguard implemenation, thanks for
+@tokatoka for reporting</li>
+<li>fix for llvm 15 and reenabling LTO, thanks to nikic for the PR!</li>
+<li>better handling of -fsanitize=..,&hellip;,.. lists</li>
+<li>support added for LLVMFuzzerRunDriver()</li>
+<li>fix gcc_mode cmplog</li>
+<li>obtain the map size of a target with setting AFL_DUMP_MAP_SIZE=1
+note that this will exit the target before main()</li>
+</ul>
+</li>
+<li>qemu_mode:
+<ul>
+<li>added AFL_QEMU_TRACK_UNSTABLE to log the addresses of unstable
+edges (together with AFL_DEBUG=1 afl-fuzz). thanks to
+worksbutnottested!</li>
+</ul>
+</li>
+<li>afl-analyze broke at some point, fix by CodeLogicError, thank you!</li>
+<li>unicorn_mode:
+<ul>
+<li>updated upstream unicorn version</li>
+<li>fixed builds for aarch64</li>
+<li>build now uses all available cores</li>
+</ul>
+</li>
+</ul>
+<h3 id="version-402c-release">Version ++4.02c (release)</h3>
+<ul>
+<li>afl-cc:
+<ul>
+<li>important fix for the default pcguard mode when LLVM IR vector
+selects are produced, thanks to @juppytt for reporting!</li>
+</ul>
+</li>
+<li>gcc_plugin:
+<ul>
+<li>Adacore submitted CMPLOG support to the gcc_plugin! :-)</li>
+</ul>
+</li>
+<li>llvm_mode:
+<ul>
+<li>laf cmp splitting fixed for more comparison types</li>
+</ul>
+</li>
+<li>frida_mode:
+<ul>
+<li>now works on Android!</li>
+</ul>
+</li>
+<li>afl-fuzz:
+<ul>
+<li>change post_process hook to allow returning NULL and 0 length to
+tell afl-fuzz to skip this mutated input</li>
+</ul>
+</li>
+</ul>
 <h3 id="version-401c-release">Version ++4.01c (release)</h3>
 <ul>
 <li>fixed */build_&hellip;sh scripts to work outside of git</li>
@@ -4533,6 +4605,8 @@ the environment variable AFL_CUSTOM_MUTATOR_LIBRARY.</p>
   <ul>
     <li><a href="#staying-informed">Staying informed</a>
       <ul>
+        <li><a href="#version-403a-dev">Version ++4.03a (dev)</a></li>
+        <li><a href="#version-402c-release">Version ++4.02c (release)</a></li>
         <li><a href="#version-401c-release">Version ++4.01c (release)</a></li>
         <li><a href="#version-400c-release">Version ++4.00c (release)</a></li>
         <li><a href="#version-314c-release">Version ++3.14c (release)</a></li>

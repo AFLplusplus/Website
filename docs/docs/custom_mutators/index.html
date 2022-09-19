@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.47c84ba78144b82b127602706238e4d9759a248d06c5f68eecde73aa76d5261e.js" integrity="sha256-R8hLp4FEuCsSdgJwYjjk2XWaJI0GxfaO7N5zqnbVJh4="></script>
+<script defer src="/en.search.min.3448f041b0cf80ce7a97413afb6095bdcb4f90e0808b528a3c5498e92b27431d.js" integrity="sha256-NEjwQbDPgM56l0E6&#43;2CVvctPkOCAi1KKPFSY6SsnQx0="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.01c">Release 4.01c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.02c">Release 4.02c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -197,6 +197,10 @@ before the havoc stage).</p>
 <p>Note: If <code>AFL_CUSTOM_MUTATOR_ONLY</code> is set, all mutations will solely be
 performed with the custom mutator.</p>
 <h2 id="2-apis">2) APIs</h2>
+<p><strong>IMPORTANT NOTE</strong>: If you use our C/C++ API and you want to increase the size
+of an **out_buf buffer, you have to use <code>afl_realloc()</code> for this, so include
+<code>include/alloc-inl.h</code> - otherwise afl-fuzz will crash when trying to free
+your buffers.</p>
 <p>C/C++:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">afl_custom_init</span>(afl_state_t <span style="color:#f92672">*</span>afl, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> seed);
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">afl_custom_fuzz_count</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t buf_size);
@@ -308,6 +312,9 @@ This function is then transforming the data into the format expected by the
 API before executing the target.</p>
 <p>This can return any python object that implements the buffer protocol and
 supports PyBUF_SIMPLE. These include bytes, bytearray, etc.</p>
+<p>You can decide in the post_process mutator to not send the mutated data
+to the target, e.g. if it is too short, too corrupted, etc. If so,
+return a NULL buffer and zero length (or a 0 length string in Python).</p>
 </li>
 <li>
 <p><code>queue_new_entry</code> (optional):</p>

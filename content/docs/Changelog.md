@@ -14,6 +14,48 @@ type: docs
 Want to stay in the loop on major new features? Join our mailing list by
 sending a mail to <afl-users+subscribe@googlegroups.com>.
 
+### Version ++4.03a (dev)
+  - Building now gives a build summary what succeeded and what not
+  - afl-fuzz:
+    - added AFL_NO_STARTUP_CALIBRATION to start fuzzing at once instead
+      of calibrating all initial seeds first. Good for large queues
+      and long execution times, especially in CIs.
+    - default calibration cycles set to 7 from 8, and only add 5 cycles
+      to variables queue items instead of 12.
+  - afl-cc:
+    - fixed off-by-one bug in our pcguard implemenation, thanks for
+      @tokatoka for reporting
+    - fix for llvm 15 and reenabling LTO, thanks to nikic for the PR!
+    - better handling of -fsanitize=..,...,.. lists
+    - support added for LLVMFuzzerRunDriver()
+    - fix gcc_mode cmplog
+    - obtain the map size of a target with setting AFL_DUMP_MAP_SIZE=1
+      note that this will exit the target before main()
+  - qemu_mode:
+    - added AFL_QEMU_TRACK_UNSTABLE to log the addresses of unstable
+      edges (together with AFL_DEBUG=1 afl-fuzz). thanks to
+      worksbutnottested!
+  - afl-analyze broke at some point, fix by CodeLogicError, thank you!
+  - unicorn_mode:
+    - updated upstream unicorn version
+    - fixed builds for aarch64
+    - build now uses all available cores
+
+
+### Version ++4.02c (release)
+  - afl-cc:
+    - important fix for the default pcguard mode when LLVM IR vector
+      selects are produced, thanks to @juppytt for reporting!
+  - gcc_plugin:
+    - Adacore submitted CMPLOG support to the gcc_plugin! :-)
+  - llvm_mode:
+    - laf cmp splitting fixed for more comparison types
+  - frida_mode:
+    - now works on Android!
+  - afl-fuzz:
+    - change post_process hook to allow returning NULL and 0 length to
+      tell afl-fuzz to skip this mutated input
+
 ### Version ++4.01c (release)
   - fixed */build_...sh scripts to work outside of git
   - new custom_mutator: libafl with token fuzzing :)

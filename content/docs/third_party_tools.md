@@ -6,12 +6,14 @@ type: docs
 
 # Tools that help fuzzing with AFL++
 
-Speeding up fuzzing:
+## Speeding up fuzzing
+
 * [libfiowrapper](https://github.com/marekzmyslowski/libfiowrapper) - if the
   function you want to fuzz requires loading a file, this allows using the
   shared memory test case feature :-) - recommended.
 
-Minimization of test cases:
+## Minimization of test cases
+
 * [afl-pytmin](https://github.com/ilsani/afl-pytmin) - a wrapper for afl-tmin
   that tries to speed up the process of minimization of a single test case by
   using many CPU cores.
@@ -20,7 +22,8 @@ Minimization of test cases:
 * [halfempty](https://github.com/googleprojectzero/halfempty) -  is a fast
   utility for minimizing test cases by Tavis Ormandy based on parallelization.
 
-Distributed execution:
+## Distributed execution
+
 * [disfuzz-afl](https://github.com/MartijnB/disfuzz-afl) - distributed fuzzing
   for AFL.
 * [AFLDFF](https://github.com/quantumvm/AFLDFF) - AFL distributed fuzzing
@@ -32,7 +35,8 @@ Distributed execution:
 * [afl-in-the-cloud](https://github.com/abhisek/afl-in-the-cloud) - another
   script for running AFL in AWS.
 
-Deployment, management, monitoring, reporting
+## Deployment, management, monitoring, reporting
+
 * [afl-utils](https://gitlab.com/rc0r/afl-utils) - a set of utilities for
   automatic processing/analysis of crashes and reducing the number of test
   cases.
@@ -50,7 +54,8 @@ Deployment, management, monitoring, reporting
 * [afl-extras](https://github.com/fekir/afl-extras) - shell scripts to
   parallelize afl-tmin, startup, and data collection.
 
-Crash processing
+## Crash processing
+
 * [AFLTriage](https://github.com/quic/AFLTriage) -
   triage crashing input files using gdb.
 * [afl-crash-analyzer](https://github.com/floyd-fuh/afl-crash-analyzer) -

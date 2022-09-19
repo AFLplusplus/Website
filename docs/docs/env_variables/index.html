@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.47c84ba78144b82b127602706238e4d9759a248d06c5f68eecde73aa76d5261e.js" integrity="sha256-R8hLp4FEuCsSdgJwYjjk2XWaJI0GxfaO7N5zqnbVJh4="></script>
+<script defer src="/en.search.min.3448f041b0cf80ce7a97413afb6095bdcb4f90e0808b528a3c5498e92b27431d.js" integrity="sha256-NEjwQbDPgM56l0E6&#43;2CVvctPkOCAi1KKPFSY6SsnQx0="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.01c">Release 4.01c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.02c">Release 4.02c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -354,6 +354,7 @@ then, e.g.: <code>AFL_LLVM_INSTRUMENT=CLASSIC,CTX,NGRAM-4</code></p>
 <h4 id="cmplog">CMPLOG</h4>
 <p>Setting <code>AFL_LLVM_CMPLOG=1</code> during compilation will tell afl-clang-fast to
 produce a CmpLog binary.</p>
+<p>For afl-gcc-fast, set <code>AFL_GCC_CMPLOG=1</code> instead.</p>
 <p>For more information, see
 <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.cmplog.md">instrumentation/README.cmplog.md</a>.</p>
 <h4 id="ctx">CTX</h4>
@@ -661,7 +662,7 @@ normally done when starting up the forkserver and causes a pretty
 significant performance drop.</p>
 </li>
 <li>
-<p><code>AFL_NO_SNAPSHOT</code> will advice afl-fuzz not to use the snapshot feature if
+<p><code>AFL_NO_SNAPSHOT</code> will advise afl-fuzz not to use the snapshot feature if
 the snapshot lkm is loaded.</p>
 </li>
 <li>
@@ -670,7 +671,11 @@ some basic stats. This behavior is also automatically triggered when the
 output from afl-fuzz is redirected to a file or to a pipe.</p>
 </li>
 <li>
-<p>In QEMU mode (-Q) and Frida mode (-O), <code>AFL_PATH</code> will be searched for
+<p>Setting <code>AFL_NO_STARTUP_CALIBRATION</code> will skip the initial calibration
+of all starting seeds, and start fuzzing at once.</p>
+</li>
+<li>
+<p>In QEMU mode (-Q) and FRIDA mode (-O), <code>AFL_PATH</code> will be searched for
 afl-qemu-trace and afl-frida-trace.so.</p>
 </li>
 <li>
@@ -679,7 +684,7 @@ afl-qemu-trace and afl-frida-trace.so.</p>
 some targets keep inherent state due which a detected crash test case does
 not crash the target again when the test case is given. To be able to still
 re-trigger these crashes, you can use the <code>AFL_PERSISTENT_RECORD</code> variable
-with a value of how many previous fuzz cases to keep prio a crash. If set to
+with a value of how many previous fuzz cases to keep prior a crash. If set to
 e.g., 10, then the 9 previous inputs are written to out/default/crashes as
 RECORD:000000,cnt:000000 to RECORD:000000,cnt:000008 and
 RECORD:000000,cnt:000009 being the crash case. NOTE: This option needs to be
@@ -779,11 +784,11 @@ in the target binary</li>
 </li>
 <li>
 <p>If you need an early forkserver in your target because of early
-constructors in your target you can set <code>AFL_EARLY_FORKSERVER</code>.
+constructors in your target, you can set <code>AFL_EARLY_FORKSERVER</code>.
 Note that this is not a compile time option but a runtime option :-)</p>
 </li>
 <li>
-<p>set <code>AFL_PIZZA_MODE</code> to 1 to enable the April 1st stats menu, set to 0
+<p>Set <code>AFL_PIZZA_MODE</code> to 1 to enable the April 1st stats menu, set to 0
 to disable although it is 1st of April.</p>
 </li>
 </ul>
@@ -928,8 +933,8 @@ the specified file.</li>
 <li><code>AFL_FRIDA_STALKER_ADJACENT_BLOCKS</code> - Configure the number of adjacent blocks
 to fetch when generating instrumented code. By fetching blocks in the same
 order they appear in the original program, rather than the order of execution
-should help reduce locallity and adjacency. This includes allowing us to
-vector between adjancent blocks using a NOP slide rather than an immediate
+should help reduce locality and adjacency. This includes allowing us to
+vector between adjacent blocks using a NOP slide rather than an immediate
 branch.</li>
 <li><code>AFL_FRIDA_STALKER_IC_ENTRIES</code> - Configure the number of inline cache entries
 stored along-side branch instructions which provide a cache to avoid having to

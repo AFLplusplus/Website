@@ -529,7 +529,7 @@ mode!) and switch the input directory with a dash (`-`):
 afl-fuzz -i - -o output -- bin/target -someopt @@
 ```
 
-Adding a dictionary is helpful. You have to following options:
+Adding a dictionary is helpful. You have the following options:
 
 * See the directory
 [dictionaries/](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../dictionaries/), if something is already included for your
@@ -632,6 +632,9 @@ from other fuzzers in the campaign first.
 
 If you have a large corpus, a corpus from a previous run or are fuzzing in a CI,
 then also set `export AFL_CMPLOG_ONLY_NEW=1` and `export AFL_FAST_CAL=1`.
+If the queue in the CI is huge and/or the execution time is slow then you can
+also add `AFL_NO_STARTUP_CALIBRATION=1` to skip the initial queue calibration
+phase and start fuzzing at once.
 
 You can also use different fuzzers. If you are using AFL spinoffs or AFL
 conforming fuzzers, then just use the same -o directory and give it a unique
@@ -675,7 +678,7 @@ The syncing process itself is very simple. As the `-M main-$HOSTNAME` instance
 syncs to all `-S` secondaries as well as to other fuzzers, you have to copy only
 this directory to the other machines.
 
-Lets say all servers have the `-o out` directory in /target/foo/out, and you
+Let's say all servers have the `-o out` directory in /target/foo/out, and you
 created a file `servers.txt` which contains the hostnames of all participating
 servers, plus you have an ssh key deployed to all of them, then run:
 
@@ -844,9 +847,10 @@ Here are some of the most important caveats for AFL++:
 
 - There is no direct support for fuzzing network services, background daemons,
   or interactive apps that require UI interaction to work. You may need to make
-  simple code changes to make them behave in a more traditional way. Preeny or libdesock may
-  offer a relatively simple option, too - see:
-  [https://github.com/zardus/preeny](https://github.com/zardus/preeny) or [https://github.com/fkie-cad/libdesock](https://github.com/fkie-cad/libdesock)
+  simple code changes to make them behave in a more traditional way. Preeny or
+  libdesock may offer a relatively simple option, too - see:
+  [https://github.com/zardus/preeny](https://github.com/zardus/preeny) or
+  [https://github.com/fkie-cad/libdesock](https://github.com/fkie-cad/libdesock)
 
   Some useful tips for modifying network-based services can be also found at:
   [https://www.fastly.com/blog/how-to-fuzz-server-american-fuzzy-lop](https://www.fastly.com/blog/how-to-fuzz-server-american-fuzzy-lop)
@@ -906,6 +910,10 @@ complex file formats.
 
 Some notes on continuous integration (CI) fuzzing - this fuzzing is different to
 normal fuzzing campaigns as these are much shorter runnings.
+
+If the queue in the CI is huge and/or the execution time is slow then you can
+also add `AFL_NO_STARTUP_CALIBRATION=1` to skip the initial queue calibration
+phase and start fuzzing at once.
 
 1. Always:
     * LTO has a much longer compile time which is diametrical to short fuzzing -
