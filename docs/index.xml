@@ -47,8 +47,7 @@ Fuzzing a target with dlopen instrumented libraries If a source code based fuzzi
       
       <guid>https://aflplus.plus/docs/changelog/</guid>
       <description>Changelog This is the list of all noteworthy changes made in every public release of the tool. See README.md for the general instruction manual.
-Staying informed Want to stay in the loop on major new features? Join our mailing list by sending a mail to afl-users+subscribe@googlegroups.com.
-Version ++4.03a (dev) Building now gives a build summary what succeeded and what not afl-fuzz: added AFL_NO_STARTUP_CALIBRATION to start fuzzing at once instead of calibrating all initial seeds first.</description>
+Version ++4.05a (dev) your PR? :) Version ++4.04c (release) fix gramatron and grammar_mutator build scripts enhancements to the afl-persistent-config and afl-system-config scripts afl-fuzz: force writing all stats on exit ensure targets are killed on exit AFL_FORK_SERVER_KILL_SIGNAL added afl-cc: make gcc_mode (afl-gcc-fast) work with gcc down to version 3.</description>
     </item>
     
     <item>

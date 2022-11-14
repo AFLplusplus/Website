@@ -74,7 +74,7 @@ Python:
 def init(seed):
     pass
 
-def fuzz_count(buf, add_buf, max_size):
+def fuzz_count(buf):
     return cnt
 
 def fuzz(buf, add_buf, max_size):

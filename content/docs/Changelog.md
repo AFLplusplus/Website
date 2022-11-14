@@ -9,12 +9,33 @@ type: docs
   This is the list of all noteworthy changes made in every public
   release of the tool. See README.md for the general instruction manual.
 
-## Staying informed
+### Version ++4.05a (dev)
+  - your PR? :)
 
-Want to stay in the loop on major new features? Join our mailing list by
-sending a mail to <afl-users+subscribe@googlegroups.com>.
 
-### Version ++4.03a (dev)
+### Version ++4.04c (release)
+  - fix gramatron and grammar_mutator build scripts
+  - enhancements to the afl-persistent-config and afl-system-config
+    scripts
+  - afl-fuzz:
+    - force writing all stats on exit
+    - ensure targets are killed on exit
+    - `AFL_FORK_SERVER_KILL_SIGNAL` added
+  - afl-cc:
+    - make gcc_mode (afl-gcc-fast) work with gcc down to version 3.6
+  - qemu_mode:
+    - fixed 10x speed degredation in v4.03c, thanks to @ele7enxxh for
+      reporting!
+    - added qemu_mode/fastexit helper library
+  - unicorn_mode:
+    - Enabled tricore arch (by @jma-qb)
+    - Updated Capstone version in Rust bindings
+  - llvm-mode:
+    - AFL runtime will always pass inputs via shared memory, when possible,
+      ignoring the command line.
+
+
+### Version ++4.03c (release)
   - Building now gives a build summary what succeeded and what not
   - afl-fuzz:
     - added AFL_NO_STARTUP_CALIBRATION to start fuzzing at once instead
@@ -36,6 +57,8 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
       edges (together with AFL_DEBUG=1 afl-fuzz). thanks to
       worksbutnottested!
   - afl-analyze broke at some point, fix by CodeLogicError, thank you!
+  - afl-cmin/afl-cmin.bash now have an -A option to allow also crashing
+    and timeout inputs
   - unicorn_mode:
     - updated upstream unicorn version
     - fixed builds for aarch64

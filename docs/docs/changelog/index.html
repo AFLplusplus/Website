@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.7bb72269579db1db950a6f4286ac3fb728f64472bb32d2560a10fe7343b8132c.js" integrity="sha256-e7ciaVedsduVCm9Chqw/tyj2RHK7MtJWChD&#43;c0O4Eyw="></script>
+<script defer src="/en.search.min.edc04666d2c37aab6ad3c6877c502a3f40eb1198ec0bd0b7da7f7185459f347a.js" integrity="sha256-7cBGZtLDeqtq08aHfFAqP0DrEZjsC9C32n9xhUWfNHo="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.02c">Release 4.02c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.04c">Release 4.04c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -142,9 +142,11 @@ https://github.com/alex-shpak/hugo-book
       
   <nav id="TableOfContents">
   <ul>
-    <li><a href="#staying-informed">Staying informed</a>
+    <li>
       <ul>
-        <li><a href="#version-403a-dev">Version ++4.03a (dev)</a></li>
+        <li><a href="#version-405a-dev">Version ++4.05a (dev)</a></li>
+        <li><a href="#version-404c-release">Version ++4.04c (release)</a></li>
+        <li><a href="#version-403c-release">Version ++4.03c (release)</a></li>
         <li><a href="#version-402c-release">Version ++4.02c (release)</a></li>
         <li><a href="#version-401c-release">Version ++4.01c (release)</a></li>
         <li><a href="#version-400c-release">Version ++4.00c (release)</a></li>
@@ -414,10 +416,48 @@ https://github.com/alex-shpak/hugo-book
 <article class="markdown"><h1 id="changelog">Changelog</h1>
 <p>This is the list of all noteworthy changes made in every public
 release of the tool. See README.md for the general instruction manual.</p>
-<h2 id="staying-informed">Staying informed</h2>
-<p>Want to stay in the loop on major new features? Join our mailing list by
-sending a mail to <a href="mailto:afl-users+subscribe@googlegroups.com">afl-users+subscribe@googlegroups.com</a>.</p>
-<h3 id="version-403a-dev">Version ++4.03a (dev)</h3>
+<h3 id="version-405a-dev">Version ++4.05a (dev)</h3>
+<ul>
+<li>your PR? :)</li>
+</ul>
+<h3 id="version-404c-release">Version ++4.04c (release)</h3>
+<ul>
+<li>fix gramatron and grammar_mutator build scripts</li>
+<li>enhancements to the afl-persistent-config and afl-system-config
+scripts</li>
+<li>afl-fuzz:
+<ul>
+<li>force writing all stats on exit</li>
+<li>ensure targets are killed on exit</li>
+<li><code>AFL_FORK_SERVER_KILL_SIGNAL</code> added</li>
+</ul>
+</li>
+<li>afl-cc:
+<ul>
+<li>make gcc_mode (afl-gcc-fast) work with gcc down to version 3.6</li>
+</ul>
+</li>
+<li>qemu_mode:
+<ul>
+<li>fixed 10x speed degredation in v4.03c, thanks to @ele7enxxh for
+reporting!</li>
+<li>added qemu_mode/fastexit helper library</li>
+</ul>
+</li>
+<li>unicorn_mode:
+<ul>
+<li>Enabled tricore arch (by @jma-qb)</li>
+<li>Updated Capstone version in Rust bindings</li>
+</ul>
+</li>
+<li>llvm-mode:
+<ul>
+<li>AFL runtime will always pass inputs via shared memory, when possible,
+ignoring the command line.</li>
+</ul>
+</li>
+</ul>
+<h3 id="version-403c-release">Version ++4.03c (release)</h3>
 <ul>
 <li>Building now gives a build summary what succeeded and what not</li>
 <li>afl-fuzz:
@@ -449,6 +489,8 @@ worksbutnottested!</li>
 </ul>
 </li>
 <li>afl-analyze broke at some point, fix by CodeLogicError, thank you!</li>
+<li>afl-cmin/afl-cmin.bash now have an -A option to allow also crashing
+and timeout inputs</li>
 <li>unicorn_mode:
 <ul>
 <li>updated upstream unicorn version</li>
@@ -4603,9 +4645,11 @@ the environment variable AFL_CUSTOM_MUTATOR_LIBRARY.</p>
       
   <nav id="TableOfContents">
   <ul>
-    <li><a href="#staying-informed">Staying informed</a>
+    <li>
       <ul>
-        <li><a href="#version-403a-dev">Version ++4.03a (dev)</a></li>
+        <li><a href="#version-405a-dev">Version ++4.05a (dev)</a></li>
+        <li><a href="#version-404c-release">Version ++4.04c (release)</a></li>
+        <li><a href="#version-403c-release">Version ++4.03c (release)</a></li>
         <li><a href="#version-402c-release">Version ++4.02c (release)</a></li>
         <li><a href="#version-401c-release">Version ++4.01c (release)</a></li>
         <li><a href="#version-400c-release">Version ++4.00c (release)</a></li>
