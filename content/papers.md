@@ -39,3 +39,4 @@ type: docs
 + Alessandro Mantovani, Andrea Fioraldi, Davide Balzarotti. ["Fuzzing with Data Dependency Information"](https://www.s3.eurecom.fr/docs/eurosp22_mantovani.pdf). *In EuroS&P 2022, 7th IEEE European Symposium
 on Security and Privacy, 6-10 June 2022, Genoa, Italy,* IEEE (Ed.). Genoa.
 
++ Alexey Vishnyakov, Daniil Kuts, Vlada Logunova, Darya Parygina, Eli Kobrin, Georgy Savidov, Andrey Fedotov. ["Sydr-Fuzz: Continuous Hybrid Fuzzing and Dynamic Analysis for Security Development Lifecycle"](https://arxiv.org/pdf/2211.11595). *2022 Ivannikov ISPRAS Open Conference (ISPRAS)*. IEEE, Moscow, Russia, December 2022.
