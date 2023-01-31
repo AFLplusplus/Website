@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%" height="100%" viewBox="0 0 1407 1409" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
-    <g transform="matrix(1,0,0,1,-78.3456,-38.3062)">
+    <g transform="matrix(1,0,0,1,-76.6696,-54.8402)">
         <g transform="matrix(-0.993191,-0.0155144,0.0155439,-0.99508,779.788,759.418)">
             <circle cx="0" cy="0" r="687.995" style="fill:rgb(17,48,89);stroke:rgb(109,213,195);stroke-width:39.81px;"/>
         </g>
@@ -34,7 +34,7 @@
         <g id="Layer1">
         </g>
     </g>
-    <g id="Lego" transform="matrix(0.913744,0,0,0.913744,-281.451,826.028)">
+    <g id="Lego" transform="matrix(0.913744,0,0,0.913744,-279.775,809.494)">
         <g transform="matrix(1.39479,0,0,2.49863,-196.745,135.275)">
             <rect x="618.169" y="2.516" width="145.75" height="43.645" style="fill:rgb(17,48,89);"/>
         </g>
@@ -45,7 +45,7 @@
             <rect x="1250.4" y="509.145" width="27.188" height="11.322" style="fill:rgb(17,48,89);"/>
         </g>
     </g>
-    <g id="Lego1" serif:id="Lego" transform="matrix(0.913744,0,0,0.913744,-281.451,966.028)">
+    <g id="Lego1" serif:id="Lego" transform="matrix(0.913744,0,0,0.913744,-279.775,949.494)">
         <g transform="matrix(1.39479,0,0,2.49863,-196.745,135.275)">
             <rect x="618.169" y="2.516" width="145.75" height="43.645" style="fill:rgb(17,48,89);"/>
         </g>
@@ -56,7 +56,7 @@
             <rect x="1250.4" y="509.145" width="27.188" height="11.322" style="fill:rgb(17,48,89);"/>
         </g>
     </g>
-    <g id="Lego2" serif:id="Lego" transform="matrix(0.913744,0,0,0.913744,-281.451,686.028)">
+    <g id="Lego2" serif:id="Lego" transform="matrix(0.913744,0,0,0.913744,-279.775,669.494)">
         <g transform="matrix(1.39479,0,0,2.49863,-196.745,135.275)">
             <rect x="618.169" y="2.516" width="145.75" height="43.645" style="fill:rgb(17,48,89);"/>
         </g>
