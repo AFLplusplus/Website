@@ -61,6 +61,8 @@ Check out the GitHub repository [here](https://github.com/AFLplusplus/AFLplusplu
   * [CVE-2020-29129](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-29129) [CVE-2020-29130](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-29130) by Qiuhao Li
 + GNU coreutils
   * [Bug 1919775](https://bugzilla.redhat.com/show_bug.cgi?id=1919775) by Qiuhao Li
++ PostgreSQL
+  * [Crash while parsing zero-symbols in jsonb string](https://www.postgresql.org/message-id/7332649.x5DLKWyVIX%40thinkpad-pgpro) by Nikolay Shaplov (Postgres Professional)
 
 ## Sponsoring
 
