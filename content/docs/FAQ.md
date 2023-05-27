@@ -1,220 +1,281 @@
-# Frequently asked questions about afl++
-
-## Contents
-
-  * [What is the difference between afl and afl++?](#what-is-the-difference-between-afl-and-afl)
-  * [How to improve the fuzzing speed?](#how-to-improve-the-fuzzing-speed)
-  * [How do I fuzz a network service?](#how-do-i-fuzz-a-network-service)
-  * [How do I fuzz a GUI program?](#how-do-i-fuzz-a-gui-program)
-  * [What is an edge?](#what-is-an-edge)
-  * [Why is my stability below 100%?](#why-is-my-stability-below-100)
-  * [How can I improve the stability value?](#how-can-i-improve-the-stability-value)
+# Frequently asked questions (FAQ)
 
 If you find an interesting or important question missing, submit it via
-[https://github.com/AFLplusplus/AFLplusplus/issues](https://github.com/AFLplusplus/AFLplusplus/issues)
+[https://github.com/AFLplusplus/AFLplusplus/discussions](https://github.com/AFLplusplus/AFLplusplus/discussions).
 
-## What is the difference between afl and afl++?
+## General
 
-American Fuzzy Lop (AFL) was developed by Michał "lcamtuf" Zalewski starting in
-2013/2014, and when he left Google end of 2017 he stopped developing it.
+<details>
+  <summary id="what-is-the-difference-between-afl-and-aflplusplus">What is the difference between AFL and AFL++?</summary><p>
 
-At the end of 2019 the Google fuzzing team took over maintenance of AFL, however
-it is only accepting PRs from the community and is not developing enhancements
-anymore.
+  AFL++ is a superior fork to Google's AFL - more speed, more and better
+  mutations, more and better instrumentation, custom module support, etc.
 
-In the second quarter of 2019, 1 1/2 year later when no further development of
-AFL had happened and it became clear there would none be coming, afl++
-was born, where initially community patches were collected and applied
-for bug fixes and enhancements. Then from various AFL spin-offs - mostly academic
-research - features were integrated. This already resulted in a much advanced
-AFL.
+  American Fuzzy Lop (AFL) was developed by Michał "lcamtuf" Zalewski starting
+  in 2013/2014, and when he left Google end of 2017 he stopped developing it.
 
-Until the end of 2019 the afl++ team had grown to four active developers which
-then implemented their own research and features, making it now by far the most
-flexible and feature rich guided fuzzer available as open source.
-And in independent fuzzing benchmarks it is one of the best fuzzers available,
-e.g. [Fuzzbench Report](https://www.fuzzbench.com/reports/2020-08-03/index.html)
+  At the end of 2019, the Google fuzzing team took over maintenance of AFL,
+  however, it is only accepting PRs from the community and is not developing
+  enhancements anymore.
 
-## How to improve the fuzzing speed?
+  In the second quarter of 2019, 1 1/2 years later, when no further development
+  of AFL had happened and it became clear there would none be coming, AFL++ was
+  born, where initially community patches were collected and applied for bug
+  fixes and enhancements. Then from various AFL spin-offs - mostly academic
+  research - features were integrated. This already resulted in a much advanced
+  AFL.
 
-  1. Use [llvm_mode](docs/llvm_mode/README.md): afl-clang-lto (llvm >= 11) or afl-clang-fast (llvm >= 9 recommended)
-  2. Use [persistent mode](llvm_mode/README.persistent_mode.md) (x2-x20 speed increase)
-  3. Use the [afl++ snapshot module](https://github.com/AFLplusplus/AFL-Snapshot-LKM) (x2 speed increase)
-  4. If you do not use shmem persistent mode, use `AFL_TMPDIR` to put the input file directory on a tempfs location, see [docs/env_variables.md](docs/env_variables.md)
-  5. Improve Linux kernel performance: modify `/etc/default/grub`, set `GRUB_CMDLINE_LINUX_DEFAULT="ibpb=off ibrs=off kpti=off l1tf=off mds=off mitigations=off no_stf_barrier noibpb noibrs nopcid nopti nospec_store_bypass_disable nospectre_v1 nospectre_v2 pcid=off pti=off spec_store_bypass_disable=off spectre_v2=off stf_barrier=off"`; then `update-grub` and `reboot` (warning: makes the system less secure)
-  6. Running on an `ext2` filesystem with `noatime` mount option will be a bit faster than on any other journaling filesystem
-  7. Use your cores! [README.md:3.b) Using multiple cores/threads](../README.md#b-using-multiple-coresthreads)
+  Until the end of 2019, the AFL++ team had grown to four active developers
+  which then implemented their own research and features, making it now by far
+  the most flexible and feature rich guided fuzzer available as open source. And
+  in independent fuzzing benchmarks it is one of the best fuzzers available,
+  e.g., [Fuzzbench
+  Report](https://www.fuzzbench.com/reports/2020-08-03/index.html).
+</p></details>
 
-## How do I fuzz a network service?
+<details>
+  <summary id="is-afl-a-whitebox-graybox-or-blackbox-fuzzer">Is AFL++ a whitebox, graybox, or blackbox fuzzer?</summary><p>
 
-The short answer is - you cannot, at least not "out of the box".
+  The definition of the terms whitebox, graybox, and blackbox fuzzing varies
+  from one source to another. For example, "graybox fuzzing" could mean
+  binary-only or source code fuzzing, or something completely different.
+  Therefore, we try to avoid them.
 
-Using a network channel is inadequate for several reasons:
-- it has a slow-down of x10-20 on the fuzzing speed
-- it does not scale to fuzzing multiple instances easily,
-- instead of one initial data packet often a back-and-forth interplay of packets is needed for stateful protocols (which is totally unsupported by most coverage aware fuzzers).
+  [The Fuzzing Book](https://www.fuzzingbook.org/html/GreyboxFuzzer.html#AFL:-An-Effective-Greybox-Fuzzer)
+  describes the original AFL to be a graybox fuzzer. In that sense, AFL++ is
+  also a graybox fuzzer.
+</p></details>
 
-The established method to fuzz network services is to modify the source code
-to read from a file or stdin (fd 0) (or even faster via shared memory, combine
-this with persistent mode [llvm_mode/README.persistent_mode.md](llvm_mode/README.persistent_mode.md)
-and you have a performance gain of x10 instead of a performance loss of over
-x10 - that is a x100 difference!).
+<details>
+  <summary id="where-can-i-find-tutorials">Where can I find tutorials?</summary><p>
 
-If modifying the source is not an option (e.g. because you only have a binary
-and perform binary fuzzing) you can also use a shared library with AFL_PRELOAD
-to emulate the network. This is also much faster than the real network would be.
-See [utils/socket_fuzzing/](../utils/socket_fuzzing/).
+  We compiled a list of tutorials and exercises, see
+  [tutorials.md](tutorials.md).
+</p></details>
 
-There is an outdated afl++ branch that implements networking if you are
-desperate though: [https://github.com/AFLplusplus/AFLplusplus/tree/networking](https://github.com/AFLplusplus/AFLplusplus/tree/networking) - 
-however a better option is AFLnet ([https://github.com/aflnet/aflnet](https://github.com/aflnet/aflnet))
-which allows you to define network state with different type of data packets.
+<details>
+  <summary id="what-is-an-edge">What is an "edge"?</summary><p>
 
-## How do I fuzz a GUI program?
+  A program contains `functions`, `functions` contain the compiled machine code.
+  The compiled machine code in a `function` can be in a single or many `basic
+  blocks`. A `basic block` is the **largest possible number of subsequent machine
+  code instructions** that has **exactly one entry point** (which can be be entered by
+  multiple other basic blocks) and runs linearly **without branching or jumping to
+  other addresses** (except at the end).
 
-If the GUI program can read the fuzz data from a file (via the command line,
-a fixed location or via an environment variable) without needing any user
-interaction then it would be suitable for fuzzing.
+  ```
+  function() {
+    A:
+      some
+      code
+    B:
+      if (x) goto C; else goto D;
+    C:
+      some code
+      goto E
+    D:
+      some code
+      goto B
+    E:
+      return
+  }
+  ```
 
-Otherwise it is not possible without modifying the source code - which is a
-very good idea anyway as the GUI functionality is a huge CPU/time overhead
-for the fuzzing.
+  Every code block between two jump locations is a `basic block`.
 
-So create a new `main()` that just reads the test case and calls the
-functionality for processing the input that the GUI program is using.
+  An `edge` is then the unique relationship between two directly connected
+  `basic blocks` (from the code example above):
 
-## What is an "edge"?
-
-A program contains `functions`, `functions` contain the compiled machine code.
-The compiled machine code in a `function` can be in a single or many `basic blocks`.
-A `basic block` is the largest possible number of subsequent machine code
-instructions that has exactly one entrypoint (which can be be entered by multiple other basic blocks)
-and runs linearly without branching or jumping to other addresses (except at the end).
-```
-function() {
-  A:
-    some
-    code
-  B:
-    if (x) goto C; else goto D;
-  C:
-    some code
-    goto E
-  D:
-    some code
-    goto B
-  E:
-    return
-}
-```
-Every code block between two jump locations is a `basic block`.
-
-An `edge` is then the unique relationship between two directly connected `basic blocks` (from the
-code example above):
-```
-              Block A
-                |
+  ```
+                Block A
+                  |
+                  v
+                Block B  <------+
+              /        \       |
+              v          v      |
+          Block C    Block D --+
+              \
                 v
-              Block B  <------+
-             /        \       |
-            v          v      |
-         Block C    Block D --+
-             \
-              v
-              Block E
-```
-Every line between two blocks is an `edge`.
-Note that a few basic block loop to itself, this too would be an edge.
+                Block E
+  ```
 
-## Why is my stability below 100%?
+  Every line between two blocks is an `edge`. Note that a few basic block loop
+  to itself, this too would be an edge.
+</p></details>
 
-Stability is measured by how many percent of the edges in the target are
-"stable". Sending the same input again and again should take the exact same
-path through the target every time. If that is the case, the stability is 100%.
+## Targets
 
-If however randomness happens, e.g. a thread reading other external data,
-reaction to timing, etc. then in some of the re-executions with the same data
-the edge coverage result will be different accross runs.
-Those edges that change are then flagged "unstable".
+<details>
+  <summary id="how-can-i-fuzz-a-binary-only-target">How can I fuzz a binary-only target?</summary><p>
 
-The more "unstable" edges, the more difficult for afl++ to identify valid new
-paths.
+  AFL++ is a great fuzzer if you have the source code available.
 
-A value above 90% is usually fine and a value above 80% is also still ok, and
-even a value above 20% can still result in successful finds of bugs.
-However, it is recommended that for values below 90% or 80% you should take
-countermeasures to improve stability.
+  However, if there is only the binary program and no source code available,
+  then the standard non-instrumented mode is not effective.
 
-## How can I improve the stability value?
+  To learn how these binaries can be fuzzed, read
+  [fuzzing_binary-only_targets.md](fuzzing_binary-only_targets.md).
+</p></details>
 
-For fuzzing a 100% stable target that covers all edges is the best case.
-A 90% stable target that covers all edges is however better than a 100% stable
-target that ignores 10% of the edges.
+<details>
+  <summary id="how-can-i-fuzz-a-network-service">How can I fuzz a network service?</summary><p>
 
-With instability you basically have a partial coverage loss on an edge, with
-ignored functions you have a full loss on that edges.
+  The short answer is - you cannot, at least not "out of the box".
 
-There are functions that are unstable, but also provide value to coverage, eg
-init functions that use fuzz data as input for example.
-If however a function that has nothing to do with the input data is the
-source of instability, e.g. checking jitter, or is a hash map function etc.
-then it should not be instrumented.
+  For more information on fuzzing network services, see
+  [best_practices.md#fuzzing-a-network-service](best_practices.md#fuzzing-a-network-service).
+</p></details>
 
-To be able to exclude these functions (based on AFL++'s measured stability)
-the following process will allow to identify functions with variable edges.
+<details>
+  <summary id="how-can-i-fuzz-a-gui-program">How can I fuzz a GUI program?</summary><p>
 
-Four steps are required to do this and it also requires quite some knowledge
-of coding and/or disassembly and is effectively possible only with
-afl-clang-fast PCGUARD and afl-clang-lto LTO instrumentation.
+  Not all GUI programs are suitable for fuzzing. If the GUI program can read the
+  fuzz data from a file without needing any user interaction, then it would be
+  suitable for fuzzing.
 
-  1. First step: Identify which edge ID numbers are unstable
+  For more information on fuzzing GUI programs, see
+  [best_practices.md#fuzzing-a-gui-program](best_practices.md#fuzzing-a-gui-program).
+</p></details>
 
-     run the target with `export AFL_DEBUG=1` for a few minutes then terminate.
-     The out/fuzzer_stats file will then show the edge IDs that were identified
-     as unstable.
+## Performance
 
-  2. Second step: Find the responsible function(s).
+<details>
+  <summary id="what-makes-a-good-performance">What makes a good performance?</summary><p>
 
-     a) For LTO instrumented binaries this can be documented during compile
-        time, just set `export AFL_LLVM_DOCUMENT_IDS=/path/to/a/file`.
-        This file will have one assigned edge ID and the corresponding
-        function per line.
+  Good performance generally means "making the fuzzing results better". This can
+  be influenced by various factors, for example, speed (finding lots of paths
+  quickly) or thoroughness (working with decreased speed, but finding better
+  mutations).
+</p></details>
 
-     b) For PCGUARD instrumented binaries it is much more difficult. Here you
-        can either modify the __sanitizer_cov_trace_pc_guard function in
-        llvm_mode/afl-llvm-rt.o.c to write a backtrace to a file if the ID in
-        __afl_area_ptr[*guard] is one of the unstable edge IDs.
-        (Example code is already there).
-        Then recompile and reinstall llvm_mode and rebuild your target.
-        Run the recompiled target with afl-fuzz for a while and then check the
-        file that you wrote with the backtrace information.
-        Alternatively you can use `gdb` to hook __sanitizer_cov_trace_pc_guard_init
-        on start, check to which memory address the edge ID value is written
-        and set a write breakpoint to that address (`watch 0x.....`).
+<details>
+  <summary id="how-can-i-improve-the-fuzzing-speed">How can I improve the fuzzing speed?</summary><p>
 
-     c) in all other instrumentation types this is not possible. So just
-        recompile with the two mentioned above. This is just for
-        identifying the functions that have unstable edges.
+  There are a few things you can do to improve the fuzzing speed, see
+  [best_practices.md#improving-speed](best_practices.md#improving-speed).
+</p></details>
 
-  3. Third step: create a text file with the filenames/functions
+<details>
+  <summary id="why-is-my-stability-below-100percent">Why is my stability below 100%?</summary><p>
 
-     Identify which source code files contain the functions that you need to
-     remove from instrumentation, or just specify the functions you want to
-     skip for instrumentation. Note that optimization might inline functions!
+  Stability is measured by how many percent of the edges in the target are
+  "stable". Sending the same input again and again should take the exact same
+  path through the target every time. If that is the case, the stability is
+  100%.
 
-     Simply follow this document on how to do this: [llvm_mode/README.instrument_list.md](llvm_mode/README.instrument_list.md)
-     If PCGUARD is used, then you need to follow this guide (needs llvm 12+!):
-     [http://clang.llvm.org/docs/SanitizerCoverage.html#partially-disabling-instrumentation](http://clang.llvm.org/docs/SanitizerCoverage.html#partially-disabling-instrumentation)
+  If, however, randomness happens, e.g., a thread reading other external data,
+  reaction to timing, etc., then in some of the re-executions with the same data
+  the edge coverage result will be different across runs. Those edges that
+  change are then flagged "unstable".
 
-     Only exclude those functions from instrumentation that provide no value
-     for coverage - that is if it does not process any fuzz data directly
-     or indirectly (e.g. hash maps, thread management etc.).
-     If however a function directly or indirectly handles fuzz data then you
-     should not put the function in a deny instrumentation list and rather
-     live with the instability it comes with.
+  The more "unstable" edges there are, the harder it is for AFL++ to identify
+  valid new paths.
 
-  4. Fourth step: recompile the target
+  If you fuzz in persistent mode (`AFL_LOOP` or `LLVMFuzzerTestOneInput()`
+  harnesses, a large number of unstable edges can mean that the target keeps
+  internal state and therefore it is possible that crashes cannot be replayed.
+  In such a case do either **not** fuzz in persistent mode (remove `AFL_LOOP()`
+  from your harness or call `LLVMFuzzerTestOneInput()` harnesses with `@@`),
+  or set a low  `AFL_LOOP` value, e.g. 100, and enable `AFL_PERSISTENT_RECORD`
+  in `config.h` with the same value.
 
-     Recompile, fuzz it, be happy :)
+  A value above 90% is usually fine and a value above 80% is also still ok, and
+  even a value above 20% can still result in successful finds of bugs. However,
+  it is recommended that for values below 90% or 80% you should take
+  countermeasures to improve stability.
 
-     This link explains this process for [Fuzzbench](https://github.com/google/fuzzbench/issues/677)
+  For more information on stability and how to improve the stability value, see
+  [best_practices.md#improving-stability](best_practices.md#improving-stability).
+</p></details>
+
+<details>
+  <summary id="what-are-power-schedules">What are power schedules?</summary><p>
+
+  Not every item in our queue/corpus is the same, some are more interesting,
+  others provide little value.
+  A power schedule measures how "interesting" a value is, and depending on
+  the calculated value spends more or less time mutating it.
+
+  AFL++ comes with several power schedules, initially ported from
+  [AFLFast](https://github.com/mboehme/aflfast), however, modified to be more
+  effective and several more modes added.
+
+  The most effective modes are `-p fast` (default) and `-p explore`.
+
+  If you fuzz with several parallel afl-fuzz instances, then it is beneficial
+  to assign a different schedule to each instance, however the majority should
+  be `fast` and `explore`.
+
+  It does not make sense to explain the details of the calculation and
+  reasoning behind all of the schedules. If you are interested, read the source
+  code and the AFLFast paper.
+</p></details>
+
+## Troubleshooting
+
+<details>
+  <summary id="fatal-forkserver-is-already-up-but-an-instrumented-dlopen-library-loaded-afterwards">FATAL: forkserver is already up but an instrumented dlopen library loaded afterwards</summary><p>
+
+  It can happen that you see this error on startup when fuzzing a target:
+
+  ```
+  [-] FATAL: forkserver is already up, but an instrumented dlopen() library
+             loaded afterwards. You must AFL_PRELOAD such libraries to be able
+             to fuzz them or LD_PRELOAD to run outside of afl-fuzz.
+             To ignore this set AFL_IGNORE_PROBLEMS=1.
+  ```
+
+  As the error describes, a dlopen() call is happening in the target that is
+  loading an instrumented library after the forkserver is already in place. This
+  is a problem for afl-fuzz because when the forkserver is started, we must know
+  the map size already and it can't be changed later.
+
+  The best solution is to simply set `AFL_PRELOAD=foo.so` to the libraries that
+  are dlopen'ed (e.g., use `strace` to see which), or to set a manual forkserver
+  after the final dlopen().
+
+  If this is not a viable option, you can set `AFL_IGNORE_PROBLEMS=1` but then
+  the existing map will be used also for the newly loaded libraries, which
+  allows it to work, however, the efficiency of the fuzzing will be partially
+  degraded. Note that there is additionally `AFL_IGNORE_PROBLEMS_COVERAGE` to
+  additionally tell AFL++ to ignore any coverage from the late loaded libaries.
+</p></details>
+
+<details>
+  <summary id="i-got-a-weird-compile-error-from-clang">I got a weird compile error from clang.</summary><p>
+
+  If you see this kind of error when trying to instrument a target with
+  afl-cc/afl-clang-fast/afl-clang-lto:
+
+  ```
+  /prg/tmp/llvm-project/build/bin/clang-13: symbol lookup error: /usr/local/bin/../lib/afl//cmplog-instructions-pass.so: undefined symbol: _ZNK4llvm8TypeSizecvmEv
+  clang-13: error: unable to execute command: No such file or directory
+  clang-13: error: clang frontend command failed due to signal (use -v to see invocation)
+  clang version 13.0.0 (https://github.com/llvm/llvm-project 1d7cf550721c51030144f3cd295c5789d51c4aad)
+  Target: x86_64-unknown-linux-gnu
+  Thread model: posix
+  InstalledDir: /prg/tmp/llvm-project/build/bin
+  clang-13: note: diagnostic msg:
+  ********************
+  ```
+
+  Then this means that your OS updated the clang installation from an upgrade
+  package and because of that the AFL++ llvm plugins do not match anymore.
+
+  Solution: `git pull ; make clean install` of AFL++.
+</p></details>
+
+<details>
+  <summary id="afl-map-size-warning">AFL++ map size warning.</summary><p>
+
+  When you run a large instrumented program stand-alone or via afl-showmap
+  you might see a warning like the following:
+
+  ```
+  Warning: AFL++ tools might need to set AFL_MAP_SIZE to 223723 to be able to run this instrumented program if this crashes!
+  ```
+
+  Depending how the target works it might also crash afterwards.
+
+  Solution: just do an `export AFL_MAP_SIZE=(the value in the warning)`.
+</p></details>

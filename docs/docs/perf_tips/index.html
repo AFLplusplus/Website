@@ -33,10 +33,10 @@
 
 
 
-<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.bd94799dfcdf969755cf180e7375925b1034fe6f40f69be521e4f17aa5e520dc.js" integrity="sha256-vZR5nfzflpdVzxgOc3WSWxA0/m9A9pvlIeTxeqXlINw="></script>
+<script defer src="/en.search.min.be06027f8735505ece982e70c6838dcd93262b95e810a56c98c7e933c75a5393.js" integrity="sha256-vgYCf4c1UF7OmC5wxoONzZMmK5XoEKVsmMfpM8daU5M="></script>
 
 <!--
 Made with Book Theme
@@ -83,7 +83,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.12c">Release 3.12c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.05c">Release 4.05c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -216,7 +216,7 @@ accuracy of afl. See instrumentation/README.instrument_list.md</p>
 <p>Check for any parameters or settings that obviously improve performance. For
 example, the djpeg utility that comes with IJG jpeg and libjpeg-turbo can be
 called with:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  -dct fast -nosmooth -onepass -dither none -scale 1/4
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  -dct fast -nosmooth -onepass -dither none -scale 1/4
 </code></pre></div><p>&hellip;and that will speed things up. There is a corresponding drop in the quality
 of decoded images, but it&rsquo;s probably not something you care about.</p>
 <p>In some programs, it is possible to disable output altogether, or at least use
@@ -288,7 +288,7 @@ on a particular schedule and is known to underestimate the needs of
 short-lived processes spawned by <code>afl-fuzz</code> (or any other fuzzer). On Linux,
 this can be fixed with:</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">    cd /sys/devices/system/cpu
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">    cd /sys/devices/system/cpu
     echo performance | tee cpu*/cpufreq/scaling_governor
 </code></pre></div><pre><code>On other systems, the impact of CPU scaling will be different; when fuzzing,
 use OS-specific tools to find out if all cores are running at full speed.
@@ -298,13 +298,13 @@ use OS-specific tools to find out if all cores are running at full speed.
 heavy fuzzing penalty when transparent huge pages (THP) are enabled in the
 kernel. You can disable this via:</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">    echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">    echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled
 </code></pre></div><ul>
 <li>Suboptimal scheduling strategies. The significance of this will vary from
 one target to another, but on Linux, you may want to make sure that the
 following options are set:</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">    echo <span style="color:#ae81ff">1</span> &gt;/proc/sys/kernel/sched_child_runs_first
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">    echo <span style="color:#ae81ff">1</span> &gt;/proc/sys/kernel/sched_child_runs_first
     echo <span style="color:#ae81ff">1</span> &gt;/proc/sys/kernel/sched_autogroup_enabled
 </code></pre></div><pre><code>Setting a different scheduling policy for the fuzzer process - say
 `SCHED_RR` - can usually speed things up, too, but needs to be done with
@@ -315,7 +315,7 @@ care.
 <li>Disable all the spectre, meltdown etc. security countermeasures in the
 kernel if your machine is properly separated:</li>
 </ul>
-<pre><code>ibpb=off ibrs=off kpti=off l1tf=off mds=off mitigations=off
+<pre tabindex="0"><code>ibpb=off ibrs=off kpti=off l1tf=off mds=off mitigations=off
 no_stf_barrier noibpb noibrs nopcid nopti nospec_store_bypass_disable
 nospectre_v1 nospectre_v2 pcid=off pti=off spec_store_bypass_disable=off
 spectre_v2=off stf_barrier=off

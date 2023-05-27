@@ -33,10 +33,10 @@
 
 
 
-<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.bd94799dfcdf969755cf180e7375925b1034fe6f40f69be521e4f17aa5e520dc.js" integrity="sha256-vZR5nfzflpdVzxgOc3WSWxA0/m9A9pvlIeTxeqXlINw="></script>
+<script defer src="/en.search.min.be06027f8735505ece982e70c6838dcd93262b95e810a56c98c7e933c75a5393.js" integrity="sha256-vgYCf4c1UF7OmC5wxoONzZMmK5XoEKVsmMfpM8daU5M="></script>
 
 <!--
 Made with Book Theme
@@ -83,7 +83,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.12c">Release 3.12c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.05c">Release 4.05c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -144,24 +144,18 @@ https://github.com/alex-shpak/hugo-book
     <li><a href="#2-settings-for-llvm-and-lto-afl-clang-fast--afl-clang-fast--afl-clang-lto--afl-clang-lto">2) Settings for LLVM and LTO: afl-clang-fast / afl-clang-fast++ / afl-clang-lto / afl-clang-lto++</a>
       <ul>
         <li><a href="#select-the-instrumentation-mode">Select the instrumentation mode</a></li>
-        <li><a href="#lto">LTO</a></li>
-        <li><a href="#ngram">NGRAM</a></li>
-        <li><a href="#ctx">CTX</a></li>
-        <li><a href="#laf-intel">LAF-INTEL</a></li>
-        <li><a href="#instrument-list-selectively-instrument-files-and-functions">INSTRUMENT LIST (selectively instrument files and functions)</a></li>
-        <li><a href="#not_zero">NOT_ZERO</a></li>
-        <li><a href="#cmplog">CMPLOG</a></li>
       </ul>
     </li>
     <li><a href="#3-settings-for-gcc--gcc_plugin-modes">3) Settings for GCC / GCC_PLUGIN modes</a></li>
     <li><a href="#4-settings-for-afl-fuzz">4) Settings for afl-fuzz</a></li>
     <li><a href="#5-settings-for-afl-qemu-trace">5) Settings for afl-qemu-trace</a></li>
-    <li><a href="#6-settings-for-afl-cmin">6) Settings for afl-cmin</a></li>
-    <li><a href="#7-settings-for-afl-tmin">7) Settings for afl-tmin</a></li>
-    <li><a href="#8-settings-for-afl-analyze">8) Settings for afl-analyze</a></li>
-    <li><a href="#9-settings-for-libdislocator">9) Settings for libdislocator</a></li>
-    <li><a href="#10-settings-for-libtokencap">10) Settings for libtokencap</a></li>
-    <li><a href="#11-third-party-variables-set-by-afl-fuzz--other-tools">11) Third-party variables set by afl-fuzz &amp; other tools</a></li>
+    <li><a href="#7-settings-for-afl-frida-trace">7) Settings for afl-frida-trace</a></li>
+    <li><a href="#8-settings-for-afl-cmin">8) Settings for afl-cmin</a></li>
+    <li><a href="#9-settings-for-afl-tmin">9) Settings for afl-tmin</a></li>
+    <li><a href="#10-settings-for-afl-analyze">10) Settings for afl-analyze</a></li>
+    <li><a href="#11-settings-for-libdislocator">11) Settings for libdislocator</a></li>
+    <li><a href="#11-settings-for-libtokencap">11) Settings for libtokencap</a></li>
+    <li><a href="#12-third-party-variables-set-by-afl-fuzz--other-tools">12) Third-party variables set by afl-fuzz &amp; other tools</a></li>
   </ul>
 </nav>
 
@@ -172,45 +166,75 @@ https://github.com/alex-shpak/hugo-book
       </header>
 
       
-<article class="markdown"><h1 id="environmental-variables">Environmental variables</h1>
-<p>This document discusses the environment variables used by American Fuzzy Lop++
-to expose various exotic functions that may be (rarely) useful for power
-users or for some types of custom fuzzing setups. See <a href="README.md">README.md</a> for the general
-instruction manual.</p>
-<p>Note that most tools will warn on any unknown AFL environment variables.
-This is for warning on typos that can happen. If you want to disable this
-check then set the <code>AFL_IGNORE_UNKNOWN_ENVS</code> environment variable.</p>
+<article class="markdown"><h1 id="environment-variables">Environment variables</h1>
+<p>This document discusses the environment variables used by AFL++ to expose
+various exotic functions that may be (rarely) useful for power users or for
+some types of custom fuzzing setups. For general information about AFL++, see
+<a href="../README.md">README.md</a>.</p>
+<p>Note: Most tools will warn on any unknown AFL++ environment variables; for
+example, because of typos. If you want to disable this check, then set the
+<code>AFL_IGNORE_UNKNOWN_ENVS</code> environment variable.</p>
 <h2 id="1-settings-for-all-compilers">1) Settings for all compilers</h2>
-<p>Starting with afl++ 3.0 there is only one compiler: afl-cc
-To select the different instrumentation modes this can be done by</p>
-<ol>
-<li>passing the &ndash;afl-MODE command line option to the compiler</li>
-<li>or using a symlink to afl-cc: afl-gcc, afl-g++, afl-clang, afl-clang++,
-afl-clang-fast, afl-clang-fast++, afl-clang-lto, afl-clang-lto++,
-afl-gcc-fast, afl-g++-fast</li>
-<li>or using the environment variable <code>AFL_CC_COMPILER</code> with <code>MODE</code></li>
-</ol>
-<p><code>MODE</code> can be one of <code>LTO</code> (afl-clang-lto*), <code>LLVM</code> (afl-clang-fast*), <code>GCC_PLUGIN</code>
-(afl-g*-fast) or <code>GCC</code> (afl-gcc/afl-g++).</p>
-<p>Because (with the exception of the &ndash;afl-MODE command line option) the
-compile-time tools do not accept afl specific command-line options, they
-make fairly broad use of environmental variables instead:</p>
+<p>Starting with AFL++ 3.0, there is only one compiler: afl-cc.</p>
+<p>To select the different instrumentation modes, use one of the following options:</p>
 <ul>
-<li>Some build/configure scripts break with afl++ compilers. To be able to
-pass them, do:</li>
-</ul>
-<pre><code>       export CC=afl-cc
-       export CXX=afl-c++
-       export AFL_NOOPT=1
-       ./configure --disable-shared --disabler-werror
-       unset AFL_NOOPT
-       make
-</code></pre><ul>
 <li>
-<p>Most afl tools do not print any output if stdout/stderr are redirected.
-If you want to get the output into a file then set the <code>AFL_DEBUG</code>
-environment variable.
-This is sadly necessary for various build processes which fail otherwise.</p>
+<p>Pass the &ndash;afl-MODE command-line option to the compiler. Only this option
+accepts further AFL-specific command-line options.</p>
+</li>
+<li>
+<p>Use a symlink to afl-cc: afl-clang, afl-clang++, afl-clang-fast,
+afl-clang-fast++, afl-clang-lto, afl-clang-lto++, afl-g++, afl-g++-fast,
+afl-gcc, afl-gcc-fast. This option does not accept AFL-specific command-line
+options. Instead, use environment variables.</p>
+</li>
+<li>
+<p>Use the <code>AFL_CC_COMPILER</code> environment variable with <code>MODE</code>. To select
+<code>MODE</code>, use one of the following values:</p>
+<ul>
+<li><code>GCC</code> (afl-gcc/afl-g++)</li>
+<li><code>GCC_PLUGIN</code> (afl-g*-fast)</li>
+<li><code>LLVM</code> (afl-clang-fast*)</li>
+<li><code>LTO</code> (afl-clang-lto*).</li>
+</ul>
+</li>
+</ul>
+<p>The compile-time tools do not accept AFL-specific command-line options. The
+&ndash;afl-MODE command line option is the only exception. The other options make
+fairly broad use of environment variables instead:</p>
+<ul>
+<li>
+<p>Some build/configure scripts break with AFL++ compilers. To be able to pass
+them, do:</p>
+<pre tabindex="0"><code>      export CC=afl-cc
+      export CXX=afl-c++
+      export AFL_NOOPT=1
+      ./configure --disable-shared --disabler-werror
+      unset AFL_NOOPT
+      make
+</code></pre></li>
+<li>
+<p>Setting <code>AFL_AS</code>, <code>AFL_CC</code>, and <code>AFL_CXX</code> lets you use alternate downstream
+compilation tools, rather than the default &lsquo;as&rsquo;, &lsquo;clang&rsquo;, or &lsquo;gcc&rsquo; binaries
+in your <code>$PATH</code>.</p>
+</li>
+<li>
+<p>If you are a weird person that wants to compile and instrument asm text
+files, then use the <code>AFL_AS_FORCE_INSTRUMENT</code> variable:
+<code>AFL_AS_FORCE_INSTRUMENT=1 afl-gcc foo.s -o foo</code></p>
+</li>
+<li>
+<p>Most AFL tools do not print any output if stdout/stderr are redirected. If
+you want to get the output into a file, then set the <code>AFL_DEBUG</code> environment
+variable. This is sadly necessary for various build processes which fail
+otherwise.</p>
+</li>
+<li>
+<p>By default, the wrapper appends <code>-O3</code> to optimize builds. Very rarely, this
+will cause problems in programs built with -Werror, because <code>-O3</code> enables
+more thorough code analysis and can spew out additional warnings. To disable
+optimizations, set <code>AFL_DONT_OPTIMIZE</code>. However, if <code>-O...</code> and/or
+<code>-fno-unroll-loops</code> are set, these are not overridden.</p>
 </li>
 <li>
 <p>Setting <code>AFL_HARDEN</code> automatically adds code hardening options when invoking
@@ -219,55 +243,16 @@ the downstream compiler. This currently includes <code>-D_FORTIFY_SOURCE=2</code
 memory bugs at the expense of a very slight (sub-5%) performance loss.</p>
 </li>
 <li>
-<p>By default, the wrapper appends <code>-O3</code> to optimize builds. Very rarely, this
-will cause problems in programs built with -Werror, simply because <code>-O3</code>
-enables more thorough code analysis and can spew out additional warnings.
-To disable optimizations, set <code>AFL_DONT_OPTIMIZE</code>.
-However if <code>-O...</code> and/or <code>-fno-unroll-loops</code> are set, these are not
-overridden.</p>
-</li>
-<li>
-<p>Setting <code>AFL_USE_ASAN</code> automatically enables ASAN, provided that your
-compiler supports it. Note that fuzzing with ASAN is mildly challenging</p>
-<ul>
-<li>see <a href="notes_for_asan.md">notes_for_asan.md</a>.</li>
-</ul>
-<p>(You can also enable MSAN via <code>AFL_USE_MSAN</code>; ASAN and MSAN come with the
-same gotchas; the modes are mutually exclusive. UBSAN can be enabled
-similarly by setting the environment variable <code>AFL_USE_UBSAN=1</code>. Finally
-there is the Control Flow Integrity sanitizer that can be activated by
-<code>AFL_USE_CFISAN=1</code>)</p>
-</li>
-<li>
-<p>Setting <code>AFL_USE_LSAN</code> automatically enables Leak-Sanitizer, provided
-that your compiler supports it. To perform a leak check within your
-program at a certain point (such as at the end of an __AFL_LOOP),
-you can run the macro __AFL_LEAK_CHECK(); which will cause
-an abort if any memory is leaked (you can combine this with the
-LSAN_OPTIONS=suppressions option to supress some known leaks).</p>
-</li>
-<li>
-<p>Setting <code>AFL_CC</code>, <code>AFL_CXX</code>, and <code>AFL_AS</code> lets you use alternate downstream
-compilation tools, rather than the default &lsquo;clang&rsquo;, &lsquo;gcc&rsquo;, or &lsquo;as&rsquo; binaries
-in your <code>$PATH</code>.</p>
-</li>
-<li>
-<p><code>AFL_PATH</code> can be used to point afl-gcc to an alternate location of afl-as.
-One possible use of this is utils/clang_asm_normalize/, which lets
-you instrument hand-written assembly when compiling clang code by plugging
-a normalizer into the chain. (There is no equivalent feature for GCC.)</p>
-</li>
-<li>
 <p>Setting <code>AFL_INST_RATIO</code> to a percentage between 0 and 100 controls the
-probability of instrumenting every branch. This is (very rarely) useful
-when dealing with exceptionally complex programs that saturate the output
-bitmap. Examples include v8, ffmpeg, and perl.</p>
+probability of instrumenting every branch. This is (very rarely) useful when
+dealing with exceptionally complex programs that saturate the output bitmap.
+Examples include ffmpeg, perl, and v8.</p>
 <p>(If this ever happens, afl-fuzz will warn you ahead of the time by
 displaying the &ldquo;bitmap density&rdquo; field in fiery red.)</p>
 <p>Setting <code>AFL_INST_RATIO</code> to 0 is a valid choice. This will instrument only
 the transitions between function entry points, but not individual branches.</p>
-<p>Note that this is an outdated variable. A few instances (e.g. afl-gcc)
-still support these, but state-of-the-art (e.g. LLVM LTO and LLVM PCGUARD)
+<p>Note that this is an outdated variable. A few instances (e.g., afl-gcc)
+still support these, but state-of-the-art (e.g., LLVM LTO and LLVM PCGUARD)
 do not need this.</p>
 </li>
 <li>
@@ -275,190 +260,303 @@ do not need this.</p>
 libtokencap.so (but perhaps running a bit slower than without the flag).</p>
 </li>
 <li>
-<p><code>TMPDIR</code> is used by afl-as for temporary files; if this variable is not set,
-the tool defaults to /tmp.</p>
+<p><code>AFL_PATH</code> can be used to point afl-gcc to an alternate location of afl-as.
+One possible use of this is utils/clang_asm_normalize/, which lets you
+instrument hand-written assembly when compiling clang code by plugging a
+normalizer into the chain. (There is no equivalent feature for GCC.)</p>
 </li>
 <li>
-<p>If you are a weird person that wants to compile and instrument asm
-text files then use the <code>AFL_AS_FORCE_INSTRUMENT</code> variable:
-<code>AFL_AS_FORCE_INSTRUMENT=1 afl-gcc foo.s -o foo</code></p>
-</li>
-<li>
-<p>Setting <code>AFL_QUIET</code> will prevent afl-cc and afl-as banners from being
+<p>Setting <code>AFL_QUIET</code> will prevent afl-as and afl-cc banners from being
 displayed during compilation, in case you find them distracting.</p>
 </li>
 <li>
-<p>Setting <code>AFL_CAL_FAST</code> will speed up the initial calibration, if the
-application is very slow.</p>
+<p>Setting <code>AFL_USE_...</code> automatically enables supported sanitizers - provided
+that your compiler supports it. Available are:</p>
+<ul>
+<li><code>AFL_USE_ASAN=1</code> - activates the address sanitizer (memory corruption
+detection)</li>
+<li><code>AFL_USE_CFISAN=1</code> - activates the Control Flow Integrity sanitizer (e.g.
+type confusion vulnerabilities)</li>
+<li><code>AFL_USE_LSAN</code> - activates the leak sanitizer. To perform a leak check
+within your program at a certain point (such as at the end of an
+<code>__AFL_LOOP()</code>), you can run the macro  <code>__AFL_LEAK_CHECK();</code> which will
+cause an abort if any memory is leaked (you can combine this with the
+<code>__AFL_LSAN_OFF();</code> and <code>__AFL_LSAN_ON();</code> macros to avoid checking for
+memory leaks from memory allocated between these two calls.</li>
+<li><code>AFL_USE_MSAN=1</code> - activates the memory sanitizer (uninitialized memory)</li>
+<li><code>AFL_USE_TSAN=1</code> - activates the thread sanitizer to find thread race
+conditions</li>
+<li><code>AFL_USE_UBSAN=1</code> - activates the undefined behavior sanitizer</li>
+</ul>
+</li>
+<li>
+<p><code>TMPDIR</code> is used by afl-as for temporary files; if this variable is not set,
+the tool defaults to /tmp.</p>
 </li>
 </ul>
 <h2 id="2-settings-for-llvm-and-lto-afl-clang-fast--afl-clang-fast--afl-clang-lto--afl-clang-lto">2) Settings for LLVM and LTO: afl-clang-fast / afl-clang-fast++ / afl-clang-lto / afl-clang-lto++</h2>
-<p>The native instrumentation helpers (instrumentation and gcc_plugin) accept a subset
-of the settings discussed in section 1, with the exception of:</p>
+<p>The native instrumentation helpers (instrumentation and gcc_plugin) accept a
+subset of the settings discussed in section 1, with the exception of:</p>
 <ul>
 <li>
-<p>LLVM modes support <code>AFL_LLVM_DICT2FILE=/absolute/path/file.txt</code> which will
-write all constant string comparisons  to this file to be used later with
-afl-fuzz&rsquo; <code>-x</code> option.</p>
+<p><code>AFL_AS</code>, since this toolchain does not directly invoke GNU <code>as</code>.</p>
 </li>
 <li>
-<p><code>AFL_AS</code>, since this toolchain does not directly invoke GNU as.</p>
+<p><code>AFL_INST_RATIO</code>, as we use collision free instrumentation by default. Not
+all passes support this option though as it is an outdated feature.</p>
+</li>
+<li>
+<p>LLVM modes support <code>AFL_LLVM_DICT2FILE=/absolute/path/file.txt</code> which will
+write all constant string comparisons to this file to be used later with
+afl-fuzz' <code>-x</code> option.</p>
+</li>
+<li>
+<p>An option to <code>AFL_LLVM_DICT2FILE</code> is <code>AFL_LLVM_DICT2FILE_NO_MAIN=1</code> which
+skill not parse <code>main()</code>.</p>
 </li>
 <li>
 <p><code>TMPDIR</code> and <code>AFL_KEEP_ASSEMBLY</code>, since no temporary assembly files are
 created.</p>
 </li>
-<li>
-<p><code>AFL_INST_RATIO</code>, as we by default use collision free instrumentation.
-Not all passes support this option though as it is an outdated feature.</p>
-</li>
 </ul>
-<p>Then there are a few specific features that are only available in instrumentation mode:</p>
+<p>Then there are a few specific features that are only available in
+instrumentation mode:</p>
 <h3 id="select-the-instrumentation-mode">Select the instrumentation mode</h3>
-<pre><code>- `AFL_LLVM_INSTRUMENT` - this configures the instrumentation mode. 
-  Available options:
-    PCGUARD - our own pcgard based instrumentation (default)
-    NATIVE - clang's original pcguard based instrumentation
-    CLASSIC - classic AFL (map[cur_loc ^ prev_loc &gt;&gt; 1]++) (default)
-    LTO - LTO instrumentation (see below)
-    CTX - context sensitive instrumentation (see below)
-    NGRAM-x - deeper previous location coverage (from NGRAM-2 up to NGRAM-16)
-    GCC - outdated gcc instrumentation
-    CLANG - outdated clang instrumentation
-  In CLASSIC you can also specify CTX and/or NGRAM, seperate the options
-  with a comma &quot;,&quot; then, e.g.:
-    `AFL_LLVM_INSTRUMENT=CLASSIC,CTX,NGRAM-4`
-  Note that this is actually not a good idea to use both CTX and NGRAM :)
-</code></pre>
-<h3 id="lto">LTO</h3>
-<p>This is a different kind way of instrumentation: first it compiles all
-code in LTO (link time optimization) and then performs an edge inserting
-instrumentation which is 100% collision free (collisions are a big issue
-in afl and afl-like instrumentations). This is performed by using
-afl-clang-lto/afl-clang-lto++ instead of afl-clang-fast, but is only
-built if LLVM 11 or newer is used.</p>
-<ul>
-<li><code>AFL_LLVM_INSTRUMENT=CFG</code> will use Control Flow Graph instrumentation.
-(not recommended for afl-clang-fast, default for afl-clang-lto as there
-it is a different and better kind of instrumentation.)</li>
-</ul>
-<p>None of the following options are necessary to be used and are rather for
-manual use (which only ever the author of this LTO implementation will use).
-These are used if several separated instrumentations are performed which
-are then later combined.</p>
-<ul>
-<li><code>AFL_LLVM_DOCUMENT_IDS=file</code> will document to a file which edge ID was given
-to which function. This helps to identify functions with variable bytes
-or which functions were touched by an input.</li>
-<li><code>AFL_LLVM_MAP_ADDR</code> sets the fixed map address to a different address than
-the default <code>0x10000</code>. A value of 0 or empty sets the map address to be
-dynamic (the original afl way, which is slower)</li>
-<li><code>AFL_LLVM_MAP_DYNAMIC</code> sets the shared memory address to be dynamic</li>
-<li><code>AFL_LLVM_LTO_STARTID</code> sets the starting location ID for the instrumentation.
-This defaults to 1</li>
-<li><code>AFL_LLVM_LTO_DONTWRITEID</code> prevents that the highest location ID written
-into the instrumentation is set in a global variable</li>
-</ul>
-<p>See <a href="../instrumentation/README.lto.md">instrumentation/README.lto.md</a> for more information.</p>
-<h3 id="ngram">NGRAM</h3>
-<ul>
-<li>Setting <code>AFL_LLVM_NGRAM_SIZE</code> or <code>AFL_LLVM_INSTRUMENT=NGRAM-{value}</code>
-activates ngram prev_loc coverage, good values are 2, 4 or 8
-(any value between 2 and 16 is valid).
-It is highly recommended to increase the <code>MAP_SIZE_POW2</code> definition in
-config.h to at least 18 and maybe up to 20 for this as otherwise too
-many map collisions occur.</li>
-</ul>
-<p>See <a href="../instrumentation/README.ngram.md">instrumentation/README.ngram.md</a></p>
-<h3 id="ctx">CTX</h3>
-<ul>
-<li>Setting <code>AFL_LLVM_CTX</code> or <code>AFL_LLVM_INSTRUMENT=CTX</code>
-activates context sensitive branch coverage - meaning that each edge
-is additionally combined with its caller.
-It is highly recommended to increase the <code>MAP_SIZE_POW2</code> definition in
-config.h to at least 18 and maybe up to 20 for this as otherwise too
-many map collisions occur.</li>
-</ul>
-<p>See <a href="../instrumentation/README.ctx.md">instrumentation/README.ctx.md</a></p>
-<h3 id="laf-intel">LAF-INTEL</h3>
-<p>This great feature will split compares into series of single byte comparisons
-to allow afl-fuzz to find otherwise rather impossible paths. It is not
-restricted to Intel CPUs ;-)</p>
+<p><code>AFL_LLVM_INSTRUMENT</code> - this configures the instrumentation mode.</p>
+<p>Available options:</p>
 <ul>
 <li>
-<p>Setting <code>AFL_LLVM_LAF_TRANSFORM_COMPARES</code> will split string compare functions</p>
+<p>CLANG - outdated clang instrumentation</p>
 </li>
 <li>
-<p>Setting <code>AFL_LLVM_LAF_SPLIT_SWITCHES</code> will split all <code>switch</code> constructs</p>
+<p>CLASSIC - classic AFL (map[cur_loc ^ prev_loc &raquo; 1]++) (default)</p>
+<p>You can also specify CTX and/or NGRAM, separate the options with a comma &ldquo;,&rdquo;
+then, e.g.: <code>AFL_LLVM_INSTRUMENT=CLASSIC,CTX,NGRAM-4</code></p>
+<p>Note: It is actually not a good idea to use both CTX and NGRAM. :)</p>
 </li>
 <li>
-<p>Setting <code>AFL_LLVM_LAF_SPLIT_COMPARES</code> will split all floating point and
-64, 32 and 16 bit integer CMP instructions</p>
+<p>CTX - context sensitive instrumentation</p>
+</li>
+<li>
+<p>GCC - outdated gcc instrumentation</p>
+</li>
+<li>
+<p>LTO - LTO instrumentation</p>
+</li>
+<li>
+<p>NATIVE - clang&rsquo;s original pcguard based instrumentation</p>
+</li>
+<li>
+<p>NGRAM-x - deeper previous location coverage (from NGRAM-2 up to NGRAM-16)</p>
+</li>
+<li>
+<p>PCGUARD - our own pcguard based instrumentation (default)</p>
+</li>
+</ul>
+<h4 id="cmplog">CMPLOG</h4>
+<p>Setting <code>AFL_LLVM_CMPLOG=1</code> during compilation will tell afl-clang-fast to
+produce a CmpLog binary.</p>
+<p>For afl-gcc-fast, set <code>AFL_GCC_CMPLOG=1</code> instead.</p>
+<p>For more information, see
+<a href="../instrumentation/README.cmplog.md">instrumentation/README.cmplog.md</a>.</p>
+<h4 id="ctx">CTX</h4>
+<p>Setting <code>AFL_LLVM_CTX</code> or <code>AFL_LLVM_INSTRUMENT=CTX</code> activates context sensitive
+branch coverage - meaning that each edge is additionally combined with its
+caller. It is highly recommended to increase the <code>MAP_SIZE_POW2</code> definition in
+config.h to at least 18 and maybe up to 20 for this as otherwise too many map
+collisions occur.</p>
+<p>For more information, see
+<a href="../instrumentation/README.llvm.md#6-afl-context-sensitive-branch-coverage">instrumentation/README.llvm.md#6) AFL++ Context Sensitive Branch Coverage</a>.</p>
+<h4 id="instrument-list-selectively-instrument-files-and-functions">INSTRUMENT LIST (selectively instrument files and functions)</h4>
+<p>This feature allows selective instrumentation of the source.</p>
+<p>Setting <code>AFL_LLVM_ALLOWLIST</code> or <code>AFL_LLVM_DENYLIST</code> with a file name and/or
+function will only instrument (or skip) those files that match the names listed
+in the specified file.</p>
+<p>For more information, see
+<a href="../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a>.</p>
+<h4 id="laf-intel">LAF-INTEL</h4>
+<p>This great feature will split compares into series of single byte comparisons to
+allow afl-fuzz to find otherwise rather impossible paths. It is not restricted
+to Intel CPUs. ;-)</p>
+<ul>
+<li>
+<p>Setting <code>AFL_LLVM_LAF_TRANSFORM_COMPARES</code> will split string compare
+functions.</p>
+</li>
+<li>
+<p>Setting <code>AFL_LLVM_LAF_SPLIT_COMPARES</code> will split all floating point and 64,
+32 and 16 bit integer CMP instructions.</p>
 </li>
 <li>
 <p>Setting <code>AFL_LLVM_LAF_SPLIT_FLOATS</code> will split floating points, needs
-AFL_LLVM_LAF_SPLIT_COMPARES to be set</p>
+<code>AFL_LLVM_LAF_SPLIT_COMPARES</code> to be set.</p>
 </li>
 <li>
-<p>Setting <code>AFL_LLVM_LAF_ALL</code> sets all of the above</p>
-</li>
-</ul>
-<p>See <a href="../instrumentation/README.laf-intel.md">instrumentation/README.laf-intel.md</a> for more information.</p>
-<h3 id="instrument-list-selectively-instrument-files-and-functions">INSTRUMENT LIST (selectively instrument files and functions)</h3>
-<p>This feature allows selective instrumentation of the source</p>
-<ul>
-<li>Setting <code>AFL_LLVM_ALLOWLIST</code> or <code>AFL_LLVM_DENYLIST</code> with a filenames and/or
-function will only instrument (or skip) those files that match the names
-listed in the specified file.</li>
-</ul>
-<p>See <a href="../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a> for more information.</p>
-<h3 id="not_zero">NOT_ZERO</h3>
-<ul>
-<li>
-<p>Setting <code>AFL_LLVM_NOT_ZERO=1</code> during compilation will use counters
-that skip zero on overflow. This is the default for llvm &gt;= 9,
-however for llvm versions below that this will increase an unnecessary
-slowdown due a performance issue that is only fixed in llvm 9+.
-This feature increases path discovery by a little bit.</p>
+<p>Setting <code>AFL_LLVM_LAF_SPLIT_SWITCHES</code> will split all <code>switch</code> constructs.</p>
 </li>
 <li>
-<p>Setting <code>AFL_LLVM_SKIP_NEVERZERO=1</code> will not implement the skip zero
-test. If the target performs only few loops then this will give a
-small performance boost.</p>
+<p>Setting <code>AFL_LLVM_LAF_ALL</code> sets all of the above.</p>
 </li>
 </ul>
-<p>See <a href="../instrumentation/README.neverzero.md">instrumentation/README.neverzero.md</a></p>
-<h3 id="cmplog">CMPLOG</h3>
+<p>For more information, see
+<a href="../instrumentation/README.laf-intel.md">instrumentation/README.laf-intel.md</a>.</p>
+<h4 id="lto">LTO</h4>
+<p>This is a different way of instrumentation: first it compiles all code in LTO
+(link time optimization) and then performs an edge inserting instrumentation
+which is 100% collision free (collisions are a big issue in AFL and AFL-like
+instrumentations). This is performed by using afl-clang-lto/afl-clang-lto++
+instead of afl-clang-fast, but is only built if LLVM 11 or newer is used.</p>
+<p><code>AFL_LLVM_INSTRUMENT=CFG</code> will use Control Flow Graph instrumentation. (Not
+recommended for afl-clang-fast, default for afl-clang-lto as there it is a
+different and better kind of instrumentation.)</p>
+<p>None of the following options are necessary to be used and are rather for manual
+use (which only ever the author of this LTO implementation will use). These are
+used if several separated instrumentations are performed which are then later
+combined.</p>
 <ul>
-<li>Setting <code>AFL_LLVM_CMPLOG=1</code> during compilation will tell afl-clang-fast to
-produce a CmpLog binary.</li>
+<li><code>AFL_LLVM_DOCUMENT_IDS=file</code> will document to a file which edge ID was given
+to which function. This helps to identify functions with variable bytes or
+which functions were touched by an input.</li>
+<li><code>AFL_LLVM_LTO_DONTWRITEID</code> prevents that the highest location ID written
+into the instrumentation is set in a global variable.</li>
+<li><code>AFL_LLVM_LTO_STARTID</code> sets the starting location ID for the
+instrumentation. This defaults to 1.</li>
+<li><code>AFL_LLVM_MAP_ADDR</code> sets the fixed map address to a different address than
+the default <code>0x10000</code>. A value of 0 or empty sets the map address to be
+dynamic (the original AFL way, which is slower).</li>
+<li><code>AFL_LLVM_MAP_DYNAMIC</code> sets the shared memory address to be dynamic.</li>
+<li><code>AFL_LLVM_LTO_SKIPINIT</code> skips adding initialization code. Some global vars
+(e.g. the highest location ID) are not injected. Needed to instrument with
+<a href="https://github.com/fgsect/WAFL.git">WAFL</a>.
+For more information, see
+<a href="../instrumentation/README.lto.md">instrumentation/README.lto.md</a>.</li>
 </ul>
-<p>See <a href="../instrumentation/README.cmplog.md">instrumentation/README.cmplog.md</a></p>
+<h4 id="ngram">NGRAM</h4>
+<p>Setting <code>AFL_LLVM_INSTRUMENT=NGRAM-{value}</code> or <code>AFL_LLVM_NGRAM_SIZE</code> activates
+ngram prev_loc coverage. Good values are 2, 4, or 8 (any value between 2 and 16
+is valid). It is highly recommended to increase the <code>MAP_SIZE_POW2</code> definition
+in config.h to at least 18 and maybe up to 20 for this as otherwise too many map
+collisions occur.</p>
+<p>For more information, see
+<a href="../instrumentation/README.llvm.md#7-afl-n-gram-branch-coverage">instrumentation/README.llvm.md#7) AFL++ N-Gram Branch Coverage</a>.</p>
+<h4 id="not_zero">NOT_ZERO</h4>
+<ul>
+<li>
+<p>Setting <code>AFL_LLVM_NOT_ZERO=1</code> during compilation will use counters that skip
+zero on overflow. This is the default for llvm &gt;= 9, however, for llvm
+versions below that this will increase an unnecessary slowdown due a
+performance issue that is only fixed in llvm 9+. This feature increases path
+discovery by a little bit.</p>
+</li>
+<li>
+<p>Setting <code>AFL_LLVM_SKIP_NEVERZERO=1</code> will not implement the skip zero test.
+If the target performs only a few loops, then this will give a small
+performance boost.</p>
+</li>
+</ul>
+<h4 id="thread-safe-instrumentation-counters-in-all-modes">Thread safe instrumentation counters (in all modes)</h4>
+<p>Setting <code>AFL_LLVM_THREADSAFE_INST</code> will inject code that implements thread safe
+counters. The overhead is a little bit higher compared to the older non-thread
+safe case. Note that this disables neverzero (see NOT_ZERO).</p>
 <h2 id="3-settings-for-gcc--gcc_plugin-modes">3) Settings for GCC / GCC_PLUGIN modes</h2>
-<p>Then there are a few specific features that are only available in GCC and
-GCC_PLUGIN mode.</p>
+<p>There are a few specific features that are only available in GCC and GCC_PLUGIN
+mode.</p>
 <ul>
-<li>Setting <code>AFL_KEEP_ASSEMBLY</code> prevents afl-as from deleting instrumented
-assembly files. Useful for troubleshooting problems or understanding how
-the tool works. (GCC mode only)
-To get them in a predictable place, try something like:</li>
-</ul>
-<pre><code>    mkdir assembly_here
-    TMPDIR=$PWD/assembly_here AFL_KEEP_ASSEMBLY=1 make clean all
-</code></pre><ul>
-<li>Setting <code>AFL_GCC_INSTRUMENT_FILE</code> with a filename will only instrument those
-files that match the names listed in this file (one filename per line).
-See <a href="../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a> for more information.
-(GCC_PLUGIN mode only)</li>
+<li>
+<p>GCC mode only: Setting <code>AFL_KEEP_ASSEMBLY</code> prevents afl-as from deleting
+instrumented assembly files. Useful for troubleshooting problems or
+understanding how the tool works.</p>
+<p>To get them in a predictable place, try something like:</p>
+<pre tabindex="0"><code>mkdir assembly_here
+TMPDIR=$PWD/assembly_here AFL_KEEP_ASSEMBLY=1 make clean all
+</code></pre></li>
+<li>
+<p>GCC_PLUGIN mode only: Setting <code>AFL_GCC_INSTRUMENT_FILE</code> or
+<code>AFL_GCC_ALLOWLIST</code> with a filename will only instrument those files that
+match the names listed in this file (one filename per line).</p>
+<p>Setting <code>AFL_GCC_DENYLIST</code> or <code>AFL_GCC_BLOCKLIST</code> with a file name and/or
+function will only skip those files that match the names listed in the
+specified file. See
+<a href="../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a>
+for more information.</p>
+<p>Setting <code>AFL_GCC_OUT_OF_LINE=1</code> will instruct afl-gcc-fast to instrument the
+code with calls to an injected subroutine instead of the much more efficient
+inline instrumentation.</p>
+<p>Setting <code>AFL_GCC_SKIP_NEVERZERO=1</code> will not implement the skip zero test. If
+the target performs only a few loops, then this will give a small
+performance boost.</p>
+</li>
 </ul>
 <h2 id="4-settings-for-afl-fuzz">4) Settings for afl-fuzz</h2>
 <p>The main fuzzer binary accepts several options that disable a couple of sanity
 checks or alter some of the more exotic semantics of the tool:</p>
 <ul>
 <li>
-<p>Setting <code>AFL_SKIP_CPUFREQ</code> skips the check for CPU scaling policy. This is
-useful if you can&rsquo;t change the defaults (e.g., no root access to the
-system) and are OK with some performance loss.</p>
+<p>Setting <code>AFL_AUTORESUME</code> will resume a fuzz run (same as providing <code>-i -</code>)
+for an existing out folder, even if a different <code>-i</code> was provided. Without
+this setting, afl-fuzz will refuse execution for a long-fuzzed out dir.</p>
+</li>
+<li>
+<p>Benchmarking only: <code>AFL_BENCH_JUST_ONE</code> causes the fuzzer to exit after
+processing the first queue entry; and <code>AFL_BENCH_UNTIL_CRASH</code> causes it to
+exit soon after the first crash is found.</p>
+</li>
+<li>
+<p><code>AFL_CMPLOG_ONLY_NEW</code> will only perform the expensive cmplog feature for
+newly found test cases and not for test cases that are loaded on startup
+(<code>-i in</code>). This is an important feature to set when resuming a fuzzing
+session.</p>
+</li>
+<li>
+<p>Setting <code>AFL_CRASH_EXITCODE</code> sets the exit code AFL++ treats as crash. For
+example, if <code>AFL_CRASH_EXITCODE='-1'</code> is set, each input resulting in a <code>-1</code>
+return code (i.e. <code>exit(-1)</code> got called), will be treated as if a crash had
+occurred. This may be beneficial if you look for higher-level faulty
+conditions in which your target still exits gracefully.</p>
+</li>
+<li>
+<p>Setting <code>AFL_CUSTOM_MUTATOR_LIBRARY</code> to a shared library with
+afl_custom_fuzz() creates additional mutations through this library. If
+afl-fuzz is compiled with Python (which is autodetected during building
+afl-fuzz), setting <code>AFL_PYTHON_MODULE</code> to a Python module can also provide
+additional mutations. If <code>AFL_CUSTOM_MUTATOR_ONLY</code> is also set, all
+mutations will solely be performed with the custom mutator. This feature
+allows to configure custom mutators which can be very helpful, e.g., fuzzing
+XML or other highly flexible structured input. For details, see
+<a href="custom_mutators.md">custom_mutators.md</a>.</p>
+</li>
+<li>
+<p>Setting <code>AFL_CYCLE_SCHEDULES</code> will switch to a different schedule every time
+a cycle is finished.</p>
+</li>
+<li>
+<p>Setting <code>AFL_DEBUG_CHILD</code> will not suppress the child output. This lets you
+see all output of the child, making setup issues obvious. For example, in an
+unicornafl harness, you might see python stacktraces. You may also see other
+logs that way, indicating why the forkserver won&rsquo;t start. Not pretty but
+good for debugging purposes. Note that <code>AFL_DEBUG_CHILD_OUTPUT</code> is
+deprecated.</p>
+</li>
+<li>
+<p>Setting <code>AFL_DISABLE_TRIM</code> tells afl-fuzz not to trim test cases. This is
+usually a bad idea!</p>
+</li>
+<li>
+<p>Setting <code>AFL_KEEP_TIMEOUTS</code> will keep longer running inputs if they reach
+new coverage</p>
+</li>
+<li>
+<p>On the contrary, if you are not interested in any timeouts, you can set
+<code>AFL_IGNORE_TIMEOUTS</code> to get a bit of speed instead.</p>
+</li>
+<li>
+<p><code>AFL_EXIT_ON_SEED_ISSUES</code> will restore the vanilla afl-fuzz behavior which
+does not allow crashes or timeout seeds in the initial -i corpus.</p>
+</li>
+<li>
+<p><code>AFL_EXIT_ON_TIME</code> causes afl-fuzz to terminate if no new paths were found
+within a specified period of time (in seconds). May be convenient for some
+types of automated jobs.</p>
 </li>
 <li>
 <p><code>AFL_EXIT_WHEN_DONE</code> causes afl-fuzz to terminate when all existing paths
@@ -467,177 +565,35 @@ normally indicated by the cycle counter in the UI turning green. May be
 convenient for some types of automated jobs.</p>
 </li>
 <li>
-<p><code>AFL_EXIT_ON_SEED_ISSUES</code> will restore the vanilla afl-fuzz behaviour
-which does not allow crashes or timeout seeds in the initial -i corpus.</p>
-</li>
-<li>
-<p><code>AFL_MAP_SIZE</code> sets the size of the shared map that afl-fuzz, afl-showmap,
-afl-tmin and afl-analyze create to gather instrumentation data from
-the target. This must be equal or larger than the size the target was
-compiled with.</p>
-</li>
-<li>
-<p><code>AFL_CMPLOG_ONLY_NEW</code> will only perform the expensive cmplog feature for
-newly found testcases and not for testcases that are loaded on startup
-(<code>-i in</code>). This is an important feature to set when resuming a fuzzing
-session.</p>
-</li>
-<li>
-<p><code>AFL_TESTCACHE_SIZE</code> allows you to override the size of <code>#define TESTCASE_CACHE</code>
-in config.h. Recommended values are 50-250MB - or more if your fuzzing
-finds a huge amount of paths for large inputs.</p>
-</li>
-<li>
-<p>Setting <code>AFL_DISABLE_TRIM</code> tells afl-fuzz not to trim test cases. This is
-usually a bad idea!</p>
-</li>
-<li>
-<p>Setting <code>AFL_NO_AFFINITY</code> disables attempts to bind to a specific CPU core
-on Linux systems. This slows things down, but lets you run more instances
-of afl-fuzz than would be prudent (if you really want to).</p>
-</li>
-<li>
-<p>Setting <code>AFL_NO_AUTODICT</code> will not load an LTO generated auto dictionary
-that is compiled into the target.</p>
-</li>
-<li>
-<p><code>AFL_SKIP_CRASHES</code> causes AFL++ to tolerate crashing files in the input
-queue. This can help with rare situations where a program crashes only
-intermittently, but it&rsquo;s not really recommended under normal operating
-conditions.</p>
-</li>
-<li>
-<p>Setting <code>AFL_HANG_TMOUT</code> allows you to specify a different timeout for
-deciding if a particular test case is a &ldquo;hang&rdquo;. The default is 1 second
-or the value of the <code>-t</code> parameter, whichever is larger. Dialing the value
-down can be useful if you are very concerned about slow inputs, or if you
-don&rsquo;t want AFL++ to spend too much time classifying that stuff and just
-rapidly put all timeouts in that bin.</p>
-</li>
-<li>
-<p>Setting <code>AFL_FORKSRV_INIT_TMOUT</code> allows you to specify a different timeout
-to wait for the forkserver to spin up. The default is the <code>-t</code> value times
-<code>FORK_WAIT_MULT</code> from <code>config.h</code> (usually 10), so for a <code>-t 100</code>, the
-default would wait for <code>1000</code> milliseconds. Setting a different time here is useful
-if the target has a very slow startup time, for example when doing
-full-system fuzzing or emulation, but you don&rsquo;t want the actual runs
-to wait too long for timeouts.</p>
-</li>
-<li>
-<p><code>AFL_NO_ARITH</code> causes AFL++ to skip most of the deterministic arithmetics.
-This can be useful to speed up the fuzzing of text-based file formats.</p>
-</li>
-<li>
-<p><code>AFL_NO_SNAPSHOT</code> will advice afl-fuzz not to use the snapshot feature
-if the snapshot lkm is loaded</p>
-</li>
-<li>
-<p><code>AFL_SHUFFLE_QUEUE</code> randomly reorders the input queue on startup. Requested
-by some users for unorthodox parallelized fuzzing setups, but not
-advisable otherwise.</p>
-</li>
-<li>
-<p><code>AFL_TMPDIR</code> is used to write the <code>.cur_input</code> file to if exists, and in
-the normal output directory otherwise. You would use this to point to
-a ramdisk/tmpfs. This increases the speed by a small value but also
-reduces the stress on SSDs.</p>
-</li>
-<li>
-<p>When developing custom instrumentation on top of afl-fuzz, you can use
-<code>AFL_SKIP_BIN_CHECK</code> to inhibit the checks for non-instrumented binaries
-and shell scripts; and <code>AFL_DUMB_FORKSRV</code> in conjunction with the <code>-n</code>
-setting to instruct afl-fuzz to still follow the fork server protocol
-without expecting any instrumentation data in return.</p>
-</li>
-<li>
-<p>When running in the <code>-M</code> or <code>-S</code> mode, setting <code>AFL_IMPORT_FIRST</code> causes the
-fuzzer to import test cases from other instances before doing anything
-else. This makes the &ldquo;own finds&rdquo; counter in the UI more accurate.
-Beyond counter aesthetics, not much else should change.</p>
-</li>
-<li>
-<p>Note that <code>AFL_POST_LIBRARY</code> is deprecated, use <code>AFL_CUSTOM_MUTATOR_LIBRARY</code>
-instead (see below).</p>
-</li>
-<li>
-<p><code>AFL_KILL_SIGNAL</code>: Set the signal ID to be delivered to child processes on timeout.
-Unless you implement your own targets or instrumentation, you likely don&rsquo;t have to set it.
-By default, on timeout and on exit, <code>SIGKILL</code> (<code>AFL_KILL_SIGNAL=9</code>) will be delivered to the child.</p>
-</li>
-<li>
-<p>Setting <code>AFL_CUSTOM_MUTATOR_LIBRARY</code> to a shared library with
-afl_custom_fuzz() creates additional mutations through this library.
-If afl-fuzz is compiled with Python (which is autodetected during builing
-afl-fuzz), setting <code>AFL_PYTHON_MODULE</code> to a Python module can also provide
-additional mutations.
-If <code>AFL_CUSTOM_MUTATOR_ONLY</code> is also set, all mutations will solely be
-performed with the custom mutator.
-This feature allows to configure custom mutators which can be very helpful,
-e.g. fuzzing XML or other highly flexible structured input.
-Please see <a href="custom_mutators.md">custom_mutators.md</a>.</p>
-</li>
-<li>
-<p><code>AFL_FAST_CAL</code> keeps the calibration stage about 2.5x faster (albeit less
-precise), which can help when starting a session against a slow target.</p>
-</li>
-<li>
-<p>The CPU widget shown at the bottom of the screen is fairly simplistic and
-may complain of high load prematurely, especially on systems with low core
-counts. To avoid the alarming red color, you can set <code>AFL_NO_CPU_RED</code>.</p>
-</li>
-<li>
-<p>In QEMU mode (-Q) and Frida mode (-O), <code>AFL_PATH</code> will
-be searched for afl-qemu-trace and afl-frida-trace.so.</p>
-</li>
-<li>
-<p>In QEMU mode (-Q), setting <code>AFL_QEMU_CUSTOM_BIN</code> cause afl-fuzz to skip
-prepending <code>afl-qemu-trace</code> to your command line. Use this if you wish to use a
-custom afl-qemu-trace or if you need to modify the afl-qemu-trace arguments.</p>
-</li>
-<li>
-<p>Setting <code>AFL_CYCLE_SCHEDULES</code> will switch to a different schedule everytime
-a cycle is finished.</p>
-</li>
-<li>
 <p>Setting <code>AFL_EXPAND_HAVOC_NOW</code> will start in the extended havoc mode that
 includes costly mutations. afl-fuzz automatically enables this mode when
 deemed useful otherwise.</p>
 </li>
 <li>
-<p>Setting <code>AFL_PRELOAD</code> causes AFL++ to set <code>LD_PRELOAD</code> for the target binary
-without disrupting the afl-fuzz process itself. This is useful, among other
-things, for bootstrapping libdislocator.so.</p>
+<p><code>AFL_FAST_CAL</code> keeps the calibration stage about 2.5x faster (albeit less
+precise), which can help when starting a session against a slow target.
+<code>AFL_CAL_FAST</code> works too.</p>
 </li>
 <li>
-<p>Setting <code>AFL_TARGET_ENV</code> causes AFL++ to set extra environment variables
-for the target binary. Example: <code>AFL_TARGET_ENV=&quot;VAR1=1 VAR2='a b c'&quot; afl-fuzz ... </code>
-This exists mostly for things like <code>LD_LIBRARY_PATH</code> but it would theoretically
-allow fuzzing of AFL++ itself (with &lsquo;target&rsquo; AFL++ using some AFL_ vars that
-would disrupt work of &lsquo;fuzzer&rsquo; AFL++).</p>
+<p>Setting <code>AFL_FORCE_UI</code> will force painting the UI on the screen even if no
+valid terminal was detected (for virtual consoles).</p>
 </li>
 <li>
-<p>Setting <code>AFL_NO_UI</code> inhibits the UI altogether, and just periodically prints
-some basic stats. This behavior is also automatically triggered when the
-output from afl-fuzz is redirected to a file or to a pipe.</p>
+<p>Setting <code>AFL_FORKSRV_INIT_TMOUT</code> allows you to specify a different timeout
+to wait for the forkserver to spin up. The specified value is the new timeout, in milliseconds.
+The default is the <code>-t</code> value times <code>FORK_WAIT_MULT</code> from <code>config.h</code> (usually 10), so for a <code>-t 100</code>, the default would wait for <code>1000</code> milliseconds.
+The <code>AFL_FORKSRV_INIT_TMOUT</code> value does not get multiplied. It overwrites the initial timeout afl-fuzz waits for the target to come up with a constant time.
+Setting a different time here is useful if the target has a very slow startup time, for example, when doing
+full-system fuzzing or emulation, but you don&rsquo;t want the actual runs to wait
+too long for timeouts.</p>
 </li>
 <li>
-<p>Setting <code>AFL_NO_COLOR</code> or <code>AFL_NO_COLOUR</code> will omit control sequences for
-coloring console output when configured with USE_COLOR and not ALWAYS_COLORED.</p>
-</li>
-<li>
-<p>Setting <code>AFL_FORCE_UI</code> will force painting the UI on the screen even if
-no valid terminal was detected (for virtual consoles)</p>
-</li>
-<li>
-<p>If you are using persistent mode (you should, see <a href="instrumentation/README.persistent_mode.md">instrumentation/README.persistent_mode.md</a>)
-some targets keep inherent state due which a detected crash testcase does
-not crash the target again when the testcase is given. To be able to still
-re-trigger these crashes you can use the <code>AFL_PERSISTENT_RECORD</code> variable
-with a value of how many previous fuzz cases to keep prio a crash.
-if set to e.g. 10, then the 9 previous inputs are written to
-out/default/crashes as RECORD:000000,cnt:000000 to RECORD:000000,cnt:000008
-and RECORD:000000,cnt:000009 being the crash case.
-NOTE: This option needs to be enabled in config.h first!</p>
+<p>Setting <code>AFL_HANG_TMOUT</code> allows you to specify a different timeout for
+deciding if a particular test case is a &ldquo;hang&rdquo;. The default is 1 second or
+the value of the <code>-t</code> parameter, whichever is larger. Dialing the value down
+can be useful if you are very concerned about slow inputs, or if you don&rsquo;t
+want AFL++ to spend too much time classifying that stuff and just rapidly
+put all timeouts in that bin.</p>
 </li>
 <li>
 <p>If you are Jakub, you may need <code>AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES</code>.
@@ -645,100 +601,303 @@ Others need not apply, unless they also want to disable the
 <code>/proc/sys/kernel/core_pattern</code> check.</p>
 </li>
 <li>
-<p>Benchmarking only: <code>AFL_BENCH_JUST_ONE</code> causes the fuzzer to exit after
-processing the first queue entry; and <code>AFL_BENCH_UNTIL_CRASH</code> causes it to
-exit soon after the first crash is found.</p>
+<p>If afl-fuzz encounters an incorrect fuzzing setup during a fuzzing session
+(not at startup), it will terminate. If you do not want this, then you can
+set <code>AFL_IGNORE_PROBLEMS</code>. If you additionally want to also ignore coverage
+from late loaded libraries, you can set <code>AFL_IGNORE_PROBLEMS_COVERAGE</code>.</p>
 </li>
 <li>
-<p>Setting <code>AFL_DEBUG_CHILD</code> will not suppress the child output.
-This lets you see all output of the child, making setup issues obvious.
-For example, in an unicornafl harness, you might see python stacktraces.
-You may also see other logs that way, indicating why the forkserver won&rsquo;t start.
-Not pretty but good for debugging purposes.
-Note that <code>AFL_DEBUG_CHILD_OUTPUT</code> is deprecated.</p>
+<p>When running in the <code>-M</code> or <code>-S</code> mode, setting <code>AFL_IMPORT_FIRST</code> causes the
+fuzzer to import test cases from other instances before doing anything else.
+This makes the &ldquo;own finds&rdquo; counter in the UI more accurate. Beyond counter
+aesthetics, not much else should change.</p>
 </li>
 <li>
-<p>Setting <code>AFL_NO_CPU_RED</code> will not display very high cpu usages in red color.</p>
+<p>Setting <code>AFL_INPUT_LEN_MIN</code> and <code>AFL_INPUT_LEN_MAX</code> are an alternative to
+the afl-fuzz -g/-G command line option to control the minimum/maximum
+of fuzzing input generated.</p>
 </li>
 <li>
-<p>Setting <code>AFL_AUTORESUME</code> will resume a fuzz run (same as providing <code>-i -</code>)
-for an existing out folder, even if a different <code>-i</code> was provided.
-Without this setting, afl-fuzz will refuse execution for a long-fuzzed out dir.</p>
+<p><code>AFL_KILL_SIGNAL</code>: Set the signal ID to be delivered to child processes
+on timeout. Unless you implement your own targets or instrumentation, you
+likely don&rsquo;t have to set it. By default, on timeout and on exit, <code>SIGKILL</code>
+(<code>AFL_KILL_SIGNAL=9</code>) will be delivered to the child.</p>
 </li>
 <li>
-<p>Setting <code>AFL_MAX_DET_EXRAS</code> will change the threshold at what number of elements
-in the <code>-x</code> dictionary and LTO autodict (combined) the probabilistic mode will
-kick off. In probabilistic mode not all dictionary entires will be used all
-of the times for fuzzing mutations to not slow down fuzzing.
-The default count is <code>200</code> elements. So for the 200 + 1st element, there is a
-1 in 201 chance, that one of the dictionary entries will not be used directly.</p>
+<p><code>AFL_FORK_SERVER_KILL_SIGNAL</code>: Set the signal ID to be delivered to the
+fork server when AFL++ is terminated. Unless you implement your
+fork server, you likely do not have to set it. By default, <code>SIGTERM</code>
+(<code>AFL_FORK_SERVER_KILL_SIGNAL=15</code>) will be delivered to the fork server.
+If only <code>AFL_KILL_SIGNAL</code> is provided, <code>AFL_FORK_SERVER_KILL_SIGNAL</code> will
+be set to same value as <code>AFL_KILL_SIGNAL</code> to provide backward compatibility.
+If <code>AFL_FORK_SERVER_KILL_SIGNAL</code> is also set, it takes precedence.</p>
+<p>NOTE: Uncatchable signals, such as <code>SIGKILL</code>, cause child processes of
+the fork server to be orphaned and leaves them in a zombie state.</p>
+</li>
+<li>
+<p><code>AFL_MAP_SIZE</code> sets the size of the shared map that afl-analyze, afl-fuzz,
+afl-showmap, and afl-tmin create to gather instrumentation data from the
+target. This must be equal or larger than the size the target was compiled
+with.</p>
+</li>
+<li>
+<p>Setting <code>AFL_MAX_DET_EXTRAS</code> will change the threshold at what number of
+elements in the <code>-x</code> dictionary and LTO autodict (combined) the
+probabilistic mode will kick off. In probabilistic mode, not all dictionary
+entries will be used all of the time for fuzzing mutations to not slow down
+fuzzing. The default count is <code>200</code> elements. So for the 200 + 1st element,
+there is a 1 in 201 chance, that one of the dictionary entries will not be
+used directly.</p>
+</li>
+<li>
+<p>Setting <code>AFL_NO_AFFINITY</code> disables attempts to bind to a specific CPU core
+on Linux systems. This slows things down, but lets you run more instances of
+afl-fuzz than would be prudent (if you really want to).</p>
+</li>
+<li>
+<p><code>AFL_NO_ARITH</code> causes AFL++ to skip most of the deterministic arithmetics.
+This can be useful to speed up the fuzzing of text-based file formats.</p>
+</li>
+<li>
+<p>Setting <code>AFL_NO_AUTODICT</code> will not load an LTO generated auto dictionary
+that is compiled into the target.</p>
+</li>
+<li>
+<p>Setting <code>AFL_NO_COLOR</code> or <code>AFL_NO_COLOUR</code> will omit control sequences for
+coloring console output when configured with USE_COLOR and not
+ALWAYS_COLORED.</p>
+</li>
+<li>
+<p>The CPU widget shown at the bottom of the screen is fairly simplistic and
+may complain of high load prematurely, especially on systems with low core
+counts. To avoid the alarming red color for very high CPU usages, you can
+set <code>AFL_NO_CPU_RED</code>.</p>
 </li>
 <li>
 <p>Setting <code>AFL_NO_FORKSRV</code> disables the forkserver optimization, reverting to
 fork + execve() call for every tested input. This is useful mostly when
-working with unruly libraries that create threads or do other crazy
-things when initializing (before the instrumentation has a chance to run).</p>
+working with unruly libraries that create threads or do other crazy things
+when initializing (before the instrumentation has a chance to run).</p>
 <p>Note that this setting inhibits some of the user-friendly diagnostics
 normally done when starting up the forkserver and causes a pretty
 significant performance drop.</p>
 </li>
 <li>
-<p>Setting <code>AFL_STATSD</code> enables StatsD metrics collection.
-By default AFL++ will send these metrics over UDP to 127.0.0.1:8125.
-The host and port are configurable with <code>AFL_STATSD_HOST</code> and <code>AFL_STATSD_PORT</code> respectively.
-To enable tags (banner and afl_version) you should provide <code>AFL_STATSD_TAGS_FLAVOR</code> that matches
-your StatsD server (see <code>AFL_STATSD_TAGS_FLAVOR</code>)</p>
+<p><code>AFL_NO_SNAPSHOT</code> will advise afl-fuzz not to use the snapshot feature if
+the snapshot lkm is loaded.</p>
 </li>
 <li>
-<p>Setting <code>AFL_STATSD_TAGS_FLAVOR</code> to one of <code>dogstatsd</code>, <code>librato</code>, <code>signalfx</code> or <code>influxdb</code>
-allows you to add tags to your fuzzing instances. This is especially useful when running
-multiple instances (<code>-M/-S</code> for example). Applied tags are <code>banner</code> and <code>afl_version</code>.
-<code>banner</code> corresponds to the name of the fuzzer provided through <code>-M/-S</code>.
-<code>afl_version</code> corresponds to the currently running afl version (e.g <code>++3.0c</code>).
-Default (empty/non present) will add no tags to the metrics.
-See <a href="rpc_statsd.md">rpc_statsd.md</a> for more information.</p>
+<p>Setting <code>AFL_NO_UI</code> inhibits the UI altogether and just periodically prints
+some basic stats. This behavior is also automatically triggered when the
+output from afl-fuzz is redirected to a file or to a pipe.</p>
 </li>
 <li>
-<p>Setting <code>AFL_CRASH_EXITCODE</code> sets the exit code afl treats as crash.
-For example, if <code>AFL_CRASH_EXITCODE='-1'</code> is set, each input resulting
-in an <code>-1</code> return code (i.e. <code>exit(-1)</code> got called), will be treated
-as if a crash had ocurred.
-This may be beneficial if you look for higher-level faulty conditions in which your
-target still exits gracefully.</p>
+<p>Setting <code>AFL_NO_STARTUP_CALIBRATION</code> will skip the initial calibration
+of all starting seeds, and start fuzzing at once. Use with care, this
+degrades the fuzzing performance!</p>
 </li>
 <li>
-<p>Outdated environment variables that are not supported anymore:
-<code>AFL_DEFER_FORKSRV</code>
-<code>AFL_PERSISTENT</code></p>
+<p>Setting <code>AFL_NO_WARN_INSTABILITY</code> will suppress instability warnings.</p>
+</li>
+<li>
+<p>In QEMU mode (-Q) and FRIDA mode (-O), <code>AFL_PATH</code> will be searched for
+afl-qemu-trace and afl-frida-trace.so.</p>
+</li>
+<li>
+<p>If you are using persistent mode (you should, see
+<a href="../instrumentation/README.persistent_mode.md">instrumentation/README.persistent_mode.md</a>),
+some targets keep inherent state due which a detected crash test case does
+not crash the target again when the test case is given. To be able to still
+re-trigger these crashes, you can use the <code>AFL_PERSISTENT_RECORD</code> variable
+with a value of how many previous fuzz cases to keep prior a crash. If set to
+e.g., 10, then the 9 previous inputs are written to out/default/crashes as
+RECORD:000000,cnt:000000 to RECORD:000000,cnt:000008 and
+RECORD:000000,cnt:000009 being the crash case. NOTE: This option needs to be
+enabled in config.h first!</p>
+</li>
+<li>
+<p>Note that <code>AFL_POST_LIBRARY</code> is deprecated, use <code>AFL_CUSTOM_MUTATOR_LIBRARY</code>
+instead.</p>
+</li>
+<li>
+<p>Setting <code>AFL_PRELOAD</code> causes AFL++ to set <code>LD_PRELOAD</code> for the target binary
+without disrupting the afl-fuzz process itself. This is useful, among other
+things, for bootstrapping libdislocator.so.</p>
+</li>
+<li>
+<p>In QEMU mode (-Q), setting <code>AFL_QEMU_CUSTOM_BIN</code> will cause afl-fuzz to skip
+prepending <code>afl-qemu-trace</code> to your command line. Use this if you wish to
+use a custom afl-qemu-trace or if you need to modify the afl-qemu-trace
+arguments.</p>
+</li>
+<li>
+<p><code>AFL_SHUFFLE_QUEUE</code> randomly reorders the input queue on startup. Requested
+by some users for unorthodox parallelized fuzzing setups, but not advisable
+otherwise.</p>
+</li>
+<li>
+<p>When developing custom instrumentation on top of afl-fuzz, you can use
+<code>AFL_SKIP_BIN_CHECK</code> to inhibit the checks for non-instrumented binaries and
+shell scripts; and <code>AFL_DUMB_FORKSRV</code> in conjunction with the <code>-n</code> setting
+to instruct afl-fuzz to still follow the fork server protocol without
+expecting any instrumentation data in return. Note that this also turns off
+auto map size detection.</p>
+</li>
+<li>
+<p>Setting <code>AFL_SKIP_CPUFREQ</code> skips the check for CPU scaling policy. This is
+useful if you can&rsquo;t change the defaults (e.g., no root access to the system)
+and are OK with some performance loss.</p>
+</li>
+<li>
+<p>Setting <code>AFL_STATSD</code> enables StatsD metrics collection. By default, AFL++
+will send these metrics over UDP to 127.0.0.1:8125. The host and port are
+configurable with <code>AFL_STATSD_HOST</code> and <code>AFL_STATSD_PORT</code> respectively. To
+enable tags (banner and afl_version), you should provide
+<code>AFL_STATSD_TAGS_FLAVOR</code> that matches your StatsD server (see
+<code>AFL_STATSD_TAGS_FLAVOR</code>).</p>
+</li>
+<li>
+<p>Setting <code>AFL_STATSD_TAGS_FLAVOR</code> to one of <code>dogstatsd</code>, <code>influxdb</code>,
+<code>librato</code>, or <code>signalfx</code> allows you to add tags to your fuzzing instances.
+This is especially useful when running multiple instances (<code>-M/-S</code> for
+example). Applied tags are <code>banner</code> and <code>afl_version</code>. <code>banner</code> corresponds
+to the name of the fuzzer provided through <code>-M/-S</code>. <code>afl_version</code>
+corresponds to the currently running AFL++ version (e.g., <code>++3.0c</code>). Default
+(empty/non present) will add no tags to the metrics. For more information,
+see <a href="rpc_statsd.md">rpc_statsd.md</a>.</p>
+</li>
+<li>
+<p><code>AFL_SYNC_TIME</code> allows you to specify a different minimal time (in minutes)
+between fuzzing instances synchronization. Default sync time is 30 minutes,
+note that time is halved for -M main nodes.</p>
+</li>
+<li>
+<p>Setting <code>AFL_TARGET_ENV</code> causes AFL++ to set extra environment variables for
+the target binary. Example: <code>AFL_TARGET_ENV=&quot;VAR1=1 VAR2='a b c'&quot; afl-fuzz ... </code>. This exists mostly for things like <code>LD_LIBRARY_PATH</code> but it would
+theoretically allow fuzzing of AFL++ itself (with &lsquo;target&rsquo; AFL++ using some
+AFL_ vars that would disrupt work of &lsquo;fuzzer&rsquo; AFL++). Note that when using
+QEMU mode, the <code>AFL_TARGET_ENV</code> environment variables will apply to QEMU, as
+well as the target binary. Therefore, in this case, you might want to use
+QEMU&rsquo;s <code>QEMU_SET_ENV</code> environment variable (see QEMU&rsquo;s documentation because
+the format is different from <code>AFL_TARGET_ENV</code>) to apply the environment
+variables to the target and not QEMU.</p>
+</li>
+<li>
+<p><code>AFL_TESTCACHE_SIZE</code> allows you to override the size of <code>#define TESTCASE_CACHE</code> in config.h. Recommended values are 50-250MB - or more if
+your fuzzing finds a huge amount of paths for large inputs.</p>
+</li>
+<li>
+<p><code>AFL_TMPDIR</code> is used to write the <code>.cur_input</code> file to if it exists, and in
+the normal output directory otherwise. You would use this to point to a
+ramdisk/tmpfs. This increases the speed by a small value but also reduces
+the stress on SSDs.</p>
+</li>
+<li>
+<p>Setting <code>AFL_TRY_AFFINITY</code> tries to attempt binding to a specific CPU core
+on Linux systems, but will not terminate if that fails.</p>
+</li>
+<li>
+<p>The following environment variables are only needed if you implemented
+your own forkserver or persistent mode, or if __AFL_LOOP or __AFL_INIT
+are in a shared library and not the main binary:</p>
+<ul>
+<li><code>AFL_DEFER_FORKSRV</code> enforces a deferred forkserver even if none was
+detected in the target binary</li>
+<li><code>AFL_PERSISTENT</code> enforces persistent mode even if none was detected
+in the target binary</li>
+</ul>
+</li>
+<li>
+<p>If you need an early forkserver in your target because of early
+constructors in your target, you can set <code>AFL_EARLY_FORKSERVER</code>.
+Note that this is not a compile time option but a runtime option :-)</p>
+</li>
+<li>
+<p>Set <code>AFL_PIZZA_MODE</code> to 1 to enable the April 1st stats menu, set to -1
+to disable although it is 1st of April.</p>
+</li>
+<li>
+<p>If you need a specific interval to update fuzzer_stats file, you can
+set <code>AFL_FUZZER_STATS_UPDATE_INTERVAL</code> to the interval in seconds you&rsquo;d
+the file to be updated.
+Note that will not be exact and with slow targets it can take seconds
+until there is a slice for the time test.</p>
 </li>
 </ul>
 <h2 id="5-settings-for-afl-qemu-trace">5) Settings for afl-qemu-trace</h2>
 <p>The QEMU wrapper used to instrument binary-only code supports several settings:</p>
 <ul>
 <li>
-<p>It is possible to set <code>AFL_INST_RATIO</code> to skip the instrumentation on some
-of the basic blocks, which can be useful when dealing with very complex
-binaries.</p>
+<p>Setting <code>AFL_COMPCOV_LEVEL</code> enables the CompareCoverage tracing of all cmp
+and sub in x86 and x86_64 and memory comparison functions (e.g., strcmp,
+memcmp, &hellip;) when libcompcov is preloaded using <code>AFL_PRELOAD</code>. More info at
+<a href="../qemu_mode/libcompcov/README.md">qemu_mode/libcompcov/README.md</a>.</p>
+<p>There are two levels at the moment, <code>AFL_COMPCOV_LEVEL=1</code> that instruments
+only comparisons with immediate values / read-only memory and
+<code>AFL_COMPCOV_LEVEL=2</code> that instruments all the comparisons. Level 2 is more
+accurate but may need a larger shared memory.</p>
+</li>
+<li>
+<p><code>AFL_DEBUG</code> will print the found entry point for the binary to stderr. Use
+this if you are unsure if the entry point might be wrong - but use it
+directly, e.g., <code>afl-qemu-trace ./program</code>.</p>
+</li>
+<li>
+<p><code>AFL_ENTRYPOINT</code> allows you to specify a specific entry point into the
+binary (this can be very good for the performance!). The entry point is
+specified as hex address, e.g., <code>0x4004110</code>. Note that the address must be
+the address of a basic block.</p>
 </li>
 <li>
 <p>Setting <code>AFL_INST_LIBS</code> causes the translator to also instrument the code
 inside any dynamically linked libraries (notably including glibc).</p>
 </li>
 <li>
-<p>Setting <code>AFL_COMPCOV_LEVEL</code> enables the CompareCoverage tracing of all cmp
-and sub in x86 and x86_64 and memory comparions functions (e.g. strcmp,
-memcmp, &hellip;) when libcompcov is preloaded using <code>AFL_PRELOAD</code>.
-More info at qemu_mode/libcompcov/README.md.
-There are two levels at the moment, <code>AFL_COMPCOV_LEVEL=1</code> that instruments
-only comparisons with immediate values / read-only memory and
-<code>AFL_COMPCOV_LEVEL=2</code> that instruments all the comparions. Level 2 is more
-accurate but may need a larger shared memory.</p>
+<p>You can use <code>AFL_QEMU_INST_RANGES=0xaaaa-0xbbbb,0xcccc-0xdddd</code> to just
+instrument specific memory locations, e.g. a specific library.
+Excluding ranges takes priority over any included ranges or <code>AFL_INST_LIBS</code>.</p>
 </li>
 <li>
-<p>Setting <code>AFL_QEMU_COMPCOV</code> enables the CompareCoverage tracing of all
-cmp and sub in x86 and x86_64.
-This is an alias of <code>AFL_COMPCOV_LEVEL=1</code> when <code>AFL_COMPCOV_LEVEL</code> is
-not specified.</p>
+<p>You can use <code>AFL_QEMU_EXCLUDE_RANGES=0xaaaa-0xbbbb,0xcccc-0xdddd</code> to <strong>NOT</strong>
+instrument specific memory locations, e.g. a specific library.
+Excluding ranges takes priority over any included ranges or <code>AFL_INST_LIBS</code>.</p>
+</li>
+<li>
+<p>It is possible to set <code>AFL_INST_RATIO</code> to skip the instrumentation on some
+of the basic blocks, which can be useful when dealing with very complex
+binaries.</p>
+</li>
+<li>
+<p>Setting <code>AFL_QEMU_COMPCOV</code> enables the CompareCoverage tracing of all cmp
+and sub in x86 and x86_64. This is an alias of <code>AFL_COMPCOV_LEVEL=1</code> when
+<code>AFL_COMPCOV_LEVEL</code> is not specified.</p>
+</li>
+<li>
+<p>With <code>AFL_QEMU_FORCE_DFL</code>, you force QEMU to ignore the registered signal
+handlers of the target.</p>
+</li>
+<li>
+<p>When the target is i386/x86_64, you can specify the address of the function
+that has to be the body of the persistent loop using
+<code>AFL_QEMU_PERSISTENT_ADDR=start addr</code>.</p>
+</li>
+<li>
+<p>With <code>AFL_QEMU_PERSISTENT_GPR=1</code>, QEMU will save the original value of
+general purpose registers and restore them in each persistent cycle.</p>
+</li>
+<li>
+<p>Another modality to execute the persistent loop is to specify also the
+<code>AFL_QEMU_PERSISTENT_RET=end addr</code> environment variable. With this variable
+assigned, instead of patching the return address, the specified instruction
+is transformed to a jump towards <code>start addr</code>.</p>
+</li>
+<li>
+<p>With <code>AFL_QEMU_PERSISTENT_RETADDR_OFFSET</code>, you can specify the offset from
+the stack pointer in which QEMU can find the return address when <code>start addr</code> is hit.</p>
+</li>
+<li>
+<p>With <code>AFL_USE_QASAN</code>, you can enable QEMU AddressSanitizer for dynamically
+linked binaries.</p>
 </li>
 <li>
 <p>The underlying QEMU binary will recognize any standard &ldquo;user space
@@ -746,51 +905,107 @@ emulation&rdquo; variables (e.g., <code>QEMU_STACK_SIZE</code>), but there shoul
 reason to touch them.</p>
 </li>
 <li>
-<p><code>AFL_DEBUG</code> will print the found entrypoint for the binary to stderr.
-Use this if you are unsure if the entrypoint might be wrong - but
-use it directly, e.g. <code>afl-qemu-trace ./program</code></p>
-</li>
-<li>
-<p><code>AFL_ENTRYPOINT</code> allows you to specify a specific entrypoint into the
-binary (this can be very good for the performance!).
-The entrypoint is specified as hex address, e.g. <code>0x4004110</code>
-Note that the address must be the address of a basic block.</p>
-</li>
-<li>
-<p>When the target is i386/x86_64 you can specify the address of the function
-that has to be the body of the persistent loop using
-<code>AFL_QEMU_PERSISTENT_ADDR=start addr</code>.</p>
-</li>
-<li>
-<p>Another modality to execute the persistent loop is to specify also the
-<code>AFL_QEMU_PERSISTENT_RET=end addr</code> env variable.
-With this variable assigned, instead of patching the return address, the
-specified instruction is transformed to a jump towards <code>start addr</code>.</p>
-</li>
-<li>
-<p><code>AFL_QEMU_PERSISTENT_GPR=1</code> QEMU will save the original value of general
-purpose registers and restore them in each persistent cycle.</p>
-</li>
-<li>
-<p>With <code>AFL_QEMU_PERSISTENT_RETADDR_OFFSET</code> you can specify the offset from the
-stack pointer in which QEMU can find the return address when <code>start addr</code> is
-hit.</p>
-</li>
-<li>
-<p>With <code>AFL_USE_QASAN</code> you can enable QEMU AddressSanitizer for dynamically
-linked binaries.</p>
-</li>
-<li>
-<p>With <code>AFL_QEMU_FORCE_DFL</code> you force QEMU to ignore the registered signal
-handlers of the target.</p>
+<p>Normally a <code>README.txt</code> is written to the <code>crashes/</code> directory when a first
+crash is found. Setting <code>AFL_NO_CRASH_README</code> will prevent this. Useful when
+counting crashes based on a file count in that directory.</p>
 </li>
 </ul>
-<h2 id="6-settings-for-afl-cmin">6) Settings for afl-cmin</h2>
+<h2 id="7-settings-for-afl-frida-trace">7) Settings for afl-frida-trace</h2>
+<p>The FRIDA wrapper used to instrument binary-only code supports many of the same
+options as <code>afl-qemu-trace</code>, but also has a number of additional advanced
+options. These are listed in brief below (see
+<a href="../frida_mode/README.md">frida_mode/README.md</a> for more details). These
+settings are provided for compatibility with QEMU mode, the preferred way to
+configure FRIDA mode is through its <a href="../frida_mode/Scripting.md">scripting</a>
+support.</p>
+<ul>
+<li><code>AFL_FRIDA_DEBUG_MAPS</code> - See <code>AFL_QEMU_DEBUG_MAPS</code></li>
+<li><code>AFL_FRIDA_DRIVER_NO_HOOK</code> - See <code>AFL_QEMU_DRIVER_NO_HOOK</code>. When using the
+QEMU driver to provide a <code>main</code> loop for a user provided
+<code>LLVMFuzzerTestOneInput</code>, this option configures the driver to read input from
+<code>stdin</code> rather than using in-memory test cases.</li>
+<li><code>AFL_FRIDA_EXCLUDE_RANGES</code> - See <code>AFL_QEMU_EXCLUDE_RANGES</code></li>
+<li><code>AFL_FRIDA_INST_COVERAGE_FILE</code> - File to write DynamoRio format coverage
+information (e.g., to be loaded within IDA lighthouse).</li>
+<li><code>AFL_FRIDA_INST_DEBUG_FILE</code> - File to write raw assembly of original blocks
+and their instrumented counterparts during block compilation.</li>
+<li><code>AFL_FRIDA_INST_JIT</code> - Enable the instrumentation of Just-In-Time compiled
+code. Code is considered to be JIT if the executable segment is not backed by
+a file.</li>
+<li><code>AFL_FRIDA_INST_NO_DYNAMIC_LOAD</code> - Don&rsquo;t instrument the code loaded late at
+runtime. Strictly limits instrumentation to what has been included.</li>
+<li><code>AFL_FRIDA_INST_NO_OPTIMIZE</code> - Don&rsquo;t use optimized inline assembly coverage
+instrumentation (the default where available). Required to use
+<code>AFL_FRIDA_INST_TRACE</code>.</li>
+<li><code>AFL_FRIDA_INST_NO_BACKPATCH</code> - Disable backpatching. At the end of executing
+each block, control will return to FRIDA to identify the next block to
+execute.</li>
+<li><code>AFL_FRIDA_INST_NO_PREFETCH</code> - Disable prefetching. By default, the child will
+report instrumented blocks back to the parent so that it can also instrument
+them and they be inherited by the next child on fork, implies
+<code>AFL_FRIDA_INST_NO_PREFETCH_BACKPATCH</code>.</li>
+<li><code>AFL_FRIDA_INST_NO_PREFETCH_BACKPATCH</code> - Disable prefetching of stalker
+backpatching information. By default, the child will report applied
+backpatches to the parent so that they can be applied and then be inherited by
+the next child on fork.</li>
+<li><code>AFL_FRIDA_INST_RANGES</code> - See <code>AFL_QEMU_INST_RANGES</code></li>
+<li><code>AFL_FRIDA_INST_SEED</code> - Sets the initial seed for the hash function used to
+generate block (and hence edge) IDs. Setting this to a constant value may be
+useful for debugging purposes, e.g., investigating unstable edges.</li>
+<li><code>AFL_FRIDA_INST_TRACE</code> - Log to stdout the address of executed blocks, implies
+<code>AFL_FRIDA_INST_NO_OPTIMIZE</code>.</li>
+<li><code>AFL_FRIDA_INST_TRACE_UNIQUE</code> - As per <code>AFL_FRIDA_INST_TRACE</code>, but each edge
+is logged only once, requires <code>AFL_FRIDA_INST_NO_OPTIMIZE</code>.</li>
+<li><code>AFL_FRIDA_INST_UNSTABLE_COVERAGE_FILE</code> - File to write DynamoRio format
+coverage information for unstable edges (e.g., to be loaded within IDA
+lighthouse).</li>
+<li><code>AFL_FRIDA_JS_SCRIPT</code> - Set the script to be loaded by the FRIDA scripting
+engine. See <a href="../frida_mode/Scripting.md">frida_mode/Scripting.md</a> for details.</li>
+<li><code>AFL_FRIDA_OUTPUT_STDOUT</code> - Redirect the standard output of the target
+application to the named file (supersedes the setting of <code>AFL_DEBUG_CHILD</code>)</li>
+<li><code>AFL_FRIDA_OUTPUT_STDERR</code> - Redirect the standard error of the target
+application to the named file (supersedes the setting of <code>AFL_DEBUG_CHILD</code>)</li>
+<li><code>AFL_FRIDA_PERSISTENT_ADDR</code> - See <code>AFL_QEMU_PERSISTENT_ADDR</code></li>
+<li><code>AFL_FRIDA_PERSISTENT_CNT</code> - See <code>AFL_QEMU_PERSISTENT_CNT</code></li>
+<li><code>AFL_FRIDA_PERSISTENT_DEBUG</code> - Insert a Breakpoint into the instrumented code
+at <code>AFL_FRIDA_PERSISTENT_HOOK</code> and <code>AFL_FRIDA_PERSISTENT_RET</code> to allow the
+user to detect issues in the persistent loop using a debugger.</li>
+<li><code>AFL_FRIDA_PERSISTENT_HOOK</code> - See <code>AFL_QEMU_PERSISTENT_HOOK</code></li>
+<li><code>AFL_FRIDA_PERSISTENT_RET</code> - See <code>AFL_QEMU_PERSISTENT_RET</code></li>
+<li><code>AFL_FRIDA_SECCOMP_FILE</code> - Write a log of any syscalls made by the target to
+the specified file.</li>
+<li><code>AFL_FRIDA_STALKER_ADJACENT_BLOCKS</code> - Configure the number of adjacent blocks
+to fetch when generating instrumented code. By fetching blocks in the same
+order they appear in the original program, rather than the order of execution
+should help reduce locality and adjacency. This includes allowing us to
+vector between adjacent blocks using a NOP slide rather than an immediate
+branch.</li>
+<li><code>AFL_FRIDA_STALKER_IC_ENTRIES</code> - Configure the number of inline cache entries
+stored along-side branch instructions which provide a cache to avoid having to
+call back into FRIDA to find the next block. Default is 32.</li>
+<li><code>AFL_FRIDA_STATS_FILE</code> - Write statistics information about the code being
+instrumented to the given file name. The statistics are written only for the
+child process when new block is instrumented (when the
+<code>AFL_FRIDA_STATS_INTERVAL</code> has expired). Note that just because a new path is
+found does not mean a new block needs to be compiled. It could be that the
+existing blocks instrumented have been executed in a different order.</li>
+<li><code>AFL_FRIDA_STATS_INTERVAL</code> - The maximum frequency to output statistics
+information. Stats will be written whenever they are updated if the given
+interval has elapsed since last time they were written.</li>
+<li><code>AFL_FRIDA_TRACEABLE</code> - Set the child process to be traceable by any process
+to aid debugging and overcome the restrictions imposed by YAMA. Supported on
+Linux only. Permits a non-root user to use <code>gcore</code> or similar to collect a
+core dump of the instrumented target. Note that in order to capture the core
+dump you must set a sufficient timeout (using <code>-t</code>) to avoid <code>afl-fuzz</code>
+killing the process whilst it is being dumped.</li>
+</ul>
+<h2 id="8-settings-for-afl-cmin">8) Settings for afl-cmin</h2>
 <p>The corpus minimization script offers very little customization:</p>
 <ul>
 <li>
-<p>Setting <code>AFL_PATH</code> offers a way to specify the location of afl-showmap
-and afl-qemu-trace (the latter only in <code>-Q</code> mode).</p>
+<p><code>AFL_ALLOW_TMP</code> permits this and some other scripts to run in /tmp. This is
+a modest security risk on multi-user systems with rogue users, but should be
+safe on dedicated fuzzing boxes.</p>
 </li>
 <li>
 <p><code>AFL_KEEP_TRACES</code> makes the tool keep traces and other metadata used for
@@ -798,12 +1013,15 @@ minimization and normally deleted at exit. The files can be found in the
 <code>&lt;out_dir&gt;/.traces/</code> directory.</p>
 </li>
 <li>
-<p><code>AFL_ALLOW_TMP</code> permits this and some other scripts to run in /tmp. This is
-a modest security risk on multi-user systems with rogue users, but should
-be safe on dedicated fuzzing boxes.</p>
+<p>Setting <code>AFL_PATH</code> offers a way to specify the location of afl-showmap and
+afl-qemu-trace (the latter only in <code>-Q</code> mode).</p>
+</li>
+<li>
+<p><code>AFL_PRINT_FILENAMES</code> prints each filename to stdout, as it gets processed.
+This can help when embedding <code>afl-cmin</code> or <code>afl-showmap</code> in other scripts.</p>
 </li>
 </ul>
-<h2 id="7-settings-for-afl-tmin">7) Settings for afl-tmin</h2>
+<h2 id="9-settings-for-afl-tmin">9) Settings for afl-tmin</h2>
 <p>Virtually nothing to play with. Well, in QEMU mode (<code>-Q</code>), <code>AFL_PATH</code> will be
 searched for afl-qemu-trace. In addition to this, <code>TMPDIR</code> may be used if a
 temporary file can&rsquo;t be created in the current working directory.</p>
@@ -811,16 +1029,15 @@ temporary file can&rsquo;t be created in the current working directory.</p>
 to match when minimizing crashes. This will make minimization less useful, but
 may prevent the tool from &ldquo;jumping&rdquo; from one crashing condition to another in
 very buggy software. You probably want to combine it with the <code>-e</code> flag.</p>
-<h2 id="8-settings-for-afl-analyze">8) Settings for afl-analyze</h2>
+<h2 id="10-settings-for-afl-analyze">10) Settings for afl-analyze</h2>
 <p>You can set <code>AFL_ANALYZE_HEX</code> to get file offsets printed as hexadecimal instead
 of decimal.</p>
-<h2 id="9-settings-for-libdislocator">9) Settings for libdislocator</h2>
-<p>The library honors these environmental variables:</p>
+<h2 id="11-settings-for-libdislocator">11) Settings for libdislocator</h2>
+<p>The library honors these environment variables:</p>
 <ul>
 <li>
-<p><code>AFL_LD_LIMIT_MB</code> caps the size of the maximum heap usage permitted by the
-library, in megabytes. The default value is 1 GB. Once this is exceeded,
-allocations will return NULL.</p>
+<p><code>AFL_ALIGNED_ALLOC=1</code> will force the alignment of the allocation size to
+<code>max_align_t</code> to be compliant with the C standard.</p>
 </li>
 <li>
 <p><code>AFL_LD_HARD_FAIL</code> alters the behavior by calling <code>abort()</code> on excessive
@@ -828,63 +1045,63 @@ allocations, thus causing what AFL++ would perceive as a crash. Useful for
 programs that are supposed to maintain a specific memory footprint.</p>
 </li>
 <li>
-<p><code>AFL_LD_VERBOSE</code> causes the library to output some diagnostic messages
-that may be useful for pinpointing the cause of any observed issues.</p>
+<p><code>AFL_LD_LIMIT_MB</code> caps the size of the maximum heap usage permitted by the
+library, in megabytes. The default value is 1 GB. Once this is exceeded,
+allocations will return NULL.</p>
 </li>
 <li>
-<p><code>AFL_LD_NO_CALLOC_OVER</code> inhibits <code>abort()</code> on <code>calloc()</code> overflows. Most
-of the common allocators check for that internally and return NULL, so
-it&rsquo;s a security risk only in more exotic setups.</p>
+<p><code>AFL_LD_NO_CALLOC_OVER</code> inhibits <code>abort()</code> on <code>calloc()</code> overflows. Most of
+the common allocators check for that internally and return NULL, so it&rsquo;s a
+security risk only in more exotic setups.</p>
 </li>
 <li>
-<p><code>AFL_ALIGNED_ALLOC=1</code> will force the alignment of the allocation size to
-<code>max_align_t</code> to be compliant with the C standard.</p>
+<p><code>AFL_LD_VERBOSE</code> causes the library to output some diagnostic messages that
+may be useful for pinpointing the cause of any observed issues.</p>
 </li>
 </ul>
-<h2 id="10-settings-for-libtokencap">10) Settings for libtokencap</h2>
+<h2 id="11-settings-for-libtokencap">11) Settings for libtokencap</h2>
 <p>This library accepts <code>AFL_TOKEN_FILE</code> to indicate the location to which the
 discovered tokens should be written.</p>
-<h2 id="11-third-party-variables-set-by-afl-fuzz--other-tools">11) Third-party variables set by afl-fuzz &amp; other tools</h2>
+<h2 id="12-third-party-variables-set-by-afl-fuzz--other-tools">12) Third-party variables set by afl-fuzz &amp; other tools</h2>
 <p>Several variables are not directly interpreted by afl-fuzz, but are set to
 optimal values if not already present in the environment:</p>
 <ul>
 <li>
-<p>By default, <code>LD_BIND_NOW</code> is set to speed up fuzzing by forcing the
-linker to do all the work before the fork server kicks in. You can
-override this by setting <code>LD_BIND_LAZY</code> beforehand, but it is almost
-certainly pointless.</p>
+<p>By default, <code>ASAN_OPTIONS</code> are set to (among others):</p>
+<pre tabindex="0"><code>abort_on_error=1
+detect_leaks=0
+malloc_context_size=0
+symbolize=0
+allocator_may_return_null=1
+</code></pre><p>If you want to set your own options, be sure to include <code>abort_on_error=1</code> -
+otherwise, the fuzzer will not be able to detect crashes in the tested app.
+Similarly, include <code>symbolize=0</code>, since without it, AFL++ may have
+difficulty telling crashes and hangs apart.</p>
 </li>
 <li>
-<p>By default, <code>ASAN_OPTIONS</code> are set to (among others):</p>
+<p>Similarly, the default <code>LSAN_OPTIONS</code> are set to:</p>
+<pre tabindex="0"><code>exit_code=23
+fast_unwind_on_malloc=0
+symbolize=0
+print_suppressions=0
+</code></pre><p>Be sure to include the first ones for LSAN and MSAN when customizing
+anything, since some MSAN and LSAN versions don&rsquo;t call <code>abort()</code> on error,
+and we need a way to detect faults.</p>
+</li>
+<li>
+<p>In the same vein, by default, <code>MSAN_OPTIONS</code> are set to:</p>
+<pre tabindex="0"><code>exit_code=86 (required for legacy reasons)
+abort_on_error=1
+symbolize=0
+msan_track_origins=0
+allocator_may_return_null=1
+</code></pre></li>
+<li>
+<p>By default, <code>LD_BIND_NOW</code> is set to speed up fuzzing by forcing the linker
+to do all the work before the fork server kicks in. You can override this by
+setting <code>LD_BIND_LAZY</code> beforehand, but it is almost certainly pointless.</p>
 </li>
 </ul>
-<pre><code>    abort_on_error=1
-    detect_leaks=0
-    malloc_context_size=0
-    symbolize=0
-    allocator_may_return_null=1
-</code></pre><p>If you want to set your own options, be sure to include <code>abort_on_error=1</code> -
-otherwise, the fuzzer will not be able to detect crashes in the tested
-app. Similarly, include <code>symbolize=0</code>, since without it, AFL++ may have
-difficulty telling crashes and hangs apart.</p>
-<ul>
-<li>In the same vein, by default, <code>MSAN_OPTIONS</code> are set to:</li>
-</ul>
-<pre><code>    exit_code=86 (required for legacy reasons)
-    abort_on_error=1
-    symbolize=0
-    msan_track_origins=0
-    allocator_may_return_null=1
-</code></pre><ul>
-<li>Similarly, the default <code>LSAN_OPTIONS</code> are set to:</li>
-</ul>
-<pre><code>    exit_code=23
-    fast_unwind_on_malloc=0
-    symbolize=0
-    print_suppressions=0
-</code></pre><p>Be sure to include the first ones for LSAN and MSAN when customizing
-anything, since some MSAN and LSAN versions don&rsquo;t call <code>abort()</code> on
-error, and we need a way to detect faults.</p>
 </article>
  
 
@@ -919,24 +1136,18 @@ error, and we need a way to detect faults.</p>
     <li><a href="#2-settings-for-llvm-and-lto-afl-clang-fast--afl-clang-fast--afl-clang-lto--afl-clang-lto">2) Settings for LLVM and LTO: afl-clang-fast / afl-clang-fast++ / afl-clang-lto / afl-clang-lto++</a>
       <ul>
         <li><a href="#select-the-instrumentation-mode">Select the instrumentation mode</a></li>
-        <li><a href="#lto">LTO</a></li>
-        <li><a href="#ngram">NGRAM</a></li>
-        <li><a href="#ctx">CTX</a></li>
-        <li><a href="#laf-intel">LAF-INTEL</a></li>
-        <li><a href="#instrument-list-selectively-instrument-files-and-functions">INSTRUMENT LIST (selectively instrument files and functions)</a></li>
-        <li><a href="#not_zero">NOT_ZERO</a></li>
-        <li><a href="#cmplog">CMPLOG</a></li>
       </ul>
     </li>
     <li><a href="#3-settings-for-gcc--gcc_plugin-modes">3) Settings for GCC / GCC_PLUGIN modes</a></li>
     <li><a href="#4-settings-for-afl-fuzz">4) Settings for afl-fuzz</a></li>
     <li><a href="#5-settings-for-afl-qemu-trace">5) Settings for afl-qemu-trace</a></li>
-    <li><a href="#6-settings-for-afl-cmin">6) Settings for afl-cmin</a></li>
-    <li><a href="#7-settings-for-afl-tmin">7) Settings for afl-tmin</a></li>
-    <li><a href="#8-settings-for-afl-analyze">8) Settings for afl-analyze</a></li>
-    <li><a href="#9-settings-for-libdislocator">9) Settings for libdislocator</a></li>
-    <li><a href="#10-settings-for-libtokencap">10) Settings for libtokencap</a></li>
-    <li><a href="#11-third-party-variables-set-by-afl-fuzz--other-tools">11) Third-party variables set by afl-fuzz &amp; other tools</a></li>
+    <li><a href="#7-settings-for-afl-frida-trace">7) Settings for afl-frida-trace</a></li>
+    <li><a href="#8-settings-for-afl-cmin">8) Settings for afl-cmin</a></li>
+    <li><a href="#9-settings-for-afl-tmin">9) Settings for afl-tmin</a></li>
+    <li><a href="#10-settings-for-afl-analyze">10) Settings for afl-analyze</a></li>
+    <li><a href="#11-settings-for-libdislocator">11) Settings for libdislocator</a></li>
+    <li><a href="#11-settings-for-libtokencap">11) Settings for libtokencap</a></li>
+    <li><a href="#12-third-party-variables-set-by-afl-fuzz--other-tools">12) Third-party variables set by afl-fuzz &amp; other tools</a></li>
   </ul>
 </nav>
 

@@ -1,15 +1,306 @@
 # Changelog
 
-  This is the list of all noteworthy changes made in every public release of
-  the tool. See README.md for the general instruction manual.
+  This is the list of all noteworthy changes made in every public
+  release of the tool. See README.md for the general instruction manual.
 
-## Staying informed
+### Version ++4.07a (dev)
+  - afl-fuzz:
+    - reverse reading the seeds only on restarts (increases performance)
+    - new env `AFL_POST_PROCESS_KEEP_ORIGINAL` to keep the orignal
+      data before post process on finds (for atnwalk custom mutator)
+    - new env `AFL_IGNORE_PROBLEMS_COVERAGE` to ignore coverage from
+      loaded libs after forkserver initialization (required by Mozilla)
+  - afl-cc:
+    - added @responsefile support
+    - new env `AFL_LLVM_LTO_SKIPINIT` to support the AFL++ based WASM
+      (https://github.com/fgsect/WAFL) project
+    - error and print help if afl-clan-lto is used with lto=thin
+  - afl-showmap:
+    - added custom mutator post_process and send support
+    - add `-I filelist` option, an alternative to `-i in_dir`
+  - afl-cmin + afl-cmin.bash:
+    - `-T threads` parallel task support, can be a huge speedup!
+  - qemu_mode:
+    - Persistent mode +QASAN support for ppc32 tragets by @worksbutnottested
+  - a new grammar custom mutator atnwalk was submitted by @voidptr127 !
+  - two new custom mutators are now available:
+    - TritonDSE in custom_mutators/aflpp_tritondse
+    - SymQEMU in custom_mutators/symqemu
 
-Want to stay in the loop on major new features? Join our mailing list by
-sending a mail to <afl-users+subscribe@googlegroups.com>.
 
-### Version ++3.13a (development)
+### Version ++4.06c (release)
+  - afl-fuzz:
+    - ensure temporary file descriptor is closed when not used
+    - added `AFL_NO_WARN_INSTABILITY`
+    - added time_wo_finds to fuzzer_stats
+    - fixed a crash in pizza (1st april easter egg) mode. Sorry for
+      everyone who was affected!
+    - allow pizza mode to be disabled when AFL_PIZZA_MODE is set to -1
+    - option `-p mmopt` now also selects new queue items more often
+    - fix bug in post_process custom mutator implementation
+    - print name of custom mutator in UI
+    - slight changes that improve fuzzer performance
+  - afl-cc:
+    - add CFI sanitizer variant to gcc targets
+    - llvm 16 + 17 support (thanks to @devnexen!)
+    - support llvm 15 native pcguard changes
+    - support for LLVMFuzzerTestOneInput -1 return
+    - LTO autoken and llvm_mode: added AFL_LLVM_DICT2FILE_NO_MAIN support
+  - qemu_mode:
+    - fix _RANGES envs to allow hyphens in the filenames
+    - basic riscv support
+  - frida_mode:
+    - added `AFL_FRIDA_STATS_INTERVAL`
+    - fix issue on MacOS
+  - unicorn_mode:
+    - updated and minor issues fixed
+  - nyx_mode support for all tools
+  - better sanitizer default options support for all tools
+  - new custom module: autotoken, a grammar free fuzzer for text inputs
+  - fixed custom mutator C examples
+  - more minor fixes and cross-platform support
+
+### Version ++4.05c (release)
+  - MacOS: libdislocator, libtokencap etc. do not work with modern
+    MacOS anymore, but could be patched to work, see this issue if you
+    want to make the effort and send a PR:
+    https://github.com/AFLplusplus/AFLplusplus/issues/1594
+  - afl-fuzz:
+    - added afl_custom_fuzz_send custom mutator feature. Now your can
+      send fuzz data to the target as you need, e.g. via IPC.
+    - cmplog mode now has a -l R option for random colorization, thanks
+      to guyf2010 for the PR!
+    - queue statistics are written every 30 minutes to
+      out/NAME/queue_data if compiled with INTROSPECTION
+    - new env: AFL_FORK_SERVER_KILL_SIGNAL
+  - afl-showmap/afl-cmin
+    - `-t none` now translates to `-t 120000` (120 seconds)
+  - unicorn_mode updated
+  - updated rust custom mutator dependencies and LibAFL custom mutator
+  - overall better sanitizer default setting handling
+  - several minor bugfixes
+
+### Version ++4.04c (release)
+  - fix gramatron and grammar_mutator build scripts
+  - enhancements to the afl-persistent-config and afl-system-config
+    scripts
+  - afl-fuzz:
+    - force writing all stats on exit
+    - ensure targets are killed on exit
+    - `AFL_FORK_SERVER_KILL_SIGNAL` added
+  - afl-cc:
+    - make gcc_mode (afl-gcc-fast) work with gcc down to version 3.6
+  - qemu_mode:
+    - fixed 10x speed degredation in v4.03c, thanks to @ele7enxxh for
+      reporting!
+    - added qemu_mode/fastexit helper library
+  - unicorn_mode:
+    - Enabled tricore arch (by @jma-qb)
+    - Updated Capstone version in Rust bindings
+  - llvm-mode:
+    - AFL runtime will always pass inputs via shared memory, when possible,
+      ignoring the command line.
+
+
+### Version ++4.03c (release)
+  - Building now gives a build summary what succeeded and what not
+  - afl-fuzz:
+    - added AFL_NO_STARTUP_CALIBRATION to start fuzzing at once instead
+      of calibrating all initial seeds first. Good for large queues
+      and long execution times, especially in CIs.
+    - default calibration cycles set to 7 from 8, and only add 5 cycles
+      to variables queue items instead of 12.
+  - afl-cc:
+    - fixed off-by-one bug in our pcguard implemenation, thanks for
+      @tokatoka for reporting
+    - fix for llvm 15 and reenabling LTO, thanks to nikic for the PR!
+    - better handling of -fsanitize=..,...,.. lists
+    - support added for LLVMFuzzerRunDriver()
+    - fix gcc_mode cmplog
+    - obtain the map size of a target with setting AFL_DUMP_MAP_SIZE=1
+      note that this will exit the target before main()
+  - qemu_mode:
+    - added AFL_QEMU_TRACK_UNSTABLE to log the addresses of unstable
+      edges (together with AFL_DEBUG=1 afl-fuzz). thanks to
+      worksbutnottested!
+  - afl-analyze broke at some point, fix by CodeLogicError, thank you!
+  - afl-cmin/afl-cmin.bash now have an -A option to allow also crashing
+    and timeout inputs
+  - unicorn_mode:
+    - updated upstream unicorn version
+    - fixed builds for aarch64
+    - build now uses all available cores
+
+
+### Version ++4.02c (release)
+  - afl-cc:
+    - important fix for the default pcguard mode when LLVM IR vector
+      selects are produced, thanks to @juppytt for reporting!
+  - gcc_plugin:
+    - Adacore submitted CMPLOG support to the gcc_plugin! :-)
+  - llvm_mode:
+    - laf cmp splitting fixed for more comparison types
+  - frida_mode:
+    - now works on Android!
+  - afl-fuzz:
+    - change post_process hook to allow returning NULL and 0 length to
+      tell afl-fuzz to skip this mutated input
+
+### Version ++4.01c (release)
+  - fixed */build_...sh scripts to work outside of git
+  - new custom_mutator: libafl with token fuzzing :)
+  - afl-fuzz:
+    - when you just want to compile once and set CMPLOG, then just
+      set -c 0 to tell afl-fuzz that the fuzzing binary is also for
+      CMPLOG.
+    - new commandline options -g/G to set min/max length of generated
+      fuzz inputs
+    - you can set the time for syncing to other fuzzer now with
+      AFL_SYNC_TIME
+    - reintroduced AFL_PERSISTENT and AFL_DEFER_FORKSRV to allow
+      persistent mode and manual forkserver support if these are not
+      in the target binary (e.g. are in a shared library)
+    - add AFL_EARLY_FORKSERVER to install the forkserver as earliest as
+      possible in the target (for afl-gcc-fast/afl-clang-fast/
+      afl-clang-lto)
+    - "saved timeouts" was wrong information, timeouts are still thrown
+      away by default even if they have new coverage (hangs are always
+      kept), unless AFL_KEEP_TIMEOUTS are set
+    - AFL never implemented auto token inserts (but user token inserts,
+      user token overwrite and auto token overwrite), added now!
+    - fixed a mutation type in havoc mode
+    - Mopt fix to always select the correct algorithm
+    - fix effector map calculation (deterministic mode)
+    - fix custom mutator post_process functionality
+    - document and auto-activate pizza mode on condition
+  - afl-cc:
+    - due a bug in lld of llvm 15 LTO instrumentation wont work atm :-(
+    - converted all passed to use the new llvm pass manager for llvm 11+
+    - AFL++ PCGUARD mode is not available for 10.0.1 anymore (11+ only)
+    - trying to stay on top on all these #$&§!! changes in llvm 15 ...
+  - frida_mode:
+    - update to new frida release, handles now c++ throw/catch
+  - unicorn_mode:
+    - update unicorn engine, fix C example
+  - utils:
+    - removed optimin because it looses coverage due to a bug and is
+      unmaintained :-(
+
+
+### Version ++4.00c (release)
+  - complete documentation restructuring, made possible by Google Season
+    of Docs :) thank you Jana!
+  - we renamed several UI and fuzzer_stat entries to be more precise,
+    e.g. "unique crashes" -> "saved crashes", "total paths" ->
+    "corpus count", "current path" -> "current item".
+    This might need changing custom scripting!
+  - Nyx mode (full system emulation with snapshot capability) has been
+    added - thanks to @schumilo and @eqv!
+  - unicorn_mode:
+    - Moved to unicorn2! by Ziqiao Kong (@lazymio)
+    - Faster, more accurate emulation (newer QEMU base), risc-v support
+    - removed indirections in rust callbacks
+  - new binary-only fuzzing mode: coresight_mode for aarch64 CPUs :)
+    thanks to RICSecLab submitting!
+  - if instrumented libaries are dlopen()'ed after the forkserver you
+    will now see a crash. Before you would have colliding coverage.
+    We changed this to force fixing a broken setup rather then allowing
+    ineffective fuzzing.
+    See docs/best_practices.md how to fix such setups.
+  - afl-fuzz:
+    - cmplog binaries will need to be recompiled for this version
+      (it is better!)
+    - fix a regression introduced in 3.10 that resulted in less
+      coverage being detected. thanks to Collin May for reporting!
+    - ensure all spawned targets are killed on exit
+    - added AFL_IGNORE_PROBLEMS, plus checks to identify and abort on
+      incorrect LTO usage setups and enhanced the READMEs for better
+      information on how to deal with instrumenting libraries
+    - fix -n dumb mode (nobody should use this mode though)
+    - fix stability issue with LTO and cmplog
+    - better banner
+    - more effective cmplog mode
+    - more often update the UI when in input2stage mode
+  - qemu_mode/unicorn_mode: fixed OOB write when using libcompcov,
+      thanks to kotee4ko for reporting!
+  - frida_mode:
+    - better performance, bug fixes
+    - David Carlier added Android support :)
+  - afl-showmap, afl-tmin and afl-analyze:
+    - honor persistent mode for more speed. thanks to dloffre-snl
+      for reporting!
+    - fix bug where targets are not killed on timeouts
+    - moved hidden afl-showmap -A option to -H to be used for
+      coresight_mode
+  - Prevent accidentally killing non-afl/fuzz services when aborting
+    afl-showmap and other tools.
+  - afl-cc:
+    - detect overflow reads on initial input buffer for asan
+    - new cmplog mode (incompatible with older AFL++ versions)
+    - support llvm IR select instrumentation for default PCGUARD and LTO
+    - fix for shared linking on MacOS
+    - better selective instrumentation AFL_LLVM_{ALLOW|DENY}LIST
+      on filename matching (requires llvm 11 or newer)
+    - fixed a potential crash in targets for LAF string handling
+    - fixed a bad assert in LAF split switches
+    - added AFL_USE_TSAN thread sanitizer support
+    - llvm and LTO mode modified to work with new llvm 14-dev (again.)
+    - fix for AFL_REAL_LD
+    - more -z defs filtering
+    - make -v without options work
+  - added the very good grammar mutator "GramaTron" to the
+    custom_mutators
+  - added optimin, a faster and better corpus minimizer by
+    Adrian Herrera. Thank you!
+  - added afl-persistent-config script to set perform permanent system
+    configuration settings for fuzzing, for Linux and Macos.
+    thanks to jhertz!
+  - added xml, curl & exotic string functions to llvm dictionary feature
+  - fix AFL_PRELOAD issues on MacOS
+  - removed utils/afl_frida because frida_mode/ is now so much better
+  - added uninstall target to makefile (todo: update new readme!)
+
+### Version ++3.14c (release)
+  - afl-fuzz:
+    - fix -F when a '/' was part of the parameter
+    - fixed a crash for cmplog for very slow inputs
+    - fix for AFLfast schedule counting
+    - removed implied -D determinstic from -M main
+    - if the target becomes unavailable check out out/default/error.txt
+      for an indicator why
+    - AFL_CAL_FAST was a dead env, now does the same as AFL_FAST_CAL
+    - reverse read the queue on resumes (more effective)
+    - fix custom mutator trimming
+  - afl-cc:
+    - Update to COMPCOV/laf-intel that speeds up the instrumentation
+      process a lot - thanks to Michael Rodler/f0rki for the PR!
+    - Fix for failures for some sized string instrumentations
+    - Fix to instrument global namespace functions in c++
+    - Fix for llvm 13
+    - support partial linking
+    - do honor AFL_LLVM_{ALLOW/DENY}LIST for LTO autodictionary andDICT2FILE
+    - We do support llvm versions from 3.8 to 5.0 again
+  - frida_mode:
+    - several fixes for cmplog
+    - remove need for AFL_FRIDA_PERSISTENT_RETADDR_OFFSET
+    - less coverage collision
+    - feature parity of aarch64 with intel now (persistent, cmplog,
+      in-memory testcases, asan)
+  - afl-cmin and afl-showmap -i do now descend into subdirectories
+    (like afl-fuzz does) - note that afl-cmin.bash does not!
+  - afl_analyze:
+    - fix timeout handling
+    - add forkserver support for better performance
+  - ensure afl-compiler-rt is built for gcc_module
+  - always build aflpp_driver for libfuzzer harnesses
+  - added `AFL_NO_FORKSRV` env variable support to
+    afl-cmin, afl-tmin, and afl-showmap, by @jhertz
+  - removed outdated documents, improved existing documentation
+
+### Version ++3.13c (release)
+  - Note: plot_data switched to relative time from unix time in 3.10
   - frida_mode - new mode that uses frida to fuzz binary-only targets,
+    it currently supports persistent mode and cmplog.
     thanks to @WorksButNotTested!
   - create a fuzzing dictionary with the help of CodeQL thanks to
     @microsvuln! see utils/autodict_ql
@@ -19,23 +310,49 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
     - add recording of previous fuzz attempts for persistent mode
       to allow replay of non-reproducable crashes, see
       AFL_PERSISTENT_RECORD in config.h and docs/envs.h
-    - default cmplog level (-l) is now 2, better efficiency.
-    - cmplog level 3 (-l 3) now performs redqueen on everything.
-      use with care.
-    - better fuzzing strategy yields for enabled options
+    - fixed a bug when trimming for stdin targets
+    - cmplog -l: default cmplog level is now 2, better efficiency.
+      level 3 now performs redqueen on everything. use with care.
+    - better fuzzing strategy yield display for enabled options
     - ensure one fuzzer sync per cycle
     - fix afl_custom_queue_new_entry original file name when syncing
       from fuzzers
+    - fixed a crash when more than one custom mutator was used together
+      with afl_custom_post_process
+    - on a crashing seed potentially the wrong input was disabled
     - added AFL_EXIT_ON_SEED_ISSUES env that will exit if a seed in
       -i dir crashes the target or results in a timeout. By default
-      afl++ ignores these and uses them for splicing instead.
+      AFL++ ignores these and uses them for splicing instead.
+    - added AFL_EXIT_ON_TIME env that will make afl-fuzz exit fuzzing
+      after no new paths have been found for n seconds
+    - when AFL_FAST_CAL is set a variable path will now be calibrated
+      8 times instead of originally 40. Long calibration is now 20.
+    - added AFL_TRY_AFFINITY to try to bind to CPUs but don't error if
+      it fails
   - afl-cc:
     - We do not support llvm versions prior 6.0 anymore
+    - added thread safe counters to all modes (`AFL_LLVM_THREADSAFE_INST`),
+      note that this disables NeverZero counters.
+    - Fix for -pie compiled binaries with default afl-clang-fast PCGUARD
     - Leak Sanitizer (AFL_USE_LSAN) added by Joshua Rogers, thanks!
     - Removed InsTrim instrumentation as it is not as good as PCGUARD
     - Removed automatic linking with -lc++ for LTO mode
-  - utils/aflpp_driver/aflpp_qemu_driver_hook fixed to work with qemu mode
+    - Fixed a crash in llvm dict2file when a strncmp length was -1
+    - added --afl-noopt support
+  - utils/aflpp_driver:
+    - aflpp_qemu_driver_hook fixed to work with qemu_mode
+    - aflpp_driver now compiled with -fPIC
+  - unicornafl:
+    - fix MIPS delay slot caching, thanks @JackGrence
+    - fixed aarch64 exit address
+    - execution no longer stops at address 0x0
+  - updated afl-system-config to support Arch Linux weirdness and increase
+    MacOS shared memory
+  - updated the grammar custom mutator to the newest version
   - add -d (add dead fuzzer stats) to afl-whatsup
+  - added AFL_PRINT_FILENAMES to afl-showmap/cmin to print the
+    current filename
+  - afl-showmap/cmin will now process queue items in alphabetical order
 
 ### Version ++3.12c (release)
   - afl-fuzz:
@@ -159,7 +476,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
   - Updated utils/afl_frida to be 5% faster, 7% on x86_x64
   - Added `AFL_KILL_SIGNAL` env variable (thanks @v-p-b)
   - @Edznux added a nice documentation on how to use rpc.statsd with
-    afl++ in docs/rpc_statsd.md, thanks!
+    AFL++ in docs/rpc_statsd.md, thanks!
 
 ### Version ++3.00c (release)
   - llvm_mode/ and gcc_plugin/ moved to instrumentation/
@@ -215,7 +532,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
   - custom mutators
     - added a new custom mutator: symcc -> https://github.com/eurecom-s3/symcc/
     - added a new custom mutator: libfuzzer that integrates libfuzzer mutations
-    - Our afl++ Grammar-Mutator is now better integrated into custom_mutators/
+    - Our AFL++ Grammar-Mutator is now better integrated into custom_mutators/
     - added INTROSPECTION support for custom modules
     - python fuzz function was not optional, fixed
     - some python mutator speed improvements
@@ -226,7 +543,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
 
 
 ### Version ++2.68c (release)
-  - added the GSoC excellent afl++ grammar mutator by Shengtuo to our
+  - added the GSoC excellent AFL++ grammar mutator by Shengtuo to our
     custom_mutators/ (see custom_mutators/README.md) - or get it here:
     https://github.com/AFLplusplus/Grammar-Mutator
   - a few QOL changes for Apple and its outdated gmake
@@ -249,12 +566,12 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
   - llvm_mode:
     - ported SanCov to LTO, and made it the default for LTO. better
       instrumentation locations
-    - Further llvm 12 support (fast moving target like afl++ :-) )
+    - Further llvm 12 support (fast moving target like AFL++ :-) )
     - deprecated LLVM SKIPSINGLEBLOCK env environment
 
 
 ### Version ++2.67c (release)
-  - Support for improved afl++ snapshot module:
+  - Support for improved AFL++ snapshot module:
     https://github.com/AFLplusplus/AFL-Snapshot-LKM
   - Due to the instrumentation needing more memory, the initial memory sizes
     for -m have been increased
@@ -356,7 +673,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
     files/stdin) - 10-100% performance increase
   - General support for 64 bit PowerPC, RiscV, Sparc etc.
   - fix afl-cmin.bash
-  - slightly better performance compilation options for afl++ and targets
+  - slightly better performance compilation options for AFL++ and targets
   - fixed afl-gcc/afl-as that could break on fast systems reusing pids in
     the same second
   - added lots of dictionaries from oss-fuzz, go-fuzz and Jakub Wilk
@@ -369,7 +686,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
   - afl-fuzz:
      - AFL_MAP_SIZE was not working correctly
      - better python detection
-     - an old, old bug in afl that would show negative stability in rare
+     - an old, old bug in AFL that would show negative stability in rare
        circumstances is now hopefully fixed
      - AFL_POST_LIBRARY was deprecated, use AFL_CUSTOM_MUTATOR_LIBRARY
        instead (see docs/custom_mutators.md)
@@ -428,8 +745,8 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
   - extended forkserver: map_size and more information is communicated to
     afl-fuzz (and afl-fuzz acts accordingly)
   - new environment variable: AFL_MAP_SIZE to specify the size of the shared map
-  - if AFL_CC/AFL_CXX is set but empty afl compilers did fail, fixed
-    (this bug is in vanilla afl too)
+  - if AFL_CC/AFL_CXX is set but empty AFL compilers did fail, fixed
+    (this bug is in vanilla AFL too)
   - added NO_PYTHON flag to disable python support when building afl-fuzz
   - more refactoring
 
@@ -443,7 +760,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
   - all:
     - big code changes to make afl-fuzz thread-safe so afl-fuzz can spawn
       multiple fuzzing threads in the future or even become a library
-    - afl basic tools now report on the environment variables picked up
+    - AFL basic tools now report on the environment variables picked up
     - more tools get environment variable usage info in the help output
     - force all output to stdout (some OK/SAY/WARN messages were sent to
       stdout, some to stderr)
@@ -592,7 +909,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
   - qemu and unicorn download scripts now try to download until the full
     download succeeded. f*ckin travis fails downloading 40% of the time!
   - more support for Android (please test!)
-  - added the few Android stuff we didnt have already from Google afl repository
+  - added the few Android stuff we didnt have already from Google AFL repository
   - removed unnecessary warnings
 
 
@@ -640,7 +957,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
 
   - big code refactoring:
     * all includes are now in include/
-    * all afl sources are now in src/ - see src/README.md
+    * all AFL sources are now in src/ - see src/README.md
     * afl-fuzz was split up in various individual files for including
       functionality in other programs (e.g. forkserver, memory map, etc.)
       for better readability.
@@ -656,7 +973,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
   - fix building on *BSD (thanks to tobias.kortkamp for the patch)
   - fix for a few features to support different map sized than 2^16
   - afl-showmap: new option -r now shows the real values in the buckets (stock
-    afl never did), plus shows tuple content summary information now
+    AFL never did), plus shows tuple content summary information now
   - small docu updates
   - NeverZero counters for QEMU
   - NeverZero counters for Unicorn
@@ -699,7 +1016,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
     debugging
   - added -V time and -E execs option to better comparison runs, runs afl-fuzz
     for a specific time/executions.
-  - added a -s seed switch to allow afl run with a fixed initial
+  - added a -s seed switch to allow AFL run with a fixed initial
     seed that is not updated. This is good for performance and path discovery
     tests as the random numbers are deterministic then
   - llvm_mode LAF_... env variables can now be specified as AFL_LLVM_LAF_...
@@ -1447,7 +1764,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
   - Fixed a bug with installed copies of AFL trying to use QEMU mode. Spotted
     by G.M. Lime.
 
-  - Added last path / crash / hang times to fuzzer_stats, suggested by
+  - Added last find / crash / hang times to fuzzer_stats, suggested by
     Richard Hipp.
 
   - Fixed a typo, thanks to Jakub Wilk.
@@ -1520,7 +1837,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
 ### Version 1.63b:
 
   - Updated cgroups_asan/ with a new version from Sam, made a couple changes
-    to streamline it and keep parallel afl instances in separate groups.
+    to streamline it and keep parallel AFL instances in separate groups.
 
   - Fixed typos, thanks to Jakub Wilk.
 
@@ -2318,7 +2635,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
 
   - Added AFL_KEEP_ASSEMBLY for easier troubleshooting.
 
-  - Added an override for AFL_USE_ASAN if set at afl compile time. Requested by
+  - Added an override for AFL_USE_ASAN if set at AFL compile time. Requested by
     Hanno Boeck.
 
 ### Version 0.79b:
@@ -2659,7 +2976,7 @@ sending a mail to <afl-users+subscribe@googlegroups.com>.
   - Updated the documentation and added notes_for_asan.txt. Based on feedback
     from Hanno Boeck, Ben Laurie, and others.
 
-  - Moved the project to http://lcamtuf.coredump.cx/afl/.
+  - Moved the project to https://lcamtuf.coredump.cx/afl/.
 
 ### Version 0.46b:
 

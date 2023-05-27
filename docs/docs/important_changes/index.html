@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Important Changes | AFLplusplus</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+<meta property="og:title" content="Important Changes | AFLplusplus" />
+<meta name="twitter:title" content="Important Changes | AFLplusplus" />
+<meta itemprop="name" content="Important Changes | AFLplusplus" />
+<meta name="application-name" content="Important Changes | AFLplusplus" />
+<meta property="og:site_name" content="AFLplusplus" />
+
+<meta name="description" content="The AFLplusplus website" />
+<meta itemprop="description" content="The AFLplusplus website" />
+<meta property="og:description" content="The AFLplusplus website" />
+<meta name="twitter:description" content="The AFLplusplus website" />
+
+<base href="https://aflplus.plus/docs/important_changes/">
+<link rel="canonical" href="https://aflplus.plus/docs/important_changes/" itemprop="url" /> 
+<meta name="url" content="https://aflplus.plus/docs/important_changes/" />
+<meta name="twitter:url" content="https://aflplus.plus/docs/important_changes/" /> 
+<meta property="og:url" content="https://aflplus.plus/docs/important_changes/" />
+
+ 
+  <meta itemprop="image" content="https://aflplus.plus/ogimage.png" />
+  <meta property="og:image" content="https://aflplus.plus/ogimage.png" /> 
+  <meta name="twitter:image" content="https://aflplus.plus/ogimage.png" />
+  <meta name="twitter:image:src" content="https://aflplus.plus/ogimage.png" /> 
+
+
+
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
+
+
+<script defer src="/en.search.min.be06027f8735505ece982e70c6838dcd93262b95e810a56c98c7e933c75a5393.js" integrity="sha256-vgYCf4c1UF7OmC5wxoONzZMmK5XoEKVsmMfpM8daU5M="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><img src="/logo_256x256.png" alt="Logo" /><span>AFLplusplus</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+  <ul>
+<li><strong>Site map</strong>
+<ul>
+<li><a href="/features/">Features</a></li>
+<li><a href="/building/">Build &amp; Install</a></li>
+<li><a href="/docs/">Documentation</a></li>
+<li><a href="/docs/tutorials/">Tutorials</a></li>
+<li><a href="/papers/">Papers</a></li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li><strong>Downloads</strong>
+<ul>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.05c">Release 4.05c</a>
+</li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
+<li><a href="https://raw.githubusercontent.com/AFLplusplus/AFLplusplus/master/docs/COPYING">License</a></li>
+</ul>
+</li>
+<li><strong>Links</strong>
+<ul>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus">Repo (GitHub)</a></li>
+<li><a href="https://groups.google.com/group/afl-users">Mailing list</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Important Changes</strong>
+
+  <label for="toc-control">
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#from-version-300-onwards">From version 3.00 onwards</a></li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+<article class="markdown"><h1 id="important-changes-in-afl">Important changes in AFL++</h1>
+<p>This document lists important changes in AFL++, for example, major behavior
+changes.</p>
+<h2 id="from-version-300-onwards">From version 3.00 onwards</h2>
+<p>With AFL++ 4.00, we introduced the following changes from previous behaviors:</p>
+<ul>
+<li>the complete documentation was overhauled and restructured thanks to @llzmb!</li>
+<li>a new CMPLOG target format requires recompiling CMPLOG targets for use with
+AFL++ 4.0 onwards</li>
+<li>better naming for several fields in the UI</li>
+</ul>
+<p>With AFL++ 3.15, we introduced the following changes from previous behaviors:</p>
+<ul>
+<li>afl-cmin and afl-showmap <code>-Ci</code> now descend into subdirectories like afl-fuzz
+<code>-i</code> does (but note that afl-cmin.bash does not)</li>
+</ul>
+<p>With AFL++ 3.14, we introduced the following changes from previous behaviors:</p>
+<ul>
+<li>afl-fuzz: deterministic fuzzing is not a default for <code>-M main</code> anymore</li>
+<li>afl-cmin/afl-showmap -i now descends into subdirectories (afl-cmin.bash,
+however, does not)</li>
+</ul>
+<p>With AFL++ 3.10, we introduced the following changes from previous behaviors:</p>
+<ul>
+<li>The &lsquo;+&rsquo; feature of the <code>-t</code> option now means to auto-calculate the timeout
+with the value given being the maximum timeout. The original meaning of
+&ldquo;skipping timeouts instead of abort&rdquo; is now inherent to the <code>-t</code> option.</li>
+</ul>
+<p>With AFL++ 3.00, we introduced changes that break some previous AFL and AFL++
+behaviors and defaults:</p>
+<ul>
+<li>There are no llvm_mode and gcc_plugin subdirectories anymore and there is
+only one compiler: afl-cc. All previous compilers now symlink to this one.
+All instrumentation source code is now in the <code>instrumentation/</code> folder.</li>
+<li>The gcc_plugin was replaced with a new version submitted by AdaCore that
+supports more features. Thank you!</li>
+<li>QEMU mode got upgraded to QEMU 5.1, but to be able to build this a current
+ninja build tool version and python3 setuptools are required. QEMU mode also
+got new options like snapshotting, instrumenting specific shared libraries,
+etc. Additionally QEMU 5.1 supports more CPU targets so this is really worth
+it.</li>
+<li>When instrumenting targets, afl-cc will not supersede optimizations anymore
+if any were given. This allows to fuzz targets build regularly like those
+for debug or release versions.</li>
+<li>afl-fuzz:
+<ul>
+<li>if neither <code>-M</code> or <code>-S</code> is specified, <code>-S default</code> is assumed, so more
+fuzzers can easily be added later</li>
+<li><code>-i</code> input directory option now descends into subdirectories. It also does
+not fail on crashes and too large files, instead it skips them and uses
+them for splicing mutations</li>
+<li><code>-m</code> none is now the default, set memory limits (in MB) with, e.g., <code>-m 250</code></li>
+<li>deterministic fuzzing is now disabled by default (unless using <code>-M</code>) and
+can be enabled with <code>-D</code></li>
+<li>a caching of test cases can now be performed and can be modified by
+editing config.h for <code>TESTCASE_CACHE</code> or by specifying the environment
+variable <code>AFL_TESTCACHE_SIZE</code> (in MB). Good values are between 50-500
+(default: 50).</li>
+<li><code>-M</code> mains do not perform trimming</li>
+</ul>
+</li>
+<li><code>examples/</code> got renamed to <code>utils/</code></li>
+<li><code>libtokencap/</code>, <code>libdislocator/</code>, and <code>qdbi_mode/</code> were moved to <code>utils/</code></li>
+<li>afl-cmin/afl-cmin.bash now search first in <code>PATH</code> and last in <code>AFL_PATH</code></li>
+</ul>
+</article>
+ 
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+      </footer>
+      
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#from-version-300-onwards">From version 3.00 onwards</a></li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

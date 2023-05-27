@@ -33,10 +33,10 @@
 
 
 
-<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.bd94799dfcdf969755cf180e7375925b1034fe6f40f69be521e4f17aa5e520dc.js" integrity="sha256-vZR5nfzflpdVzxgOc3WSWxA0/m9A9pvlIeTxeqXlINw="></script>
+<script defer src="/en.search.min.be06027f8735505ece982e70c6838dcd93262b95e810a56c98c7e933c75a5393.js" integrity="sha256-vgYCf4c1UF7OmC5wxoONzZMmK5XoEKVsmMfpM8daU5M="></script>
 
 <!--
 Made with Book Theme
@@ -83,7 +83,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.12c">Release 3.12c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.05c">Release 4.05c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -151,6 +151,7 @@ https://github.com/alex-shpak/hugo-book
     <li><a href="#3-usage">3) Usage</a>
       <ul>
         <li><a href="#prerequisite">Prerequisite</a></li>
+        <li><a href="#helpers">Helpers</a></li>
         <li><a href="#custom-mutator-preparation">Custom Mutator Preparation</a></li>
         <li><a href="#run">Run</a></li>
       </ul>
@@ -169,15 +170,15 @@ https://github.com/alex-shpak/hugo-book
       
 <article class="markdown"><h1 id="custom-mutators-in-afl">Custom Mutators in AFL++</h1>
 <p>This file describes how you can implement custom mutations to be used in AFL.
-For now, we support C/C++ library and Python module, collectivelly named as the
+For now, we support C/C++ library and Python module, collectively named as the
 custom mutator.</p>
-<p>There is also experimental support for Rust in <code>custom_mutators/rust</code>.
-Please refer to that directory for documentation.
-Run <code>cargo doc -p custom_mutator --open</code> in that directory to view the
-documentation in your web browser.</p>
+<p>There is also experimental support for Rust in <code>custom_mutators/rust</code>. For
+documentation, refer to that directory. Run <code>cargo doc -p custom_mutator --open</code>
+in that directory to view the documentation in your web browser.</p>
 <p>Implemented by</p>
 <ul>
-<li>C/C++ library (<code>*.so</code>): Khaled Yakdan from Code Intelligence (<a href="mailto:yakdan@code-intelligence.de">yakdan@code-intelligence.de</a>)</li>
+<li>C/C++ library (<code>*.so</code>): Khaled Yakdan from Code Intelligence
+(<a href="mailto:yakdan@code-intelligence.de">yakdan@code-intelligence.de</a>)</li>
 <li>Python module: Christian Holler from Mozilla (<a href="mailto:choller@mozilla.com">choller@mozilla.com</a>)</li>
 </ul>
 <h2 id="1-introduction">1) Introduction</h2>
@@ -186,16 +187,23 @@ cases beyond those available in AFL. For example, to enable structure-aware
 fuzzing by using libraries that perform mutations according to a given grammar.</p>
 <p>The custom mutator is passed to <code>afl-fuzz</code> via the <code>AFL_CUSTOM_MUTATOR_LIBRARY</code>
 or <code>AFL_PYTHON_MODULE</code> environment variable, and must export a fuzz function.
-Now afl also supports multiple custom mutators which can be specified in the same <code>AFL_CUSTOM_MUTATOR_LIBRARY</code> environment variable like this.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export AFL_CUSTOM_MUTATOR_LIBRARY<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;full/path/to/mutator_first.so;full/path/to/mutator_second.so&#34;</span>
-</code></pre></div><p>Please see <a href="#2-apis">APIs</a> and <a href="#3-usage">Usage</a> for detail.</p>
-<p>The custom mutation stage is set to be the first non-deterministic stage (right before the havoc stage).</p>
+Now AFL++ also supports multiple custom mutators which can be specified in the
+same <code>AFL_CUSTOM_MUTATOR_LIBRARY</code> environment variable like this.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export AFL_CUSTOM_MUTATOR_LIBRARY<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;full/path/to/mutator_first.so;full/path/to/mutator_second.so&#34;</span>
+</code></pre></div><p>For details, see <a href="#2-apis">APIs</a> and <a href="#3-usage">Usage</a>.</p>
+<p>The custom mutation stage is set to be the first non-deterministic stage (right
+before the havoc stage).</p>
 <p>Note: If <code>AFL_CUSTOM_MUTATOR_ONLY</code> is set, all mutations will solely be
 performed with the custom mutator.</p>
 <h2 id="2-apis">2) APIs</h2>
+<p><strong>IMPORTANT NOTE</strong>: If you use our C/C++ API and you want to increase the size
+of an **out_buf buffer, you have to use <code>afl_realloc()</code> for this, so include
+<code>include/alloc-inl.h</code> - otherwise afl-fuzz will crash when trying to free
+your buffers.</p>
 <p>C/C++:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">afl_custom_init</span>(afl_state_t <span style="color:#f92672">*</span>afl, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> seed);
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">afl_custom_init</span>(afl_state_t <span style="color:#f92672">*</span>afl, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> seed);
 <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">afl_custom_fuzz_count</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t buf_size);
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afl_custom_splice_optout</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data);
 size_t <span style="color:#a6e22e">afl_custom_fuzz</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t buf_size, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>out_buf, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>add_buf, size_t add_buf_size, size_t max_size);
 <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">afl_custom_describe</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, size_t max_description_len);
 size_t <span style="color:#a6e22e">afl_custom_post_process</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t buf_size, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>out_buf);
@@ -205,15 +213,19 @@ size_t <span style="color:#a6e22e">afl_custom_trim</span>(<span style="color:#66
 size_t <span style="color:#a6e22e">afl_custom_havoc_mutation</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t buf_size, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>out_buf, size_t max_size);
 <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#a6e22e">afl_custom_havoc_mutation_probability</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data);
 <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#a6e22e">afl_custom_queue_get</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>filename);
-<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afl_custom_queue_new_entry</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>filename_new_queue, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>filename_orig_queue);
+<span style="color:#66d9ef">void</span> (<span style="color:#f92672">*</span>afl_custom_fuzz_send)(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> u8 <span style="color:#f92672">*</span>buf, size_t buf_size);
+u8 <span style="color:#a6e22e">afl_custom_queue_new_entry</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>filename_new_queue, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>filename_orig_queue);
 <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span><span style="color:#f92672">*</span> <span style="color:#a6e22e">afl_custom_introspection</span>(my_mutator_t <span style="color:#f92672">*</span>data);
 <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afl_custom_deinit</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data);
 </code></pre></div><p>Python:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init</span>(seed):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init</span>(seed):
     <span style="color:#66d9ef">pass</span>
 
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fuzz_count</span>(buf, add_buf, max_size):
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fuzz_count</span>(buf):
     <span style="color:#66d9ef">return</span> cnt
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">splice_optout</span>()
+    <span style="color:#66d9ef">pass</span>
 
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fuzz</span>(buf, add_buf, max_size):
     <span style="color:#66d9ef">return</span> mutated_out
@@ -240,18 +252,25 @@ size_t <span style="color:#a6e22e">afl_custom_havoc_mutation</span>(<span style=
     <span style="color:#66d9ef">return</span> probability <span style="color:#75715e"># int in [0, 100]</span>
 
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">queue_get</span>(filename):
-    <span style="color:#66d9ef">return</span> True
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fuzz_send</span>(buf):
+    <span style="color:#66d9ef">pass</span>
 
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">queue_new_entry</span>(filename_new_queue, filename_orig_queue):
-    <span style="color:#66d9ef">pass</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
 
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">introspection</span>():
     <span style="color:#66d9ef">return</span> string
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">deinit</span>():  <span style="color:#75715e"># optional for Python</span>
+    <span style="color:#66d9ef">pass</span>
 </code></pre></div><h3 id="custom-mutation">Custom Mutation</h3>
 <ul>
 <li>
-<p><code>init</code>:</p>
-<p>This method is called when AFL++ starts up and is used to seed RNG and set up buffers and state.</p>
+<p><code>init</code> (optional in Python):</p>
+<p>This method is called when AFL++ starts up and is used to seed RNG and set
+up buffers and state.</p>
 </li>
 <li>
 <p><code>queue_get</code> (optional):</p>
@@ -260,26 +279,34 @@ queue entry or not</p>
 </li>
 <li>
 <p><code>fuzz_count</code> (optional):</p>
-<p>When a queue entry is selected to be fuzzed, afl-fuzz selects the number
-of fuzzing attempts with this input based on a few factors.
-If however the custom mutator wants to set this number instead on how often
-it is called for a specific queue entry, use this function.
-This function is most useful if <code>AFL_CUSTOM_MUTATOR_ONLY</code> is <strong>not</strong> used.</p>
+<p>When a queue entry is selected to be fuzzed, afl-fuzz selects the number of
+fuzzing attempts with this input based on a few factors. If, however, the
+custom mutator wants to set this number instead on how often it is called
+for a specific queue entry, use this function. This function is most useful
+if <code>AFL_CUSTOM_MUTATOR_ONLY</code> is <strong>not</strong> used.</p>
+</li>
+<li>
+<p><code>splice_optout</code> (optional):</p>
+<p>If this function is present, no splicing target is passed to the <code>fuzz</code>
+function. This saves time if splicing data is not needed by the custom
+fuzzing function.
+This function is never called, just needs to be present to activate.</p>
 </li>
 <li>
 <p><code>fuzz</code> (optional):</p>
 <p>This method performs custom mutations on a given input. It also accepts an
-additional test case.
-Note that this function is optional - but it makes sense to use it.
-You would only skip this if <code>post_process</code> is used to fix checksums etc.
-so if you are using it e.g. as a post processing library.</p>
+additional test case. Note that this function is optional - but it makes
+sense to use it. You would only skip this if <code>post_process</code> is used to fix
+checksums etc. so if you are using it, e.g., as a post processing library.
+Note that a length &gt; 0 <em>must</em> be returned!
+The returned output buffer is under <strong>your</strong> memory management!</p>
 </li>
 <li>
 <p><code>describe</code> (optional):</p>
-<p>When this function is called, it shall describe the current testcase,
-generated by the last mutation. This will be called, for example,
-to name the written testcase file after a crash occurred.
-Using it can help to reproduce crashing mutations.</p>
+<p>When this function is called, it shall describe the current test case,
+generated by the last mutation. This will be called, for example, to name
+the written test case file after a crash occurred. Using it can help to
+reproduce crashing mutations.</p>
 </li>
 <li>
 <p><code>havoc_mutation</code> and <code>havoc_mutation_probability</code> (optional):</p>
@@ -291,19 +318,33 @@ is called in havoc. By default, it is 6%.</p>
 <li>
 <p><code>post_process</code> (optional):</p>
 <p>For some cases, the format of the mutated data returned from the custom
-mutator is not suitable to directly execute the target with this input.
-For example, when using libprotobuf-mutator, the data returned is in a
-protobuf format which corresponds to a given grammar. In order to execute
-the target, the protobuf data must be converted to the plain-text format
-expected by the target. In such scenarios, the user can define the
-<code>post_process</code> function. This function is then transforming the data into the
-format expected by the API before executing the target.</p>
+mutator is not suitable to directly execute the target with this input. For
+example, when using libprotobuf-mutator, the data returned is in a protobuf
+format which corresponds to a given grammar. In order to execute the target,
+the protobuf data must be converted to the plain-text format expected by the
+target. In such scenarios, the user can define the <code>post_process</code> function.
+This function is then transforming the data into the format expected by the
+API before executing the target.</p>
 <p>This can return any python object that implements the buffer protocol and
 supports PyBUF_SIMPLE. These include bytes, bytearray, etc.</p>
+<p>You can decide in the post_process mutator to not send the mutated data
+to the target, e.g. if it is too short, too corrupted, etc. If so,
+return a NULL buffer and zero length (or a 0 length string in Python).</p>
+<p>NOTE: Do not make any random changes to the data in this function!</p>
+<p>PERFORMANCE for C/C++: If possible make the changes in-place (so modify
+the <code>*data</code> directly, and return it as <code>*outbuf = data</code>.</p>
+</li>
+<li>
+<p><code>fuzz_send</code> (optional):</p>
+<p>This method can be used if you want to send data to the target yourself,
+e.g. via IPC. This replaces some usage of utils/afl_proxy but requires
+that you start the target with afl-fuzz.
+Example: <a href="custom_mutators/examples/custom_send.c">custom_mutators/examples/custom_send.c</a></p>
 </li>
 <li>
 <p><code>queue_new_entry</code> (optional):</p>
-<p>This methods is called after adding a new test case to the queue.</p>
+<p>This methods is called after adding a new test case to the queue. If the
+contents of the file was changed, return True, False otherwise.</p>
 </li>
 <li>
 <p><code>introspection</code> (optional):</p>
@@ -312,19 +353,19 @@ discovered if compiled with INTROSPECTION. The custom mutator can then
 return a string (const char *) that reports the exact mutations used.</p>
 </li>
 <li>
-<p><code>deinit</code>:</p>
+<p><code>deinit</code> (optional in Python):</p>
 <p>The last method to be called, deinitializing the state.</p>
 </li>
 </ul>
-<p>Note that there are also three functions for trimming as described in the
-next section.</p>
+<p>Note that there are also three functions for trimming as described in the next
+section.</p>
 <h3 id="trimming-support">Trimming Support</h3>
 <p>The generic trimming routines implemented in AFL++ can easily destroy the
 structure of complex formats, possibly leading to a point where you have a lot
 of test cases in the queue that your Python module cannot process anymore but
 your target application still accepts. This is especially the case when your
-target can process a part of the input (causing coverage) and then errors out
-on the remaining input.</p>
+target can process a part of the input (causing coverage) and then errors out on
+the remaining input.</p>
 <p>In such cases, it makes sense to implement a custom trimming routine. The API
 consists of multiple methods because after each trimming step, we have to go
 back into the C code to check if the coverage bitmap is still the same for the
@@ -334,8 +375,9 @@ trimmed input. Here&rsquo;s a quick API description:</p>
 <p><code>init_trim</code> (optional):</p>
 <p>This method is called at the start of each trimming operation and receives
 the initial buffer. It should return the amount of iteration steps possible
-on this input (e.g. if your input has n elements and you want to remove them
-one by one, return n, if you do a binary search, return log(n), and so on).</p>
+on this input (e.g., if your input has n elements and you want to remove
+them one by one, return n, if you do a binary search, return log(n), and so
+on).</p>
 <p>If your trimming algorithm doesn&rsquo;t allow to determine the amount of
 (remaining) steps easily (esp. while running), then you can alternatively
 return 1 here and always return 0 in <code>post_trim</code> until you are finished and
@@ -346,33 +388,31 @@ to show progress.</p>
 <li>
 <p><code>trim</code> (optional)</p>
 <p>This method is called for each trimming operation. It doesn&rsquo;t have any
-arguments because we already have the initial buffer from <code>init_trim</code> and we
-can memorize the current state in the data variables. This can also save
+arguments because there is already the initial buffer from <code>init_trim</code> and
+we can memorize the current state in the data variables. This can also save
 reparsing steps for each iteration. It should return the trimmed input
-buffer, where the returned data must not exceed the initial input data in
-length. Returning anything that is larger than the original data (passed to
-<code>init_trim</code>) will result in a fatal abort of AFL++.</p>
+buffer.</p>
 </li>
 <li>
 <p><code>post_trim</code> (optional)</p>
 <p>This method is called after each trim operation to inform you if your
-trimming step was successful or not (in terms of coverage). If you receive
-a failure here, you should reset your input to the last known good state.
-In any case, this method must return the next trim iteration index (from 0
-to the maximum amount of steps you returned in <code>init_trim</code>).</p>
+trimming step was successful or not (in terms of coverage). If you receive a
+failure here, you should reset your input to the last known good state. In
+any case, this method must return the next trim iteration index (from 0 to
+the maximum amount of steps you returned in <code>init_trim</code>).</p>
 </li>
 </ul>
 <p>Omitting any of three trimming methods will cause the trimming to be disabled
-and trigger a fallback to the builtin default trimming routine.</p>
+and trigger a fallback to the built-in default trimming routine.</p>
 <h3 id="environment-variables">Environment Variables</h3>
 <p>Optionally, the following environment variables are supported:</p>
 <ul>
 <li>
 <p><code>AFL_CUSTOM_MUTATOR_ONLY</code></p>
-<p>Disable all other mutation stages. This can prevent broken testcases
-(those that your Python module can&rsquo;t work with anymore) to fill up your
-queue. Best combined with a custom trimming routine (see below) because
-trimming can cause the same test breakage like havoc and splice.</p>
+<p>Disable all other mutation stages. This can prevent broken test cases (those
+that your Python module can&rsquo;t work with anymore) to fill up your queue. Best
+combined with a custom trimming routine (see below) because trimming can
+cause the same test breakage like havoc and splice.</p>
 </li>
 <li>
 <p><code>AFL_PYTHON_ONLY</code></p>
@@ -389,32 +429,53 @@ trimmer. Use this to see if it works :)</p>
 <h3 id="prerequisite">Prerequisite</h3>
 <p>For Python mutators, the python 3 or 2 development package is required. On
 Debian/Ubuntu/Kali it can be installed like this:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt install python3-dev
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt install python3-dev
 <span style="color:#75715e"># or</span>
 sudo apt install python-dev
 </code></pre></div><p>Then, AFL++ can be compiled with Python support. The AFL++ Makefile detects
-Python 2 and 3 through <code>python-config</code> if it is in the PATH and compiles
-<code>afl-fuzz</code> with the feature if available.</p>
-<p>Note: for some distributions, you might also need the package <code>python[23]-apt</code>.
+Python3 through <code>python-config</code>/<code>python3-config</code> if it is in the PATH and
+compiles <code>afl-fuzz</code> with the feature if available.</p>
+<p>Note: for some distributions, you might also need the package <code>python[3]-apt</code>.
 In case your setup is different, set the necessary variables like this:
 <code>PYTHON_INCLUDE=/path/to/python/include LDFLAGS=-L/path/to/python/lib make</code>.</p>
+<h3 id="helpers">Helpers</h3>
+<p>For C/C++ custom mutators you get a pointer to <code>afl_state_t *afl</code> in the
+<code>afl_custom_init()</code> which contains all information that you need.
+Note that if you access it, you need to recompile your custom mutator if
+you update AFL++ because the structure might have changed!</p>
+<p>For mutators written in Python, Rust, GO, etc. there are a few environment
+variables set to help you to get started:</p>
+<p><code>AFL_CUSTOM_INFO_PROGRAM</code> - the program name of the target that is executed.
+If your custom mutator is used with modes like Qemu (<code>-Q</code>), this will still
+contain the target program, not afl-qemu-trace.</p>
+<p><code>AFL_CUSTOM_INFO_PROGRAM_INPUT</code> - if the <code>-f</code> parameter is used with afl-fuzz
+then this value is found in this environment variable.</p>
+<p><code>AFL_CUSTOM_INFO_PROGRAM_ARGV</code> - this contains the parameters given to the
+target program and still has the <code>@@</code> identifier in there.</p>
+<p>Note: If <code>AFL_CUSTOM_INFO_PROGRAM_INPUT</code> is empty and <code>AFL_CUSTOM_INFO_PROGRAM_ARGV</code>
+is either empty or does not contain <code>@@</code> then the target gets the input via
+<code>stdin</code>.</p>
+<p><code>AFL_CUSTOM_INFO_OUT</code> - This is the output directory for this fuzzer instance,
+so if <code>afl-fuzz</code> was called with <code>-o out -S foobar</code>, then this will be set to
+<code>out/foobar</code>.</p>
 <h3 id="custom-mutator-preparation">Custom Mutator Preparation</h3>
 <p>For C/C++ mutators, the source code must be compiled as a shared object:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gcc -shared -Wall -O3 example.c -o example.so
-</code></pre></div><p>Note that if you specify multiple custom mutators, the corresponding functions will
-be called in the order in which they are specified. e.g first <code>post_process</code> function of
-<code>example_first.so</code> will be called and then that of <code>example_second.so</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gcc -shared -Wall -O3 example.c -o example.so
+</code></pre></div><p>Note that if you specify multiple custom mutators, the corresponding functions
+will be called in the order in which they are specified. E.g., the first
+<code>post_process</code> function of <code>example_first.so</code> will be called and then that of
+<code>example_second.so</code>.</p>
 <h3 id="run">Run</h3>
 <p>C/C++</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export AFL_CUSTOM_MUTATOR_LIBRARY<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/full/path/to/example_first.so;/full/path/to/example_second.so&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export AFL_CUSTOM_MUTATOR_LIBRARY<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/full/path/to/example_first.so;/full/path/to/example_second.so&#34;</span>
 afl-fuzz /path/to/program
 </code></pre></div><p>Python</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export PYTHONPATH<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>dirname /full/path/to/example.py<span style="color:#e6db74">`</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export PYTHONPATH<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>dirname /full/path/to/example.py<span style="color:#e6db74">`</span>
 export AFL_PYTHON_MODULE<span style="color:#f92672">=</span>example
 afl-fuzz /path/to/program
 </code></pre></div><h2 id="4-example">4) Example</h2>
-<p>Please see <a href="../utils/custom_mutators/example.c">example.c</a> and
-<a href="../utils/custom_mutators/example.py">example.py</a></p>
+<p>See <a href="../custom_mutators/examples/example.c">example.c</a> and
+<a href="../custom_mutators/examples/example.py">example.py</a>.</p>
 <h2 id="5-other-resources">5) Other Resources</h2>
 <ul>
 <li>AFL libprotobuf mutator
@@ -470,6 +531,7 @@ afl-fuzz /path/to/program
     <li><a href="#3-usage">3) Usage</a>
       <ul>
         <li><a href="#prerequisite">Prerequisite</a></li>
+        <li><a href="#helpers">Helpers</a></li>
         <li><a href="#custom-mutator-preparation">Custom Mutator Preparation</a></li>
         <li><a href="#run">Run</a></li>
       </ul>

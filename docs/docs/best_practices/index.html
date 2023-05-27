@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Best Practices | AFLplusplus</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+<meta property="og:title" content="Best Practices | AFLplusplus" />
+<meta name="twitter:title" content="Best Practices | AFLplusplus" />
+<meta itemprop="name" content="Best Practices | AFLplusplus" />
+<meta name="application-name" content="Best Practices | AFLplusplus" />
+<meta property="og:site_name" content="AFLplusplus" />
+
+<meta name="description" content="The AFLplusplus website" />
+<meta itemprop="description" content="The AFLplusplus website" />
+<meta property="og:description" content="The AFLplusplus website" />
+<meta name="twitter:description" content="The AFLplusplus website" />
+
+<base href="https://aflplus.plus/docs/best_practices/">
+<link rel="canonical" href="https://aflplus.plus/docs/best_practices/" itemprop="url" /> 
+<meta name="url" content="https://aflplus.plus/docs/best_practices/" />
+<meta name="twitter:url" content="https://aflplus.plus/docs/best_practices/" /> 
+<meta property="og:url" content="https://aflplus.plus/docs/best_practices/" />
+
+ 
+  <meta itemprop="image" content="https://aflplus.plus/ogimage.png" />
+  <meta property="og:image" content="https://aflplus.plus/ogimage.png" /> 
+  <meta name="twitter:image" content="https://aflplus.plus/ogimage.png" />
+  <meta name="twitter:image:src" content="https://aflplus.plus/ogimage.png" /> 
+
+
+
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
+
+
+<script defer src="/en.search.min.be06027f8735505ece982e70c6838dcd93262b95e810a56c98c7e933c75a5393.js" integrity="sha256-vgYCf4c1UF7OmC5wxoONzZMmK5XoEKVsmMfpM8daU5M="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><img src="/logo_256x256.png" alt="Logo" /><span>AFLplusplus</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+  <ul>
+<li><strong>Site map</strong>
+<ul>
+<li><a href="/features/">Features</a></li>
+<li><a href="/building/">Build &amp; Install</a></li>
+<li><a href="/docs/">Documentation</a></li>
+<li><a href="/docs/tutorials/">Tutorials</a></li>
+<li><a href="/papers/">Papers</a></li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li><strong>Downloads</strong>
+<ul>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.05c">Release 4.05c</a>
+</li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
+<li><a href="https://raw.githubusercontent.com/AFLplusplus/AFLplusplus/master/docs/COPYING">License</a></li>
+</ul>
+</li>
+<li><strong>Links</strong>
+<ul>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus">Repo (GitHub)</a></li>
+<li><a href="https://groups.google.com/group/afl-users">Mailing list</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Best Practices</strong>
+
+  <label for="toc-control">
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#contents">Contents</a>
+      <ul>
+        <li><a href="#targets">Targets</a></li>
+        <li><a href="#improvements">Improvements</a></li>
+      </ul>
+    </li>
+    <li><a href="#targets-1">Targets</a>
+      <ul>
+        <li><a href="#fuzzing-a-target-with-source-code-available">Fuzzing a target with source code available</a></li>
+        <li><a href="#fuzzing-a-target-with-dlopen-instrumented-libraries">Fuzzing a target with dlopen instrumented libraries</a></li>
+        <li><a href="#fuzzing-a-binary-only-target">Fuzzing a binary-only target</a></li>
+        <li><a href="#fuzzing-a-gui-program">Fuzzing a GUI program</a></li>
+        <li><a href="#fuzzing-a-network-service">Fuzzing a network service</a></li>
+      </ul>
+    </li>
+    <li><a href="#improvements-1">Improvements</a>
+      <ul>
+        <li><a href="#improving-speed">Improving speed</a></li>
+        <li><a href="#improving-stability">Improving stability</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+<article class="markdown"><h1 id="best-practices">Best practices</h1>
+<h2 id="contents">Contents</h2>
+<h3 id="targets">Targets</h3>
+<ul>
+<li><a href="#fuzzing-a-target-with-source-code-available">Fuzzing a target with source code available</a></li>
+<li><a href="#fuzzing-a-target-with-dlopen-instrumented-libraries">Fuzzing a target with dlopen() instrumented libraries</a></li>
+<li><a href="#fuzzing-a-binary-only-target">Fuzzing a binary-only target</a></li>
+<li><a href="#fuzzing-a-gui-program">Fuzzing a GUI program</a></li>
+<li><a href="#fuzzing-a-network-service">Fuzzing a network service</a></li>
+</ul>
+<h3 id="improvements">Improvements</h3>
+<ul>
+<li><a href="#improving-speed">Improving speed</a></li>
+<li><a href="#improving-stability">Improving stability</a></li>
+</ul>
+<h2 id="targets-1">Targets</h2>
+<h3 id="fuzzing-a-target-with-source-code-available">Fuzzing a target with source code available</h3>
+<p>To learn how to fuzz a target if source code is available, see
+<a href="fuzzing_in_depth.md">fuzzing_in_depth.md</a>.</p>
+<h3 id="fuzzing-a-target-with-dlopen-instrumented-libraries">Fuzzing a target with dlopen instrumented libraries</h3>
+<p>If a source code based fuzzing target loads instrumented libraries with
+dlopen() after the forkserver has been activated and non-colliding coverage
+instrumentation is used (PCGUARD (which is the default), or LTO), then this
+an issue, because this would enlarge the coverage map, but afl-fuzz doesn&rsquo;t
+know about it.</p>
+<p>The solution is to use <code>AFL_PRELOAD</code> for all dlopen()&lsquo;ed libraries to
+ensure that all coverage targets are present on startup in the target,
+even if accessed only later with dlopen().</p>
+<p>For PCGUARD instrumentation <code>abort()</code> is called if this is detected, for LTO
+there will either be no coverage for the instrumented dlopen()&lsquo;ed libraries or
+you will see lots of crashes in the UI.</p>
+<p>Note that this is not an issue if you use the inferiour <code>afl-gcc-fast</code>,
+<code>afl-gcc</code> or<code>AFL_LLVM_INSTRUMENT=CLASSIC/NGRAM/CTX afl-clang-fast</code>
+instrumentation.</p>
+<h3 id="fuzzing-a-binary-only-target">Fuzzing a binary-only target</h3>
+<p>For a comprehensive guide, see
+<a href="fuzzing_binary-only_targets.md">fuzzing_binary-only_targets.md</a>.</p>
+<h3 id="fuzzing-a-gui-program">Fuzzing a GUI program</h3>
+<p>If the GUI program can read the fuzz data from a file (via the command line, a
+fixed location or via an environment variable) without needing any user
+interaction, then it would be suitable for fuzzing.</p>
+<p>Otherwise, it is not possible without modifying the source code - which is a
+very good idea anyway as the GUI functionality is a huge CPU/time overhead for
+the fuzzing.</p>
+<p>So create a new <code>main()</code> that just reads the test case and calls the
+functionality for processing the input that the GUI program is using.</p>
+<h3 id="fuzzing-a-network-service">Fuzzing a network service</h3>
+<p>Fuzzing a network service does not work &ldquo;out of the box&rdquo;.</p>
+<p>Using a network channel is inadequate for several reasons:</p>
+<ul>
+<li>it has a slow-down of x10-20 on the fuzzing speed</li>
+<li>it does not scale to fuzzing multiple instances easily,</li>
+<li>instead of one initial data packet often a back-and-forth interplay of packets
+is needed for stateful protocols (which is totally unsupported by most
+coverage aware fuzzers).</li>
+</ul>
+<p>The established method to fuzz network services is to modify the source code to
+read from a file or stdin (fd 0) (or even faster via shared memory, combine this
+with persistent mode
+<a href="../instrumentation/README.persistent_mode.md">instrumentation/README.persistent_mode.md</a>
+and you have a performance gain of x10 instead of a performance loss of over x10</p>
+<ul>
+<li>that is a x100 difference!).</li>
+</ul>
+<p>If modifying the source is not an option (e.g., because you only have a binary
+and perform binary fuzzing) you can also use a shared library with AFL_PRELOAD
+to emulate the network. This is also much faster than the real network would be.
+See <a href="../utils/socket_fuzzing/">utils/socket_fuzzing/</a>.</p>
+<p>There is an outdated AFL++ branch that implements networking if you are
+desperate though:
+<a href="https://github.com/AFLplusplus/AFLplusplus/tree/networking">https://github.com/AFLplusplus/AFLplusplus/tree/networking</a></p>
+<ul>
+<li>however, a better option is AFLnet
+(<a href="https://github.com/aflnet/aflnet">https://github.com/aflnet/aflnet</a>) which
+allows you to define network state with different type of data packets.</li>
+</ul>
+<h2 id="improvements-1">Improvements</h2>
+<h3 id="improving-speed">Improving speed</h3>
+<ol>
+<li>Use <a href="../instrumentation/README.llvm.md">llvm_mode</a>: afl-clang-lto (llvm &gt;=
+11) or afl-clang-fast (llvm &gt;= 9 recommended).</li>
+<li>Use <a href="../instrumentation/README.persistent_mode.md">persistent mode</a> (x2-x20
+speed increase).</li>
+<li>Instrument just what you are interested in, see
+<a href="../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a>.</li>
+<li>If you do not use shmem persistent mode, use <code>AFL_TMPDIR</code> to put the input
+file directory on a tempfs location, see
+<a href="env_variables.md">env_variables.md</a>.</li>
+<li>Improve Linux kernel performance: modify <code>/etc/default/grub</code>, set
+<code>GRUB_CMDLINE_LINUX_DEFAULT=&quot;ibpb=off ibrs=off kpti=off l1tf=off mds=off mitigations=off no_stf_barrier noibpb noibrs nopcid nopti nospec_store_bypass_disable nospectre_v1 nospectre_v2 pcid=off pti=off spec_store_bypass_disable=off spectre_v2=off stf_barrier=off&quot;</code>; then
+<code>update-grub</code> and <code>reboot</code> (warning: makes the system less secure).</li>
+<li>Running on an <code>ext2</code> filesystem with <code>noatime</code> mount option will be a bit
+faster than on any other journaling filesystem.</li>
+<li>Use your cores
+(<a href="fuzzing_in_depth.md#c-using-multiple-cores">fuzzing_in_depth.md:3c) Using multiple cores</a>)!</li>
+</ol>
+<h3 id="improving-stability">Improving stability</h3>
+<p>For fuzzing, a 100% stable target that covers all edges is the best case. A 90%
+stable target that covers all edges is, however, better than a 100% stable
+target that ignores 10% of the edges.</p>
+<p>With instability, you basically have a partial coverage loss on an edge, with
+ignored functions you have a full loss on that edges.</p>
+<p>There are functions that are unstable, but also provide value to coverage, e.g.,
+init functions that use fuzz data as input. If, however, a function that has
+nothing to do with the input data is the source of instability, e.g., checking
+jitter, or is a hash map function etc., then it should not be instrumented.</p>
+<p>To be able to exclude these functions (based on AFL++&rsquo;s measured stability), the
+following process will allow to identify functions with variable edges.</p>
+<p>Note that this is only useful for non-persistent targets!
+If a persistent target is unstable whereas when run non-persistent is fine,
+then this means that the target is keeping internal state, which is bad for
+fuzzing. Fuzz such targets <strong>without</strong> persistent mode.</p>
+<p>Four steps are required to do this and it also requires quite some knowledge of
+coding and/or disassembly and is effectively possible only with <code>afl-clang-fast</code>
+<code>PCGUARD</code> and <code>afl-clang-lto</code> <code>LTO</code> instrumentation.</p>
+<ol>
+<li>
+<p>Instrument to be able to find the responsible function(s):</p>
+<p>a) For LTO instrumented binaries, this can be documented during compile
+time, just set <code>export AFL_LLVM_DOCUMENT_IDS=/path/to/a/file</code>. This file
+will have one assigned edge ID and the corresponding function per line.</p>
+<p>b) For PCGUARD instrumented binaries, it is much more difficult. Here you
+can either modify the <code>__sanitizer_cov_trace_pc_guard</code> function in
+<code>instrumentation/afl-llvm-rt.o.c</code> to write a backtrace to a file if the
+ID in <code>__afl_area_ptr[*guard]</code> is one of the unstable edge IDs. (Example
+code is already there). Then recompile and reinstall <code>llvm_mode</code> and
+rebuild your target. Run the recompiled target with <code>afl-fuzz</code> for a
+while and then check the file that you wrote with the backtrace
+information. Alternatively, you can use <code>gdb</code> to hook
+<code>__sanitizer_cov_trace_pc_guard_init</code> on start, check to which memory
+address the edge ID value is written, and set a write breakpoint to that
+address (<code>watch 0x.....</code>).</p>
+<p>c) In other instrumentation types, this is not possible. So just recompile
+with the two mentioned above. This is just for identifying the functions
+that have unstable edges.</p>
+</li>
+<li>
+<p>Identify which edge ID numbers are unstable.</p>
+<p>Run the target with <code>export AFL_DEBUG=1</code> for a few minutes then terminate.
+The out/fuzzer_stats file will then show the edge IDs that were identified
+as unstable in the <code>var_bytes</code> entry. You can match these numbers directly
+to the data you created in the first step. Now you know which functions are
+responsible for the instability</p>
+</li>
+<li>
+<p>Create a text file with the filenames/functions</p>
+<p>Identify which source code files contain the functions that you need to
+remove from instrumentation, or just specify the functions you want to skip
+for instrumentation. Note that optimization might inline functions!</p>
+<p>Follow this document on how to do this:
+<a href="../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a>.</p>
+<p>If <code>PCGUARD</code> is used, then you need to follow this guide (needs llvm 12+!):
+<a href="https://clang.llvm.org/docs/SanitizerCoverage.html#partially-disabling-instrumentation">https://clang.llvm.org/docs/SanitizerCoverage.html#partially-disabling-instrumentation</a></p>
+<p>Only exclude those functions from instrumentation that provide no value for
+coverage - that is if it does not process any fuzz data directly or
+indirectly (e.g., hash maps, thread management etc.). If, however, a
+function directly or indirectly handles fuzz data, then you should not put
+the function in a deny instrumentation list and rather live with the
+instability it comes with.</p>
+</li>
+<li>
+<p>Recompile the target</p>
+<p>Recompile, fuzz it, be happy :)</p>
+<p>This link explains this process for
+<a href="https://github.com/google/fuzzbench/issues/677">Fuzzbench</a>.</p>
+</li>
+</ol>
+</article>
+ 
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+      </footer>
+      
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#contents">Contents</a>
+      <ul>
+        <li><a href="#targets">Targets</a></li>
+        <li><a href="#improvements">Improvements</a></li>
+      </ul>
+    </li>
+    <li><a href="#targets-1">Targets</a>
+      <ul>
+        <li><a href="#fuzzing-a-target-with-source-code-available">Fuzzing a target with source code available</a></li>
+        <li><a href="#fuzzing-a-target-with-dlopen-instrumented-libraries">Fuzzing a target with dlopen instrumented libraries</a></li>
+        <li><a href="#fuzzing-a-binary-only-target">Fuzzing a binary-only target</a></li>
+        <li><a href="#fuzzing-a-gui-program">Fuzzing a GUI program</a></li>
+        <li><a href="#fuzzing-a-network-service">Fuzzing a network service</a></li>
+      </ul>
+    </li>
+    <li><a href="#improvements-1">Improvements</a>
+      <ul>
+        <li><a href="#improving-speed">Improving speed</a></li>
+        <li><a href="#improving-stability">Improving stability</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

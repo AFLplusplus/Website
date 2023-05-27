@@ -1,146 +1,92 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
     <loc>https://aflplus.plus/building/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/tutorials/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/features/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/papers/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/aflpp_fuzzing_framework_proposal/</loc>
     <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>https://aflplus.plus/docs/afl-fuzz_approach/</loc>
+  </url><url>
+    <loc>https://aflplus.plus/docs/best_practices/</loc>
+  </url><url>
     <loc>https://aflplus.plus/docs/binaryonly_fuzzing/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/changelog/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/custom_mutator/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/custom_mutators/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/docs/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/env_variables/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/faq/</loc>
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>https://aflplus.plus/docs/features/</loc>
+  </url><url>
+    <loc>https://aflplus.plus/docs/fuzzing_binary-only_targets/</loc>
+  </url><url>
+    <loc>https://aflplus.plus/docs/fuzzing_in_depth/</loc>
+  </url><url>
     <loc>https://aflplus.plus/docs/historical_notes/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/ideas/</loc>
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>https://aflplus.plus/docs/important_changes/</loc>
+  </url><url>
     <loc>https://aflplus.plus/docs/install/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/life_pro_tips/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/notes_for_asan/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/parallel_fuzzing/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/patches/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/perf_tips/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/power_schedules/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/python_mutators/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/quickstartguide/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/readme/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/readme.mopt/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/readme.radamsa/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/rpc_statsd/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/sister_projects/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/status_screen/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/docs/technical_details/</loc>
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>https://aflplus.plus/docs/third_party_tools/</loc>
+  </url><url>
+    <loc>https://aflplus.plus/docs/tutorials/</loc>
+  </url><url>
     <loc>https://aflplus.plus/docs/tutorials/libxml2_tutorial/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/categories/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/tags/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://aflplus.plus/</loc>
   </url>
-  
 </urlset>

@@ -33,10 +33,10 @@
 
 
 
-<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.bd94799dfcdf969755cf180e7375925b1034fe6f40f69be521e4f17aa5e520dc.js" integrity="sha256-vZR5nfzflpdVzxgOc3WSWxA0/m9A9pvlIeTxeqXlINw="></script>
+<script defer src="/en.search.min.be06027f8735505ece982e70c6838dcd93262b95e810a56c98c7e933c75a5393.js" integrity="sha256-vgYCf4c1UF7OmC5wxoONzZMmK5XoEKVsmMfpM8daU5M="></script>
 
 <!--
 Made with Book Theme
@@ -83,7 +83,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.12c">Release 3.12c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.05c">Release 4.05c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -141,7 +141,6 @@ https://github.com/alex-shpak/hugo-book
   <nav id="TableOfContents">
   <ul>
     <li><a href="#analysis-software">Analysis software</a></li>
-    <li><a href="#wasm-instrumentation">WASM Instrumentation</a></li>
     <li><a href="#support-other-programming-languages">Support other programming languages</a></li>
     <li><a href="#machine-learning">Machine Learning</a></li>
     <li><a href="#your-idea">Your idea!</a></li>
@@ -155,42 +154,39 @@ https://github.com/alex-shpak/hugo-book
       </header>
 
       
-<article class="markdown"><h1 id="ideas-for-afl">Ideas for afl++</h1>
-<p>In the following, we describe a variety of ideas that could be implemented
-for future AFL++ versions.</p>
+<article class="markdown"><h1 id="ideas-for-afl">Ideas for AFL++</h1>
+<p>In the following, we describe a variety of ideas that could be implemented for
+future AFL++ versions.</p>
+<p><strong>NOTE:</strong> Our GSoC participation is concerning <a href="https://github.com/AFLplusplus/libafl">libafl</a>, not AFL++.</p>
 <h2 id="analysis-software">Analysis software</h2>
-<p>Currently analysis is done by using afl-plot, which is rather outdated.
-A GTK or browser tool to create run-time analysis based on fuzzer_stats,
-queue/id* information and plot_data that allows for zooming in and out,
-changing min/max display values etc. and doing that for a single run,
-different runs and campaigns vs campaigns.
-Interesting values are execs, and execs/s, edges discovered (total, when
-each edge was discovered and which other fuzzer share finding that edge),
-test cases executed.
-It should be clickable which value is X and Y axis, zoom factor, log scaling
-on-off, etc.</p>
+<p>Currently analysis is done by using afl-plot, which is rather outdated. A GTK or
+browser tool to create run-time analysis based on fuzzer_stats, queue/id*
+information and plot_data that allows for zooming in and out, changing min/max
+display values etc. and doing that for a single run, different runs and
+campaigns vs. campaigns. Interesting values are execs, and execs/s, edges
+discovered (total, when each edge was discovered and which other fuzzer share
+finding that edge), test cases executed. It should be clickable which value is X
+and Y axis, zoom factor, log scaling on-off, etc.</p>
 <p>Mentor: vanhauser-thc</p>
-<h2 id="wasm-instrumentation">WASM Instrumentation</h2>
-<p>Currently, AFL++ can be used for source code fuzzing and traditional binaries.
-With the rise of WASM as compile target, however, a novel way of
-instrumentation needs to be implemented for binaries compiled to Webassembly.
-This can either be done by inserting instrumentation directly into the
-WASM AST, or by patching feedback into a WASM VMs of choice, similar to
-the current Unicorn instrumentation.</p>
-<p>Mentor: any</p>
 <h2 id="support-other-programming-languages">Support other programming languages</h2>
-<p>Other programming languages also use llvm hence they could (easily?) supported
-for fuzzing, e.g. mono, swift, go, kotlin native, fortran, &hellip;</p>
+<p>Other programming languages also use llvm hence they could be (easily?)
+supported for fuzzing, e.g., mono, swift, go, kotlin native, fortran, &hellip;</p>
+<p>GCC also supports: Objective-C, Fortran, Ada, Go, and D (according to
+<a href="https://gcc.gnu.org/">Gcc homepage</a>)</p>
+<p>LLVM is also used by: Rust, LLGo (Go), kaleidoscope (Haskell), flang (Fortran),
+emscripten (JavaScript, WASM), ilwasm (CIL (C#)) (according to
+<a href="https://gist.github.com/axic/62d66fb9d8bccca6cc48fa9841db9241">LLVM frontends</a>)</p>
 <p>Mentor: vanhauser-thc</p>
 <h2 id="machine-learning">Machine Learning</h2>
-<p>Something with machine learning, better than <a href="https://github.com/dongdongshe/neuzz">NEUZZ</a> :-)
-Either improve a single mutator thorugh learning of many different bugs
-(a bug class) or gather deep insights about a single target beforehand
-(CFG, DFG, VFG, &hellip;?) and improve performance for a single target.</p>
+<p>Something with machine learning, better than
+<a href="https://github.com/dongdongshe/neuzz">NEUZZ</a> :-) Either improve a single
+mutator through learning of many different bugs (a bug class) or gather deep
+insights about a single target beforehand (CFG, DFG, VFG, &hellip;?) and improve
+performance for a single target.</p>
 <p>Mentor: domenukk</p>
 <h2 id="your-idea">Your idea!</h2>
-<p>Finally, we are open to proposals!
-Create an issue at <a href="https://github.com/AFLplusplus/AFLplusplus/issues">https://github.com/AFLplusplus/AFLplusplus/issues</a> and let&rsquo;s discuss :-)</p>
+<p>Finally, we are open to proposals! Create an issue at
+<a href="https://github.com/AFLplusplus/AFLplusplus/issues">https://github.com/AFLplusplus/AFLplusplus/issues</a> and let&rsquo;s discuss :-)</p>
 </article>
  
 
@@ -222,7 +218,6 @@ Create an issue at <a href="https://github.com/AFLplusplus/AFLplusplus/issues">h
   <nav id="TableOfContents">
   <ul>
     <li><a href="#analysis-software">Analysis software</a></li>
-    <li><a href="#wasm-instrumentation">WASM Instrumentation</a></li>
     <li><a href="#support-other-programming-languages">Support other programming languages</a></li>
     <li><a href="#machine-learning">Machine Learning</a></li>
     <li><a href="#your-idea">Your idea!</a></li>

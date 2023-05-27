@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Fuzzing in Depth | AFLplusplus</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+<meta property="og:title" content="Fuzzing in Depth | AFLplusplus" />
+<meta name="twitter:title" content="Fuzzing in Depth | AFLplusplus" />
+<meta itemprop="name" content="Fuzzing in Depth | AFLplusplus" />
+<meta name="application-name" content="Fuzzing in Depth | AFLplusplus" />
+<meta property="og:site_name" content="AFLplusplus" />
+
+<meta name="description" content="The AFLplusplus website" />
+<meta itemprop="description" content="The AFLplusplus website" />
+<meta property="og:description" content="The AFLplusplus website" />
+<meta name="twitter:description" content="The AFLplusplus website" />
+
+<base href="https://aflplus.plus/docs/fuzzing_in_depth/">
+<link rel="canonical" href="https://aflplus.plus/docs/fuzzing_in_depth/" itemprop="url" /> 
+<meta name="url" content="https://aflplus.plus/docs/fuzzing_in_depth/" />
+<meta name="twitter:url" content="https://aflplus.plus/docs/fuzzing_in_depth/" /> 
+<meta property="og:url" content="https://aflplus.plus/docs/fuzzing_in_depth/" />
+
+ 
+  <meta itemprop="image" content="https://aflplus.plus/ogimage.png" />
+  <meta property="og:image" content="https://aflplus.plus/ogimage.png" /> 
+  <meta name="twitter:image" content="https://aflplus.plus/ogimage.png" />
+  <meta name="twitter:image:src" content="https://aflplus.plus/ogimage.png" /> 
+
+
+
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
+
+
+<script defer src="/en.search.min.be06027f8735505ece982e70c6838dcd93262b95e810a56c98c7e933c75a5393.js" integrity="sha256-vgYCf4c1UF7OmC5wxoONzZMmK5XoEKVsmMfpM8daU5M="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><img src="/logo_256x256.png" alt="Logo" /><span>AFLplusplus</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+  <ul>
+<li><strong>Site map</strong>
+<ul>
+<li><a href="/features/">Features</a></li>
+<li><a href="/building/">Build &amp; Install</a></li>
+<li><a href="/docs/">Documentation</a></li>
+<li><a href="/docs/tutorials/">Tutorials</a></li>
+<li><a href="/papers/">Papers</a></li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li><strong>Downloads</strong>
+<ul>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.05c">Release 4.05c</a>
+</li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
+<li><a href="https://raw.githubusercontent.com/AFLplusplus/AFLplusplus/master/docs/COPYING">License</a></li>
+</ul>
+</li>
+<li><strong>Links</strong>
+<ul>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus">Repo (GitHub)</a></li>
+<li><a href="https://groups.google.com/group/afl-users">Mailing list</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Fuzzing in Depth</strong>
+
+  <label for="toc-control">
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#0-common-sense-risks">0. Common sense risks</a></li>
+    <li><a href="#1-instrumenting-the-target">1. Instrumenting the target</a>
+      <ul>
+        <li><a href="#a-selecting-the-best-afl-compiler-for-instrumenting-the-target">a) Selecting the best AFL++ compiler for instrumenting the target</a></li>
+        <li><a href="#b-selecting-instrumentation-options">b) Selecting instrumentation options</a></li>
+        <li><a href="#c-selecting-sanitizers">c) Selecting sanitizers</a></li>
+        <li><a href="#d-modifying-the-target">d) Modifying the target</a></li>
+        <li><a href="#e-instrumenting-the-target">e) Instrumenting the target</a></li>
+        <li><a href="#f-better-instrumentation">f) Better instrumentation</a></li>
+        <li><a href="#g-libfuzzer-fuzzer-harnesses-with-llvmfuzzertestoneinput">g) libfuzzer fuzzer harnesses with LLVMFuzzerTestOneInput()</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-preparing-the-fuzzing-campaign">2. Preparing the fuzzing campaign</a>
+      <ul>
+        <li><a href="#a-collecting-inputs">a) Collecting inputs</a></li>
+        <li><a href="#b-making-the-input-corpus-unique">b) Making the input corpus unique</a></li>
+        <li><a href="#c-minimizing-all-corpus-files">c) Minimizing all corpus files</a></li>
+        <li><a href="#done">Done!</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-fuzzing-the-target">3. Fuzzing the target</a>
+      <ul>
+        <li><a href="#a-running-afl-fuzz">a) Running afl-fuzz</a></li>
+        <li><a href="#b-keeping-memory-use-and-timeouts-in-check">b) Keeping memory use and timeouts in check</a></li>
+        <li><a href="#c-using-multiple-cores">c) Using multiple cores</a></li>
+        <li><a href="#d-using-multiple-machines-for-fuzzing">d) Using multiple machines for fuzzing</a></li>
+        <li><a href="#e-the-status-of-the-fuzz-campaign">e) The status of the fuzz campaign</a></li>
+        <li><a href="#f-stopping-fuzzing-restarting-fuzzing-adding-new-seeds">f) Stopping fuzzing, restarting fuzzing, adding new seeds</a></li>
+        <li><a href="#g-checking-the-coverage-of-the-fuzzing">g) Checking the coverage of the fuzzing</a></li>
+        <li><a href="#h-how-long-to-fuzz-a-target">h) How long to fuzz a target?</a></li>
+        <li><a href="#i-improve-the-speed">i) Improve the speed!</a></li>
+        <li><a href="#j-going-beyond-crashes">j) Going beyond crashes</a></li>
+        <li><a href="#k-known-limitations--areas-for-improvement">k) Known limitations &amp; areas for improvement</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-triaging-crashes">4. Triaging crashes</a></li>
+    <li><a href="#5-ci-fuzzing">5. CI fuzzing</a></li>
+    <li><a href="#the-end">The End</a></li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+<article class="markdown"><h1 id="fuzzing-with-afl">Fuzzing with AFL++</h1>
+<p>The following describes how to fuzz with a target if source code is available.
+If you have a binary-only target, go to
+<a href="fuzzing_binary-only_targets.md">fuzzing_binary-only_targets.md</a>.</p>
+<p>Fuzzing source code is a three-step process:</p>
+<ol>
+<li>Compile the target with a special compiler that prepares the target to be
+fuzzed efficiently. This step is called &ldquo;instrumenting a target&rdquo;.</li>
+<li>Prepare the fuzzing by selecting and optimizing the input corpus for the
+target.</li>
+<li>Perform the fuzzing of the target by randomly mutating input and assessing if
+that input was processed on a new path in the target binary.</li>
+</ol>
+<h2 id="0-common-sense-risks">0. Common sense risks</h2>
+<p>Please keep in mind that, similarly to many other computationally-intensive
+tasks, fuzzing may put a strain on your hardware and on the OS. In particular:</p>
+<ul>
+<li>
+<p>Your CPU will run hot and will need adequate cooling. In most cases, if
+cooling is insufficient or stops working properly, CPU speeds will be
+automatically throttled. That said, especially when fuzzing on less suitable
+hardware (laptops, smartphones, etc.), it&rsquo;s not entirely impossible for
+something to blow up.</p>
+</li>
+<li>
+<p>Targeted programs may end up erratically grabbing gigabytes of memory or
+filling up disk space with junk files. AFL++ tries to enforce basic memory
+limits, but can&rsquo;t prevent each and every possible mishap. The bottom line is
+that you shouldn&rsquo;t be fuzzing on systems where the prospect of data loss is
+not an acceptable risk.</p>
+</li>
+<li>
+<p>Fuzzing involves billions of reads and writes to the filesystem. On modern
+systems, this will be usually heavily cached, resulting in fairly modest
+&ldquo;physical&rdquo; I/O - but there are many factors that may alter this equation. It
+is your responsibility to monitor for potential trouble; with very heavy I/O,
+the lifespan of many HDDs and SSDs may be reduced.</p>
+<p>A good way to monitor disk I/O on Linux is the <code>iostat</code> command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ iostat -d <span style="color:#ae81ff">3</span> -x -k <span style="color:#f92672">[</span>...optional disk ID...<span style="color:#f92672">]</span>
+</code></pre></div><p>Using the <code>AFL_TMPDIR</code> environment variable and a RAM-disk, you can have the
+heavy writing done in RAM to prevent the aforementioned wear and tear. For
+example, the following line will run a Docker container with all this preset:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># docker run -ti --mount type=tmpfs,destination=/ramdisk -e AFL_TMPDIR=/ramdisk aflplusplus/aflplusplus</span>
+</code></pre></div></li>
+</ul>
+<h2 id="1-instrumenting-the-target">1. Instrumenting the target</h2>
+<h3 id="a-selecting-the-best-afl-compiler-for-instrumenting-the-target">a) Selecting the best AFL++ compiler for instrumenting the target</h3>
+<p>AFL++ comes with a central compiler <code>afl-cc</code> that incorporates various different
+kinds of compiler targets and instrumentation options. The following
+evaluation flow will help you to select the best possible.</p>
+<p>It is highly recommended to have the newest llvm version possible installed,
+anything below 9 is not recommended.</p>
+<pre tabindex="0"><code>+--------------------------------+
+| clang/clang++ 11+ is available | --&gt; use LTO mode (afl-clang-lto/afl-clang-lto++)
++--------------------------------+     see [instrumentation/README.lto.md](instrumentation/README.lto.md)
+    |
+    | if not, or if the target fails with LTO afl-clang-lto/++
+    |
+    v
++---------------------------------+
+| clang/clang++ 3.8+ is available | --&gt; use LLVM mode (afl-clang-fast/afl-clang-fast++)
++---------------------------------+     see [instrumentation/README.llvm.md](instrumentation/README.llvm.md)
+    |
+    | if not, or if the target fails with LLVM afl-clang-fast/++
+    |
+    v
+ +--------------------------------+
+ | gcc 5+ is available            | -&gt; use GCC_PLUGIN mode (afl-gcc-fast/afl-g++-fast)
+ +--------------------------------+    see [instrumentation/README.gcc_plugin.md](instrumentation/README.gcc_plugin.md) and
+                                       [instrumentation/README.instrument_list.md](instrumentation/README.instrument_list.md)
+    |
+    | if not, or if you do not have a gcc with plugin support
+    |
+    v
+   use GCC mode (afl-gcc/afl-g++) (or afl-clang/afl-clang++ for clang)
+</code></pre><p>Clickable README links for the chosen compiler:</p>
+<ul>
+<li><a href="../instrumentation/README.lto.md">LTO mode - afl-clang-lto</a></li>
+<li><a href="../instrumentation/README.llvm.md">LLVM mode - afl-clang-fast</a></li>
+<li><a href="../instrumentation/README.gcc_plugin.md">GCC_PLUGIN mode - afl-gcc-fast</a></li>
+<li>GCC/CLANG modes (afl-gcc/afl-clang) have no README as they have no own
+features</li>
+</ul>
+<p>You can select the mode for the afl-cc compiler by one of the following methods:</p>
+<ul>
+<li>Using a symlink to afl-cc: afl-gcc, afl-g++, afl-clang, afl-clang++,
+afl-clang-fast, afl-clang-fast++, afl-clang-lto, afl-clang-lto++,
+afl-gcc-fast, afl-g++-fast (recommended!).</li>
+<li>Using the environment variable <code>AFL_CC_COMPILER</code> with <code>MODE</code>.</li>
+<li>Passing &ndash;afl-<code>MODE</code> command line options to the compiler via
+<code>CFLAGS</code>/<code>CXXFLAGS</code>/<code>CPPFLAGS</code>.</li>
+</ul>
+<p><code>MODE</code> can be one of the following:</p>
+<ul>
+<li>LTO (afl-clang-lto*)</li>
+<li>LLVM (afl-clang-fast*)</li>
+<li>GCC_PLUGIN (afl-g*-fast) or GCC (afl-gcc/afl-g++)</li>
+<li>CLANG(afl-clang/afl-clang++)</li>
+</ul>
+<p>Because no AFL++ specific command-line options are accepted (beside the
+&ndash;afl-MODE command), the compile-time tools make fairly broad use of environment
+variables, which can be listed with <code>afl-cc -hh</code> or looked up in
+<a href="env_variables.md">env_variables.md</a>.</p>
+<h3 id="b-selecting-instrumentation-options">b) Selecting instrumentation options</h3>
+<p>If you instrument with LTO mode (afl-clang-fast/afl-clang-lto), the following
+options are available:</p>
+<ul>
+<li>Splitting integer, string, float, and switch comparisons so AFL++ can easier
+solve these. This is an important option if you do not have a very good and
+large input corpus. This technique is called laf-intel or COMPCOV. To use
+this, set the following environment variable before compiling the target:
+<code>export AFL_LLVM_LAF_ALL=1</code>. You can read more about this in
+<a href="../instrumentation/README.laf-intel.md">instrumentation/README.laf-intel.md</a>.</li>
+<li>A different technique (and usually a better one than laf-intel) is to
+instrument the target so that any compare values in the target are sent to
+AFL++ which then tries to put these values into the fuzzing data at different
+locations. This technique is very fast and good - if the target does not
+transform input data before comparison. Therefore, this technique is called
+<code>input to state</code> or <code>redqueen</code>. If you want to use this technique, then you
+have to compile the target twice, once specifically with/for this mode by
+setting <code>AFL_LLVM_CMPLOG=1</code>, and pass this binary to afl-fuzz via the <code>-c</code>
+parameter. Note that you can compile also just a cmplog binary and use that
+for both, however, there will be a performance penalty. You can read more
+about this in
+<a href="../instrumentation/README.cmplog.md">instrumentation/README.cmplog.md</a>.</li>
+</ul>
+<p>If you use LTO, LLVM, or GCC_PLUGIN mode
+(afl-clang-fast/afl-clang-lto/afl-gcc-fast), you have the option to selectively
+instrument <em>parts</em> of the target that you are interested in. For afl-clang-fast,
+you have to use an llvm version newer than 10.0.0 or a mode other than
+DEFAULT/PCGUARD.</p>
+<p>This step can be done either by explicitly including parts to be instrumented or
+by explicitly excluding parts from instrumentation.</p>
+<ul>
+<li>
+<p>To instrument <em>only specified parts</em>, create a file (e.g., <code>allowlist.txt</code>)
+with all the filenames and/or functions of the source code that should be
+instrumented and then:</p>
+<ol>
+<li>
+<p>Just put one filename or function (prefixing with <code>fun: </code>) per line (no
+directory information necessary for filenames) in the file <code>allowlist.txt</code>.</p>
+<p>Example:</p>
+<pre tabindex="0"><code>foo.cpp        # will match foo/foo.cpp, bar/foo.cpp, barfoo.cpp etc.
+fun: foo_func  # will match the function foo_func
+</code></pre></li>
+<li>
+<p>Set <code>export AFL_LLVM_ALLOWLIST=allowlist.txt</code> to enable selective positive
+instrumentation.</p>
+</li>
+</ol>
+</li>
+<li>
+<p>Similarly to <em>exclude</em> specified parts from instrumentation, create a file
+(e.g., <code>denylist.txt</code>) with all the filenames of the source code that should
+be skipped during instrumentation and then:</p>
+<ol>
+<li>
+<p>Same as above. Just put one filename or function per line in the file
+<code>denylist.txt</code>.</p>
+</li>
+<li>
+<p>Set <code>export AFL_LLVM_DENYLIST=denylist.txt</code> to enable selective negative
+instrumentation.</p>
+</li>
+</ol>
+</li>
+</ul>
+<p><strong>NOTE:</strong> During optimization functions might be
+inlined and then would not match the list! See
+<a href="../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a>.</p>
+<p>There are many more options and modes available, however, these are most of the
+time less effective. See:</p>
+<ul>
+<li><a href="../instrumentation/README.llvm.md#6-afl-context-sensitive-branch-coverage">instrumentation/README.llvm.md#6) AFL++ Context Sensitive Branch Coverage</a></li>
+<li><a href="../instrumentation/README.llvm.md#7-afl-n-gram-branch-coverage">instrumentation/README.llvm.md#7) AFL++ N-Gram Branch Coverage</a></li>
+</ul>
+<p>AFL++ performs &ldquo;never zero&rdquo; counting in its bitmap. You can read more about this
+here:</p>
+<ul>
+<li><a href="../instrumentation/README.llvm.md#8-neverzero-counters">instrumentation/README.llvm.md#8-neverzero-counters</a></li>
+</ul>
+<h3 id="c-selecting-sanitizers">c) Selecting sanitizers</h3>
+<p>It is possible to use sanitizers when instrumenting targets for fuzzing, which
+allows you to find bugs that would not necessarily result in a crash.</p>
+<p>Note that sanitizers have a huge impact on CPU (= less executions per second)
+and RAM usage. Also, you should only run one afl-fuzz instance per sanitizer
+type. This is enough because e.g. a use-after-free bug will be picked up by ASAN
+(address sanitizer) anyway after syncing test cases from other fuzzing
+instances, so running more than one address sanitized target would be a waste.</p>
+<p>The following sanitizers have built-in support in AFL++:</p>
+<ul>
+<li>ASAN = Address SANitizer, finds memory corruption vulnerabilities like
+use-after-free, NULL pointer dereference, buffer overruns, etc. Enabled with
+<code>export AFL_USE_ASAN=1</code> before compiling.</li>
+<li>MSAN = Memory SANitizer, finds read accesses to uninitialized memory, e.g., a
+local variable that is defined and read before it is even set. Enabled with
+<code>export AFL_USE_MSAN=1</code> before compiling.</li>
+<li>UBSAN = Undefined Behavior SANitizer, finds instances where - by the C and C++
+standards - undefined behavior happens, e.g., adding two signed integers where
+the result is larger than what a signed integer can hold. Enabled with <code>export AFL_USE_UBSAN=1</code> before compiling.</li>
+<li>CFISAN = Control Flow Integrity SANitizer, finds instances where the control
+flow is found to be illegal. Originally this was rather to prevent return
+oriented programming (ROP) exploit chains from functioning. In fuzzing, this
+is mostly reduced to detecting type confusion vulnerabilities - which is,
+however, one of the most important and dangerous C++ memory corruption
+classes! Enabled with <code>export AFL_USE_CFISAN=1</code> before compiling.</li>
+<li>TSAN = Thread SANitizer, finds thread race conditions. Enabled with <code>export AFL_USE_TSAN=1</code> before compiling.</li>
+<li>LSAN = Leak SANitizer, finds memory leaks in a program. This is not really a
+security issue, but for developers this can be very valuable. Note that unlike
+the other sanitizers above this needs <code>__AFL_LEAK_CHECK();</code> added to all areas
+of the target source code where you find a leak check necessary! Enabled with
+<code>export AFL_USE_LSAN=1</code> before compiling. To ignore the memory-leaking check
+for certain allocations, <code>__AFL_LSAN_OFF();</code> can be used before memory is
+allocated, and <code>__AFL_LSAN_ON();</code> afterwards. Memory allocated between these
+two macros will not be checked for memory leaks.</li>
+</ul>
+<p>It is possible to further modify the behavior of the sanitizers at run-time by
+setting <code>ASAN_OPTIONS=...</code>, <code>LSAN_OPTIONS</code> etc. - the available parameters can
+be looked up in the sanitizer documentation of llvm/clang. afl-fuzz, however,
+requires some specific parameters important for fuzzing to be set. If you want
+to set your own, it might bail and report what it is missing.</p>
+<p>Note that some sanitizers cannot be used together, e.g., ASAN and MSAN, and
+others often cannot work together because of target weirdness, e.g., ASAN and
+CFISAN. You might need to experiment which sanitizers you can combine in a
+target (which means more instances can be run without a sanitized target, which
+is more effective).</p>
+<h3 id="d-modifying-the-target">d) Modifying the target</h3>
+<p>If the target has features that make fuzzing more difficult, e.g., checksums,
+HMAC, etc., then modify the source code so that checks for these values are
+removed. This can even be done safely for source code used in operational
+products by eliminating these checks within these AFL++ specific blocks:</p>
+<pre tabindex="0"><code>#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+  // say that the checksum or HMAC was fine - or whatever is required
+  // to eliminate the need for the fuzzer to guess the right checksum
+  return 0;
+#endif
+</code></pre><p>All AFL++ compilers will set this preprocessor definition automatically.</p>
+<h3 id="e-instrumenting-the-target">e) Instrumenting the target</h3>
+<p>In this step, the target source code is compiled so that it can be fuzzed.</p>
+<p>Basically, you have to tell the target build system that the selected AFL++
+compiler is used. Also - if possible - you should always configure the build
+system in such way that the target is compiled statically and not dynamically.
+How to do this is described below.</p>
+<p>The #1 rule when instrumenting a target is: avoid instrumenting shared libraries
+at all cost. You would need to set <code>LD_LIBRARY_PATH</code> to point to these, you
+could accidentally type &ldquo;make install&rdquo; and install them system wide - so don&rsquo;t.
+Really don&rsquo;t. <strong>Always compile libraries you want to have instrumented as static
+and link these to the target program!</strong></p>
+<p>Then build the target. (Usually with <code>make</code>.)</p>
+<p><strong>NOTES</strong></p>
+<ol>
+<li>
+<p>Sometimes configure and build systems are fickle and do not like stderr
+output (and think this means a test failure) - which is something AFL++ likes
+to do to show statistics. It is recommended to disable AFL++ instrumentation
+reporting via <code>export AFL_QUIET=1</code>.</p>
+</li>
+<li>
+<p>Sometimes configure and build systems error on warnings - these should be
+disabled (e.g., <code>--disable-werror</code> for some configure scripts).</p>
+</li>
+<li>
+<p>In case the configure/build system complains about AFL++&rsquo;s compiler and
+aborts, then set <code>export AFL_NOOPT=1</code> which will then just behave like the
+real compiler and run the configure step separately. For building the target
+afterwards this option has to be unset again!</p>
+</li>
+</ol>
+<h4 id="configure">configure</h4>
+<p>For <code>configure</code> build systems, this is usually done by:</p>
+<pre tabindex="0"><code>CC=afl-clang-fast CXX=afl-clang-fast++ ./configure --disable-shared
+</code></pre><p>Note that if you are using the (better) afl-clang-lto compiler, you also have to
+set <code>AR</code> to llvm-ar[-VERSION] and <code>RANLIB</code> to llvm-ranlib[-VERSION] - as is
+described in <a href="../instrumentation/README.lto.md">instrumentation/README.lto.md</a>.</p>
+<h4 id="cmake">CMake</h4>
+<p>For CMake build systems, this is usually done by:</p>
+<pre tabindex="0"><code>mkdir build; cd build; cmake -DCMAKE_C_COMPILER=afl-cc -DCMAKE_CXX_COMPILER=afl-c++ ..
+</code></pre><p>Note that if you are using the (better) afl-clang-lto compiler you also have to
+set AR to llvm-ar[-VERSION] and RANLIB to llvm-ranlib[-VERSION] - as is
+described in <a href="../instrumentation/README.lto.md">instrumentation/README.lto.md</a>.</p>
+<h4 id="meson-build-system">Meson Build System</h4>
+<p>For the Meson Build System, you have to set the AFL++ compiler with the very
+first command!</p>
+<pre tabindex="0"><code>CC=afl-cc CXX=afl-c++ meson
+</code></pre><h4 id="other-build-systems-or-if-configurecmake-didnt-work">Other build systems or if configure/cmake didn&rsquo;t work</h4>
+<p>Sometimes <code>cmake</code> and <code>configure</code> do not pick up the AFL++ compiler or the
+<code>RANLIB</code>/<code>AR</code> that is needed - because this was just not foreseen by the
+developer of the target. Or they have non-standard options. Figure out if there
+is a non-standard way to set this, otherwise set up the build normally and edit
+the generated build environment afterwards manually to point it to the right
+compiler (and/or <code>RANLIB</code> and <code>AR</code>).</p>
+<p>In complex, weird, alien build systems you can try this neat project:
+<a href="https://github.com/fuzzah/exeptor">https://github.com/fuzzah/exeptor</a></p>
+<h4 id="linker-scripts">Linker scripts</h4>
+<p>If the project uses linker scripts to hide the symbols exported by the
+binary, then you may see errors such as:</p>
+<pre tabindex="0"><code>undefined symbol: __afl_area_ptr
+</code></pre><p>The solution is to modify the linker script to add:</p>
+<pre tabindex="0"><code>{
+  global:
+    __afl_*;
+}
+</code></pre><h3 id="f-better-instrumentation">f) Better instrumentation</h3>
+<p>If you just fuzz a target program as-is, you are wasting a great opportunity for
+much more fuzzing speed.</p>
+<p>This variant requires the usage of afl-clang-lto, afl-clang-fast or
+afl-gcc-fast.</p>
+<p>It is the so-called <code>persistent mode</code>, which is much, much faster but requires
+that you code a source file that is specifically calling the target functions
+that you want to fuzz, plus a few specific AFL++ functions around it. See
+<a href="../instrumentation/README.persistent_mode.md">instrumentation/README.persistent_mode.md</a>
+for details.</p>
+<p>Basically, if you do not fuzz a target in persistent mode, then you are just
+doing it for a hobby and not professionally :-).</p>
+<h3 id="g-libfuzzer-fuzzer-harnesses-with-llvmfuzzertestoneinput">g) libfuzzer fuzzer harnesses with LLVMFuzzerTestOneInput()</h3>
+<p>libfuzzer <code>LLVMFuzzerTestOneInput()</code> harnesses are the defacto standard for
+fuzzing, and they can be used with AFL++ (and honggfuzz) as well!</p>
+<p>Compiling them is as simple as:</p>
+<pre tabindex="0"><code>afl-clang-fast++ -fsanitize=fuzzer -o harness harness.cpp targetlib.a
+</code></pre><p>You can even use advanced libfuzzer features like <code>FuzzedDataProvider</code>,
+<code>LLVMFuzzerInitialize()</code> etc. and they will work!</p>
+<p>The generated binary is fuzzed with afl-fuzz like any other fuzz target.</p>
+<p>Bonus: the target is already optimized for fuzzing due to persistent mode and
+shared-memory test cases and hence gives you the fastest speed possible.</p>
+<p>For more information, see
+<a href="../utils/aflpp_driver/README.md">utils/aflpp_driver/README.md</a>.</p>
+<h2 id="2-preparing-the-fuzzing-campaign">2. Preparing the fuzzing campaign</h2>
+<p>As you fuzz the target with mutated input, having as diverse inputs for the
+target as possible improves the efficiency a lot.</p>
+<h3 id="a-collecting-inputs">a) Collecting inputs</h3>
+<p>To operate correctly, the fuzzer requires one or more starting files that
+contain a good example of the input data normally expected by the targeted
+application.</p>
+<p>Try to gather valid inputs for the target from wherever you can. E.g., if it is
+the PNG picture format, try to find as many PNG files as possible, e.g., from
+reported bugs, test suites, random downloads from the internet, unit test case
+data - from all kind of PNG software.</p>
+<p>If the input format is not known, you can also modify a target program to write
+normal data it receives and processes to a file and use these.</p>
+<p>You can find many good examples of starting files in the
+<a href="../testcases">testcases/</a> subdirectory that comes with this tool.</p>
+<h3 id="b-making-the-input-corpus-unique">b) Making the input corpus unique</h3>
+<p>Use the AFL++ tool <code>afl-cmin</code> to remove inputs from the corpus that do not
+produce a new path/coverage in the target:</p>
+<ol>
+<li>Put all files from <a href="#a-collecting-inputs">step a</a> into one directory, e.g.,
+<code>INPUTS</code>.</li>
+<li>Run afl-cmin:
+<ul>
+<li>
+<p>If the target program is to be called by fuzzing as <code>bin/target INPUTFILE</code>,
+replace the INPUTFILE argument that the target program would read from with
+<code>@@</code>:</p>
+<pre tabindex="0"><code>afl-cmin -i INPUTS -o INPUTS_UNIQUE -- bin/target -someopt @@
+</code></pre></li>
+<li>
+<p>If the target reads from stdin (standard input) instead, just omit the <code>@@</code>
+as this is the default:</p>
+<pre tabindex="0"><code>afl-cmin -i INPUTS -o INPUTS_UNIQUE -- bin/target -someopt
+</code></pre></li>
+</ul>
+</li>
+</ol>
+<p>This step is highly recommended, because afterwards the testcase corpus is not
+bloated with duplicates anymore, which would slow down the fuzzing progress!</p>
+<h3 id="c-minimizing-all-corpus-files">c) Minimizing all corpus files</h3>
+<p>The shorter the input files that still traverse the same path within the target,
+the better the fuzzing will be. This minimization is done with <code>afl-tmin</code>,
+however, it is a long process as this has to be done for every file:</p>
+<pre tabindex="0"><code>mkdir input
+cd INPUTS_UNIQUE
+for i in *; do
+  afl-tmin -i &quot;$i&quot; -o &quot;../input/$i&quot; -- bin/target -someopt @@
+done
+</code></pre><p>This step can also be parallelized, e.g., with <code>parallel</code>.</p>
+<p>Note that this step is rather optional though.</p>
+<h3 id="done">Done!</h3>
+<p>The INPUTS_UNIQUE/ directory from <a href="#b-making-the-input-corpus-unique">step b</a> -
+or even better the directory input/ if you minimized the corpus in
+<a href="#c-minimizing-all-corpus-files">step c</a> - is the resulting input corpus
+directory to be used in fuzzing! :-)</p>
+<h2 id="3-fuzzing-the-target">3. Fuzzing the target</h2>
+<p>In this final step, fuzz the target. There are not that many important options
+to run the target - unless you want to use many CPU cores/threads for the
+fuzzing, which will make the fuzzing much more useful.</p>
+<p>If you just use one instance for fuzzing, then you are fuzzing just for fun and
+not seriously :-)</p>
+<h3 id="a-running-afl-fuzz">a) Running afl-fuzz</h3>
+<p>Before you do even a test run of afl-fuzz, execute <code>sudo afl-system-config</code> (on
+the host if you execute afl-fuzz in a Docker container). This reconfigures the
+system for optimal speed - which afl-fuzz checks and bails otherwise. Set
+<code>export AFL_SKIP_CPUFREQ=1</code> for afl-fuzz to skip this check if you cannot run
+afl-system-config with root privileges on the host for whatever reason.</p>
+<p>Note:</p>
+<ul>
+<li>There is also <code>sudo afl-persistent-config</code> which sets additional permanent
+boot options for a much better fuzzing performance.</li>
+<li>Both scripts improve your fuzzing performance but also decrease your system
+protection against attacks! So set strong firewall rules and only expose SSH
+as a network service if you use these (which is highly recommended).</li>
+</ul>
+<p>If you have an input corpus from <a href="#2-preparing-the-fuzzing-campaign">step 2</a>,
+then specify this directory with the <code>-i</code> option. Otherwise, create a new
+directory and create a file with any content as test data in there.</p>
+<p>If you do not want anything special, the defaults are already usually best,
+hence all you need is to specify the seed input directory with the result of
+step <a href="#a-collecting-inputs">2a) Collecting inputs</a>:</p>
+<pre tabindex="0"><code>afl-fuzz -i input -o output -- bin/target -someopt @@
+</code></pre><p>Note that the directory specified with <code>-o</code> will be created if it does not
+exist.</p>
+<p>It can be valuable to run afl-fuzz in a <code>screen</code> or <code>tmux</code> shell so you can log
+off, or afl-fuzz is not aborted if you are running it in a remote ssh session
+where the connection fails in between. Only do that though once you have
+verified that your fuzzing setup works! Run it like <code>screen -dmS afl-main -- afl-fuzz -M main-$HOSTNAME -i ...</code> and it will start away in a screen session.
+To enter this session, type <code>screen -r afl-main</code>. You see - it makes sense to
+name the screen session same as the afl-fuzz <code>-M</code>/<code>-S</code> naming :-) For more
+information on screen or tmux, check their documentation.</p>
+<p>If you need to stop and re-start the fuzzing, use the same command line options
+(or even change them by selecting a different power schedule or another mutation
+mode!) and switch the input directory with a dash (<code>-</code>):</p>
+<pre tabindex="0"><code>afl-fuzz -i - -o output -- bin/target -someopt @@
+</code></pre><p>Adding a dictionary is helpful. You have the following options:</p>
+<ul>
+<li>See the directory
+<a href="../dictionaries/">dictionaries/</a>, if something is already included for your
+data format, and tell afl-fuzz to load that dictionary by adding <code>-x dictionaries/FORMAT.dict</code>.</li>
+<li>With <code>afl-clang-lto</code>, you have an autodictionary generation for which you need
+to do nothing except to use afl-clang-lto as the compiler.</li>
+<li>With <code>afl-clang-fast</code>, you can set
+<code>AFL_LLVM_DICT2FILE=/full/path/to/new/file.dic</code> to automatically generate a
+dictionary during target compilation.
+Adding <code>AFL_LLVM_DICT2FILE_NO_MAIN=1</code> to not parse main (usually command line
+parameter parsing) is often a good idea too.</li>
+<li>You also have the option to generate a dictionary yourself during an
+independent run of the target, see
+<a href="../utils/libtokencap/README.md">utils/libtokencap/README.md</a>.</li>
+<li>Finally, you can also write a dictionary file manually, of course.</li>
+</ul>
+<p>afl-fuzz has a variety of options that help to workaround target quirks like
+very specific locations for the input file (<code>-f</code>), performing deterministic
+fuzzing (<code>-D</code>) and many more. Check out <code>afl-fuzz -h</code>.</p>
+<p>We highly recommend that you set a memory limit for running the target with <code>-m</code>
+which defines the maximum memory in MB. This prevents a potential out-of-memory
+problem for your system plus helps you detect missing <code>malloc()</code> failure
+handling in the target. Play around with various <code>-m</code> values until you find one
+that safely works for all your input seeds (if you have good ones and then
+double or quadruple that).</p>
+<p>By default, afl-fuzz never stops fuzzing. To terminate AFL++, press Control-C or
+send a signal SIGINT. You can limit the number of executions or approximate
+runtime in seconds with options also.</p>
+<p>When you start afl-fuzz, you will see a user interface that shows what the
+status is:</p>
+<p><img src="resources/screenshot.png" alt="resources/screenshot.png"></p>
+<p>All labels are explained in
+<a href="afl-fuzz_approach.md#understanding-the-status-screen">afl-fuzz_approach.md#understanding-the-status-screen</a>.</p>
+<h3 id="b-keeping-memory-use-and-timeouts-in-check">b) Keeping memory use and timeouts in check</h3>
+<p>Memory limits are not enforced by afl-fuzz by default and the system may run out
+of memory. You can decrease the memory with the <code>-m</code> option, the value is in MB.
+If this is too small for the target, you can usually see this by afl-fuzz
+bailing with the message that it could not connect to the forkserver.</p>
+<p>Consider setting low values for <code>-m</code> and <code>-t</code>.</p>
+<p>For programs that are nominally very fast, but get sluggish for some inputs, you
+can also try setting <code>-t</code> values that are more punishing than what <code>afl-fuzz</code>
+dares to use on its own. On fast and idle machines, going down to <code>-t 5</code> may be
+a viable plan.</p>
+<p>The <code>-m</code> parameter is worth looking at, too. Some programs can end up spending a
+fair amount of time allocating and initializing megabytes of memory when
+presented with pathological inputs. Low <code>-m</code> values can make them give up sooner
+and not waste CPU time.</p>
+<h3 id="c-using-multiple-cores">c) Using multiple cores</h3>
+<p>If you want to seriously fuzz, then use as many cores/threads as possible to
+fuzz your target.</p>
+<p>On the same machine - due to the design of how AFL++ works - there is a maximum
+number of CPU cores/threads that are useful, use more and the overall
+performance degrades instead. This value depends on the target, and the limit is
+between 32 and 64 cores per machine.</p>
+<p>If you have the RAM, it is highly recommended run the instances with a caching
+of the test cases. Depending on the average test case size (and those found
+during fuzzing) and their number, a value between 50-500MB is recommended. You
+can set the cache size (in MB) by setting the environment variable
+<code>AFL_TESTCACHE_SIZE</code>.</p>
+<p>There should be one main fuzzer (<code>-M main-$HOSTNAME</code> option) and as many
+secondary fuzzers (e.g., <code>-S variant1</code>) as you have cores that you use. Every
+<code>-M</code>/<code>-S</code> entry needs a unique name (that can be whatever), however, the same
+<code>-o</code> output directory location has to be used for all instances.</p>
+<p>For every secondary fuzzer there should be a variation, e.g.:</p>
+<ul>
+<li>one should fuzz the target that was compiled differently: with sanitizers
+activated (<code>export AFL_USE_ASAN=1 ; export AFL_USE_UBSAN=1 ; export AFL_USE_CFISAN=1</code>)</li>
+<li>one or two should fuzz the target with CMPLOG/redqueen (see above), at least
+one cmplog instance should follow transformations (<code>-l AT</code>)</li>
+<li>one to three fuzzers should fuzz a target compiled with laf-intel/COMPCOV (see
+above). Important note: If you run more than one laf-intel/COMPCOV fuzzer and
+you want them to share their intermediate results, the main fuzzer (<code>-M</code>) must
+be one of them! (Although this is not really recommended.)</li>
+</ul>
+<p>All other secondaries should be used like this:</p>
+<ul>
+<li>a quarter to a third with the MOpt mutator enabled: <code>-L 0</code></li>
+<li>run with a different power schedule, recommended are: <code>fast</code> (default),
+<code>explore</code>, <code>coe</code>, <code>lin</code>, <code>quad</code>, <code>exploit</code>, and <code>rare</code> which you can set with
+the <code>-p</code> option, e.g., <code>-p explore</code>. See the
+<a href="FAQ.md#what-are-power-schedules">FAQ</a> for details.</li>
+<li>a few instances should use the old queue cycling with <code>-Z</code></li>
+</ul>
+<p>Also, it is recommended to set <code>export AFL_IMPORT_FIRST=1</code> to load test cases
+from other fuzzers in the campaign first.</p>
+<p>If you have a large corpus, a corpus from a previous run or are fuzzing in a CI,
+then also set <code>export AFL_CMPLOG_ONLY_NEW=1</code> and <code>export AFL_FAST_CAL=1</code>.
+If the queue in the CI is huge and/or the execution time is slow then you can
+also add <code>AFL_NO_STARTUP_CALIBRATION=1</code> to skip the initial queue calibration
+phase and start fuzzing at once - but only do this if the calibration phase
+would be too long for your fuzz run time.</p>
+<p>You can also use different fuzzers. If you are using AFL spinoffs or AFL
+conforming fuzzers, then just use the same -o directory and give it a unique
+<code>-S</code> name. Examples are:</p>
+<ul>
+<li><a href="https://github.com/season-lab/fuzzolic">Fuzzolic</a></li>
+<li><a href="https://github.com/eurecom-s3/symcc/">symcc</a></li>
+<li><a href="https://github.com/SoftSec-KAIST/Eclipser/">Eclipser</a></li>
+<li><a href="https://github.com/aflsmart/aflsmart">AFLsmart</a></li>
+<li><a href="https://github.com/carolemieux/afl-rb">FairFuzz</a></li>
+<li><a href="https://github.com/Dongdongshe/neuzz">Neuzz</a></li>
+<li><a href="https://github.com/AngoraFuzzer/Angora">Angora</a></li>
+</ul>
+<p>A long list can be found at
+<a href="https://github.com/Microsvuln/Awesome-AFL">https://github.com/Microsvuln/Awesome-AFL</a>.</p>
+<p>However, you can also sync AFL++ with honggfuzz, libfuzzer with <code>-entropic=1</code>,
+etc. Just show the main fuzzer (<code>-M</code>) with the <code>-F</code> option where the queue/work
+directory of a different fuzzer is, e.g., <code>-F /src/target/honggfuzz</code>. Using
+honggfuzz (with <code>-n 1</code> or <code>-n 2</code>) and libfuzzer in parallel is highly
+recommended!</p>
+<h3 id="d-using-multiple-machines-for-fuzzing">d) Using multiple machines for fuzzing</h3>
+<p>Maybe you have more than one machine you want to fuzz the same target on. Start
+the <code>afl-fuzz</code> (and perhaps libfuzzer, honggfuzz, &hellip;) orchestra as you like,
+just ensure that your have one and only one <code>-M</code> instance per server, and that
+its name is unique, hence the recommendation for <code>-M main-$HOSTNAME</code>.</p>
+<p>Now there are three strategies on how you can sync between the servers:</p>
+<ul>
+<li>never: sounds weird, but this makes every server an island and has the chance
+that each follow different paths into the target. You can make this even more
+interesting by even giving different seeds to each server.</li>
+<li>regularly (~4h): this ensures that all fuzzing campaigns on the servers &ldquo;see&rdquo;
+the same thing. It is like fuzzing on a huge server.</li>
+<li>in intervals of 1/10th of the overall expected runtime of the fuzzing you
+sync. This tries a bit to combine both. Have some individuality of the paths
+each campaign on a server explores, on the other hand if one gets stuck where
+another found progress this is handed over making it unstuck.</li>
+</ul>
+<p>The syncing process itself is very simple. As the <code>-M main-$HOSTNAME</code> instance
+syncs to all <code>-S</code> secondaries as well as to other fuzzers, you have to copy only
+this directory to the other machines.</p>
+<p>Let&rsquo;s say all servers have the <code>-o out</code> directory in /target/foo/out, and you
+created a file <code>servers.txt</code> which contains the hostnames of all participating
+servers, plus you have an ssh key deployed to all of them, then run:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#66d9ef">for</span> FROM in <span style="color:#e6db74">`</span>cat servers.txt<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
+  <span style="color:#66d9ef">for</span> TO in <span style="color:#e6db74">`</span>cat servers.txt<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
+    rsync -rlpogtz --rsh<span style="color:#f92672">=</span>ssh $FROM:/target/foo/out/main-$FROM $TO:target/foo/out/
+  <span style="color:#66d9ef">done</span>
+<span style="color:#66d9ef">done</span>
+</code></pre></div><p>You can run this manually, per cron job - as you need it. There is a more
+complex and configurable script in
+<a href="../utils/distributed_fuzzing">utils/distributed_fuzzing</a>.</p>
+<h3 id="e-the-status-of-the-fuzz-campaign">e) The status of the fuzz campaign</h3>
+<p>AFL++ comes with the <code>afl-whatsup</code> script to show the status of the fuzzing
+campaign.</p>
+<p>Just supply the directory that afl-fuzz is given with the <code>-o</code> option and you
+will see a detailed status of every fuzzer in that campaign plus a summary.</p>
+<p>To have only the summary, use the <code>-s</code> switch, e.g., <code>afl-whatsup -s out/</code>.</p>
+<p>If you have multiple servers, then use the command after a sync or you have to
+execute this script per server.</p>
+<p>Another tool to inspect the current state and history of a specific instance is
+afl-plot, which generates an index.html file and graphs that show how the
+fuzzing instance is performing. The syntax is <code>afl-plot instance_dir web_dir</code>,
+e.g., <code>afl-plot out/default /srv/www/htdocs/plot</code>.</p>
+<h3 id="f-stopping-fuzzing-restarting-fuzzing-adding-new-seeds">f) Stopping fuzzing, restarting fuzzing, adding new seeds</h3>
+<p>To stop an afl-fuzz run, press Control-C.</p>
+<p>To restart an afl-fuzz run, just reuse the same command line but replace the <code>-i directory</code> with <code>-i -</code> or set <code>AFL_AUTORESUME=1</code>.</p>
+<p>If you want to add new seeds to a fuzzing campaign, you can run a temporary
+fuzzing instance, e.g., when your main fuzzer is using <code>-o out</code> and the new
+seeds are in <code>newseeds/</code> directory:</p>
+<pre tabindex="0"><code>AFL_BENCH_JUST_ONE=1 AFL_FAST_CAL=1 afl-fuzz -i newseeds -o out -S newseeds -- ./target
+</code></pre><h3 id="g-checking-the-coverage-of-the-fuzzing">g) Checking the coverage of the fuzzing</h3>
+<p>The <code>corpus count</code> value is a bad indicator for checking how good the coverage
+is.</p>
+<p>A better indicator - if you use default llvm instrumentation with at least
+version 9 - is to use <code>afl-showmap</code> with the collect coverage option <code>-C</code> on the
+output directory:</p>
+<pre tabindex="0"><code>$ afl-showmap -C -i out -o /dev/null -- ./target -params @@
+...
+[*] Using SHARED MEMORY FUZZING feature.
+[*] Target map size: 9960
+[+] Processed 7849 input files.
+[+] Captured 4331 tuples (highest value 255, total values 67130596) in '/dev/nul
+l'.
+[+] A coverage of 4331 edges were achieved out of 9960 existing (43.48%) with 7849 input files.
+</code></pre><p>It is even better to check out the exact lines of code that have been reached -
+and which have not been found so far.</p>
+<p>An &ldquo;easy&rdquo; helper script for this is
+<a href="https://github.com/vanhauser-thc/afl-cov">https://github.com/vanhauser-thc/afl-cov</a>,
+just follow the README of that separate project.</p>
+<p>If you see that an important area or a feature has not been covered so far, then
+try to find an input that is able to reach that and start a new secondary in
+that fuzzing campaign with that seed as input, let it run for a few minutes,
+then terminate it. The main node will pick it up and make it available to the
+other secondary nodes over time. Set <code>export AFL_NO_AFFINITY=1</code> or <code>export AFL_TRY_AFFINITY=1</code> if you have no free core.</p>
+<p>Note that in nearly all cases you can never reach full coverage. A lot of
+functionality is usually dependent on exclusive options that would need
+individual fuzzing campaigns each with one of these options set. E.g., if you
+fuzz a library to convert image formats and your target is the png to tiff API,
+then you will not touch any of the other library APIs and features.</p>
+<h3 id="h-how-long-to-fuzz-a-target">h) How long to fuzz a target?</h3>
+<p>This is a difficult question. Basically, if no new path is found for a long time
+(e.g., for a day or a week), then you can expect that your fuzzing won&rsquo;t be
+fruitful anymore. However, often this just means that you should switch out
+secondaries for others, e.g., custom mutator modules, sync to very different
+fuzzers, etc.</p>
+<p>Keep the queue/ directory (for future fuzzings of the same or similar targets)
+and use them to seed other good fuzzers like libfuzzer with the -entropic switch
+or honggfuzz.</p>
+<h3 id="i-improve-the-speed">i) Improve the speed!</h3>
+<ul>
+<li>Use <a href="../instrumentation/README.persistent_mode.md">persistent mode</a> (x2-x20
+speed increase).</li>
+<li>If you do not use shmem persistent mode, use <code>AFL_TMPDIR</code> to point the input
+file on a tempfs location, see <a href="env_variables.md">env_variables.md</a>.</li>
+<li>Linux: Improve kernel performance: modify <code>/etc/default/grub</code>, set
+<code>GRUB_CMDLINE_LINUX_DEFAULT=&quot;ibpb=off ibrs=off kpti=off l1tf=off mds=off mitigations=off no_stf_barrier noibpb noibrs nopcid nopti nospec_store_bypass_disable nospectre_v1 nospectre_v2 pcid=off pti=off spec_store_bypass_disable=off spectre_v2=off stf_barrier=off&quot;</code>; then
+<code>update-grub</code> and <code>reboot</code> (warning: makes the system more insecure) - you can
+also just run <code>sudo afl-persistent-config</code>.</li>
+<li>Linux: Running on an <code>ext2</code> filesystem with <code>noatime</code> mount option will be a
+bit faster than on any other journaling filesystem.</li>
+<li>Use your cores! See <a href="#c-using-multiple-cores">3c) Using multiple cores</a>.</li>
+<li>Run <code>sudo afl-system-config</code> before starting the first afl-fuzz instance after
+a reboot.</li>
+</ul>
+<h3 id="j-going-beyond-crashes">j) Going beyond crashes</h3>
+<p>Fuzzing is a wonderful and underutilized technique for discovering non-crashing
+design and implementation errors, too. Quite a few interesting bugs have been
+found by modifying the target programs to call <code>abort()</code> when say:</p>
+<ul>
+<li>
+<p>Two bignum libraries produce different outputs when given the same
+fuzzer-generated input.</p>
+</li>
+<li>
+<p>An image library produces different outputs when asked to decode the same
+input image several times in a row.</p>
+</li>
+<li>
+<p>A serialization/deserialization library fails to produce stable outputs when
+iteratively serializing and deserializing fuzzer-supplied data.</p>
+</li>
+<li>
+<p>A compression library produces an output inconsistent with the input file when
+asked to compress and then decompress a particular blob.</p>
+</li>
+</ul>
+<p>Implementing these or similar sanity checks usually takes very little time; if
+you are the maintainer of a particular package, you can make this code
+conditional with <code>#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION</code> (a flag also
+shared with libfuzzer and honggfuzz) or <code>#ifdef __AFL_COMPILER</code> (this one is
+just for AFL++).</p>
+<h3 id="k-known-limitations--areas-for-improvement">k) Known limitations &amp; areas for improvement</h3>
+<p>Here are some of the most important caveats for AFL++:</p>
+<ul>
+<li>
+<p>AFL++ detects faults by checking for the first spawned process dying due to a
+signal (SIGSEGV, SIGABRT, etc.). Programs that install custom handlers for
+these signals may need to have the relevant code commented out. In the same
+vein, faults in child processes spawned by the fuzzed target may evade
+detection unless you manually add some code to catch that.</p>
+</li>
+<li>
+<p>As with any other brute-force tool, the fuzzer offers limited coverage if
+encryption, checksums, cryptographic signatures, or compression are used to
+wholly wrap the actual data format to be tested.</p>
+<p>To work around this, you can comment out the relevant checks (see
+utils/libpng_no_checksum/ for inspiration); if this is not possible, you can
+also write a postprocessor, one of the hooks of custom mutators. See
+<a href="custom_mutators.md">custom_mutators.md</a> on how to use
+<code>AFL_CUSTOM_MUTATOR_LIBRARY</code>.</p>
+</li>
+<li>
+<p>There are some unfortunate trade-offs with ASAN and 64-bit binaries. This
+isn&rsquo;t due to any specific fault of afl-fuzz.</p>
+</li>
+<li>
+<p>There is no direct support for fuzzing network services, background daemons,
+or interactive apps that require UI interaction to work. You may need to make
+simple code changes to make them behave in a more traditional way. Preeny or
+libdesock may offer a relatively simple option, too - see:
+<a href="https://github.com/zardus/preeny">https://github.com/zardus/preeny</a> or
+<a href="https://github.com/fkie-cad/libdesock">https://github.com/fkie-cad/libdesock</a></p>
+<p>Some useful tips for modifying network-based services can be also found at:
+<a href="https://www.fastly.com/blog/how-to-fuzz-server-american-fuzzy-lop">https://www.fastly.com/blog/how-to-fuzz-server-american-fuzzy-lop</a></p>
+</li>
+<li>
+<p>Occasionally, sentient machines rise against their creators. If this happens
+to you, please consult
+<a href="https://lcamtuf.coredump.cx/prep/">https://lcamtuf.coredump.cx/prep/</a>.</p>
+</li>
+</ul>
+<p>Beyond this, see <a href="INSTALL.md">INSTALL.md</a> for platform-specific tips.</p>
+<h2 id="4-triaging-crashes">4. Triaging crashes</h2>
+<p>The coverage-based grouping of crashes usually produces a small data set that
+can be quickly triaged manually or with a very simple GDB or Valgrind script.
+Every crash is also traceable to its parent non-crashing test case in the queue,
+making it easier to diagnose faults.</p>
+<p>Having said that, it&rsquo;s important to acknowledge that some fuzzing crashes can be
+difficult to quickly evaluate for exploitability without a lot of debugging and
+code analysis work. To assist with this task, afl-fuzz supports a very unique
+&ldquo;crash exploration&rdquo; mode enabled with the <code>-C</code> flag.</p>
+<p>In this mode, the fuzzer takes one or more crashing test cases as the input and
+uses its feedback-driven fuzzing strategies to very quickly enumerate all code
+paths that can be reached in the program while keeping it in the crashing state.</p>
+<p>Mutations that do not result in a crash are rejected; so are any changes that do
+not affect the execution path.</p>
+<p>The output is a small corpus of files that can be very rapidly examined to see
+what degree of control the attacker has over the faulting address, or whether it
+is possible to get past an initial out-of-bounds read - and see what lies
+beneath.</p>
+<p>Oh, one more thing: for test case minimization, give afl-tmin a try. The tool
+can be operated in a very simple way:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./afl-tmin -i test_case -o minimized_result -- /path/to/program <span style="color:#f92672">[</span>...<span style="color:#f92672">]</span>
+</code></pre></div><p>The tool works with crashing and non-crashing test cases alike. In the crash
+mode, it will happily accept instrumented and non-instrumented binaries. In the
+non-crashing mode, the minimizer relies on standard AFL++ instrumentation to
+make the file simpler without altering the execution path.</p>
+<p>The minimizer accepts the <code>-m</code>, <code>-t</code>, <code>-f</code>, and <code>@@</code> syntax in a manner
+compatible with afl-fuzz.</p>
+<p>Another tool in AFL++ is the afl-analyze tool. It takes an input file, attempts
+to sequentially flip bytes and observes the behavior of the tested program. It
+then color-codes the input based on which sections appear to be critical and
+which are not; while not bulletproof, it can often offer quick insights into
+complex file formats.</p>
+<p><code>casr-afl</code> from <a href="https://github.com/ispras/casr">CASR</a> tools provides
+comfortable triaging for crashes found by AFL++. Reports are clustered and
+contain severity and other information.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">casr-afl -i /path/to/afl/out/dir -o /path/to/casr/out/dir
+</code></pre></div><h2 id="5-ci-fuzzing">5. CI fuzzing</h2>
+<p>Some notes on continuous integration (CI) fuzzing - this fuzzing is different to
+normal fuzzing campaigns as these are much shorter runnings.</p>
+<p>If the queue in the CI is huge and/or the execution time is slow then you can
+also add <code>AFL_NO_STARTUP_CALIBRATION=1</code> to skip the initial queue calibration
+phase and start fuzzing at once. But only do that if the calibration time is
+too long for your overall available fuzz run time.</p>
+<ol>
+<li>
+<p>Always:</p>
+<ul>
+<li>LTO has a much longer compile time which is diametrical to short fuzzing -
+hence use afl-clang-fast instead.</li>
+<li>If you compile with CMPLOG, then you can save compilation time and reuse
+that compiled target with the <code>-c</code> option and as the main fuzz target.
+This will impact the speed by ~15% though.</li>
+<li><code>AFL_FAST_CAL</code> - enables fast calibration, this halves the time the
+saturated corpus needs to be loaded.</li>
+<li><code>AFL_CMPLOG_ONLY_NEW</code> - only perform cmplog on new finds, not the initial
+corpus as this very likely has been done for them already.</li>
+<li>Keep the generated corpus, use afl-cmin and reuse it every time!</li>
+</ul>
+</li>
+<li>
+<p>Additionally randomize the AFL++ compilation options, e.g.:</p>
+<ul>
+<li>30% for <code>AFL_LLVM_CMPLOG</code></li>
+<li>5% for <code>AFL_LLVM_LAF_ALL</code></li>
+</ul>
+</li>
+<li>
+<p>Also randomize the afl-fuzz runtime options, e.g.:</p>
+<ul>
+<li>65% for <code>AFL_DISABLE_TRIM</code></li>
+<li>50% for <code>AFL_KEEP_TIMEOUTS</code></li>
+<li>50% use a dictionary generated by <code>AFL_LLVM_DICT2FILE</code> + <code>AFL_LLVM_DICT2FILE_NO_MAIN=1</code></li>
+<li>40% use MOpt (<code>-L 0</code>)</li>
+<li>40% for <code>AFL_EXPAND_HAVOC_NOW</code></li>
+<li>20% for old queue processing (<code>-Z</code>)</li>
+<li>for CMPLOG targets, 70% for <code>-l 2</code>, 10% for <code>-l 3</code>, 20% for <code>-l 2AT</code></li>
+</ul>
+</li>
+<li>
+<p>Do <em>not</em> run any <code>-M</code> modes, just running <code>-S</code> modes is better for CI
+fuzzing. <code>-M</code> enables old queue handling etc. which is good for a fuzzing
+campaign but not good for short CI runs.</p>
+</li>
+</ol>
+<p>How this can look like can, e.g., be seen at AFL++&rsquo;s setup in Google&rsquo;s
+<a href="https://github.com/google/oss-fuzz/blob/master/infra/base-images/base-builder/compile_afl">oss-fuzz</a>
+and
+<a href="https://github.com/google/clusterfuzz/blob/master/src/clusterfuzz/_internal/bot/fuzzers/afl/launcher.py">clusterfuzz</a>.</p>
+<h2 id="the-end">The End</h2>
+<p>Check out the <a href="FAQ.md">FAQ</a>. Maybe it answers your question (that you might not
+even have known you had ;-) ).</p>
+<p>This is basically all you need to know to professionally run fuzzing campaigns.
+If you want to know more, the tons of texts in <a href="./">docs/</a> will have you
+covered.</p>
+<p>Note that there are also a lot of tools out there that help fuzzing with AFL++
+(some might be deprecated or unsupported), see
+<a href="third_party_tools.md">third_party_tools.md</a>.</p>
+</article>
+ 
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+      </footer>
+      
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#0-common-sense-risks">0. Common sense risks</a></li>
+    <li><a href="#1-instrumenting-the-target">1. Instrumenting the target</a>
+      <ul>
+        <li><a href="#a-selecting-the-best-afl-compiler-for-instrumenting-the-target">a) Selecting the best AFL++ compiler for instrumenting the target</a></li>
+        <li><a href="#b-selecting-instrumentation-options">b) Selecting instrumentation options</a></li>
+        <li><a href="#c-selecting-sanitizers">c) Selecting sanitizers</a></li>
+        <li><a href="#d-modifying-the-target">d) Modifying the target</a></li>
+        <li><a href="#e-instrumenting-the-target">e) Instrumenting the target</a></li>
+        <li><a href="#f-better-instrumentation">f) Better instrumentation</a></li>
+        <li><a href="#g-libfuzzer-fuzzer-harnesses-with-llvmfuzzertestoneinput">g) libfuzzer fuzzer harnesses with LLVMFuzzerTestOneInput()</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-preparing-the-fuzzing-campaign">2. Preparing the fuzzing campaign</a>
+      <ul>
+        <li><a href="#a-collecting-inputs">a) Collecting inputs</a></li>
+        <li><a href="#b-making-the-input-corpus-unique">b) Making the input corpus unique</a></li>
+        <li><a href="#c-minimizing-all-corpus-files">c) Minimizing all corpus files</a></li>
+        <li><a href="#done">Done!</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-fuzzing-the-target">3. Fuzzing the target</a>
+      <ul>
+        <li><a href="#a-running-afl-fuzz">a) Running afl-fuzz</a></li>
+        <li><a href="#b-keeping-memory-use-and-timeouts-in-check">b) Keeping memory use and timeouts in check</a></li>
+        <li><a href="#c-using-multiple-cores">c) Using multiple cores</a></li>
+        <li><a href="#d-using-multiple-machines-for-fuzzing">d) Using multiple machines for fuzzing</a></li>
+        <li><a href="#e-the-status-of-the-fuzz-campaign">e) The status of the fuzz campaign</a></li>
+        <li><a href="#f-stopping-fuzzing-restarting-fuzzing-adding-new-seeds">f) Stopping fuzzing, restarting fuzzing, adding new seeds</a></li>
+        <li><a href="#g-checking-the-coverage-of-the-fuzzing">g) Checking the coverage of the fuzzing</a></li>
+        <li><a href="#h-how-long-to-fuzz-a-target">h) How long to fuzz a target?</a></li>
+        <li><a href="#i-improve-the-speed">i) Improve the speed!</a></li>
+        <li><a href="#j-going-beyond-crashes">j) Going beyond crashes</a></li>
+        <li><a href="#k-known-limitations--areas-for-improvement">k) Known limitations &amp; areas for improvement</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-triaging-crashes">4. Triaging crashes</a></li>
+    <li><a href="#5-ci-fuzzing">5. CI fuzzing</a></li>
+    <li><a href="#the-end">The End</a></li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

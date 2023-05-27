@@ -14,5 +14,5 @@ publishDir = "docs"
   ogimage = "ogimage.png"
   BookMenuBundle = "/menu"
   BookLogo = 'logo_256x256.png'
-  ReleaseName = "3.12c"
-  ReleaseURL = "https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.12c"
+  ReleaseName = "4.05c"
+  ReleaseURL = "https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.05c"

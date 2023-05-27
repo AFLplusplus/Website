@@ -1,0 +1,384 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Migrating from LibAFL &lt;0.9 to 0.9 - The LibAFL Fuzzing Library</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../libafl.html">The LibAFL Fuzzing Library</a></li><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="../getting_started/getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../getting_started/setup.html"><strong aria-hidden="true">1.1.</strong> Setup</a></li><li class="chapter-item expanded "><a href="../getting_started/build.html"><strong aria-hidden="true">1.2.</strong> Build</a></li><li class="chapter-item expanded "><a href="../getting_started/crates.html"><strong aria-hidden="true">1.3.</strong> Crates</a></li></ol></li><li class="chapter-item expanded "><a href="../baby_fuzzer/baby_fuzzer.html"><strong aria-hidden="true">2.</strong> Baby Fuzzer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../baby_fuzzer/more_examples.html"><strong aria-hidden="true">2.1.</strong> More Examples</a></li></ol></li><li class="chapter-item expanded "><a href="../core_concepts/core_concepts.html"><strong aria-hidden="true">3.</strong> Core Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../core_concepts/observer.html"><strong aria-hidden="true">3.1.</strong> Observer</a></li><li class="chapter-item expanded "><a href="../core_concepts/executor.html"><strong aria-hidden="true">3.2.</strong> Executor</a></li><li class="chapter-item expanded "><a href="../core_concepts/feedback.html"><strong aria-hidden="true">3.3.</strong> Feedback</a></li><li class="chapter-item expanded "><a href="../core_concepts/input.html"><strong aria-hidden="true">3.4.</strong> Input</a></li><li class="chapter-item expanded "><a href="../core_concepts/corpus.html"><strong aria-hidden="true">3.5.</strong> Corpus</a></li><li class="chapter-item expanded "><a href="../core_concepts/mutator.html"><strong aria-hidden="true">3.6.</strong> Mutator</a></li><li class="chapter-item expanded "><a href="../core_concepts/generator.html"><strong aria-hidden="true">3.7.</strong> Generator</a></li><li class="chapter-item expanded "><a href="../core_concepts/stage.html"><strong aria-hidden="true">3.8.</strong> Stage</a></li></ol></li><li class="chapter-item expanded "><a href="../design/design.html"><strong aria-hidden="true">4.</strong> Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design/architecture.html"><strong aria-hidden="true">4.1.</strong> Architecture</a></li><li class="chapter-item expanded "><a href="../design/metadata.html"><strong aria-hidden="true">4.2.</strong> Metadata</a></li><li class="chapter-item expanded "><a href="../design/migration-0.9.html" class="active"><strong aria-hidden="true">4.3.</strong> Migrating from LibAFL &lt;0.9 to 0.9</a></li></ol></li><li class="chapter-item expanded "><a href="../message_passing/message_passing.html"><strong aria-hidden="true">5.</strong> Message Passing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../message_passing/spawn_instances.html"><strong aria-hidden="true">5.1.</strong> Spawning Instances</a></li><li class="chapter-item expanded "><a href="../message_passing/configurations.html"><strong aria-hidden="true">5.2.</strong> Configurations</a></li></ol></li><li class="chapter-item expanded "><a href="../tutorial/tutorial.html"><strong aria-hidden="true">6.</strong> Tutorial</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tutorial/intro.html"><strong aria-hidden="true">6.1.</strong> Introduction</a></li></ol></li><li class="chapter-item expanded "><a href="../advanced_features/advanced_features.html"><strong aria-hidden="true">7.</strong> Advanced Features</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../advanced_features/frida.html"><strong aria-hidden="true">7.1.</strong> Binary-Only Fuzzing with Frida</a></li><li class="chapter-item expanded "><a href="../advanced_features/concolic.html"><strong aria-hidden="true">7.2.</strong> Concolic Tracing &amp; Hybrid Fuzzing</a></li><li class="chapter-item expanded "><a href="../advanced_features/no_std.html"><strong aria-hidden="true">7.3.</strong> LibAFL in no_std environments (Kernels, Hypervisors, ...)</a></li><li class="chapter-item expanded "><a href="../advanced_features/nyx.html"><strong aria-hidden="true">7.4.</strong> Snapshot Fuzzing in Nyx</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">The LibAFL Fuzzing Library</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="migrating-from-libafl-09-to-09"><a class="header" href="#migrating-from-libafl-09-to-09">Migrating from LibAFL &lt;0.9 to 0.9</a></h1>
+<p>Internal APIs of LibAFL have changed in version 0.9 to prefer associated types in cases where components were &quot;fixed&quot; to
+particular versions of other components. As a result, many existing custom components will not be compatible between
+versions prior to 0.9 and version 0.9.</p>
+<h2 id="reasons-for-this-change"><a class="header" href="#reasons-for-this-change">Reasons for this change</a></h2>
+<p>When implementing a trait with a generic, it is possible to have more than one instantiation of that generic trait. As a
+result, everywhere where consistency across generic types was required to implement a trait, it needed to be properly
+and explicitly constrained at every point. This led to <code>impl</code>s which were at best difficult to debug and, at worst,
+incorrect and caused confusing bugs for users.</p>
+<p>For example, consider the  <code>MapCorpusMinimizer</code> implementation (from &lt;0.9) below:</p>
+<pre><code class="language-rust ignore">impl&lt;E, I, O, S, TS&gt; CorpusMinimizer&lt;I, S&gt; for MapCorpusMinimizer&lt;E, I, O, S, TS&gt;
+where
+    E: Copy + Hash + Eq,
+    I: Input,
+    for&lt;'a&gt; O: MapObserver&lt;Entry = E&gt; + AsIter&lt;'a, Item = E&gt;,
+    S: HasMetadata + HasCorpus&lt;I&gt;,
+    TS: TestcaseScore&lt;I, S&gt;,
+{
+    fn minimize&lt;CS, EX, EM, OT, Z&gt;(
+        &amp;self,
+        fuzzer: &amp;mut Z,
+        executor: &amp;mut EX,
+        manager: &amp;mut EM,
+        state: &amp;mut S,
+    ) -&gt; Result&lt;(), Error&gt;
+    where
+        CS: Scheduler&lt;I, S&gt;,
+        EX: Executor&lt;EM, I, S, Z&gt; + HasObservers&lt;I, OT, S&gt;,
+        EM: EventManager&lt;EX, I, S, Z&gt;,
+        OT: ObserversTuple&lt;S&gt;,
+        Z: Evaluator&lt;EX, EM, I, S&gt; + HasScheduler&lt;CS, I, S&gt;,
+    {
+        // --- SNIP ---
+    }
+}
+</code></pre>
+<p>It was previously necessary to constrain every generic using a slew of other generics; above, it is necessary to
+constrain the input type (<code>I</code>) for every generic, despite the fact that this was already made clear by the state (<code>S</code>)
+and that the input will necessarily be the same over every implementation for that type.</p>
+<p>Below is the same code, but with the associated types changes (note that some generic names have changed):</p>
+<pre><code class="language-rust ignore">impl&lt;E, O, T, TS&gt; CorpusMinimizer&lt;E&gt; for MapCorpusMinimizer&lt;E, O, T, TS&gt;
+where
+    E: UsesState,
+    for&lt;'a&gt; O: MapObserver&lt;Entry = T&gt; + AsIter&lt;'a, Item = T&gt;,
+    E::State: HasMetadata + HasCorpus,
+    T: Copy + Hash + Eq,
+    TS: TestcaseScore&lt;E::State&gt;,
+{
+    fn minimize&lt;CS, EM, Z&gt;(
+        &amp;self,
+        fuzzer: &amp;mut Z,
+        executor: &amp;mut E,
+        manager: &amp;mut EM,
+        state: &amp;mut E::State,
+    ) -&gt; Result&lt;(), Error&gt;
+    where
+        E: Executor&lt;EM, Z&gt; + HasObservers,
+        CS: Scheduler&lt;State=E::State&gt;,
+        EM: UsesState&lt;State=E::State&gt;,
+        Z: HasScheduler&lt;CS, State=E::State&gt;,
+    {
+        // --- SNIP ---
+    }
+}
+</code></pre>
+<p>The executor is constrained to <code>EM</code> and <code>Z</code>, with each of their respective states being constrained to <code>E</code>'s state. It
+is no longer necessary to explicitly define a generic for the input type, the state type, or the generic type, as these
+are all present as associated types for <code>E</code>. Additionally, we don't even need to specify any details about the observers
+(<code>OT</code> in the previous version) as the type does not need to be constrained and is not shared by other types.</p>
+<h2 id="scope"><a class="header" href="#scope">Scope</a></h2>
+<p>You are affected by this change if:</p>
+<ul>
+<li>You specified explicit generics for a type (e.g., <code>MaxMapFeedback::&lt;_, (), _&gt;::new(...)</code>)</li>
+<li>You implemented a custom component (e.g., <code>Mutator</code>, <code>Executor</code>, <code>State</code>, <code>Fuzzer</code>, <code>Feedback</code>, <code>Observer</code>, etc.)</li>
+</ul>
+<p>If you did neither of these, congrats! You are likely unaffected by these changes.</p>
+<h3 id="migrating-explicit-generics"><a class="header" href="#migrating-explicit-generics">Migrating explicit generics</a></h3>
+<p>Migrating specific generics should be a quite simple process; you should review the API documentation for details on the
+order of generics and replace them accordingly. Generally speaking, it should no longer be necessary to specify these
+generics.</p>
+<p>See <code>fuzzers/</code> for examples of these changes.</p>
+<h3 id="migrating-component-types"><a class="header" href="#migrating-component-types">Migrating component types</a></h3>
+<p>If you implemented a Mutator, Executor, State, or another kind of component, you must update your implementation. The
+main changes to the API are in the use of &quot;Uses*&quot; for associated types.</p>
+<p>In many scenarios, Input, Observer, and State generics have been moved into traits with associated types (namely,
+&quot;UsesInput&quot;, &quot;UsesObservers&quot;, and &quot;UsesState&quot;. These traits are required for many existing traits now and are very
+straightforward to implement. In a majority of cases, you will have generics on your custom implementation or a fixed
+type to implement this with. Thankfully, Rust will let you know when you need to implement this type.</p>
+<p>As an example, <code>InMemoryCorpus</code> before 0.9 looked like this:</p>
+<pre><code class="language-rust ignore">#[derive(Default, Serialize, Deserialize, Clone, Debug)]
+#[serde(bound = &quot;I: serde::de::DeserializeOwned&quot;)]
+pub struct InMemoryCorpus&lt;I&gt;
+where
+    I: Input,
+{
+    entries: Vec&lt;RefCell&lt;Testcase&lt;I&gt;&gt;&gt;,
+    current: Option&lt;usize&gt;,
+}
+
+impl&lt;I&gt; Corpus&lt;I&gt; for InMemoryCorpus&lt;I&gt;
+where
+    I: Input,
+{
+    // --- SNIP ---
+}
+</code></pre>
+<p>After 0.9, all <code>Corpus</code> implementations are required to implement <code>UsesInput</code>. Also <code>Corpus</code> no longer has a generic for
+the input type (as it is now provided by the UsesInput impl). The migrated implementation is shown below:</p>
+<pre><code class="language-rust ignore">#[derive(Default, Serialize, Deserialize, Clone, Debug)]
+#[serde(bound = &quot;I: serde::de::DeserializeOwned&quot;)]
+pub struct InMemoryCorpus&lt;I&gt;
+where
+    I: Input,
+{
+    entries: Vec&lt;RefCell&lt;Testcase&lt;I&gt;&gt;&gt;,
+    current: Option&lt;usize&gt;,
+}
+
+impl&lt;I&gt; UsesInput for InMemoryCorpus&lt;I&gt;
+where
+    I: Input,
+{
+    type Input = I;
+}
+
+impl&lt;I&gt; Corpus for InMemoryCorpus&lt;I&gt;
+where
+    I: Input,
+{
+    // --- SNIP ---
+}
+</code></pre>
+<p>Now, <code>Corpus</code> cannot be accidentally implemented for another type other than that specified by <code>InMemoryCorpus</code>, as it
+is fixed to the associated type for <code>UsesInput</code>.</p>
+<p>A more complex example of migration can be found in the &quot;Reasons for this change&quot; section of this document.</p>
+<h2 id="observer-changes"><a class="header" href="#observer-changes">Observer Changes</a></h2>
+<p>Additionally, we changed the Observer API, as the API in 0.8 led to undefined behavior.
+At the same time, we used the change to simplify the common case: creating an <code>StdMapObserver</code>
+from libafl_target's <code>EDGES_MAP</code>.
+In the future, instead of using:</p>
+<pre><code class="language-rust ignore">let edges = unsafe { &amp;mut EDGES_MAP[0..MAX_EDGES_NUM] };
+let edges_observer = StdMapObserver::new(&quot;edges&quot;, edges);
+</code></pre>
+<p>creating the edges observer is as simple as using the new <code>std_edges_map_observer</code> function.</p>
+<pre><code class="language-rust ignore">let edges_observer = unsafe { std_edges_map_observer(&quot;edges&quot;) };
+</code></pre>
+<p>Alternatively, <code>StdMapObserver::new</code> will still work, but now the whole method is marked as <code>unsafe</code>.
+The reason is that the caller has to make sure <code>EDGES_MAP</code> (or other maps) are not moved or freed in memory,
+for the lifetime of the <code>MapObserver</code>.
+This means that the buffer should either be <code>static</code> or <code>Pin</code>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../design/metadata.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../message_passing/message_passing.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../design/metadata.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../message_passing/message_passing.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

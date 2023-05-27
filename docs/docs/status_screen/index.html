@@ -33,10 +33,10 @@
 
 
 
-<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.bd94799dfcdf969755cf180e7375925b1034fe6f40f69be521e4f17aa5e520dc.js" integrity="sha256-vZR5nfzflpdVzxgOc3WSWxA0/m9A9pvlIeTxeqXlINw="></script>
+<script defer src="/en.search.min.be06027f8735505ece982e70c6838dcd93262b95e810a56c98c7e933c75a5393.js" integrity="sha256-vgYCf4c1UF7OmC5wxoONzZMmK5XoEKVsmMfpM8daU5M="></script>
 
 <!--
 Made with Book Theme
@@ -83,7 +83,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/3.12c">Release 3.12c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.05c">Release 4.05c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -188,7 +188,7 @@ to comment out USE_COLORS, then do <code>make clean all</code>.</p>
 other side effects - sorry about that.</p>
 <p>With that out of the way, let&rsquo;s talk about what&rsquo;s actually on the screen&hellip;</p>
 <h3 id="the-status-bar">The status bar</h3>
-<pre><code>american fuzzy lop ++3.01a (default) [fast] {0}
+<pre tabindex="0"><code>american fuzzy lop ++3.01a (default) [fast] {0}
 </code></pre><p>The top line shows you which mode afl-fuzz is running in
 (normal: &ldquo;american fuzy lop&rdquo;, crash exploration mode: &ldquo;peruvian rabbit mode&rdquo;)
 and the version of afl++.
@@ -198,7 +198,7 @@ parallel fuzzing.
 Second to last is the power schedule mode being run (default: fast).
 Finally, the last item is the CPU id.</p>
 <h3 id="process-timing">Process timing</h3>
-<pre><code>  +----------------------------------------------------+
+<pre tabindex="0"><code>  +----------------------------------------------------+
   |        run time : 0 days, 8 hrs, 32 min, 43 sec    |
   |   last new path : 0 days, 0 hrs, 6 min, 40 sec     |
   | last uniq crash : none seen yet                    |
@@ -222,7 +222,7 @@ fail a basic header check.</p>
 <p>If there are no new paths showing up for a while, you will eventually see a big
 red warning in this section, too :-)</p>
 <h3 id="overall-results">Overall results</h3>
-<pre><code>  +-----------------------+
+<pre tabindex="0"><code>  +-----------------------+
   |  cycles done : 0      |
   |  total paths : 2095   |
   | uniq crashes : 0      |
@@ -244,7 +244,7 @@ there&rsquo;s the number of test cases (&ldquo;paths&rdquo;) discovered so far, 
 unique faults. The test cases, crashes, and hangs can be explored in real-time
 by browsing the output directory, as discussed in README.md.</p>
 <h3 id="cycle-progress">Cycle progress</h3>
-<pre><code>  +-------------------------------------+
+<pre tabindex="0"><code>  +-------------------------------------+
   |  now processing : 1296 (61.86%)     |
   | paths timed out : 0 (0.00%)         |
   +-------------------------------------+
@@ -254,7 +254,7 @@ inputs it decided to ditch because they were persistently timing out.</p>
 <p>The &ldquo;*&rdquo; suffix sometimes shown in the first line means that the currently
 processed path is not &ldquo;favored&rdquo; (a property discussed later on).</p>
 <h3 id="map-coverage">Map coverage</h3>
-<pre><code>  +--------------------------------------+
+<pre tabindex="0"><code>  +--------------------------------------+
   |    map density : 10.15% / 29.07%     |
   | count coverage : 4.03 bits/tuple     |
   +--------------------------------------+
@@ -289,7 +289,7 @@ reach that extreme.</p>
 <p>Together, the values can be useful for comparing the coverage of several
 different fuzzing jobs that rely on the same instrumented binary.</p>
 <h3 id="stage-progress">Stage progress</h3>
-<pre><code>  +-------------------------------------+
+<pre tabindex="0"><code>  +-------------------------------------+
   |  now trying : interest 32/8         |
   | stage execs : 3996/34.4k (11.62%)   |
   | total execs : 27.4M                 |
@@ -340,7 +340,7 @@ long.</p>
 see the <a href="perf_tips.md">perf_tips.md</a> file included with the fuzzer for ideas on how to speed
 things up.</p>
 <h3 id="findings-in-depth">Findings in depth</h3>
-<pre><code>  +--------------------------------------+
+<pre tabindex="0"><code>  +--------------------------------------+
   | favored paths : 879 (41.96%)         |
   |  new edges on : 423 (20.19%)         |
   | total crashes : 0 (0 unique)         |
@@ -356,7 +356,7 @@ additional, more detailed counters for crashes and timeouts.</p>
 one includes all test cases that exceeded the timeout, even if they did not
 exceed it by a margin sufficient to be classified as hangs.</p>
 <h3 id="fuzzing-strategy-yields">Fuzzing strategy yields</h3>
-<pre><code>  +-----------------------------------------------------+
+<pre tabindex="0"><code>  +-----------------------------------------------------+
   |   bit flips : 57/289k, 18/289k, 18/288k             |
   |  byte flips : 0/36.2k, 4/35.7k, 7/34.6k             |
   | arithmetics : 53/2.54M, 0/537k, 0/55.2k             |
@@ -378,10 +378,10 @@ not possible to remove, were deemed to have no effect and were excluded from
 some of the more expensive deterministic fuzzing steps.</p>
 <p>Note that when deterministic mutation mode is off (which is the default
 because it is not very efficient) the first five lines display
-&ldquo;disabled (default, enable with -D)&quot;.</p>
+&ldquo;disabled (default, enable with -D)&rdquo;.</p>
 <p>Only what is activated will have counter shown.</p>
 <h3 id="path-geometry">Path geometry</h3>
-<pre><code>  +---------------------+
+<pre tabindex="0"><code>  +---------------------+
   |    levels : 5       |
   |   pending : 1570    |
   |  pend fav : 583     |
@@ -433,7 +433,7 @@ model that is less prone to concurrency issues,</li>
 <li>See if the target can be compiled or run without threads. Common
 <code>./configure</code> options include <code>--without-threads</code>, <code>--disable-pthreads</code>, or
 <code>--disable-openmp</code>.</li>
-<li>Replace pthreads with GNU Pth (<a href="https://www.gnu.org/software/pth/),">https://www.gnu.org/software/pth/),</a> which
+<li>Replace pthreads with GNU Pth (<a href="https://www.gnu.org/software/pth/)">https://www.gnu.org/software/pth/)</a>, which
 allows you to use a deterministic scheduler.</li>
 </ul>
 </li>
@@ -448,7 +448,7 @@ to waste.</li>
 in the <code>&lt;out_dir&gt;/queue/.state/variable_behavior/</code> directory, so you can look
 them up easily.</p>
 <h3 id="cpu-load">CPU load</h3>
-<pre><code>  [cpu: 25%]
+<pre tabindex="0"><code>  [cpu: 25%]
 </code></pre><p>This tiny widget shows the apparent CPU utilization on the local system. It is
 calculated by taking the number of processes in the &ldquo;runnable&rdquo; state, and then
 comparing it to the number of logical cores on the system.</p>

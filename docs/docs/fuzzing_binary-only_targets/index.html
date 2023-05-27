@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Fuzzing Binary Only Targets | AFLplusplus</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+<meta property="og:title" content="Fuzzing Binary Only Targets | AFLplusplus" />
+<meta name="twitter:title" content="Fuzzing Binary Only Targets | AFLplusplus" />
+<meta itemprop="name" content="Fuzzing Binary Only Targets | AFLplusplus" />
+<meta name="application-name" content="Fuzzing Binary Only Targets | AFLplusplus" />
+<meta property="og:site_name" content="AFLplusplus" />
+
+<meta name="description" content="The AFLplusplus website" />
+<meta itemprop="description" content="The AFLplusplus website" />
+<meta property="og:description" content="The AFLplusplus website" />
+<meta name="twitter:description" content="The AFLplusplus website" />
+
+<base href="https://aflplus.plus/docs/fuzzing_binary-only_targets/">
+<link rel="canonical" href="https://aflplus.plus/docs/fuzzing_binary-only_targets/" itemprop="url" /> 
+<meta name="url" content="https://aflplus.plus/docs/fuzzing_binary-only_targets/" />
+<meta name="twitter:url" content="https://aflplus.plus/docs/fuzzing_binary-only_targets/" /> 
+<meta property="og:url" content="https://aflplus.plus/docs/fuzzing_binary-only_targets/" />
+
+ 
+  <meta itemprop="image" content="https://aflplus.plus/ogimage.png" />
+  <meta property="og:image" content="https://aflplus.plus/ogimage.png" /> 
+  <meta name="twitter:image" content="https://aflplus.plus/ogimage.png" />
+  <meta name="twitter:image:src" content="https://aflplus.plus/ogimage.png" /> 
+
+
+
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
+
+
+<script defer src="/en.search.min.be06027f8735505ece982e70c6838dcd93262b95e810a56c98c7e933c75a5393.js" integrity="sha256-vgYCf4c1UF7OmC5wxoONzZMmK5XoEKVsmMfpM8daU5M="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><img src="/logo_256x256.png" alt="Logo" /><span>AFLplusplus</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+  <ul>
+<li><strong>Site map</strong>
+<ul>
+<li><a href="/features/">Features</a></li>
+<li><a href="/building/">Build &amp; Install</a></li>
+<li><a href="/docs/">Documentation</a></li>
+<li><a href="/docs/tutorials/">Tutorials</a></li>
+<li><a href="/papers/">Papers</a></li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li><strong>Downloads</strong>
+<ul>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.05c">Release 4.05c</a>
+</li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
+<li><a href="https://raw.githubusercontent.com/AFLplusplus/AFLplusplus/master/docs/COPYING">License</a></li>
+</ul>
+</li>
+<li><strong>Links</strong>
+<ul>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus">Repo (GitHub)</a></li>
+<li><a href="https://groups.google.com/group/afl-users">Mailing list</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Fuzzing Binary Only Targets</strong>
+
+  <label for="toc-control">
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#tldr">TL;DR:</a></li>
+    <li><a href="#fuzzing-binary-only-targets-with-afl">Fuzzing binary-only targets with AFL++</a>
+      <ul>
+        <li><a href="#qemu-mode">QEMU mode</a></li>
+        <li><a href="#wineqemu">WINE+QEMU</a></li>
+        <li><a href="#frida-mode">FRIDA mode</a></li>
+        <li><a href="#nyx-mode">Nyx mode</a></li>
+        <li><a href="#unicorn">Unicorn</a></li>
+        <li><a href="#shared-libraries">Shared libraries</a></li>
+        <li><a href="#coresight">Coresight</a></li>
+      </ul>
+    </li>
+    <li><a href="#binary-rewriters">Binary rewriters</a>
+      <ul>
+        <li><a href="#zafl">ZAFL</a></li>
+        <li><a href="#retrowrite">RetroWrite</a></li>
+        <li><a href="#dyninst">Dyninst</a></li>
+        <li><a href="#mcsema">Mcsema</a></li>
+      </ul>
+    </li>
+    <li><a href="#binary-tracers">Binary tracers</a>
+      <ul>
+        <li><a href="#pintool--dynamorio">Pintool &amp; DynamoRIO</a></li>
+        <li><a href="#intel-pt">Intel PT</a></li>
+      </ul>
+    </li>
+    <li><a href="#non-afl-solutions">Non-AFL++ solutions</a></li>
+    <li><a href="#closing-words">Closing words</a></li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+<article class="markdown"><h1 id="fuzzing-binary-only-targets">Fuzzing binary-only targets</h1>
+<p>AFL++, libfuzzer, and other fuzzers are great if you have the source code of the
+target. This allows for very fast and coverage guided fuzzing.</p>
+<p>However, if there is only the binary program and no source code available, then
+standard <code>afl-fuzz -n</code> (non-instrumented mode) is not effective.</p>
+<p>For fast, on-the-fly instrumentation of black-box binaries, AFL++ still offers
+various support. The following is a description of how these binaries can be
+fuzzed with AFL++.</p>
+<h2 id="tldr">TL;DR:</h2>
+<p>FRIDA mode and QEMU mode in persistent mode are the fastest - if persistent mode
+is possible and the stability is high enough.</p>
+<p>Otherwise, try Zafl, RetroWrite, Dyninst, and if these fail, too, then try
+standard FRIDA/QEMU mode with <code>AFL_ENTRYPOINT</code> to where you need it.</p>
+<p>If your target is non-linux, then use unicorn_mode.</p>
+<h2 id="fuzzing-binary-only-targets-with-afl">Fuzzing binary-only targets with AFL++</h2>
+<h3 id="qemu-mode">QEMU mode</h3>
+<p>QEMU mode is the &ldquo;native&rdquo; solution to the program. It is available in the
+./qemu_mode/ directory and, once compiled, it can be accessed by the afl-fuzz -Q
+command line option. It is the easiest to use alternative and even works for
+cross-platform binaries.</p>
+<p>For linux programs and its libraries, this is accomplished with a version of
+QEMU running in the lesser-known &ldquo;user space emulation&rdquo; mode. QEMU is a project
+separate from AFL++, but you can conveniently build the feature by doing:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd qemu_mode
+./build_qemu_support.sh
+</code></pre></div><p>The following setup to use QEMU mode is recommended:</p>
+<ul>
+<li>run 1 afl-fuzz -Q instance with CMPLOG (<code>-c 0</code> + <code>AFL_COMPCOV_LEVEL=2</code>)</li>
+<li>run 1 afl-fuzz -Q instance with QASAN (<code>AFL_USE_QASAN=1</code>)</li>
+<li>run 1 afl-fuzz -Q instance with LAF (<code>AFL_PRELOAD=libcmpcov.so</code> +
+<code>AFL_COMPCOV_LEVEL=2</code>), alternatively you can use FRIDA mode, just switch <code>-Q</code>
+with <code>-O</code> and remove the LAF instance</li>
+</ul>
+<p>Then run as many instances as you have cores left with either -Q mode or - even
+better - use a binary rewriter like Dyninst, RetroWrite, ZAFL, etc.
+The binary rewriters all have their own advantages and caveats.
+ZAFL is the best but cannot be used in a business/commercial context.</p>
+<p>If a binary rewriter works for your target then you can use afl-fuzz normally
+and it will have twice the speed compared to QEMU mode (but slower than QEMU
+persistent mode).</p>
+<p>The speed decrease of QEMU mode is at about 50%. However, various options exist
+to increase the speed:</p>
+<ul>
+<li>using AFL_ENTRYPOINT to move the forkserver entry to a later basic block in
+the binary (+5-10% speed)</li>
+<li>using persistent mode
+<a href="../qemu_mode/README.persistent.md">qemu_mode/README.persistent.md</a> this will
+result in a 150-300% overall speed increase - so 3-8x the original QEMU mode
+speed!</li>
+<li>using AFL_CODE_START/AFL_CODE_END to only instrument specific parts</li>
+</ul>
+<p>For additional instructions and caveats, see
+<a href="../qemu_mode/README.md">qemu_mode/README.md</a>. If possible, you should use the
+persistent mode, see
+<a href="../qemu_mode/README.persistent.md">qemu_mode/README.persistent.md</a>. The mode is
+approximately 2-5x slower than compile-time instrumentation, and is less
+conducive to parallelization.</p>
+<p>Note that there is also honggfuzz:
+<a href="https://github.com/google/honggfuzz">https://github.com/google/honggfuzz</a> which
+now has a QEMU mode, but its performance is just 1.5% &hellip;</p>
+<p>If you like to code a customized fuzzer without much work, we highly recommend
+to check out our sister project libafl which supports QEMU, too:
+<a href="https://github.com/AFLplusplus/LibAFL">https://github.com/AFLplusplus/LibAFL</a></p>
+<h3 id="wineqemu">WINE+QEMU</h3>
+<p>Wine mode can run Win32 PE binaries with the QEMU instrumentation. It needs
+Wine, python3, and the pefile python package installed.</p>
+<p>It is included in AFL++.</p>
+<p>For more information, see
+<a href="../qemu_mode/README.wine.md">qemu_mode/README.wine.md</a>.</p>
+<h3 id="frida-mode">FRIDA mode</h3>
+<p>In FRIDA mode, you can fuzz binary-only targets as easily as with QEMU mode.
+FRIDA mode is most of the times slightly faster than QEMU mode. It is also
+newer, lacks COMPCOV, and has the advantage that it works on MacOS (both intel
+and M1).</p>
+<p>To build FRIDA mode:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd frida_mode
+gmake
+</code></pre></div><p>For additional instructions and caveats, see
+<a href="../frida_mode/README.md">frida_mode/README.md</a>.</p>
+<p>If possible, you should use the persistent mode, see
+<a href="../instrumentation/README.persistent_mode.md">instrumentation/README.persistent_mode.md</a>.
+The mode is approximately 2-5x slower than compile-time instrumentation, and is
+less conducive to parallelization. But for binary-only fuzzing, it gives a huge
+speed improvement if it is possible to use.</p>
+<p>If you want to fuzz a binary-only library, then you can fuzz it with frida-gum
+via frida_mode/. You will have to write a harness to call the target function in
+the library, use afl-frida.c as a template.</p>
+<p>You can also perform remote fuzzing with frida, e.g., if you want to fuzz on
+iPhone or Android devices, for this you can use
+<a href="https://github.com/ttdennis/fpicker/">https://github.com/ttdennis/fpicker/</a> as
+an intermediate that uses AFL++ for fuzzing.</p>
+<p>If you like to code a customized fuzzer without much work, we highly recommend
+to check out our sister project libafl which supports Frida, too:
+<a href="https://github.com/AFLplusplus/LibAFL">https://github.com/AFLplusplus/LibAFL</a>.
+Working examples already exist :-)</p>
+<h3 id="nyx-mode">Nyx mode</h3>
+<p>Nyx is a full system emulation fuzzing environment with snapshot support that is
+built upon KVM and QEMU. It is only available on Linux and currently restricted
+to x86_x64.</p>
+<p>For binary-only fuzzing a special 5.10 kernel is required.</p>
+<p>See <a href="../nyx_mode/README.md">nyx_mode/README.md</a>.</p>
+<h3 id="unicorn">Unicorn</h3>
+<p>Unicorn is a fork of QEMU. The instrumentation is, therefore, very similar. In
+contrast to QEMU, Unicorn does not offer a full system or even userland
+emulation. Runtime environment and/or loaders have to be written from scratch,
+if needed. On top, block chaining has been removed. This means the speed boost
+introduced in the patched QEMU Mode of AFL++ cannot be ported over to Unicorn.</p>
+<p>For non-Linux binaries, you can use AFL++&rsquo;s unicorn_mode which can emulate
+anything you want - for the price of speed and user written scripts.</p>
+<p>To build unicorn_mode:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd unicorn_mode
+./build_unicorn_support.sh
+</code></pre></div><p>For further information, check out
+<a href="../unicorn_mode/README.md">unicorn_mode/README.md</a>.</p>
+<h3 id="shared-libraries">Shared libraries</h3>
+<p>If the goal is to fuzz a dynamic library, then there are two options available.
+For both, you need to write a small harness that loads and calls the library.
+Then you fuzz this with either FRIDA mode or QEMU mode and either use
+<code>AFL_INST_LIBS=1</code> or <code>AFL_QEMU/FRIDA_INST_RANGES</code>.</p>
+<p>Another, less precise and slower option is to fuzz it with utils/afl_untracer/
+and use afl-untracer.c as a template. It is slower than FRIDA mode.</p>
+<p>For more information, see
+<a href="../utils/afl_untracer/README.md">utils/afl_untracer/README.md</a>.</p>
+<h3 id="coresight">Coresight</h3>
+<p>Coresight is ARM&rsquo;s answer to Intel&rsquo;s PT. With AFL++ v3.15, there is a coresight
+tracer implementation available in <code>coresight_mode/</code> which is faster than QEMU,
+however, cannot run in parallel. Currently, only one process can be traced, it
+is WIP.</p>
+<p>Fore more information, see
+<a href="../coresight_mode/README.md">coresight_mode/README.md</a>.</p>
+<h2 id="binary-rewriters">Binary rewriters</h2>
+<p>An alternative solution are binary rewriters. They are faster than the solutions
+native to AFL++ but don&rsquo;t always work.</p>
+<h3 id="zafl">ZAFL</h3>
+<p>ZAFL is a static rewriting platform supporting x86-64 C/C++,
+stripped/unstripped, and PIE/non-PIE binaries. Beyond conventional
+instrumentation, ZAFL&rsquo;s API enables transformation passes (e.g., laf-Intel,
+context sensitivity, InsTrim, etc.).</p>
+<p>Its baseline instrumentation speed typically averages 90-95% of
+afl-clang-fast&rsquo;s.</p>
+<p><a href="https://git.zephyr-software.com/opensrc/zafl">https://git.zephyr-software.com/opensrc/zafl</a></p>
+<h3 id="retrowrite">RetroWrite</h3>
+<p>RetroWrite is a static binary rewriter that can be combined with AFL++. If you
+have an x86_64 or arm64 binary that does not contain C++ exceptions and - if
+x86_64 - still has it&rsquo;s symbols and compiled with position independent code
+(PIC/PIE), then the RetroWrite solution might be for you.
+It decompiles to ASM files which can then be instrumented with afl-gcc.</p>
+<p>Binaries that are statically instrumented for fuzzing using RetroWrite are close
+in performance to compiler-instrumented binaries and outperform the QEMU-based
+instrumentation.</p>
+<p><a href="https://github.com/HexHive/retrowrite">https://github.com/HexHive/retrowrite</a></p>
+<h3 id="dyninst">Dyninst</h3>
+<p>Dyninst is a binary instrumentation framework similar to Pintool and DynamoRIO.
+However, whereas Pintool and DynamoRIO work at runtime, Dyninst instruments the
+target at load time and then let it run - or save the binary with the changes.
+This is great for some things, e.g., fuzzing, and not so effective for others,
+e.g., malware analysis.</p>
+<p>So, what you can do with Dyninst is taking every basic block and putting AFL++&rsquo;s
+instrumentation code in there - and then save the binary. Afterwards, just fuzz
+the newly saved target binary with afl-fuzz. Sounds great? It is. The issue
+though - it is a non-trivial problem to insert instructions, which change
+addresses in the process space, so that everything is still working afterwards.
+Hence, more often than not binaries crash when they are run.</p>
+<p>The speed decrease is about 15-35%, depending on the optimization options used
+with afl-dyninst.</p>
+<p><a href="https://github.com/vanhauser-thc/afl-dyninst">https://github.com/vanhauser-thc/afl-dyninst</a></p>
+<h3 id="mcsema">Mcsema</h3>
+<p>Theoretically, you can also decompile to llvm IR with mcsema, and then use
+llvm_mode to instrument the binary. Good luck with that.</p>
+<p><a href="https://github.com/lifting-bits/mcsema">https://github.com/lifting-bits/mcsema</a></p>
+<h2 id="binary-tracers">Binary tracers</h2>
+<h3 id="pintool--dynamorio">Pintool &amp; DynamoRIO</h3>
+<p>Pintool and DynamoRIO are dynamic instrumentation engines. They can be used for
+getting basic block information at runtime. Pintool is only available for Intel
+x32/x64 on Linux, Mac OS, and Windows, whereas DynamoRIO is additionally
+available for ARM and AARCH64. DynamoRIO is also 10x faster than Pintool.</p>
+<p>The big issue with DynamoRIO (and therefore Pintool, too) is speed. DynamoRIO
+has a speed decrease of 98-99%, Pintool has a speed decrease of 99.5%.</p>
+<p>Hence, DynamoRIO is the option to go for if everything else fails and Pintool
+only if DynamoRIO fails, too.</p>
+<p>DynamoRIO solutions:</p>
+<ul>
+<li><a href="https://github.com/vanhauser-thc/afl-dynamorio">https://github.com/vanhauser-thc/afl-dynamorio</a></li>
+<li><a href="https://github.com/mxmssh/drAFL">https://github.com/mxmssh/drAFL</a></li>
+<li><a href="https://github.com/googleprojectzero/winafl/">https://github.com/googleprojectzero/winafl/</a>
+&lt;= very good but windows only</li>
+</ul>
+<p>Pintool solutions:</p>
+<ul>
+<li><a href="https://github.com/vanhauser-thc/afl-pin">https://github.com/vanhauser-thc/afl-pin</a></li>
+<li><a href="https://github.com/mothran/aflpin">https://github.com/mothran/aflpin</a></li>
+<li><a href="https://github.com/spinpx/afl_pin_mode">https://github.com/spinpx/afl_pin_mode</a>
+&lt;= only old Pintool version supported</li>
+</ul>
+<h3 id="intel-pt">Intel PT</h3>
+<p>If you have a newer Intel CPU, you can make use of Intel&rsquo;s processor trace. The
+big issue with Intel&rsquo;s PT is the small buffer size and the complex encoding of
+the debug information collected through PT. This makes the decoding very CPU
+intensive and hence slow. As a result, the overall speed decrease is about
+70-90% (depending on the implementation and other factors).</p>
+<p>There are two AFL intel-pt implementations:</p>
+<ol>
+<li>
+<p><a href="https://github.com/junxzm1990/afl-pt">https://github.com/junxzm1990/afl-pt</a>
+=&gt; This needs Ubuntu 14.04.05 without any updates and the 4.4 kernel.</p>
+</li>
+<li>
+<p><a href="https://github.com/hunter-ht-2018/ptfuzzer">https://github.com/hunter-ht-2018/ptfuzzer</a>
+=&gt; This needs a 4.14 or 4.15 kernel. The &ldquo;nopti&rdquo; kernel boot option must be
+used. This one is faster than the other.</p>
+</li>
+</ol>
+<p>Note that there is also honggfuzz:
+<a href="https://github.com/google/honggfuzz">https://github.com/google/honggfuzz</a>. But
+its IPT performance is just 6%!</p>
+<h2 id="non-afl-solutions">Non-AFL++ solutions</h2>
+<p>There are many binary-only fuzzing frameworks. Some are great for CTFs but don&rsquo;t
+work with large binaries, others are very slow but have good path discovery,
+some are very hard to set up&hellip;</p>
+<ul>
+<li>Jackalope:
+<a href="https://github.com/googleprojectzero/Jackalope">https://github.com/googleprojectzero/Jackalope</a></li>
+<li>Manticore:
+<a href="https://github.com/trailofbits/manticore">https://github.com/trailofbits/manticore</a></li>
+<li>QSYM:
+<a href="https://github.com/sslab-gatech/qsym">https://github.com/sslab-gatech/qsym</a></li>
+<li>S2E: <a href="https://github.com/S2E">https://github.com/S2E</a></li>
+<li>TinyInst:
+<a href="https://github.com/googleprojectzero/TinyInst">https://github.com/googleprojectzero/TinyInst</a>
+(Mac/Windows only)</li>
+<li>&hellip; please send me any missing that are good</li>
+</ul>
+<h2 id="closing-words">Closing words</h2>
+<p>That&rsquo;s it! News, corrections, updates? Send an email to <a href="mailto:vh@thc.org">vh@thc.org</a>.</p>
+</article>
+ 
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+      </footer>
+      
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#tldr">TL;DR:</a></li>
+    <li><a href="#fuzzing-binary-only-targets-with-afl">Fuzzing binary-only targets with AFL++</a>
+      <ul>
+        <li><a href="#qemu-mode">QEMU mode</a></li>
+        <li><a href="#wineqemu">WINE+QEMU</a></li>
+        <li><a href="#frida-mode">FRIDA mode</a></li>
+        <li><a href="#nyx-mode">Nyx mode</a></li>
+        <li><a href="#unicorn">Unicorn</a></li>
+        <li><a href="#shared-libraries">Shared libraries</a></li>
+        <li><a href="#coresight">Coresight</a></li>
+      </ul>
+    </li>
+    <li><a href="#binary-rewriters">Binary rewriters</a>
+      <ul>
+        <li><a href="#zafl">ZAFL</a></li>
+        <li><a href="#retrowrite">RetroWrite</a></li>
+        <li><a href="#dyninst">Dyninst</a></li>
+        <li><a href="#mcsema">Mcsema</a></li>
+      </ul>
+    </li>
+    <li><a href="#binary-tracers">Binary tracers</a>
+      <ul>
+        <li><a href="#pintool--dynamorio">Pintool &amp; DynamoRIO</a></li>
+        <li><a href="#intel-pt">Intel PT</a></li>
+      </ul>
+    </li>
+    <li><a href="#non-afl-solutions">Non-AFL++ solutions</a></li>
+    <li><a href="#closing-words">Closing words</a></li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
