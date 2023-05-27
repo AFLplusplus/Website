@@ -33,10 +33,10 @@
 
 
 
-<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.edc04666d2c37aab6ad3c6877c502a3f40eb1198ec0bd0b7da7f7185459f347a.js" integrity="sha256-7cBGZtLDeqtq08aHfFAqP0DrEZjsC9C32n9xhUWfNHo="></script>
+<script defer src="/en.search.min.96a315a9b241d5db3723ded739659a717a0c68f69011f167b7fa910b0c69b219.js" integrity="sha256-lqMVqbJB1ds3I97XOWWacXoMaPaQEfFnt/qRCwxpshk="></script>
 
 <!--
 Made with Book Theme
@@ -203,9 +203,9 @@ cross-platform binaries.</p>
 <p>For linux programs and its libraries, this is accomplished with a version of
 QEMU running in the lesser-known &ldquo;user space emulation&rdquo; mode. QEMU is a project
 separate from AFL++, but you can conveniently build the feature by doing:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cd qemu_mode
-</span></span><span style="display:flex;"><span>./build_qemu_support.sh
-</span></span></code></pre></div><p>The following setup to use QEMU mode is recommended:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd qemu_mode
+./build_qemu_support.sh
+</code></pre></div><p>The following setup to use QEMU mode is recommended:</p>
 <ul>
 <li>run 1 afl-fuzz -Q instance with CMPLOG (<code>-c 0</code> + <code>AFL_COMPCOV_LEVEL=2</code>)</li>
 <li>run 1 afl-fuzz -Q instance with QASAN (<code>AFL_USE_QASAN=1</code>)</li>
@@ -255,9 +255,9 @@ FRIDA mode is most of the times slightly faster than QEMU mode. It is also
 newer, lacks COMPCOV, and has the advantage that it works on MacOS (both intel
 and M1).</p>
 <p>To build FRIDA mode:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cd frida_mode
-</span></span><span style="display:flex;"><span>gmake
-</span></span></code></pre></div><p>For additional instructions and caveats, see
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd frida_mode
+gmake
+</code></pre></div><p>For additional instructions and caveats, see
 <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../frida_mode/README.md">frida_mode/README.md</a>.</p>
 <p>If possible, you should use the persistent mode, see
 <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.persistent_mode.md">instrumentation/README.persistent_mode.md</a>.
@@ -290,9 +290,9 @@ introduced in the patched QEMU Mode of AFL++ cannot be ported over to Unicorn.</
 <p>For non-Linux binaries, you can use AFL++&rsquo;s unicorn_mode which can emulate
 anything you want - for the price of speed and user written scripts.</p>
 <p>To build unicorn_mode:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cd unicorn_mode
-</span></span><span style="display:flex;"><span>./build_unicorn_support.sh
-</span></span></code></pre></div><p>For further information, check out
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd unicorn_mode
+./build_unicorn_support.sh
+</code></pre></div><p>For further information, check out
 <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../unicorn_mode/README.md">unicorn_mode/README.md</a>.</p>
 <h3 id="shared-libraries">Shared libraries</h3>
 <p>If the goal is to fuzz a dynamic library, then there are two options available.

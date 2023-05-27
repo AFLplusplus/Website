@@ -33,10 +33,10 @@
 
 
 
-<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.edc04666d2c37aab6ad3c6877c502a3f40eb1198ec0bd0b7da7f7185459f347a.js" integrity="sha256-7cBGZtLDeqtq08aHfFAqP0DrEZjsC9C32n9xhUWfNHo="></script>
+<script defer src="/en.search.min.96a315a9b241d5db3723ded739659a717a0c68f69011f167b7fa910b0c69b219.js" integrity="sha256-lqMVqbJB1ds3I97XOWWacXoMaPaQEfFnt/qRCwxpshk="></script>
 
 <!--
 Made with Book Theme
@@ -190,8 +190,8 @@ fuzzing by using libraries that perform mutations according to a given grammar.<
 or <code>AFL_PYTHON_MODULE</code> environment variable, and must export a fuzz function.
 Now AFL++ also supports multiple custom mutators which can be specified in the
 same <code>AFL_CUSTOM_MUTATOR_LIBRARY</code> environment variable like this.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export AFL_CUSTOM_MUTATOR_LIBRARY<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;full/path/to/mutator_first.so;full/path/to/mutator_second.so&#34;</span>
-</span></span></code></pre></div><p>For details, see <a href="#2-apis">APIs</a> and <a href="#3-usage">Usage</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export AFL_CUSTOM_MUTATOR_LIBRARY<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;full/path/to/mutator_first.so;full/path/to/mutator_second.so&#34;</span>
+</code></pre></div><p>For details, see <a href="#2-apis">APIs</a> and <a href="#3-usage">Usage</a>.</p>
 <p>The custom mutation stage is set to be the first non-deterministic stage (right
 before the havoc stage).</p>
 <p>Note: If <code>AFL_CUSTOM_MUTATOR_ONLY</code> is set, all mutations will solely be
@@ -202,63 +202,63 @@ of an **out_buf buffer, you have to use <code>afl_realloc()</code> for this, so 
 <code>include/alloc-inl.h</code> - otherwise afl-fuzz will crash when trying to free
 your buffers.</p>
 <p>C/C++:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">afl_custom_init</span>(afl_state_t <span style="color:#f92672">*</span>afl, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> seed);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">afl_custom_fuzz_count</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t buf_size);
-</span></span><span style="display:flex;"><span>size_t <span style="color:#a6e22e">afl_custom_fuzz</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t buf_size, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>out_buf, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>add_buf, size_t add_buf_size, size_t max_size);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">afl_custom_describe</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, size_t max_description_len);
-</span></span><span style="display:flex;"><span>size_t <span style="color:#a6e22e">afl_custom_post_process</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t buf_size, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>out_buf);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">afl_custom_init_trim</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t buf_size);
-</span></span><span style="display:flex;"><span>size_t <span style="color:#a6e22e">afl_custom_trim</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>out_buf);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">afl_custom_post_trim</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> success);
-</span></span><span style="display:flex;"><span>size_t <span style="color:#a6e22e">afl_custom_havoc_mutation</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t buf_size, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>out_buf, size_t max_size);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#a6e22e">afl_custom_havoc_mutation_probability</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#a6e22e">afl_custom_queue_get</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>filename);
-</span></span><span style="display:flex;"><span>u8 <span style="color:#a6e22e">afl_custom_queue_new_entry</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>filename_new_queue, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>filename_orig_queue);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span><span style="color:#f92672">*</span> <span style="color:#a6e22e">afl_custom_introspection</span>(my_mutator_t <span style="color:#f92672">*</span>data);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afl_custom_deinit</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data);
-</span></span></code></pre></div><p>Python:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init</span>(seed):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fuzz_count</span>(buf):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> cnt
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fuzz</span>(buf, add_buf, max_size):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> mutated_out
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">describe</span>(max_description_length):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;description_of_current_mutation&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">post_process</span>(buf):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> out_buf
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init_trim</span>(buf):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> cnt
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">trim</span>():
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> out_buf
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">post_trim</span>(success):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> next_index
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">havoc_mutation</span>(buf, max_size):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> mutated_out
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">havoc_mutation_probability</span>():
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> probability <span style="color:#75715e"># int in [0, 100]</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">queue_get</span>(filename):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">queue_new_entry</span>(filename_new_queue, filename_orig_queue):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">introspection</span>():
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> string
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">deinit</span>():  <span style="color:#75715e"># optional for Python</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
-</span></span></code></pre></div><h3 id="custom-mutation">Custom Mutation</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">afl_custom_init</span>(afl_state_t <span style="color:#f92672">*</span>afl, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> seed);
+<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">afl_custom_fuzz_count</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t buf_size);
+size_t <span style="color:#a6e22e">afl_custom_fuzz</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t buf_size, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>out_buf, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>add_buf, size_t add_buf_size, size_t max_size);
+<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">afl_custom_describe</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, size_t max_description_len);
+size_t <span style="color:#a6e22e">afl_custom_post_process</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t buf_size, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>out_buf);
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">afl_custom_init_trim</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t buf_size);
+size_t <span style="color:#a6e22e">afl_custom_trim</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>out_buf);
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">afl_custom_post_trim</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> success);
+size_t <span style="color:#a6e22e">afl_custom_havoc_mutation</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t buf_size, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>out_buf, size_t max_size);
+<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#a6e22e">afl_custom_havoc_mutation_probability</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data);
+<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#a6e22e">afl_custom_queue_get</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>filename);
+u8 <span style="color:#a6e22e">afl_custom_queue_new_entry</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>filename_new_queue, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>filename_orig_queue);
+<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span><span style="color:#f92672">*</span> <span style="color:#a6e22e">afl_custom_introspection</span>(my_mutator_t <span style="color:#f92672">*</span>data);
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afl_custom_deinit</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data);
+</code></pre></div><p>Python:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init</span>(seed):
+    <span style="color:#66d9ef">pass</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fuzz_count</span>(buf):
+    <span style="color:#66d9ef">return</span> cnt
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fuzz</span>(buf, add_buf, max_size):
+    <span style="color:#66d9ef">return</span> mutated_out
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">describe</span>(max_description_length):
+    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;description_of_current_mutation&#34;</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">post_process</span>(buf):
+    <span style="color:#66d9ef">return</span> out_buf
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init_trim</span>(buf):
+    <span style="color:#66d9ef">return</span> cnt
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">trim</span>():
+    <span style="color:#66d9ef">return</span> out_buf
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">post_trim</span>(success):
+    <span style="color:#66d9ef">return</span> next_index
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">havoc_mutation</span>(buf, max_size):
+    <span style="color:#66d9ef">return</span> mutated_out
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">havoc_mutation_probability</span>():
+    <span style="color:#66d9ef">return</span> probability <span style="color:#75715e"># int in [0, 100]</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">queue_get</span>(filename):
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">queue_new_entry</span>(filename_new_queue, filename_orig_queue):
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">introspection</span>():
+    <span style="color:#66d9ef">return</span> string
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">deinit</span>():  <span style="color:#75715e"># optional for Python</span>
+    <span style="color:#66d9ef">pass</span>
+</code></pre></div><h3 id="custom-mutation">Custom Mutation</h3>
 <ul>
 <li>
 <p><code>init</code>:</p>
@@ -404,10 +404,10 @@ trimmer. Use this to see if it works :)</p>
 <h3 id="prerequisite">Prerequisite</h3>
 <p>For Python mutators, the python 3 or 2 development package is required. On
 Debian/Ubuntu/Kali it can be installed like this:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install python3-dev
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># or</span>
-</span></span><span style="display:flex;"><span>sudo apt install python-dev
-</span></span></code></pre></div><p>Then, AFL++ can be compiled with Python support. The AFL++ Makefile detects
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt install python3-dev
+<span style="color:#75715e"># or</span>
+sudo apt install python-dev
+</code></pre></div><p>Then, AFL++ can be compiled with Python support. The AFL++ Makefile detects
 Python 2 and 3 through <code>python-config</code> if it is in the PATH and compiles
 <code>afl-fuzz</code> with the feature if available.</p>
 <p>Note: for some distributions, you might also need the package <code>python[23]-apt</code>.
@@ -415,20 +415,20 @@ In case your setup is different, set the necessary variables like this:
 <code>PYTHON_INCLUDE=/path/to/python/include LDFLAGS=-L/path/to/python/lib make</code>.</p>
 <h3 id="custom-mutator-preparation">Custom Mutator Preparation</h3>
 <p>For C/C++ mutators, the source code must be compiled as a shared object:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gcc -shared -Wall -O3 example.c -o example.so
-</span></span></code></pre></div><p>Note that if you specify multiple custom mutators, the corresponding functions
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gcc -shared -Wall -O3 example.c -o example.so
+</code></pre></div><p>Note that if you specify multiple custom mutators, the corresponding functions
 will be called in the order in which they are specified. E.g., the first
 <code>post_process</code> function of <code>example_first.so</code> will be called and then that of
 <code>example_second.so</code>.</p>
 <h3 id="run">Run</h3>
 <p>C/C++</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export AFL_CUSTOM_MUTATOR_LIBRARY<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/full/path/to/example_first.so;/full/path/to/example_second.so&#34;</span>
-</span></span><span style="display:flex;"><span>afl-fuzz /path/to/program
-</span></span></code></pre></div><p>Python</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export PYTHONPATH<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>dirname /full/path/to/example.py<span style="color:#e6db74">`</span>
-</span></span><span style="display:flex;"><span>export AFL_PYTHON_MODULE<span style="color:#f92672">=</span>example
-</span></span><span style="display:flex;"><span>afl-fuzz /path/to/program
-</span></span></code></pre></div><h2 id="4-example">4) Example</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export AFL_CUSTOM_MUTATOR_LIBRARY<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/full/path/to/example_first.so;/full/path/to/example_second.so&#34;</span>
+afl-fuzz /path/to/program
+</code></pre></div><p>Python</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export PYTHONPATH<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>dirname /full/path/to/example.py<span style="color:#e6db74">`</span>
+export AFL_PYTHON_MODULE<span style="color:#f92672">=</span>example
+afl-fuzz /path/to/program
+</code></pre></div><h2 id="4-example">4) Example</h2>
 <p>See <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../custom_mutators/examples/example.c">example.c</a> and
 <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../custom_mutators/examples/example.py">example.py</a>.</p>
 <h2 id="5-other-resources">5) Other Resources</h2>

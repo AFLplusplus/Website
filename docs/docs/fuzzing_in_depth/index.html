@@ -33,10 +33,10 @@
 
 
 
-<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.edc04666d2c37aab6ad3c6877c502a3f40eb1198ec0bd0b7da7f7185459f347a.js" integrity="sha256-7cBGZtLDeqtq08aHfFAqP0DrEZjsC9C32n9xhUWfNHo="></script>
+<script defer src="/en.search.min.96a315a9b241d5db3723ded739659a717a0c68f69011f167b7fa910b0c69b219.js" integrity="sha256-lqMVqbJB1ds3I97XOWWacXoMaPaQEfFnt/qRCwxpshk="></script>
 
 <!--
 Made with Book Theme
@@ -228,12 +228,12 @@ systems, this will be usually heavily cached, resulting in fairly modest
 is your responsibility to monitor for potential trouble; with very heavy I/O,
 the lifespan of many HDDs and SSDs may be reduced.</p>
 <p>A good way to monitor disk I/O on Linux is the <code>iostat</code> command:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ iostat -d <span style="color:#ae81ff">3</span> -x -k <span style="color:#f92672">[</span>...optional disk ID...<span style="color:#f92672">]</span>
-</span></span></code></pre></div><p>Using the <code>AFL_TMPDIR</code> environment variable and a RAM-disk, you can have the
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ iostat -d <span style="color:#ae81ff">3</span> -x -k <span style="color:#f92672">[</span>...optional disk ID...<span style="color:#f92672">]</span>
+</code></pre></div><p>Using the <code>AFL_TMPDIR</code> environment variable and a RAM-disk, you can have the
 heavy writing done in RAM to prevent the aforementioned wear and tear. For
 example, the following line will run a Docker container with all this preset:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># docker run -ti --mount type=tmpfs,destination=/ramdisk -e AFL_TMPDIR=/ramdisk aflplusplus/aflplusplus</span>
-</span></span></code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># docker run -ti --mount type=tmpfs,destination=/ramdisk -e AFL_TMPDIR=/ramdisk aflplusplus/aflplusplus</span>
+</code></pre></div></li>
 </ul>
 <h2 id="1-instrumenting-the-target">1. Instrumenting the target</h2>
 <h3 id="a-selecting-the-best-afl-compiler-for-instrumenting-the-target">a) Selecting the best AFL++ compiler for instrumenting the target</h3>
@@ -563,7 +563,7 @@ however, it is a long process as this has to be done for every file:</p>
 <pre tabindex="0"><code>mkdir input
 cd INPUTS_UNIQUE
 for i in *; do
-  afl-tmin -i &#34;$i&#34; -o &#34;../input/$i&#34; -- bin/target -someopt @@
+  afl-tmin -i &quot;$i&quot; -o &quot;../input/$i&quot; -- bin/target -someopt @@
 done
 </code></pre><p>This step can also be parallelized, e.g., with <code>parallel</code>.</p>
 <p>Note that this step is rather optional though.</p>
@@ -743,12 +743,12 @@ this directory to the other machines.</p>
 <p>Let&rsquo;s say all servers have the <code>-o out</code> directory in /target/foo/out, and you
 created a file <code>servers.txt</code> which contains the hostnames of all participating
 servers, plus you have an ssh key deployed to all of them, then run:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> FROM in <span style="color:#e6db74">`</span>cat servers.txt<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> TO in <span style="color:#e6db74">`</span>cat servers.txt<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
-</span></span><span style="display:flex;"><span>    rsync -rlpogtz --rsh<span style="color:#f92672">=</span>ssh $FROM:/target/foo/out/main-$FROM $TO:target/foo/out/
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">done</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
-</span></span></code></pre></div><p>You can run this manually, per cron job - as you need it. There is a more
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#66d9ef">for</span> FROM in <span style="color:#e6db74">`</span>cat servers.txt<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
+  <span style="color:#66d9ef">for</span> TO in <span style="color:#e6db74">`</span>cat servers.txt<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
+    rsync -rlpogtz --rsh<span style="color:#f92672">=</span>ssh $FROM:/target/foo/out/main-$FROM $TO:target/foo/out/
+  <span style="color:#66d9ef">done</span>
+<span style="color:#66d9ef">done</span>
+</code></pre></div><p>You can run this manually, per cron job - as you need it. There is a more
 complex and configurable script in
 <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../utils/distributed_fuzzing">utils/distributed_fuzzing</a>.</p>
 <h3 id="e-the-status-of-the-fuzz-campaign">e) The status of the fuzz campaign</h3>
@@ -781,8 +781,8 @@ output directory:</p>
 [*] Using SHARED MEMORY FUZZING feature.
 [*] Target map size: 9960
 [+] Processed 7849 input files.
-[+] Captured 4331 tuples (highest value 255, total values 67130596) in &#39;/dev/nul
-l&#39;.
+[+] Captured 4331 tuples (highest value 255, total values 67130596) in '/dev/nul
+l'.
 [+] A coverage of 4331 edges were achieved out of 9960 existing (43.48%) with 7849 input files.
 </code></pre><p>It is even better to check out the exact lines of code that have been reached -
 and which have not been found so far.</p>
@@ -912,8 +912,8 @@ is possible to get past an initial out-of-bounds read - and see what lies
 beneath.</p>
 <p>Oh, one more thing: for test case minimization, give afl-tmin a try. The tool
 can be operated in a very simple way:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>./afl-tmin -i test_case -o minimized_result -- /path/to/program <span style="color:#f92672">[</span>...<span style="color:#f92672">]</span>
-</span></span></code></pre></div><p>The tool works with crashing and non-crashing test cases alike. In the crash
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./afl-tmin -i test_case -o minimized_result -- /path/to/program <span style="color:#f92672">[</span>...<span style="color:#f92672">]</span>
+</code></pre></div><p>The tool works with crashing and non-crashing test cases alike. In the crash
 mode, it will happily accept instrumented and non-instrumented binaries. In the
 non-crashing mode, the minimizer relies on standard AFL++ instrumentation to
 make the file simpler without altering the execution path.</p>
