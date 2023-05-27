@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.96a315a9b241d5db3723ded739659a717a0c68f69011f167b7fa910b0c69b219.js" integrity="sha256-lqMVqbJB1ds3I97XOWWacXoMaPaQEfFnt/qRCwxpshk="></script>
+<script defer src="/en.search.min.797b113984428b9ffe575a30e67d0ba5620b4dcb425630e44a01b24df323efe9.js" integrity="sha256-eXsROYRCi5/&#43;V1ow5n0LpWILTctCVjDkSgGyTfMj7&#43;k="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.04c">Release 4.04c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.05c">Release 4.05c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -144,7 +144,9 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#version-405a-dev">Version ++4.05a (dev)</a></li>
+        <li><a href="#version-407a-dev">Version ++4.07a (dev)</a></li>
+        <li><a href="#version-406c-release">Version ++4.06c (release)</a></li>
+        <li><a href="#version-405c-release">Version ++4.05c (release)</a></li>
         <li><a href="#version-404c-release">Version ++4.04c (release)</a></li>
         <li><a href="#version-403c-release">Version ++4.03c (release)</a></li>
         <li><a href="#version-402c-release">Version ++4.02c (release)</a></li>
@@ -416,9 +418,123 @@ https://github.com/alex-shpak/hugo-book
 <article class="markdown"><h1 id="changelog">Changelog</h1>
 <p>This is the list of all noteworthy changes made in every public
 release of the tool. See README.md for the general instruction manual.</p>
-<h3 id="version-405a-dev">Version ++4.05a (dev)</h3>
+<h3 id="version-407a-dev">Version ++4.07a (dev)</h3>
 <ul>
-<li>your PR? :)</li>
+<li>afl-fuzz:
+<ul>
+<li>reverse reading the seeds only on restarts (increases performance)</li>
+<li>new env <code>AFL_POST_PROCESS_KEEP_ORIGINAL</code> to keep the orignal
+data before post process on finds (for atnwalk custom mutator)</li>
+<li>new env <code>AFL_IGNORE_PROBLEMS_COVERAGE</code> to ignore coverage from
+loaded libs after forkserver initialization (required by Mozilla)</li>
+</ul>
+</li>
+<li>afl-cc:
+<ul>
+<li>added @responsefile support</li>
+<li>new env <code>AFL_LLVM_LTO_SKIPINIT</code> to support the AFL++ based WASM
+(<a href="https://github.com/fgsect/WAFL">https://github.com/fgsect/WAFL</a>) project</li>
+<li>error and print help if afl-clan-lto is used with lto=thin</li>
+</ul>
+</li>
+<li>afl-showmap:
+<ul>
+<li>added custom mutator post_process and send support</li>
+<li>add <code>-I filelist</code> option, an alternative to <code>-i in_dir</code></li>
+</ul>
+</li>
+<li>afl-cmin + afl-cmin.bash:
+<ul>
+<li><code>-T threads</code> parallel task support, can be a huge speedup!</li>
+</ul>
+</li>
+<li>qemu_mode:
+<ul>
+<li>Persistent mode +QASAN support for ppc32 tragets by @worksbutnottested</li>
+</ul>
+</li>
+<li>a new grammar custom mutator atnwalk was submitted by @voidptr127 !</li>
+<li>two new custom mutators are now available:
+<ul>
+<li>TritonDSE in custom_mutators/aflpp_tritondse</li>
+<li>SymQEMU in custom_mutators/symqemu</li>
+</ul>
+</li>
+</ul>
+<h3 id="version-406c-release">Version ++4.06c (release)</h3>
+<ul>
+<li>afl-fuzz:
+<ul>
+<li>ensure temporary file descriptor is closed when not used</li>
+<li>added <code>AFL_NO_WARN_INSTABILITY</code></li>
+<li>added time_wo_finds to fuzzer_stats</li>
+<li>fixed a crash in pizza (1st april easter egg) mode. Sorry for
+everyone who was affected!</li>
+<li>allow pizza mode to be disabled when AFL_PIZZA_MODE is set to -1</li>
+<li>option <code>-p mmopt</code> now also selects new queue items more often</li>
+<li>fix bug in post_process custom mutator implementation</li>
+<li>print name of custom mutator in UI</li>
+<li>slight changes that improve fuzzer performance</li>
+</ul>
+</li>
+<li>afl-cc:
+<ul>
+<li>add CFI sanitizer variant to gcc targets</li>
+<li>llvm 16 + 17 support (thanks to @devnexen!)</li>
+<li>support llvm 15 native pcguard changes</li>
+<li>support for LLVMFuzzerTestOneInput -1 return</li>
+<li>LTO autoken and llvm_mode: added AFL_LLVM_DICT2FILE_NO_MAIN support</li>
+</ul>
+</li>
+<li>qemu_mode:
+<ul>
+<li>fix _RANGES envs to allow hyphens in the filenames</li>
+<li>basic riscv support</li>
+</ul>
+</li>
+<li>frida_mode:
+<ul>
+<li>added <code>AFL_FRIDA_STATS_INTERVAL</code></li>
+<li>fix issue on MacOS</li>
+</ul>
+</li>
+<li>unicorn_mode:
+<ul>
+<li>updated and minor issues fixed</li>
+</ul>
+</li>
+<li>nyx_mode support for all tools</li>
+<li>better sanitizer default options support for all tools</li>
+<li>new custom module: autotoken, a grammar free fuzzer for text inputs</li>
+<li>fixed custom mutator C examples</li>
+<li>more minor fixes and cross-platform support</li>
+</ul>
+<h3 id="version-405c-release">Version ++4.05c (release)</h3>
+<ul>
+<li>MacOS: libdislocator, libtokencap etc. do not work with modern
+MacOS anymore, but could be patched to work, see this issue if you
+want to make the effort and send a PR:
+<a href="https://github.com/AFLplusplus/AFLplusplus/issues/1594">https://github.com/AFLplusplus/AFLplusplus/issues/1594</a></li>
+<li>afl-fuzz:
+<ul>
+<li>added afl_custom_fuzz_send custom mutator feature. Now your can
+send fuzz data to the target as you need, e.g. via IPC.</li>
+<li>cmplog mode now has a -l R option for random colorization, thanks
+to guyf2010 for the PR!</li>
+<li>queue statistics are written every 30 minutes to
+out/NAME/queue_data if compiled with INTROSPECTION</li>
+<li>new env: AFL_FORK_SERVER_KILL_SIGNAL</li>
+</ul>
+</li>
+<li>afl-showmap/afl-cmin
+<ul>
+<li><code>-t none</code> now translates to <code>-t 120000</code> (120 seconds)</li>
+</ul>
+</li>
+<li>unicorn_mode updated</li>
+<li>updated rust custom mutator dependencies and LibAFL custom mutator</li>
+<li>overall better sanitizer default setting handling</li>
+<li>several minor bugfixes</li>
 </ul>
 <h3 id="version-404c-release">Version ++4.04c (release)</h3>
 <ul>
@@ -648,7 +764,7 @@ afl-showmap and other tools.</li>
 <li>afl-cc:
 <ul>
 <li>detect overflow reads on initial input buffer for asan</li>
-<li>new cmplog mode (incompatible with older afl++ versions)</li>
+<li>new cmplog mode (incompatible with older AFL++ versions)</li>
 <li>support llvm IR select instrumentation for default PCGUARD and LTO</li>
 <li>fix for shared linking on MacOS</li>
 <li>better selective instrumentation AFL_LLVM_{ALLOW|DENY}LIST
@@ -4647,7 +4763,9 @@ the environment variable AFL_CUSTOM_MUTATOR_LIBRARY.</p>
   <ul>
     <li>
       <ul>
-        <li><a href="#version-405a-dev">Version ++4.05a (dev)</a></li>
+        <li><a href="#version-407a-dev">Version ++4.07a (dev)</a></li>
+        <li><a href="#version-406c-release">Version ++4.06c (release)</a></li>
+        <li><a href="#version-405c-release">Version ++4.05c (release)</a></li>
         <li><a href="#version-404c-release">Version ++4.04c (release)</a></li>
         <li><a href="#version-403c-release">Version ++4.03c (release)</a></li>
         <li><a href="#version-402c-release">Version ++4.02c (release)</a></li>

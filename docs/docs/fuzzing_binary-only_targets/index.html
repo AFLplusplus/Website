@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.96a315a9b241d5db3723ded739659a717a0c68f69011f167b7fa910b0c69b219.js" integrity="sha256-lqMVqbJB1ds3I97XOWWacXoMaPaQEfFnt/qRCwxpshk="></script>
+<script defer src="/en.search.min.797b113984428b9ffe575a30e67d0ba5620b4dcb425630e44a01b24df323efe9.js" integrity="sha256-eXsROYRCi5/&#43;V1ow5n0LpWILTctCVjDkSgGyTfMj7&#43;k="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.04c">Release 4.04c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.05c">Release 4.05c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -323,10 +323,10 @@ afl-clang-fast&rsquo;s.</p>
 <p><a href="https://git.zephyr-software.com/opensrc/zafl">https://git.zephyr-software.com/opensrc/zafl</a></p>
 <h3 id="retrowrite">RetroWrite</h3>
 <p>RetroWrite is a static binary rewriter that can be combined with AFL++. If you
-have an x86_64 binary that still has its symbols (i.e., not stripped binary), is
-compiled with position independent code (PIC/PIE), and does not contain C++
-exceptions, then the RetroWrite solution might be for you. It decompiles to ASM
-files which can then be instrumented with afl-gcc.</p>
+have an x86_64 or arm64 binary that does not contain C++ exceptions and - if
+x86_64 - still has it&rsquo;s symbols and compiled with position independent code
+(PIC/PIE), then the RetroWrite solution might be for you.
+It decompiles to ASM files which can then be instrumented with afl-gcc.</p>
 <p>Binaries that are statically instrumented for fuzzing using RetroWrite are close
 in performance to compiler-instrumented binaries and outperform the QEMU-based
 instrumentation.</p>

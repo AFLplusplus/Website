@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.96a315a9b241d5db3723ded739659a717a0c68f69011f167b7fa910b0c69b219.js" integrity="sha256-lqMVqbJB1ds3I97XOWWacXoMaPaQEfFnt/qRCwxpshk="></script>
+<script defer src="/en.search.min.797b113984428b9ffe575a30e67d0ba5620b4dcb425630e44a01b24df323efe9.js" integrity="sha256-eXsROYRCi5/&#43;V1ow5n0LpWILTctCVjDkSgGyTfMj7&#43;k="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.04c">Release 4.04c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.05c">Release 4.05c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -273,6 +273,13 @@ the edge coverage result will be different across runs. Those edges that
 change are then flagged &ldquo;unstable&rdquo;.</p>
 <p>The more &ldquo;unstable&rdquo; edges there are, the harder it is for AFL++ to identify
 valid new paths.</p>
+<p>If you fuzz in persistent mode (<code>AFL_LOOP</code> or <code>LLVMFuzzerTestOneInput()</code>
+harnesses, a large number of unstable edges can mean that the target keeps
+internal state and therefore it is possible that crashes cannot be replayed.
+In such a case do either <strong>not</strong> fuzz in persistent mode (remove <code>AFL_LOOP()</code>
+from your harness or call <code>LLVMFuzzerTestOneInput()</code> harnesses with <code>@@</code>),
+or set a low  <code>AFL_LOOP</code> value, e.g. 100, and enable <code>AFL_PERSISTENT_RECORD</code>
+in <code>config.h</code> with the same value.</p>
 <p>A value above 90% is usually fine and a value above 80% is also still ok, and
 even a value above 20% can still result in successful finds of bugs. However,
 it is recommended that for values below 90% or 80% you should take
@@ -313,7 +320,8 @@ after the final dlopen().</p>
 <p>If this is not a viable option, you can set <code>AFL_IGNORE_PROBLEMS=1</code> but then
 the existing map will be used also for the newly loaded libraries, which
 allows it to work, however, the efficiency of the fuzzing will be partially
-degraded.</p>
+degraded. Note that there is additionally <code>AFL_IGNORE_PROBLEMS_COVERAGE</code> to
+additionally tell AFL++ to ignore any coverage from the late loaded libaries.</p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <p>If you see this kind of error when trying to instrument a target with

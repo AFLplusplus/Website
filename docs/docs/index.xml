@@ -36,7 +36,7 @@ Fuzzing a target with dlopen instrumented libraries If a source code based fuzzi
       
       <guid>https://aflplus.plus/docs/changelog/</guid>
       <description>Changelog This is the list of all noteworthy changes made in every public release of the tool. See README.md for the general instruction manual.
-Version ++4.05a (dev)  your PR? :)  Version ++4.04c (release)  fix gramatron and grammar_mutator build scripts enhancements to the afl-persistent-config and afl-system-config scripts afl-fuzz:  force writing all stats on exit ensure targets are killed on exit AFL_FORK_SERVER_KILL_SIGNAL added   afl-cc:  make gcc_mode (afl-gcc-fast) work with gcc down to version 3.</description>
+Version ++4.07a (dev)  afl-fuzz:  reverse reading the seeds only on restarts (increases performance) new env AFL_POST_PROCESS_KEEP_ORIGINAL to keep the orignal data before post process on finds (for atnwalk custom mutator) new env AFL_IGNORE_PROBLEMS_COVERAGE to ignore coverage from loaded libs after forkserver initialization (required by Mozilla)   afl-cc:  added @responsefile support new env AFL_LLVM_LTO_SKIPINIT to support the AFL++ based WASM (https://github.</description>
     </item>
     
     <item>
@@ -113,6 +113,7 @@ Fuzzing source code is a three-step process:
       
       <guid>https://aflplus.plus/docs/ideas/</guid>
       <description>Ideas for AFL++ In the following, we describe a variety of ideas that could be implemented for future AFL++ versions.
+NOTE: Our GSoC participation is concerning libafl, not AFL++.
 Analysis software Currently analysis is done by using afl-plot, which is rather outdated. A GTK or browser tool to create run-time analysis based on fuzzer_stats, queue/id* information and plot_data that allows for zooming in and out, changing min/max display values etc. and doing that for a single run, different runs and campaigns vs.</description>
     </item>
     
@@ -166,7 +167,7 @@ This enables you to create nice and readable dashboards containing all the infor
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/third_party_tools/</guid>
-      <description>Tools that help fuzzing with AFL++ Speeding up fuzzing  libfiowrapper - if the function you want to fuzz requires loading a file, this allows using the shared memory test case feature :-) - recommended.  Minimization of test cases  afl-pytmin - a wrapper for afl-tmin that tries to speed up the process of minimization of a single test case by using many CPU cores. afl-ddmin-mod - a variation of afl-tmin based on the ddmin algorithm.</description>
+      <description>Tools that help fuzzing with AFL++ AFL++ and other development languages  afl-rs - AFL++ for RUST WASM - AFL++ for WASM  Speeding up fuzzing  libfiowrapper - if the function you want to fuzz requires loading a file, this allows using the shared memory test case feature :-) - recommended.  Minimization of test cases  afl-pytmin - a wrapper for afl-tmin that tries to speed up the process of minimization of a single test case by using many CPU cores.</description>
     </item>
     
     <item>
@@ -178,7 +179,8 @@ This enables you to create nice and readable dashboards containing all the infor
       <description>Tutorials If you are a total newbie, try this guide:
  https://github.com/alex-maleno/Fuzzing-Module  Here are some good write-ups to show how to effectively use AFL++:
  https://aflplus.plus/docs/tutorials/libxml2_tutorial/ https://bananamafia.dev/post/gb-fuzz/ https://securitylab.github.com/research/fuzzing-challenges-solutions-1 https://securitylab.github.com/research/fuzzing-software-2 https://securitylab.github.com/research/fuzzing-sockets-FTP https://securitylab.github.com/research/fuzzing-sockets-FreeRDP https://securitylab.github.com/research/fuzzing-apache-1 https://mmmds.pl/fuzzing-map-parser-part-1-teeworlds/  If you do not want to follow a tutorial but rather try an exercise type of training, then we can highly recommend the following:
- https://github.com/antonio-morales/Fuzzing101  If you are interested in fuzzing structured data (where you define what the structure is), these links have you covered (some are outdated though):</description>
+ https://github.com/antonio-morales/Fuzzing101  Here is good workflow description for frida_mode:
+ https://blog.</description>
     </item>
     
     <item>

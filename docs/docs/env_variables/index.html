@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.96a315a9b241d5db3723ded739659a717a0c68f69011f167b7fa910b0c69b219.js" integrity="sha256-lqMVqbJB1ds3I97XOWWacXoMaPaQEfFnt/qRCwxpshk="></script>
+<script defer src="/en.search.min.797b113984428b9ffe575a30e67d0ba5620b4dcb425630e44a01b24df323efe9.js" integrity="sha256-eXsROYRCi5/&#43;V1ow5n0LpWILTctCVjDkSgGyTfMj7&#43;k="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.04c">Release 4.04c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.05c">Release 4.05c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -313,6 +313,10 @@ write all constant string comparisons to this file to be used later with
 afl-fuzz' <code>-x</code> option.</p>
 </li>
 <li>
+<p>An option to <code>AFL_LLVM_DICT2FILE</code> is <code>AFL_LLVM_DICT2FILE_NO_MAIN=1</code> which
+skill not parse <code>main()</code>.</p>
+</li>
+<li>
 <p><code>TMPDIR</code> and <code>AFL_KEEP_ASSEMBLY</code>, since no temporary assembly files are
 created.</p>
 </li>
@@ -348,7 +352,7 @@ then, e.g.: <code>AFL_LLVM_INSTRUMENT=CLASSIC,CTX,NGRAM-4</code></p>
 <p>NGRAM-x - deeper previous location coverage (from NGRAM-2 up to NGRAM-16)</p>
 </li>
 <li>
-<p>PCGUARD - our own pcgard based instrumentation (default)</p>
+<p>PCGUARD - our own pcguard based instrumentation (default)</p>
 </li>
 </ul>
 <h4 id="cmplog">CMPLOG</h4>
@@ -423,9 +427,12 @@ instrumentation. This defaults to 1.</li>
 the default <code>0x10000</code>. A value of 0 or empty sets the map address to be
 dynamic (the original AFL way, which is slower).</li>
 <li><code>AFL_LLVM_MAP_DYNAMIC</code> sets the shared memory address to be dynamic.</li>
+<li><code>AFL_LLVM_LTO_SKIPINIT</code> skips adding initialization code. Some global vars
+(e.g. the highest location ID) are not injected. Needed to instrument with
+<a href="https://github.com/fgsect/WAFL.git">WAFL</a>.
+For more information, see
+<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.lto.md">instrumentation/README.lto.md</a>.</li>
 </ul>
-<p>For more information, see
-<a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.lto.md">instrumentation/README.lto.md</a>.</p>
 <h4 id="ngram">NGRAM</h4>
 <p>Setting <code>AFL_LLVM_INSTRUMENT=NGRAM-{value}</code> or <code>AFL_LLVM_NGRAM_SIZE</code> activates
 ngram prev_loc coverage. Good values are 2, 4, or 8 (any value between 2 and 16
@@ -541,6 +548,10 @@ usually a bad idea!</p>
 new coverage</p>
 </li>
 <li>
+<p>On the contrary, if you are not interested in any timeouts, you can set
+<code>AFL_IGNORE_TIMEOUTS</code> to get a bit of speed instead.</p>
+</li>
+<li>
 <p><code>AFL_EXIT_ON_SEED_ISSUES</code> will restore the vanilla afl-fuzz behavior which
 does not allow crashes or timeout seeds in the initial -i corpus.</p>
 </li>
@@ -571,10 +582,10 @@ valid terminal was detected (for virtual consoles).</p>
 </li>
 <li>
 <p>Setting <code>AFL_FORKSRV_INIT_TMOUT</code> allows you to specify a different timeout
-to wait for the forkserver to spin up. The default is the <code>-t</code> value times
-<code>FORK_WAIT_MULT</code> from <code>config.h</code> (usually 10), so for a <code>-t 100</code>, the
-default would wait for <code>1000</code> milliseconds. Setting a different time here is
-useful if the target has a very slow startup time, for example, when doing
+to wait for the forkserver to spin up. The specified value is the new timeout, in milliseconds.
+The default is the <code>-t</code> value times <code>FORK_WAIT_MULT</code> from <code>config.h</code> (usually 10), so for a <code>-t 100</code>, the default would wait for <code>1000</code> milliseconds.
+The <code>AFL_FORKSRV_INIT_TMOUT</code> value does not get multiplied. It overwrites the initial timeout afl-fuzz waits for the target to come up with a constant time.
+Setting a different time here is useful if the target has a very slow startup time, for example, when doing
 full-system fuzzing or emulation, but you don&rsquo;t want the actual runs to wait
 too long for timeouts.</p>
 </li>
@@ -594,7 +605,8 @@ Others need not apply, unless they also want to disable the
 <li>
 <p>If afl-fuzz encounters an incorrect fuzzing setup during a fuzzing session
 (not at startup), it will terminate. If you do not want this, then you can
-set <code>AFL_IGNORE_PROBLEMS</code>.</p>
+set <code>AFL_IGNORE_PROBLEMS</code>. If you additionally want to also ignore coverage
+from late loaded libraries, you can set <code>AFL_IGNORE_PROBLEMS_COVERAGE</code>.</p>
 </li>
 <li>
 <p>When running in the <code>-M</code> or <code>-S</code> mode, setting <code>AFL_IMPORT_FIRST</code> causes the
@@ -683,7 +695,11 @@ output from afl-fuzz is redirected to a file or to a pipe.</p>
 </li>
 <li>
 <p>Setting <code>AFL_NO_STARTUP_CALIBRATION</code> will skip the initial calibration
-of all starting seeds, and start fuzzing at once.</p>
+of all starting seeds, and start fuzzing at once. Use with care, this
+degrades the fuzzing performance!</p>
+</li>
+<li>
+<p>Setting <code>AFL_NO_WARN_INSTABILITY</code> will suppress instability warnings.</p>
 </li>
 <li>
 <p>In QEMU mode (-Q) and FRIDA mode (-O), <code>AFL_PATH</code> will be searched for
@@ -799,8 +815,15 @@ constructors in your target, you can set <code>AFL_EARLY_FORKSERVER</code>.
 Note that this is not a compile time option but a runtime option :-)</p>
 </li>
 <li>
-<p>Set <code>AFL_PIZZA_MODE</code> to 1 to enable the April 1st stats menu, set to 0
+<p>Set <code>AFL_PIZZA_MODE</code> to 1 to enable the April 1st stats menu, set to -1
 to disable although it is 1st of April.</p>
+</li>
+<li>
+<p>If you need a specific interval to update fuzzer_stats file, you can
+set <code>AFL_FUZZER_STATS_UPDATE_INTERVAL</code> to the interval in seconds you&rsquo;d
+the file to be updated.
+Note that will not be exact and with slow targets it can take seconds
+until there is a slice for the time test.</p>
 </li>
 </ul>
 <h2 id="5-settings-for-afl-qemu-trace">5) Settings for afl-qemu-trace</h2>
@@ -830,6 +853,16 @@ the address of a basic block.</p>
 <li>
 <p>Setting <code>AFL_INST_LIBS</code> causes the translator to also instrument the code
 inside any dynamically linked libraries (notably including glibc).</p>
+</li>
+<li>
+<p>You can use <code>AFL_QEMU_INST_RANGES=0xaaaa-0xbbbb,0xcccc-0xdddd</code> to just
+instrument specific memory locations, e.g. a specific library.
+Excluding ranges takes priority over any included ranges or <code>AFL_INST_LIBS</code>.</p>
+</li>
+<li>
+<p>You can use <code>AFL_QEMU_EXCLUDE_RANGES=0xaaaa-0xbbbb,0xcccc-0xdddd</code> to <strong>NOT</strong>
+instrument specific memory locations, e.g. a specific library.
+Excluding ranges takes priority over any included ranges or <code>AFL_INST_LIBS</code>.</p>
 </li>
 <li>
 <p>It is possible to set <code>AFL_INST_RATIO</code> to skip the instrumentation on some
@@ -901,6 +934,8 @@ and their instrumented counterparts during block compilation.</li>
 <li><code>AFL_FRIDA_INST_JIT</code> - Enable the instrumentation of Just-In-Time compiled
 code. Code is considered to be JIT if the executable segment is not backed by
 a file.</li>
+<li><code>AFL_FRIDA_INST_NO_DYNAMIC_LOAD</code> - Don&rsquo;t instrument the code loaded late at
+runtime. Strictly limits instrumentation to what has been included.</li>
 <li><code>AFL_FRIDA_INST_NO_OPTIMIZE</code> - Don&rsquo;t use optimized inline assembly coverage
 instrumentation (the default where available). Required to use
 <code>AFL_FRIDA_INST_TRACE</code>.</li>

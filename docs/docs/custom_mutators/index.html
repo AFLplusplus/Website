@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.96a315a9b241d5db3723ded739659a717a0c68f69011f167b7fa910b0c69b219.js" integrity="sha256-lqMVqbJB1ds3I97XOWWacXoMaPaQEfFnt/qRCwxpshk="></script>
+<script defer src="/en.search.min.797b113984428b9ffe575a30e67d0ba5620b4dcb425630e44a01b24df323efe9.js" integrity="sha256-eXsROYRCi5/&#43;V1ow5n0LpWILTctCVjDkSgGyTfMj7&#43;k="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.04c">Release 4.04c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.05c">Release 4.05c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -153,6 +153,7 @@ https://github.com/alex-shpak/hugo-book
     <li><a href="#3-usage">3) Usage</a>
       <ul>
         <li><a href="#prerequisite">Prerequisite</a></li>
+        <li><a href="#helpers">Helpers</a></li>
         <li><a href="#custom-mutator-preparation">Custom Mutator Preparation</a></li>
         <li><a href="#run">Run</a></li>
       </ul>
@@ -204,6 +205,7 @@ your buffers.</p>
 <p>C/C++:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">afl_custom_init</span>(afl_state_t <span style="color:#f92672">*</span>afl, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> seed);
 <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">afl_custom_fuzz_count</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t buf_size);
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afl_custom_splice_optout</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data);
 size_t <span style="color:#a6e22e">afl_custom_fuzz</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t buf_size, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>out_buf, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>add_buf, size_t add_buf_size, size_t max_size);
 <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">afl_custom_describe</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, size_t max_description_len);
 size_t <span style="color:#a6e22e">afl_custom_post_process</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t buf_size, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>out_buf);
@@ -213,6 +215,7 @@ size_t <span style="color:#a6e22e">afl_custom_trim</span>(<span style="color:#66
 size_t <span style="color:#a6e22e">afl_custom_havoc_mutation</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t buf_size, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>out_buf, size_t max_size);
 <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#a6e22e">afl_custom_havoc_mutation_probability</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data);
 <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#a6e22e">afl_custom_queue_get</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>filename);
+<span style="color:#66d9ef">void</span> (<span style="color:#f92672">*</span>afl_custom_fuzz_send)(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> u8 <span style="color:#f92672">*</span>buf, size_t buf_size);
 u8 <span style="color:#a6e22e">afl_custom_queue_new_entry</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>filename_new_queue, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>filename_orig_queue);
 <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span><span style="color:#f92672">*</span> <span style="color:#a6e22e">afl_custom_introspection</span>(my_mutator_t <span style="color:#f92672">*</span>data);
 <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afl_custom_deinit</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data);
@@ -222,6 +225,9 @@ u8 <span style="color:#a6e22e">afl_custom_queue_new_entry</span>(<span style="co
 
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fuzz_count</span>(buf):
     <span style="color:#66d9ef">return</span> cnt
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">splice_optout</span>()
+    <span style="color:#66d9ef">pass</span>
 
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fuzz</span>(buf, add_buf, max_size):
     <span style="color:#66d9ef">return</span> mutated_out
@@ -250,6 +256,9 @@ u8 <span style="color:#a6e22e">afl_custom_queue_new_entry</span>(<span style="co
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">queue_get</span>(filename):
     <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
 
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fuzz_send</span>(buf):
+    <span style="color:#66d9ef">pass</span>
+
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">queue_new_entry</span>(filename_new_queue, filename_orig_queue):
     <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
 
@@ -261,7 +270,7 @@ u8 <span style="color:#a6e22e">afl_custom_queue_new_entry</span>(<span style="co
 </code></pre></div><h3 id="custom-mutation">Custom Mutation</h3>
 <ul>
 <li>
-<p><code>init</code>:</p>
+<p><code>init</code> (optional in Python):</p>
 <p>This method is called when AFL++ starts up and is used to seed RNG and set
 up buffers and state.</p>
 </li>
@@ -279,12 +288,20 @@ for a specific queue entry, use this function. This function is most useful
 if <code>AFL_CUSTOM_MUTATOR_ONLY</code> is <strong>not</strong> used.</p>
 </li>
 <li>
+<p><code>splice_optout</code> (optional):</p>
+<p>If this function is present, no splicing target is passed to the <code>fuzz</code>
+function. This saves time if splicing data is not needed by the custom
+fuzzing function.
+This function is never called, just needs to be present to activate.</p>
+</li>
+<li>
 <p><code>fuzz</code> (optional):</p>
 <p>This method performs custom mutations on a given input. It also accepts an
 additional test case. Note that this function is optional - but it makes
 sense to use it. You would only skip this if <code>post_process</code> is used to fix
 checksums etc. so if you are using it, e.g., as a post processing library.
-Note that a length &gt; 0 <em>must</em> be returned!</p>
+Note that a length &gt; 0 <em>must</em> be returned!
+The returned output buffer is under <strong>your</strong> memory management!</p>
 </li>
 <li>
 <p><code>describe</code> (optional):</p>
@@ -315,6 +332,16 @@ supports PyBUF_SIMPLE. These include bytes, bytearray, etc.</p>
 <p>You can decide in the post_process mutator to not send the mutated data
 to the target, e.g. if it is too short, too corrupted, etc. If so,
 return a NULL buffer and zero length (or a 0 length string in Python).</p>
+<p>NOTE: Do not make any random changes to the data in this function!</p>
+<p>PERFORMANCE for C/C++: If possible make the changes in-place (so modify
+the <code>*data</code> directly, and return it as <code>*outbuf = data</code>.</p>
+</li>
+<li>
+<p><code>fuzz_send</code> (optional):</p>
+<p>This method can be used if you want to send data to the target yourself,
+e.g. via IPC. This replaces some usage of utils/afl_proxy but requires
+that you start the target with afl-fuzz.
+Example: <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/custom_mutators/examples/custom_send.c">https://github.com/AFLplusplus/AFLplusplus/blob/stable/custom_mutators/examples/custom_send.c</a></p>
 </li>
 <li>
 <p><code>queue_new_entry</code> (optional):</p>
@@ -328,7 +355,7 @@ discovered if compiled with INTROSPECTION. The custom mutator can then
 return a string (const char *) that reports the exact mutations used.</p>
 </li>
 <li>
-<p><code>deinit</code>:</p>
+<p><code>deinit</code> (optional in Python):</p>
 <p>The last method to be called, deinitializing the state.</p>
 </li>
 </ul>
@@ -408,11 +435,31 @@ Debian/Ubuntu/Kali it can be installed like this:</p>
 <span style="color:#75715e"># or</span>
 sudo apt install python-dev
 </code></pre></div><p>Then, AFL++ can be compiled with Python support. The AFL++ Makefile detects
-Python 2 and 3 through <code>python-config</code> if it is in the PATH and compiles
-<code>afl-fuzz</code> with the feature if available.</p>
-<p>Note: for some distributions, you might also need the package <code>python[23]-apt</code>.
+Python3 through <code>python-config</code>/<code>python3-config</code> if it is in the PATH and
+compiles <code>afl-fuzz</code> with the feature if available.</p>
+<p>Note: for some distributions, you might also need the package <code>python[3]-apt</code>.
 In case your setup is different, set the necessary variables like this:
 <code>PYTHON_INCLUDE=/path/to/python/include LDFLAGS=-L/path/to/python/lib make</code>.</p>
+<h3 id="helpers">Helpers</h3>
+<p>For C/C++ custom mutators you get a pointer to <code>afl_state_t *afl</code> in the
+<code>afl_custom_init()</code> which contains all information that you need.
+Note that if you access it, you need to recompile your custom mutator if
+you update AFL++ because the structure might have changed!</p>
+<p>For mutators written in Python, Rust, GO, etc. there are a few environment
+variables set to help you to get started:</p>
+<p><code>AFL_CUSTOM_INFO_PROGRAM</code> - the program name of the target that is executed.
+If your custom mutator is used with modes like Qemu (<code>-Q</code>), this will still
+contain the target program, not afl-qemu-trace.</p>
+<p><code>AFL_CUSTOM_INFO_PROGRAM_INPUT</code> - if the <code>-f</code> parameter is used with afl-fuzz
+then this value is found in this environment variable.</p>
+<p><code>AFL_CUSTOM_INFO_PROGRAM_ARGV</code> - this contains the parameters given to the
+target program and still has the <code>@@</code> identifier in there.</p>
+<p>Note: If <code>AFL_CUSTOM_INFO_PROGRAM_INPUT</code> is empty and <code>AFL_CUSTOM_INFO_PROGRAM_ARGV</code>
+is either empty or does not contain <code>@@</code> then the target gets the input via
+<code>stdin</code>.</p>
+<p><code>AFL_CUSTOM_INFO_OUT</code> - This is the output directory for this fuzzer instance,
+so if <code>afl-fuzz</code> was called with <code>-o out -S foobar</code>, then this will be set to
+<code>out/foobar</code>.</p>
 <h3 id="custom-mutator-preparation">Custom Mutator Preparation</h3>
 <p>For C/C++ mutators, the source code must be compiled as a shared object:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gcc -shared -Wall -O3 example.c -o example.so
@@ -486,6 +533,7 @@ afl-fuzz /path/to/program
     <li><a href="#3-usage">3) Usage</a>
       <ul>
         <li><a href="#prerequisite">Prerequisite</a></li>
+        <li><a href="#helpers">Helpers</a></li>
         <li><a href="#custom-mutator-preparation">Custom Mutator Preparation</a></li>
         <li><a href="#run">Run</a></li>
       </ul>

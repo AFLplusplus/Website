@@ -4,27 +4,47 @@
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Executor - The LibAFL Fuzzing Library</title>
+        
+        
+
+
         <!-- Custom HTML head -->
+        
+
+
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
+        
         <link rel="icon" href="../favicon.svg">
+        
+        
         <link rel="shortcut icon" href="../favicon.png">
+        
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
+        
         <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
         <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="../highlight.css">
         <link rel="stylesheet" href="../tomorrow-night.css">
         <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        
+
+        
     </head>
     <body>
         <!-- Provide site root to javascript -->
@@ -83,6 +103,7 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
+                
                 <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
@@ -99,23 +120,29 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
+                        
                         <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
+                        
                     </div>
 
                     <h1 class="menu-title">The LibAFL Fuzzing Library</h1>
 
                     <div class="right-buttons">
+                        
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+                        
+                        
                     </div>
                 </div>
 
+                
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -123,6 +150,8 @@
                         </ul>
                     </div>
                 </div>
+                
+
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script type="text/javascript">
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
@@ -142,14 +171,14 @@ For instance, for in-memory fuzzers like libFuzzer an execution is a call to an 
 <p>In our model, it can also hold a set of Observers connected with each execution.</p>
 <p>In Rust, we bind this concept to the <a href="https://docs.rs/libafl/0/libafl/executors/trait.Executor.html"><code>Executor</code></a> trait. A structure implementing this trait must implement <a href="https://docs.rs/libafl/0/libafl/executors/trait.HasObservers.html"><code>HasObservers</code></a> too if wants to hold a set of Observers.</p>
 <p>By default, we implement some commonly used Executors such as <a href="https://docs.rs/libafl/0/libafl/executors/inprocess/struct.InProcessExecutor.html"><code>InProcessExecutor</code></a> in which the target is a harness function providing in-process crash detection. Another Executor is the <a href="https://docs.rs/libafl/0/libafl/executors/forkserver/struct.ForkserverExecutor.html"><code>ForkserverExecutor</code></a> that implements an AFL-like mechanism to spawn child processes to fuzz.</p>
-<p>A common pattern when creating an Executor is wrapping an existing one, for instance <a href="https://docs.rs/libafl/0.6.1/libafl/executors/timeout/struct.TimeoutExecutor.html"><code>TimeoutExecutor</code></a> wraps an executor and install a timeout callback before calling the original run function of the wrapped executor.</p>
+<p>A common pattern when creating an Executor is wrapping an existing one, for instance <a href="https://docs.rs/libafl/0.6.1/libafl/executors/timeout/struct.TimeoutExecutor.html"><code>TimeoutExecutor</code></a> wraps an executor and installs a timeout callback before calling the original <code>run</code> function of the wrapped executor.</p>
 <h2 id="inprocessexecutor"><a class="header" href="#inprocessexecutor">InProcessExecutor</a></h2>
 <p>Let's begin with the base case; <code>InProcessExecutor</code>.
 This executor executes the harness program (function) inside the fuzzer process.</p>
 <p>When you want to execute the harness as fast as possible, you will most probably want to use this <code>InprocessExecutor</code>.</p>
 <p>One thing to note here is, when your harness is likely to have heap corruption bugs, you want to use another allocator so that corrupted heap does not affect the fuzzer itself. (For example, we adopt MiMalloc in some of our fuzzers.). Alternatively you can compile your harness with address sanitizer to make sure you can catch these heap bugs.</p>
 <h2 id="forkserverexecutor"><a class="header" href="#forkserverexecutor">ForkserverExecutor</a></h2>
-<p>Next, we'll take a look at the <code>ForkserverExecutor</code>. In this case, it is <code>afl-cc</code> (from AFLplusplus/AFLplusplus) that compiles the harness code, and therefore, we can't use <code>EDGES_MAP</code> anymore. Hopefully, we have <a href="https://github.com/AFLplusplus/AFLplusplus/blob/2e15661f184c77ac1fbb6f868c894e946cbb7f17/instrumentation/afl-compiler-rt.o.c#L270"><em>a way</em></a> to tell the forkserver which map to record the coverage.</p>
+<p>Next, we'll take a look at the <code>ForkserverExecutor</code>. In this case, it is <code>afl-cc</code> (from AFLplusplus/AFLplusplus) that compiles the harness code, and therefore, we can't use <code>EDGES_MAP</code> anymore. Fortunately we have <a href="https://github.com/AFLplusplus/AFLplusplus/blob/2e15661f184c77ac1fbb6f868c894e946cbb7f17/instrumentation/afl-compiler-rt.o.c#L270"><em>a way</em></a> to tell the forkserver which map to record the coverage in.</p>
 <p>As you can see from the forkserver example,</p>
 <pre><code class="language-rust ignore">//Coverage map shared between observer and executor
 let mut shmem = StdShMemProvider::new().unwrap().new_shmem(MAP_SIZE).unwrap();
@@ -164,7 +193,7 @@ See AFL++'s <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/inst
 <h2 id="inprocessforkexecutor"><a class="header" href="#inprocessforkexecutor">InprocessForkExecutor</a></h2>
 <p>Finally, we'll talk about the <code>InProcessForkExecutor</code>.
 <code>InProcessForkExecutor</code> has only one difference from <code>InprocessExecutor</code>; It forks before running the harness and that's it.</p>
-<p>But why do we want to do so? well, under some circumstances, you may find your harness pretty unstable or your harness wreaks havoc on the global states. In this case, you want to fork it before executing the harness runs in the child process so that it doesn't break things.</p>
+<p>But why do we want to do so? Well, under some circumstances, you may find your harness pretty unstable or your harness wreaks havoc on the global states. In this case, you want to fork it before executing the harness runs in the child process so that it doesn't break things.</p>
 <p>However, we have to take care of the shared memory, it's the child process that runs the harness code and writes the coverage to the map.</p>
 <p>We have to make the map shared between the parent process and the child process, so we'll use shared memory again. You should compile your harness with <code>pointer_maps</code> (for <code>libafl_targets</code>) features enabled, this way, we can have a pointer; <code>EDGES_MAP_PTR</code> that can point to any coverage map.</p>
 <p>On your fuzzer side, you can allocate a shared memory region and make the <code>EDGES_MAP_PTR</code> point to your shared memory.</p>
@@ -183,38 +212,67 @@ unsafe{
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                        
                             <a rel="prev" href="../core_concepts/observer.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
+                        
+
+                        
                             <a rel="next" href="../core_concepts/feedback.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
+                        
+
                         <div style="clear: both"></div>
                     </nav>
                 </div>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
                     <a rel="prev" href="../core_concepts/observer.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
+                
+
+                
                     <a rel="next" href="../core_concepts/feedback.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
+                
             </nav>
 
         </div>
 
+        
+
+        
+
+        
+
+        
         <script type="text/javascript">
             window.playground_copyable = true;
         </script>
+        
+
+        
+
+        
         <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
         <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
         <script src="../book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
+        
+
+        
+
     </body>
 </html>

@@ -4,27 +4,47 @@
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Baby Fuzzer - The LibAFL Fuzzing Library</title>
+        
+        
+
+
         <!-- Custom HTML head -->
+        
+
+
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
+        
         <link rel="icon" href="../favicon.svg">
+        
+        
         <link rel="shortcut icon" href="../favicon.png">
+        
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
+        
         <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
         <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="../highlight.css">
         <link rel="stylesheet" href="../tomorrow-night.css">
         <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        
+
+        
     </head>
     <body>
         <!-- Provide site root to javascript -->
@@ -83,6 +103,7 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
+                
                 <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
@@ -99,23 +120,29 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
+                        
                         <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
+                        
                     </div>
 
                     <h1 class="menu-title">The LibAFL Fuzzing Library</h1>
 
                     <div class="right-buttons">
+                        
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+                        
+                        
                     </div>
                 </div>
 
+                
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -123,6 +150,8 @@
                         </ul>
                     </div>
                 </div>
+                
+
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script type="text/javascript">
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
@@ -147,7 +176,7 @@ Its purpose is solely to show the main components of the library, for a more in-
 </blockquote>
 <h2 id="creating-a-project"><a class="header" href="#creating-a-project">Creating a project</a></h2>
 <p>We use cargo to create a new Rust project with LibAFL as a dependency.</p>
-<pre><code class="language-sh">$ cargo new baby_fuzzer
+<pre><code class="language-console">$ cargo new baby_fuzzer
 $ cd baby_fuzzer
 </code></pre>
 <p>The generated <code>Cargo.toml</code> looks like the following:</p>
@@ -162,6 +191,7 @@ edition = &quot;2018&quot;
 [dependencies]
 </code></pre>
 <p>In order to use LibAFl we must add it as dependency adding <code>libafl = { path = &quot;path/to/libafl/&quot; }</code> under <code>[dependencies]</code>.
+That path actually needs to point to the <code>libafl</code> directory within the cloned repo, not the root of the repo itself.
 You can use the LibAFL version from <a href="https://crates.io/crates/libafl">crates.io</a> if you want, in this case, you have to use <code>libafl = &quot;*&quot;</code> to get the latest version (or set it to the current version).</p>
 <p>As we are going to fuzz Rust code, we want that a panic does not simply cause the program to exit, but raise an <code>abort</code> that can then be caught by the fuzzer.
 To do that, we specify <code>panic = &quot;abort&quot;</code> in the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html">profiles</a>.</p>
@@ -195,11 +225,11 @@ To start, we create the closure that we want to fuzz. It takes a buffer as input
 <pre><pre class="playground"><code class="language-rust">extern crate libafl;
 use libafl::{
     bolts::AsSlice,
-    inputs::{BytesInput, HasTargetBytes},
     executors::ExitKind,
+    inputs::{BytesInput, HasTargetBytes},
 };
 
-fn main(){
+fn main() {
     let mut harness = |input: &amp;BytesInput| {
         let target = input.target_bytes();
         let buf = target.as_slice();
@@ -218,23 +248,92 @@ fn main(){
     harness(&amp;input);
 }
 </code></pre></pre>
-<h2 id="generating-and-running-some-tests"><a class="header" href="#generating-and-running-some-tests">Generating and running some tests</a></h2>
-<p>One of the main components that a LibAFL-based fuzzer uses is the State, a container of the data that is evolved during the fuzzing process.
-Includes all State, such as the Corpus of inputs, the current RNG state, and potential Metadata for the testcases and run.
-In our <code>main</code> we create a basic State instance like the following:</p>
-<pre><code class="language-rust ignore">// create a State from scratch
-let mut state = StdState::new(
-    // RNG
-    StdRand::with_seed(current_nanos()),
-    // Corpus that will be evolved, we keep it in memory for performance
-    InMemoryCorpus::new(),
-    // Corpus in which we store solutions (crashes in this example),
-    // on disk so the user can get them after stopping the fuzzer
-    OnDiskCorpus::new(PathBuf::from(&quot;./crashes&quot;)).unwrap(),
-    &amp;mut (),
-    &amp;mut ()
-).unwrap();
+<p>To test the crash manually, you can add a feature in <code>Cargo.toml</code> that enables the call that triggers the panic:</p>
+<pre><code class="language-toml">[features]
+panic = []
 </code></pre>
+<p>And then run the program with that feature activated:</p>
+<pre><code class="language-console">$ cargo run -F panic
+</code></pre>
+<p>And you should see the program crash as expected.</p>
+<h2 id="generating-and-running-some-tests"><a class="header" href="#generating-and-running-some-tests">Generating and running some tests</a></h2>
+<p>One of the main components that a LibAFL-based fuzzer uses is the State, a container of the data that will evolve during the fuzzing process.
+It includes all state, such as the Corpus of inputs, the current RNG state, and potential Metadata for the testcases and run.
+In our <code>main</code> we create a basic State instance like the following:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate libafl;
+</span><span class="boring">
+</span><span class="boring">use libafl::{
+</span><span class="boring">    bolts::{current_nanos, rands::StdRand, AsSlice},
+</span><span class="boring">    corpus::{InMemoryCorpus, OnDiskCorpus},
+</span><span class="boring">    events::SimpleEventManager,
+</span><span class="boring">    executors::{inprocess::InProcessExecutor, ExitKind},
+</span><span class="boring">    fuzzer::StdFuzzer,
+</span><span class="boring">    generators::RandPrintablesGenerator,
+</span><span class="boring">    inputs::{BytesInput, HasTargetBytes},
+</span><span class="boring">    monitors::SimpleMonitor,
+</span><span class="boring">    schedulers::QueueScheduler,
+</span><span class="boring">    state::StdState,
+</span><span class="boring">};
+</span><span class="boring">use std::path::PathBuf;
+</span><span class="boring">
+</span><span class="boring">fn main() {
+</span><span class="boring">    let mut harness = |input: &amp;BytesInput| {
+</span><span class="boring">        let target = input.target_bytes();
+</span><span class="boring">        let buf = target.as_slice();
+</span><span class="boring">        if buf.len() &gt; 0 &amp;&amp; buf[0] == 'a' as u8 {
+</span><span class="boring">            if buf.len() &gt; 1 &amp;&amp; buf[1] == 'b' as u8 {
+</span><span class="boring">                if buf.len() &gt; 2 &amp;&amp; buf[2] == 'c' as u8 {
+</span><span class="boring">                    panic!(&quot;=)&quot;);
+</span><span class="boring">                }
+</span><span class="boring">            }
+</span><span class="boring">        }
+</span><span class="boring">        ExitKind::Ok
+</span><span class="boring">    };
+</span><span class="boring">    // To test the panic:
+</span><span class="boring">    let input = BytesInput::new(Vec::from(&quot;abc&quot;));
+</span><span class="boring">    #[cfg(feature = &quot;panic&quot;)]
+</span><span class="boring">    harness(&amp;input);
+</span><span class="boring">
+</span>    // create a State from scratch
+    let mut state = StdState::new(
+        // RNG
+        StdRand::with_seed(current_nanos()),
+        // Corpus that will be evolved, we keep it in memory for performance
+        InMemoryCorpus::new(),
+        // Corpus in which we store solutions (crashes in this example),
+        // on disk so the user can get them after stopping the fuzzer
+        OnDiskCorpus::new(PathBuf::from(&quot;./crashes&quot;)).unwrap(),
+        &amp;mut (),
+        &amp;mut (),
+    )
+    .unwrap();
+<span class="boring">
+</span><span class="boring">    // The Monitor trait defines how the fuzzer stats are displayed to the user
+</span><span class="boring">    let mon = SimpleMonitor::new(|s| println!(&quot;{s}&quot;));
+</span><span class="boring">
+</span><span class="boring">    // The event manager handles the various events generated during the fuzzing loop
+</span><span class="boring">    // such as the notification of the addition of a new item to the corpus
+</span><span class="boring">    let mut mgr = SimpleEventManager::new(mon);
+</span><span class="boring">
+</span><span class="boring">    // A queue policy to get testcasess from the corpus
+</span><span class="boring">    let scheduler = QueueScheduler::new();
+</span><span class="boring">
+</span><span class="boring">    // A fuzzer with feedbacks and a corpus scheduler
+</span><span class="boring">    let mut fuzzer = StdFuzzer::new(scheduler, (), ());
+</span><span class="boring">
+</span><span class="boring">    // Create the executor for an in-process function
+</span><span class="boring">    let mut executor = InProcessExecutor::new(&amp;mut harness, (), &amp;mut fuzzer, &amp;mut state, &amp;mut mgr)
+</span><span class="boring">        .expect(&quot;Failed to create the Executor&quot;);
+</span><span class="boring">
+</span><span class="boring">    // Generator of printable bytearrays of max size 32
+</span><span class="boring">    let mut generator = RandPrintablesGenerator::new(32);
+</span><span class="boring">
+</span><span class="boring">    // Generate 8 initial inputs
+</span><span class="boring">    state
+</span><span class="boring">        .generate_initial_inputs(&amp;mut fuzzer, &amp;mut executor, &amp;mut generator, &amp;mut mgr, 8)
+</span><span class="boring">        .expect(&quot;Failed to generate the initial corpus&quot;);
+</span><span class="boring">}
+</span></code></pre></pre>
 <ul>
 <li>
 <p>The first parameter is a random number generator, that is part of the fuzzer state, in this case, we use the default one <code>StdRand</code>, but you can choose a different one. We seed it with the current nanoseconds.</p>
@@ -244,62 +343,321 @@ let mut state = StdState::new(
 <p>To avoid type annotation error, you can use <code>InMemoryCorpus::&lt;BytesInput&gt;::new()</code> to replace <code>InMemoryCorpus::new()</code>. If not, type annotation will be automatically inferred when adding <code>executor</code>.</p>
 </li>
 <li>
-<p>third parameter is another corpus that stores the &quot;solution&quot; testcases for the fuzzer. For our purpose, the solution is the input that triggers the panic. In this case, we want to store it to disk under the <code>crashes</code> directory, so we can inspect it.</p>
+<p>The third parameter is another Corpus that stores the &quot;solution&quot; testcases for the fuzzer. For our purpose, the solution is the input that triggers the panic. In this case, we want to store it to disk under the <code>crashes</code> directory, so we can inspect it.</p>
 </li>
 <li>
-<p>last two parameters are feedback and objective, we will discuss them later.</p>
+<p>The last two parameters are feedback and objective, we will discuss them later.</p>
 </li>
 </ul>
 <p>Another required component is the <strong>EventManager</strong>. It handles some events such as the addition of a testcase to the corpus during the fuzzing process. For our purpose, we use the simplest one that just displays the information about these events to the user using a <code>Monitor</code> instance.</p>
-<pre><code class="language-rust ignore">// The Monitor trait defines how the fuzzer stats are displayed to the user
-let mon = SimpleMonitor::new(|s| println!(&quot;{}&quot;, s));
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate libafl;
+</span><span class="boring">
+</span><span class="boring">use libafl::{
+</span><span class="boring">    bolts::{current_nanos, rands::StdRand, AsSlice},
+</span><span class="boring">    corpus::{InMemoryCorpus, OnDiskCorpus},
+</span><span class="boring">    events::SimpleEventManager,
+</span><span class="boring">    executors::{inprocess::InProcessExecutor, ExitKind},
+</span><span class="boring">    fuzzer::StdFuzzer,
+</span><span class="boring">    generators::RandPrintablesGenerator,
+</span><span class="boring">    inputs::{BytesInput, HasTargetBytes},
+</span><span class="boring">    monitors::SimpleMonitor,
+</span><span class="boring">    schedulers::QueueScheduler,
+</span><span class="boring">    state::StdState,
+</span><span class="boring">};
+</span><span class="boring">use std::path::PathBuf;
+</span><span class="boring">
+</span><span class="boring">fn main() {
+</span><span class="boring">    let mut harness = |input: &amp;BytesInput| {
+</span><span class="boring">        let target = input.target_bytes();
+</span><span class="boring">        let buf = target.as_slice();
+</span><span class="boring">        if buf.len() &gt; 0 &amp;&amp; buf[0] == 'a' as u8 {
+</span><span class="boring">            if buf.len() &gt; 1 &amp;&amp; buf[1] == 'b' as u8 {
+</span><span class="boring">                if buf.len() &gt; 2 &amp;&amp; buf[2] == 'c' as u8 {
+</span><span class="boring">                    panic!(&quot;=)&quot;);
+</span><span class="boring">                }
+</span><span class="boring">            }
+</span><span class="boring">        }
+</span><span class="boring">        ExitKind::Ok
+</span><span class="boring">    };
+</span><span class="boring">    // To test the panic:
+</span><span class="boring">    let input = BytesInput::new(Vec::from(&quot;abc&quot;));
+</span><span class="boring">    #[cfg(feature = &quot;panic&quot;)]
+</span><span class="boring">    harness(&amp;input);
+</span><span class="boring">
+</span><span class="boring">    // create a State from scratch
+</span><span class="boring">    let mut state = StdState::new(
+</span><span class="boring">        // RNG
+</span><span class="boring">        StdRand::with_seed(current_nanos()),
+</span><span class="boring">        // Corpus that will be evolved, we keep it in memory for performance
+</span><span class="boring">        InMemoryCorpus::new(),
+</span><span class="boring">        // Corpus in which we store solutions (crashes in this example),
+</span><span class="boring">        // on disk so the user can get them after stopping the fuzzer
+</span><span class="boring">        OnDiskCorpus::new(PathBuf::from(&quot;./crashes&quot;)).unwrap(),
+</span><span class="boring">        &amp;mut (),
+</span><span class="boring">        &amp;mut (),
+</span><span class="boring">    )
+</span><span class="boring">    .unwrap();
+</span><span class="boring">
+</span>    // The Monitor trait defines how the fuzzer stats are displayed to the user
+    let mon = SimpleMonitor::new(|s| println!(&quot;{s}&quot;));
 
-// The event manager handle the various events generated during the fuzzing loop
-// such as the notification of the addition of a new item to the corpus
-let mut mgr = SimpleEventManager::new(mon);
-</code></pre>
+    // The event manager handles the various events generated during the fuzzing loop
+    // such as the notification of the addition of a new item to the corpus
+    let mut mgr = SimpleEventManager::new(mon);
+<span class="boring">
+</span><span class="boring">    // A queue policy to get testcasess from the corpus
+</span><span class="boring">    let scheduler = QueueScheduler::new();
+</span><span class="boring">
+</span><span class="boring">    // A fuzzer with feedbacks and a corpus scheduler
+</span><span class="boring">    let mut fuzzer = StdFuzzer::new(scheduler, (), ());
+</span><span class="boring">
+</span><span class="boring">    // Create the executor for an in-process function
+</span><span class="boring">    let mut executor = InProcessExecutor::new(&amp;mut harness, (), &amp;mut fuzzer, &amp;mut state, &amp;mut mgr)
+</span><span class="boring">        .expect(&quot;Failed to create the Executor&quot;);
+</span><span class="boring">
+</span><span class="boring">    // Generator of printable bytearrays of max size 32
+</span><span class="boring">    let mut generator = RandPrintablesGenerator::new(32);
+</span><span class="boring">
+</span><span class="boring">    // Generate 8 initial inputs
+</span><span class="boring">    state
+</span><span class="boring">        .generate_initial_inputs(&amp;mut fuzzer, &amp;mut executor, &amp;mut generator, &amp;mut mgr, 8)
+</span><span class="boring">        .expect(&quot;Failed to generate the initial corpus&quot;);
+</span><span class="boring">}
+</span></code></pre></pre>
 <p>In addition, we have the <strong>Fuzzer</strong>, an entity that contains some actions that alter the State. One of these actions is the scheduling of the testcases to the fuzzer using a <strong>Scheduler</strong>.
 We create it as <code>QueueScheduler</code>, a scheduler that serves testcases to the fuzzer in a FIFO fashion.</p>
-<pre><code class="language-rust ignore">// A queue policy to get testcasess from the corpus
-let scheduler = QueueScheduler::new();
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate libafl;
+</span><span class="boring">
+</span><span class="boring">use libafl::{
+</span><span class="boring">    bolts::{current_nanos, rands::StdRand, AsSlice},
+</span><span class="boring">    corpus::{InMemoryCorpus, OnDiskCorpus},
+</span><span class="boring">    events::SimpleEventManager,
+</span><span class="boring">    executors::{inprocess::InProcessExecutor, ExitKind},
+</span><span class="boring">    fuzzer::StdFuzzer,
+</span><span class="boring">    generators::RandPrintablesGenerator,
+</span><span class="boring">    inputs::{BytesInput, HasTargetBytes},
+</span><span class="boring">    monitors::SimpleMonitor,
+</span><span class="boring">    schedulers::QueueScheduler,
+</span><span class="boring">    state::StdState,
+</span><span class="boring">};
+</span><span class="boring">use std::path::PathBuf;
+</span><span class="boring">
+</span><span class="boring">fn main() {
+</span><span class="boring">    let mut harness = |input: &amp;BytesInput| {
+</span><span class="boring">        let target = input.target_bytes();
+</span><span class="boring">        let buf = target.as_slice();
+</span><span class="boring">        if buf.len() &gt; 0 &amp;&amp; buf[0] == 'a' as u8 {
+</span><span class="boring">            if buf.len() &gt; 1 &amp;&amp; buf[1] == 'b' as u8 {
+</span><span class="boring">                if buf.len() &gt; 2 &amp;&amp; buf[2] == 'c' as u8 {
+</span><span class="boring">                    panic!(&quot;=)&quot;);
+</span><span class="boring">                }
+</span><span class="boring">            }
+</span><span class="boring">        }
+</span><span class="boring">        ExitKind::Ok
+</span><span class="boring">    };
+</span><span class="boring">    // To test the panic:
+</span><span class="boring">    let input = BytesInput::new(Vec::from(&quot;abc&quot;));
+</span><span class="boring">    #[cfg(feature = &quot;panic&quot;)]
+</span><span class="boring">    harness(&amp;input);
+</span><span class="boring">
+</span><span class="boring">    // create a State from scratch
+</span><span class="boring">    let mut state = StdState::new(
+</span><span class="boring">        // RNG
+</span><span class="boring">        StdRand::with_seed(current_nanos()),
+</span><span class="boring">        // Corpus that will be evolved, we keep it in memory for performance
+</span><span class="boring">        InMemoryCorpus::new(),
+</span><span class="boring">        // Corpus in which we store solutions (crashes in this example),
+</span><span class="boring">        // on disk so the user can get them after stopping the fuzzer
+</span><span class="boring">        OnDiskCorpus::new(PathBuf::from(&quot;./crashes&quot;)).unwrap(),
+</span><span class="boring">        &amp;mut (),
+</span><span class="boring">        &amp;mut (),
+</span><span class="boring">    )
+</span><span class="boring">    .unwrap();
+</span><span class="boring">
+</span><span class="boring">    // The Monitor trait defines how the fuzzer stats are displayed to the user
+</span><span class="boring">    let mon = SimpleMonitor::new(|s| println!(&quot;{s}&quot;));
+</span><span class="boring">
+</span><span class="boring">    // The event manager handles the various events generated during the fuzzing loop
+</span><span class="boring">    // such as the notification of the addition of a new item to the corpus
+</span><span class="boring">    let mut mgr = SimpleEventManager::new(mon);
+</span><span class="boring">
+</span>    // A queue policy to get testcasess from the corpus
+    let scheduler = QueueScheduler::new();
 
-// A fuzzer with feedbacks and a corpus scheduler
-let mut fuzzer = StdFuzzer::new(scheduler, (), ());
-</code></pre>
+    // A fuzzer with feedbacks and a corpus scheduler
+    let mut fuzzer = StdFuzzer::new(scheduler, (), ());
+<span class="boring">
+</span><span class="boring">    // Create the executor for an in-process function
+</span><span class="boring">    let mut executor = InProcessExecutor::new(&amp;mut harness, (), &amp;mut fuzzer, &amp;mut state, &amp;mut mgr)
+</span><span class="boring">        .expect(&quot;Failed to create the Executor&quot;);
+</span><span class="boring">
+</span><span class="boring">    // Generator of printable bytearrays of max size 32
+</span><span class="boring">    let mut generator = RandPrintablesGenerator::new(32);
+</span><span class="boring">
+</span><span class="boring">    // Generate 8 initial inputs
+</span><span class="boring">    state
+</span><span class="boring">        .generate_initial_inputs(&amp;mut fuzzer, &amp;mut executor, &amp;mut generator, &amp;mut mgr, 8)
+</span><span class="boring">        .expect(&quot;Failed to generate the initial corpus&quot;);
+</span><span class="boring">}
+</span></code></pre></pre>
 <p>Last but not least, we need an <strong>Executor</strong> that is the entity responsible to run our program under test. In this example, we want to run the harness function in-process (without forking off a child, for example), and so we use the <code>InProcessExecutor</code>.</p>
-<pre><code class="language-rust ignore">// Create the executor for an in-process function
-let mut executor = InProcessExecutor::new(
-    &amp;mut harness,
-    (),
-    &amp;mut fuzzer,
-    &amp;mut state,
-    &amp;mut mgr,
-)
-.expect(&quot;Failed to create the Executor&quot;);
-</code></pre>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate libafl;
+</span><span class="boring">
+</span><span class="boring">use libafl::{
+</span><span class="boring">    bolts::{current_nanos, rands::StdRand, AsSlice},
+</span><span class="boring">    corpus::{InMemoryCorpus, OnDiskCorpus},
+</span><span class="boring">    events::SimpleEventManager,
+</span><span class="boring">    executors::{inprocess::InProcessExecutor, ExitKind},
+</span><span class="boring">    fuzzer::StdFuzzer,
+</span><span class="boring">    generators::RandPrintablesGenerator,
+</span><span class="boring">    inputs::{BytesInput, HasTargetBytes},
+</span><span class="boring">    monitors::SimpleMonitor,
+</span><span class="boring">    schedulers::QueueScheduler,
+</span><span class="boring">    state::StdState,
+</span><span class="boring">};
+</span><span class="boring">use std::path::PathBuf;
+</span><span class="boring">
+</span><span class="boring">fn main() {
+</span><span class="boring">    let mut harness = |input: &amp;BytesInput| {
+</span><span class="boring">        let target = input.target_bytes();
+</span><span class="boring">        let buf = target.as_slice();
+</span><span class="boring">        if buf.len() &gt; 0 &amp;&amp; buf[0] == 'a' as u8 {
+</span><span class="boring">            if buf.len() &gt; 1 &amp;&amp; buf[1] == 'b' as u8 {
+</span><span class="boring">                if buf.len() &gt; 2 &amp;&amp; buf[2] == 'c' as u8 {
+</span><span class="boring">                    panic!(&quot;=)&quot;);
+</span><span class="boring">                }
+</span><span class="boring">            }
+</span><span class="boring">        }
+</span><span class="boring">        ExitKind::Ok
+</span><span class="boring">    };
+</span><span class="boring">    // To test the panic:
+</span><span class="boring">    let input = BytesInput::new(Vec::from(&quot;abc&quot;));
+</span><span class="boring">    #[cfg(feature = &quot;panic&quot;)]
+</span><span class="boring">    harness(&amp;input);
+</span><span class="boring">
+</span><span class="boring">    // create a State from scratch
+</span><span class="boring">    let mut state = StdState::new(
+</span><span class="boring">        // RNG
+</span><span class="boring">        StdRand::with_seed(current_nanos()),
+</span><span class="boring">        // Corpus that will be evolved, we keep it in memory for performance
+</span><span class="boring">        InMemoryCorpus::new(),
+</span><span class="boring">        // Corpus in which we store solutions (crashes in this example),
+</span><span class="boring">        // on disk so the user can get them after stopping the fuzzer
+</span><span class="boring">        OnDiskCorpus::new(PathBuf::from(&quot;./crashes&quot;)).unwrap(),
+</span><span class="boring">        &amp;mut (),
+</span><span class="boring">        &amp;mut (),
+</span><span class="boring">    )
+</span><span class="boring">    .unwrap();
+</span><span class="boring">
+</span><span class="boring">    // The Monitor trait defines how the fuzzer stats are displayed to the user
+</span><span class="boring">    let mon = SimpleMonitor::new(|s| println!(&quot;{s}&quot;));
+</span><span class="boring">
+</span><span class="boring">    // The event manager handles the various events generated during the fuzzing loop
+</span><span class="boring">    // such as the notification of the addition of a new item to the corpus
+</span><span class="boring">    let mut mgr = SimpleEventManager::new(mon);
+</span><span class="boring">
+</span><span class="boring">    // A queue policy to get testcasess from the corpus
+</span><span class="boring">    let scheduler = QueueScheduler::new();
+</span><span class="boring">
+</span><span class="boring">    // A fuzzer with feedbacks and a corpus scheduler
+</span><span class="boring">    let mut fuzzer = StdFuzzer::new(scheduler, (), ());
+</span><span class="boring">
+</span>    // Create the executor for an in-process function
+    let mut executor = InProcessExecutor::new(&amp;mut harness, (), &amp;mut fuzzer, &amp;mut state, &amp;mut mgr)
+        .expect(&quot;Failed to create the Executor&quot;);
+<span class="boring">
+</span><span class="boring">    // Generator of printable bytearrays of max size 32
+</span><span class="boring">    let mut generator = RandPrintablesGenerator::new(32);
+</span><span class="boring">
+</span><span class="boring">    // Generate 8 initial inputs
+</span><span class="boring">    state
+</span><span class="boring">        .generate_initial_inputs(&amp;mut fuzzer, &amp;mut executor, &amp;mut generator, &amp;mut mgr, 8)
+</span><span class="boring">        .expect(&quot;Failed to generate the initial corpus&quot;);
+</span><span class="boring">}
+</span></code></pre></pre>
 <p>It takes a reference to the harness, the state, and the event manager. We will discuss the second parameter later.
 As the executor expects that the harness returns an ExitKind object, so we have added <code>ExitKind::Ok</code> to our harness function before.</p>
 <p>Now we have the 4 major entities ready for running our tests, but we still cannot generate testcases.</p>
 <p>For this purpose, we use a <strong>Generator</strong>, <code>RandPrintablesGenerator</code> that generates a string of printable bytes.</p>
-<pre><code class="language-rust ignore">use libafl::generators::RandPrintablesGenerator;
-
-// Generator of printable bytearrays of max size 32
-let mut generator = RandPrintablesGenerator::new(32);
-
-// Generate 8 initial inputs
-state
-    .generate_initial_inputs(&amp;mut fuzzer, &amp;mut executor, &amp;mut generator, &amp;mut mgr, 8)
-    .expect(&quot;Failed to generate the initial corpus&quot;.into());
-</code></pre>
-<p>Now you can prepend the necessary <code>use</code> directives to your main.rs and compile the fuzzer.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate libafl;
+</span><span class="boring">
+</span><span class="boring">use libafl::{
+</span><span class="boring">    bolts::{current_nanos, rands::StdRand, AsSlice},
+</span><span class="boring">    corpus::{InMemoryCorpus, OnDiskCorpus},
+</span><span class="boring">    events::SimpleEventManager,
+</span><span class="boring">    executors::{inprocess::InProcessExecutor, ExitKind},
+</span><span class="boring">    fuzzer::StdFuzzer,
+</span><span class="boring">    generators::RandPrintablesGenerator,
+</span><span class="boring">    inputs::{BytesInput, HasTargetBytes},
+</span><span class="boring">    monitors::SimpleMonitor,
+</span><span class="boring">    schedulers::QueueScheduler,
+</span><span class="boring">    state::StdState,
+</span><span class="boring">};
+</span><span class="boring">use std::path::PathBuf;
+</span><span class="boring">
 </span><span class="boring">fn main() {
-</span>extern crate libafl;
+</span><span class="boring">    let mut harness = |input: &amp;BytesInput| {
+</span><span class="boring">        let target = input.target_bytes();
+</span><span class="boring">        let buf = target.as_slice();
+</span><span class="boring">        if buf.len() &gt; 0 &amp;&amp; buf[0] == 'a' as u8 {
+</span><span class="boring">            if buf.len() &gt; 1 &amp;&amp; buf[1] == 'b' as u8 {
+</span><span class="boring">                if buf.len() &gt; 2 &amp;&amp; buf[2] == 'c' as u8 {
+</span><span class="boring">                    panic!(&quot;=)&quot;);
+</span><span class="boring">                }
+</span><span class="boring">            }
+</span><span class="boring">        }
+</span><span class="boring">        ExitKind::Ok
+</span><span class="boring">    };
+</span><span class="boring">    // To test the panic:
+</span><span class="boring">    let input = BytesInput::new(Vec::from(&quot;abc&quot;));
+</span><span class="boring">    #[cfg(feature = &quot;panic&quot;)]
+</span><span class="boring">    harness(&amp;input);
+</span><span class="boring">
+</span><span class="boring">    // create a State from scratch
+</span><span class="boring">    let mut state = StdState::new(
+</span><span class="boring">        // RNG
+</span><span class="boring">        StdRand::with_seed(current_nanos()),
+</span><span class="boring">        // Corpus that will be evolved, we keep it in memory for performance
+</span><span class="boring">        InMemoryCorpus::new(),
+</span><span class="boring">        // Corpus in which we store solutions (crashes in this example),
+</span><span class="boring">        // on disk so the user can get them after stopping the fuzzer
+</span><span class="boring">        OnDiskCorpus::new(PathBuf::from(&quot;./crashes&quot;)).unwrap(),
+</span><span class="boring">        &amp;mut (),
+</span><span class="boring">        &amp;mut (),
+</span><span class="boring">    )
+</span><span class="boring">    .unwrap();
+</span><span class="boring">
+</span><span class="boring">    // The Monitor trait defines how the fuzzer stats are displayed to the user
+</span><span class="boring">    let mon = SimpleMonitor::new(|s| println!(&quot;{s}&quot;));
+</span><span class="boring">
+</span><span class="boring">    // The event manager handles the various events generated during the fuzzing loop
+</span><span class="boring">    // such as the notification of the addition of a new item to the corpus
+</span><span class="boring">    let mut mgr = SimpleEventManager::new(mon);
+</span><span class="boring">
+</span><span class="boring">    // A queue policy to get testcasess from the corpus
+</span><span class="boring">    let scheduler = QueueScheduler::new();
+</span><span class="boring">
+</span><span class="boring">    // A fuzzer with feedbacks and a corpus scheduler
+</span><span class="boring">    let mut fuzzer = StdFuzzer::new(scheduler, (), ());
+</span><span class="boring">
+</span><span class="boring">    // Create the executor for an in-process function
+</span><span class="boring">    let mut executor = InProcessExecutor::new(&amp;mut harness, (), &amp;mut fuzzer, &amp;mut state, &amp;mut mgr)
+</span><span class="boring">        .expect(&quot;Failed to create the Executor&quot;);
+</span><span class="boring">
+</span>    // Generator of printable bytearrays of max size 32
+    let mut generator = RandPrintablesGenerator::new(32);
 
-use std::path::PathBuf;
+    // Generate 8 initial inputs
+    state
+        .generate_initial_inputs(&amp;mut fuzzer, &amp;mut executor, &amp;mut generator, &amp;mut mgr, 8)
+        .expect(&quot;Failed to generate the initial corpus&quot;);
+<span class="boring">}
+</span></code></pre></pre>
+<p>Now you can prepend the necessary <code>use</code> directives to your main.rs and compile the fuzzer.</p>
+<pre><pre class="playground"><code class="language-rust">extern crate libafl;
+
 use libafl::{
-    bolts::{AsSlice, current_nanos, rands::StdRand},
+    bolts::{current_nanos, rands::StdRand, AsSlice},
     corpus::{InMemoryCorpus, OnDiskCorpus},
     events::SimpleEventManager,
     executors::{inprocess::InProcessExecutor, ExitKind},
@@ -310,10 +668,68 @@ use libafl::{
     schedulers::QueueScheduler,
     state::StdState,
 };
-<span class="boring">}
+use std::path::PathBuf;
+<span class="boring">
+</span><span class="boring">fn main() {
+</span><span class="boring">    let mut harness = |input: &amp;BytesInput| {
+</span><span class="boring">        let target = input.target_bytes();
+</span><span class="boring">        let buf = target.as_slice();
+</span><span class="boring">        if buf.len() &gt; 0 &amp;&amp; buf[0] == 'a' as u8 {
+</span><span class="boring">            if buf.len() &gt; 1 &amp;&amp; buf[1] == 'b' as u8 {
+</span><span class="boring">                if buf.len() &gt; 2 &amp;&amp; buf[2] == 'c' as u8 {
+</span><span class="boring">                    panic!(&quot;=)&quot;);
+</span><span class="boring">                }
+</span><span class="boring">            }
+</span><span class="boring">        }
+</span><span class="boring">        ExitKind::Ok
+</span><span class="boring">    };
+</span><span class="boring">    // To test the panic:
+</span><span class="boring">    let input = BytesInput::new(Vec::from(&quot;abc&quot;));
+</span><span class="boring">    #[cfg(feature = &quot;panic&quot;)]
+</span><span class="boring">    harness(&amp;input);
+</span><span class="boring">
+</span><span class="boring">    // create a State from scratch
+</span><span class="boring">    let mut state = StdState::new(
+</span><span class="boring">        // RNG
+</span><span class="boring">        StdRand::with_seed(current_nanos()),
+</span><span class="boring">        // Corpus that will be evolved, we keep it in memory for performance
+</span><span class="boring">        InMemoryCorpus::new(),
+</span><span class="boring">        // Corpus in which we store solutions (crashes in this example),
+</span><span class="boring">        // on disk so the user can get them after stopping the fuzzer
+</span><span class="boring">        OnDiskCorpus::new(PathBuf::from(&quot;./crashes&quot;)).unwrap(),
+</span><span class="boring">        &amp;mut (),
+</span><span class="boring">        &amp;mut (),
+</span><span class="boring">    )
+</span><span class="boring">    .unwrap();
+</span><span class="boring">
+</span><span class="boring">    // The Monitor trait defines how the fuzzer stats are displayed to the user
+</span><span class="boring">    let mon = SimpleMonitor::new(|s| println!(&quot;{s}&quot;));
+</span><span class="boring">
+</span><span class="boring">    // The event manager handles the various events generated during the fuzzing loop
+</span><span class="boring">    // such as the notification of the addition of a new item to the corpus
+</span><span class="boring">    let mut mgr = SimpleEventManager::new(mon);
+</span><span class="boring">
+</span><span class="boring">    // A queue policy to get testcasess from the corpus
+</span><span class="boring">    let scheduler = QueueScheduler::new();
+</span><span class="boring">
+</span><span class="boring">    // A fuzzer with feedbacks and a corpus scheduler
+</span><span class="boring">    let mut fuzzer = StdFuzzer::new(scheduler, (), ());
+</span><span class="boring">
+</span><span class="boring">    // Create the executor for an in-process function
+</span><span class="boring">    let mut executor = InProcessExecutor::new(&amp;mut harness, (), &amp;mut fuzzer, &amp;mut state, &amp;mut mgr)
+</span><span class="boring">        .expect(&quot;Failed to create the Executor&quot;);
+</span><span class="boring">
+</span><span class="boring">    // Generator of printable bytearrays of max size 32
+</span><span class="boring">    let mut generator = RandPrintablesGenerator::new(32);
+</span><span class="boring">
+</span><span class="boring">    // Generate 8 initial inputs
+</span><span class="boring">    state
+</span><span class="boring">        .generate_initial_inputs(&amp;mut fuzzer, &amp;mut executor, &amp;mut generator, &amp;mut mgr, 8)
+</span><span class="boring">        .expect(&quot;Failed to generate the initial corpus&quot;);
+</span><span class="boring">}
 </span></code></pre></pre>
 <p>When running, you should see something similar to:</p>
-<pre><code class="language-sh">$ cargo run
+<pre><code class="language-console">$ cargo run
     Finished dev [unoptimized + debuginfo] target(s) in 0.04s
      Running `target/debug/baby_fuzzer`
 [LOG Debug]: Loaded 0 over 8 initial testcases
@@ -323,120 +739,758 @@ use libafl::{
 <p>Now we want to turn our simple fuzzer into a feedback-based one and increase the chance to generate the right input to trigger the panic. We are going to implement a simple feedback based on the 3 conditions that are needed to reach the panic. To do that, we need a way to keep track of if a condition is satisfied.</p>
 <p><strong>Observer</strong> can record the information about properties of a fuzzing run and then feeds the fuzzer. We use the <code>StdMapObserver</code>, the default observer that uses a map to keep track of covered elements. In our fuzzer, each condition is mapped to an entry of such map.</p>
 <p>We represent such map as a <code>static mut</code> variable.
-As we don't rely on any instrumentation engine, we have to manually track the satisfied conditions by <code>singals_set</code> in our harness:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>extern crate libafl;
-use libafl::{
-    bolts::AsSlice,
-    inputs::{BytesInput, HasTargetBytes},
-    executors::ExitKind,
-};
-
-// Coverage map with explicit assignments due to the lack of instrumentation
+As we don't rely on any instrumentation engine, we have to manually track the satisfied conditions by <code>signals_set</code> in our harness:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate libafl;
+</span><span class="boring">
+</span><span class="boring">use libafl::{
+</span><span class="boring">    bolts::{current_nanos, rands::StdRand, tuples::tuple_list, AsSlice},
+</span><span class="boring">    corpus::{InMemoryCorpus, OnDiskCorpus},
+</span><span class="boring">    events::SimpleEventManager,
+</span><span class="boring">    executors::{inprocess::InProcessExecutor, ExitKind},
+</span><span class="boring">    feedbacks::{CrashFeedback, MaxMapFeedback},
+</span><span class="boring">    fuzzer::StdFuzzer,
+</span><span class="boring">    generators::RandPrintablesGenerator,
+</span><span class="boring">    inputs::{BytesInput, HasTargetBytes},
+</span><span class="boring">    monitors::SimpleMonitor,
+</span><span class="boring">    observers::StdMapObserver,
+</span><span class="boring">    schedulers::QueueScheduler,
+</span><span class="boring">    state::StdState,
+</span><span class="boring">};
+</span><span class="boring">use std::path::PathBuf;
+</span><span class="boring">
+</span>// Coverage map with explicit assignments due to the lack of instrumentation
 static mut SIGNALS: [u8; 16] = [0; 16];
 
 fn signals_set(idx: usize) {
     unsafe { SIGNALS[idx] = 1 };
 }
 
-// The closure that we want to fuzz
-let mut harness = |input: &amp;BytesInput| {
-    let target = input.target_bytes();
-    let buf = target.as_slice();
-    signals_set(0); // set SIGNALS[0]
-    if buf.len() &gt; 0 &amp;&amp; buf[0] == 'a' as u8 {
-        signals_set(1); // set SIGNALS[1]
-        if buf.len() &gt; 1 &amp;&amp; buf[1] == 'b' as u8 {
-            signals_set(2); // set SIGNALS[2]
-            if buf.len() &gt; 2 &amp;&amp; buf[2] == 'c' as u8 {
-                panic!(&quot;=)&quot;);
+fn main() {
+    // The closure that we want to fuzz
+    let mut harness = |input: &amp;BytesInput| {
+        let target = input.target_bytes();
+        let buf = target.as_slice();
+        signals_set(0); // set SIGNALS[0]
+        if buf.len() &gt; 0 &amp;&amp; buf[0] == 'a' as u8 {
+            signals_set(1); // set SIGNALS[1]
+            if buf.len() &gt; 1 &amp;&amp; buf[1] == 'b' as u8 {
+                signals_set(2); // set SIGNALS[2]
+                if buf.len() &gt; 2 &amp;&amp; buf[2] == 'c' as u8 {
+                    panic!(&quot;=)&quot;);
+                }
             }
         }
-    }
-    ExitKind::Ok
-};
-<span class="boring">}
-</span></code></pre></pre>
+        ExitKind::Ok
+    };
+<span class="boring">    // To test the panic:
+</span><span class="boring">    let input = BytesInput::new(Vec::from(&quot;abc&quot;));
+</span><span class="boring">    #[cfg(feature = &quot;panic&quot;)]
+</span><span class="boring">    harness(&amp;input);
+</span><span class="boring">
+</span><span class="boring">    // Create an observation channel using the signals map
+</span><span class="boring">    let observer = unsafe { StdMapObserver::new(&quot;signals&quot;, &amp;mut SIGNALS) };
+</span><span class="boring">
+</span><span class="boring">    // Feedback to rate the interestingness of an input
+</span><span class="boring">    let mut feedback = MaxMapFeedback::new(&amp;observer);
+</span><span class="boring">
+</span><span class="boring">    // A feedback to choose if an input is a solution or not
+</span><span class="boring">    let mut objective = CrashFeedback::new();
+</span><span class="boring">
+</span><span class="boring">    // create a State from scratch
+</span><span class="boring">    let mut state = StdState::new(
+</span><span class="boring">        // RNG
+</span><span class="boring">        StdRand::with_seed(current_nanos()),
+</span><span class="boring">        // Corpus that will be evolved, we keep it in memory for performance
+</span><span class="boring">        InMemoryCorpus::new(),
+</span><span class="boring">        // Corpus in which we store solutions (crashes in this example),
+</span><span class="boring">        // on disk so the user can get them after stopping the fuzzer
+</span><span class="boring">        OnDiskCorpus::new(PathBuf::from(&quot;./crashes&quot;)).unwrap(),
+</span><span class="boring">        &amp;mut feedback,
+</span><span class="boring">        &amp;mut objective,
+</span><span class="boring">    )
+</span><span class="boring">    .unwrap();
+</span><span class="boring">
+</span><span class="boring">    // The Monitor trait defines how the fuzzer stats are displayed to the user
+</span><span class="boring">    let mon = SimpleMonitor::new(|s| println!(&quot;{s}&quot;));
+</span><span class="boring">
+</span><span class="boring">    // The event manager handles the various events generated during the fuzzing loop
+</span><span class="boring">    // such as the notification of the addition of a new item to the corpus
+</span><span class="boring">    let mut mgr = SimpleEventManager::new(mon);
+</span><span class="boring">
+</span><span class="boring">    // A queue policy to get testcasess from the corpus
+</span><span class="boring">    let scheduler = QueueScheduler::new();
+</span><span class="boring">
+</span><span class="boring">    // A fuzzer with feedbacks and a corpus scheduler
+</span><span class="boring">    let mut fuzzer = StdFuzzer::new(scheduler, feedback, objective);
+</span><span class="boring">
+</span><span class="boring">    // Create the executor for an in-process function with just one observer
+</span><span class="boring">    let mut executor = InProcessExecutor::new(
+</span><span class="boring">        &amp;mut harness,
+</span><span class="boring">        tuple_list!(observer),
+</span><span class="boring">        &amp;mut fuzzer,
+</span><span class="boring">        &amp;mut state,
+</span><span class="boring">        &amp;mut mgr,
+</span><span class="boring">    )
+</span><span class="boring">    .expect(&quot;Failed to create the Executor&quot;);
+</span><span class="boring">
+</span><span class="boring">    // Generator of printable bytearrays of max size 32
+</span><span class="boring">    let mut generator = RandPrintablesGenerator::new(32);
+</span><span class="boring">
+</span><span class="boring">    // Generate 8 initial inputs
+</span><span class="boring">    state
+</span><span class="boring">        .generate_initial_inputs(&amp;mut fuzzer, &amp;mut executor, &amp;mut generator, &amp;mut mgr, 8)
+</span><span class="boring">        .expect(&quot;Failed to generate the initial corpus&quot;);
+</span>}
+</code></pre></pre>
 <p>The observer can be created directly from the <code>SIGNALS</code> map, in the following way:</p>
-<pre><code class="language-rust ignore">// Create an observation channel using the signals map
-let observer = StdMapObserver::new(&quot;signals&quot;, unsafe { &amp;mut SIGNALS });
-</code></pre>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate libafl;
+</span><span class="boring">
+</span><span class="boring">use libafl::{
+</span><span class="boring">    bolts::{current_nanos, rands::StdRand, tuples::tuple_list, AsSlice},
+</span><span class="boring">    corpus::{InMemoryCorpus, OnDiskCorpus},
+</span><span class="boring">    events::SimpleEventManager,
+</span><span class="boring">    executors::{inprocess::InProcessExecutor, ExitKind},
+</span><span class="boring">    feedbacks::{CrashFeedback, MaxMapFeedback},
+</span><span class="boring">    fuzzer::StdFuzzer,
+</span><span class="boring">    generators::RandPrintablesGenerator,
+</span><span class="boring">    inputs::{BytesInput, HasTargetBytes},
+</span><span class="boring">    monitors::SimpleMonitor,
+</span><span class="boring">    observers::StdMapObserver,
+</span><span class="boring">    schedulers::QueueScheduler,
+</span><span class="boring">    state::StdState,
+</span><span class="boring">};
+</span><span class="boring">use std::path::PathBuf;
+</span><span class="boring">
+</span><span class="boring">// Coverage map with explicit assignments due to the lack of instrumentation
+</span><span class="boring">static mut SIGNALS: [u8; 16] = [0; 16];
+</span><span class="boring">
+</span><span class="boring">fn signals_set(idx: usize) {
+</span><span class="boring">    unsafe { SIGNALS[idx] = 1 };
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn main() {
+</span><span class="boring">    // The closure that we want to fuzz
+</span><span class="boring">    let mut harness = |input: &amp;BytesInput| {
+</span><span class="boring">        let target = input.target_bytes();
+</span><span class="boring">        let buf = target.as_slice();
+</span><span class="boring">        signals_set(0); // set SIGNALS[0]
+</span><span class="boring">        if buf.len() &gt; 0 &amp;&amp; buf[0] == 'a' as u8 {
+</span><span class="boring">            signals_set(1); // set SIGNALS[1]
+</span><span class="boring">            if buf.len() &gt; 1 &amp;&amp; buf[1] == 'b' as u8 {
+</span><span class="boring">                signals_set(2); // set SIGNALS[2]
+</span><span class="boring">                if buf.len() &gt; 2 &amp;&amp; buf[2] == 'c' as u8 {
+</span><span class="boring">                    panic!(&quot;=)&quot;);
+</span><span class="boring">                }
+</span><span class="boring">            }
+</span><span class="boring">        }
+</span><span class="boring">        ExitKind::Ok
+</span><span class="boring">    };
+</span><span class="boring">    // To test the panic:
+</span><span class="boring">    let input = BytesInput::new(Vec::from(&quot;abc&quot;));
+</span><span class="boring">    #[cfg(feature = &quot;panic&quot;)]
+</span><span class="boring">    harness(&amp;input);
+</span><span class="boring">
+</span>    // Create an observation channel using the signals map
+    let observer = unsafe { StdMapObserver::new(&quot;signals&quot;, &amp;mut SIGNALS) };
+<span class="boring">
+</span><span class="boring">    // Feedback to rate the interestingness of an input
+</span><span class="boring">    let mut feedback = MaxMapFeedback::new(&amp;observer);
+</span><span class="boring">
+</span><span class="boring">    // A feedback to choose if an input is a solution or not
+</span><span class="boring">    let mut objective = CrashFeedback::new();
+</span><span class="boring">
+</span><span class="boring">    // create a State from scratch
+</span><span class="boring">    let mut state = StdState::new(
+</span><span class="boring">        // RNG
+</span><span class="boring">        StdRand::with_seed(current_nanos()),
+</span><span class="boring">        // Corpus that will be evolved, we keep it in memory for performance
+</span><span class="boring">        InMemoryCorpus::new(),
+</span><span class="boring">        // Corpus in which we store solutions (crashes in this example),
+</span><span class="boring">        // on disk so the user can get them after stopping the fuzzer
+</span><span class="boring">        OnDiskCorpus::new(PathBuf::from(&quot;./crashes&quot;)).unwrap(),
+</span><span class="boring">        &amp;mut feedback,
+</span><span class="boring">        &amp;mut objective,
+</span><span class="boring">    )
+</span><span class="boring">    .unwrap();
+</span><span class="boring">
+</span><span class="boring">    // The Monitor trait defines how the fuzzer stats are displayed to the user
+</span><span class="boring">    let mon = SimpleMonitor::new(|s| println!(&quot;{s}&quot;));
+</span><span class="boring">
+</span><span class="boring">    // The event manager handles the various events generated during the fuzzing loop
+</span><span class="boring">    // such as the notification of the addition of a new item to the corpus
+</span><span class="boring">    let mut mgr = SimpleEventManager::new(mon);
+</span><span class="boring">
+</span><span class="boring">    // A queue policy to get testcasess from the corpus
+</span><span class="boring">    let scheduler = QueueScheduler::new();
+</span><span class="boring">
+</span><span class="boring">    // A fuzzer with feedbacks and a corpus scheduler
+</span><span class="boring">    let mut fuzzer = StdFuzzer::new(scheduler, feedback, objective);
+</span><span class="boring">
+</span><span class="boring">    // Create the executor for an in-process function with just one observer
+</span><span class="boring">    let mut executor = InProcessExecutor::new(
+</span><span class="boring">        &amp;mut harness,
+</span><span class="boring">        tuple_list!(observer),
+</span><span class="boring">        &amp;mut fuzzer,
+</span><span class="boring">        &amp;mut state,
+</span><span class="boring">        &amp;mut mgr,
+</span><span class="boring">    )
+</span><span class="boring">    .expect(&quot;Failed to create the Executor&quot;);
+</span><span class="boring">
+</span><span class="boring">    // Generator of printable bytearrays of max size 32
+</span><span class="boring">    let mut generator = RandPrintablesGenerator::new(32);
+</span><span class="boring">
+</span><span class="boring">    // Generate 8 initial inputs
+</span><span class="boring">    state
+</span><span class="boring">        .generate_initial_inputs(&amp;mut fuzzer, &amp;mut executor, &amp;mut generator, &amp;mut mgr, 8)
+</span><span class="boring">        .expect(&quot;Failed to generate the initial corpus&quot;);
+</span><span class="boring">}
+</span></code></pre></pre>
 <p>The observers are usually kept in the corresponding executor as they keep track of information that is valid for just one run. We have then to modify our InProcessExecutor creation to include the observer as follows:</p>
-<pre><code class="language-rust ignore">// Create the executor for an in-process function with just one observer
-let mut executor = InProcessExecutor::new(
-    &amp;mut harness,
-    tuple_list!(observer),
-    &amp;mut fuzzer,
-    &amp;mut state,
-    &amp;mut mgr,
-)
-.expect(&quot;Failed to create the Executor&quot;.into());
-</code></pre>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate libafl;
+</span><span class="boring">
+</span><span class="boring">use libafl::{
+</span><span class="boring">    bolts::{current_nanos, rands::StdRand, tuples::tuple_list, AsSlice},
+</span><span class="boring">    corpus::{InMemoryCorpus, OnDiskCorpus},
+</span><span class="boring">    events::SimpleEventManager,
+</span><span class="boring">    executors::{inprocess::InProcessExecutor, ExitKind},
+</span><span class="boring">    feedbacks::{CrashFeedback, MaxMapFeedback},
+</span><span class="boring">    fuzzer::StdFuzzer,
+</span><span class="boring">    generators::RandPrintablesGenerator,
+</span><span class="boring">    inputs::{BytesInput, HasTargetBytes},
+</span><span class="boring">    monitors::SimpleMonitor,
+</span><span class="boring">    observers::StdMapObserver,
+</span><span class="boring">    schedulers::QueueScheduler,
+</span><span class="boring">    state::StdState,
+</span><span class="boring">};
+</span><span class="boring">use std::path::PathBuf;
+</span><span class="boring">
+</span><span class="boring">// Coverage map with explicit assignments due to the lack of instrumentation
+</span><span class="boring">static mut SIGNALS: [u8; 16] = [0; 16];
+</span><span class="boring">
+</span><span class="boring">fn signals_set(idx: usize) {
+</span><span class="boring">    unsafe { SIGNALS[idx] = 1 };
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn main() {
+</span><span class="boring">    // The closure that we want to fuzz
+</span><span class="boring">    let mut harness = |input: &amp;BytesInput| {
+</span><span class="boring">        let target = input.target_bytes();
+</span><span class="boring">        let buf = target.as_slice();
+</span><span class="boring">        signals_set(0); // set SIGNALS[0]
+</span><span class="boring">        if buf.len() &gt; 0 &amp;&amp; buf[0] == 'a' as u8 {
+</span><span class="boring">            signals_set(1); // set SIGNALS[1]
+</span><span class="boring">            if buf.len() &gt; 1 &amp;&amp; buf[1] == 'b' as u8 {
+</span><span class="boring">                signals_set(2); // set SIGNALS[2]
+</span><span class="boring">                if buf.len() &gt; 2 &amp;&amp; buf[2] == 'c' as u8 {
+</span><span class="boring">                    panic!(&quot;=)&quot;);
+</span><span class="boring">                }
+</span><span class="boring">            }
+</span><span class="boring">        }
+</span><span class="boring">        ExitKind::Ok
+</span><span class="boring">    };
+</span><span class="boring">    // To test the panic:
+</span><span class="boring">    let input = BytesInput::new(Vec::from(&quot;abc&quot;));
+</span><span class="boring">    #[cfg(feature = &quot;panic&quot;)]
+</span><span class="boring">    harness(&amp;input);
+</span><span class="boring">
+</span><span class="boring">    // Create an observation channel using the signals map
+</span><span class="boring">    let observer = unsafe { StdMapObserver::new(&quot;signals&quot;, &amp;mut SIGNALS) };
+</span><span class="boring">
+</span><span class="boring">    // Feedback to rate the interestingness of an input
+</span><span class="boring">    let mut feedback = MaxMapFeedback::new(&amp;observer);
+</span><span class="boring">
+</span><span class="boring">    // A feedback to choose if an input is a solution or not
+</span><span class="boring">    let mut objective = CrashFeedback::new();
+</span><span class="boring">
+</span><span class="boring">    // create a State from scratch
+</span><span class="boring">    let mut state = StdState::new(
+</span><span class="boring">        // RNG
+</span><span class="boring">        StdRand::with_seed(current_nanos()),
+</span><span class="boring">        // Corpus that will be evolved, we keep it in memory for performance
+</span><span class="boring">        InMemoryCorpus::new(),
+</span><span class="boring">        // Corpus in which we store solutions (crashes in this example),
+</span><span class="boring">        // on disk so the user can get them after stopping the fuzzer
+</span><span class="boring">        OnDiskCorpus::new(PathBuf::from(&quot;./crashes&quot;)).unwrap(),
+</span><span class="boring">        &amp;mut feedback,
+</span><span class="boring">        &amp;mut objective,
+</span><span class="boring">    )
+</span><span class="boring">    .unwrap();
+</span><span class="boring">
+</span><span class="boring">    // The Monitor trait defines how the fuzzer stats are displayed to the user
+</span><span class="boring">    let mon = SimpleMonitor::new(|s| println!(&quot;{s}&quot;));
+</span><span class="boring">
+</span><span class="boring">    // The event manager handles the various events generated during the fuzzing loop
+</span><span class="boring">    // such as the notification of the addition of a new item to the corpus
+</span><span class="boring">    let mut mgr = SimpleEventManager::new(mon);
+</span><span class="boring">
+</span><span class="boring">    // A queue policy to get testcasess from the corpus
+</span><span class="boring">    let scheduler = QueueScheduler::new();
+</span><span class="boring">
+</span><span class="boring">    // A fuzzer with feedbacks and a corpus scheduler
+</span><span class="boring">    let mut fuzzer = StdFuzzer::new(scheduler, feedback, objective);
+</span><span class="boring">
+</span>    // Create the executor for an in-process function with just one observer
+    let mut executor = InProcessExecutor::new(
+        &amp;mut harness,
+        tuple_list!(observer),
+        &amp;mut fuzzer,
+        &amp;mut state,
+        &amp;mut mgr,
+    )
+    .expect(&quot;Failed to create the Executor&quot;);
+<span class="boring">
+</span><span class="boring">    // Generator of printable bytearrays of max size 32
+</span><span class="boring">    let mut generator = RandPrintablesGenerator::new(32);
+</span><span class="boring">
+</span><span class="boring">    // Generate 8 initial inputs
+</span><span class="boring">    state
+</span><span class="boring">        .generate_initial_inputs(&amp;mut fuzzer, &amp;mut executor, &amp;mut generator, &amp;mut mgr, 8)
+</span><span class="boring">        .expect(&quot;Failed to generate the initial corpus&quot;);
+</span><span class="boring">}
+</span></code></pre></pre>
 <p>Now that the fuzzer can observe which condition is satisfied, we need a way to rate an input as interesting (i.e. worth of addition to the corpus) based on this observation. Here comes the notion of Feedback.</p>
 <p><strong>Feedback</strong> is part of the State and provides a way to rate input and its corresponding execution as interesting looking for the information in the observers. Feedbacks can maintain a cumulative state of the information seen so far in a metadata in the State, in our case it maintains the set of conditions satisfied in the previous runs.</p>
 <p>We use <code>MaxMapFeedback</code>, a feedback that implements a novelty search over the map of the MapObserver. Basically, if there is a value in the observer's map that is greater than the maximum value registered so far for the same entry, it rates the input as interesting and updates its state.</p>
-<p><strong>Objective Feedback</strong> is another kind of Feedback which decide if an input is a &quot;solution&quot;. It will save input to solutions(<code>./crashes</code> in our case) other than corpus when the input is rated interesting. We use <code>CrashFeedback</code> to tell the fuzzer that if an input causes the program to crash it is a solution for us.</p>
+<p><strong>Objective Feedback</strong> is another kind of Feedback which decides if an input is a &quot;solution&quot;. It will save input to solutions(<code>./crashes</code> in our case) rather than corpus when the input is rated interesting. We use <code>CrashFeedback</code> to tell the fuzzer that if an input causes the program to crash it is a solution for us.</p>
 <p>We need to update our State creation including the feedback state and the Fuzzer including the feedback and the objective:</p>
-<pre><code class="language-rust ignore">extern crate libafl;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate libafl;
+</span><span class="boring">
+</span><span class="boring">use libafl::{
+</span><span class="boring">    bolts::{current_nanos, rands::StdRand, tuples::tuple_list, AsSlice},
+</span><span class="boring">    corpus::{InMemoryCorpus, OnDiskCorpus},
+</span><span class="boring">    events::SimpleEventManager,
+</span><span class="boring">    executors::{inprocess::InProcessExecutor, ExitKind},
+</span><span class="boring">    feedbacks::{CrashFeedback, MaxMapFeedback},
+</span><span class="boring">    fuzzer::StdFuzzer,
+</span><span class="boring">    generators::RandPrintablesGenerator,
+</span><span class="boring">    inputs::{BytesInput, HasTargetBytes},
+</span><span class="boring">    monitors::SimpleMonitor,
+</span><span class="boring">    observers::StdMapObserver,
+</span><span class="boring">    schedulers::QueueScheduler,
+</span><span class="boring">    state::StdState,
+</span><span class="boring">};
+</span><span class="boring">use std::path::PathBuf;
+</span><span class="boring">
+</span><span class="boring">// Coverage map with explicit assignments due to the lack of instrumentation
+</span><span class="boring">static mut SIGNALS: [u8; 16] = [0; 16];
+</span><span class="boring">
+</span><span class="boring">fn signals_set(idx: usize) {
+</span><span class="boring">    unsafe { SIGNALS[idx] = 1 };
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn main() {
+</span><span class="boring">    // The closure that we want to fuzz
+</span><span class="boring">    let mut harness = |input: &amp;BytesInput| {
+</span><span class="boring">        let target = input.target_bytes();
+</span><span class="boring">        let buf = target.as_slice();
+</span><span class="boring">        signals_set(0); // set SIGNALS[0]
+</span><span class="boring">        if buf.len() &gt; 0 &amp;&amp; buf[0] == 'a' as u8 {
+</span><span class="boring">            signals_set(1); // set SIGNALS[1]
+</span><span class="boring">            if buf.len() &gt; 1 &amp;&amp; buf[1] == 'b' as u8 {
+</span><span class="boring">                signals_set(2); // set SIGNALS[2]
+</span><span class="boring">                if buf.len() &gt; 2 &amp;&amp; buf[2] == 'c' as u8 {
+</span><span class="boring">                    panic!(&quot;=)&quot;);
+</span><span class="boring">                }
+</span><span class="boring">            }
+</span><span class="boring">        }
+</span><span class="boring">        ExitKind::Ok
+</span><span class="boring">    };
+</span><span class="boring">    // To test the panic:
+</span><span class="boring">    let input = BytesInput::new(Vec::from(&quot;abc&quot;));
+</span><span class="boring">    #[cfg(feature = &quot;panic&quot;)]
+</span><span class="boring">    harness(&amp;input);
+</span><span class="boring">
+</span><span class="boring">    // Create an observation channel using the signals map
+</span><span class="boring">    let observer = unsafe { StdMapObserver::new(&quot;signals&quot;, &amp;mut SIGNALS) };
+</span><span class="boring">
+</span>    // Feedback to rate the interestingness of an input
+    let mut feedback = MaxMapFeedback::new(&amp;observer);
+
+    // A feedback to choose if an input is a solution or not
+    let mut objective = CrashFeedback::new();
+
+    // create a State from scratch
+    let mut state = StdState::new(
+        // RNG
+        StdRand::with_seed(current_nanos()),
+        // Corpus that will be evolved, we keep it in memory for performance
+        InMemoryCorpus::new(),
+        // Corpus in which we store solutions (crashes in this example),
+        // on disk so the user can get them after stopping the fuzzer
+        OnDiskCorpus::new(PathBuf::from(&quot;./crashes&quot;)).unwrap(),
+        &amp;mut feedback,
+        &amp;mut objective,
+    )
+    .unwrap();
+<span class="boring">
+</span><span class="boring">    // The Monitor trait defines how the fuzzer stats are displayed to the user
+</span><span class="boring">    let mon = SimpleMonitor::new(|s| println!(&quot;{s}&quot;));
+</span><span class="boring">
+</span><span class="boring">    // The event manager handles the various events generated during the fuzzing loop
+</span><span class="boring">    // such as the notification of the addition of a new item to the corpus
+</span><span class="boring">    let mut mgr = SimpleEventManager::new(mon);
+</span><span class="boring">
+</span><span class="boring">    // A queue policy to get testcasess from the corpus
+</span><span class="boring">    let scheduler = QueueScheduler::new();
+</span>
+    // A fuzzer with feedbacks and a corpus scheduler
+    let mut fuzzer = StdFuzzer::new(scheduler, feedback, objective);
+<span class="boring">
+</span><span class="boring">    // Create the executor for an in-process function with just one observer
+</span><span class="boring">    let mut executor = InProcessExecutor::new(
+</span><span class="boring">        &amp;mut harness,
+</span><span class="boring">        tuple_list!(observer),
+</span><span class="boring">        &amp;mut fuzzer,
+</span><span class="boring">        &amp;mut state,
+</span><span class="boring">        &amp;mut mgr,
+</span><span class="boring">    )
+</span><span class="boring">    .expect(&quot;Failed to create the Executor&quot;);
+</span><span class="boring">
+</span><span class="boring">    // Generator of printable bytearrays of max size 32
+</span><span class="boring">    let mut generator = RandPrintablesGenerator::new(32);
+</span><span class="boring">
+</span><span class="boring">    // Generate 8 initial inputs
+</span><span class="boring">    state
+</span><span class="boring">        .generate_initial_inputs(&amp;mut fuzzer, &amp;mut executor, &amp;mut generator, &amp;mut mgr, 8)
+</span><span class="boring">        .expect(&quot;Failed to generate the initial corpus&quot;);
+</span><span class="boring">}
+</span></code></pre></pre>
+<p>Once again, you need to add the necessary <code>use</code> directives for this to work properly:</p>
+<pre><pre class="playground"><code class="language-rust">extern crate libafl;
+
 use libafl::{
-    bolts::{current_nanos, rands::StdRand, tuples::tuple_list},
+    bolts::{current_nanos, rands::StdRand, tuples::tuple_list, AsSlice},
     corpus::{InMemoryCorpus, OnDiskCorpus},
-    feedbacks::{MaxMapFeedback, CrashFeedback},
+    events::SimpleEventManager,
+    executors::{inprocess::InProcessExecutor, ExitKind},
+    feedbacks::{CrashFeedback, MaxMapFeedback},
     fuzzer::StdFuzzer,
-    state::StdState,
+    generators::RandPrintablesGenerator,
+    inputs::{BytesInput, HasTargetBytes},
+    monitors::SimpleMonitor,
     observers::StdMapObserver,
+    schedulers::QueueScheduler,
+    state::StdState,
 };
-
-// Feedback to rate the interestingness of an input
-let mut feedback = MaxMapFeedback::new(&amp;observer);
-
-// A feedback to choose if an input is a solution or not
-let mut objective = CrashFeedback::new();
-
-// create a State from scratch
-let mut state = StdState::new(
-    // RNG
-    StdRand::with_seed(current_nanos()),
-    // Corpus that will be evolved, we keep it in memory for performance
-    InMemoryCorpus::new(),
-    // Corpus in which we store solutions (crashes in this example),
-    // on disk so the user can get them after stopping the fuzzer
-    OnDiskCorpus::new(PathBuf::from(&quot;./crashes&quot;)).unwrap(),
-    &amp;mut feedback,
-    &amp;mut objective
-).unwrap();
-
-// ...
-
-// A fuzzer with feedbacks and a corpus scheduler
-let mut fuzzer = StdFuzzer::new(scheduler, feedback, objective);
-</code></pre>
+use std::path::PathBuf;
+<span class="boring">
+</span><span class="boring">// Coverage map with explicit assignments due to the lack of instrumentation
+</span><span class="boring">static mut SIGNALS: [u8; 16] = [0; 16];
+</span><span class="boring">
+</span><span class="boring">fn signals_set(idx: usize) {
+</span><span class="boring">    unsafe { SIGNALS[idx] = 1 };
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn main() {
+</span><span class="boring">    // The closure that we want to fuzz
+</span><span class="boring">    let mut harness = |input: &amp;BytesInput| {
+</span><span class="boring">        let target = input.target_bytes();
+</span><span class="boring">        let buf = target.as_slice();
+</span><span class="boring">        signals_set(0); // set SIGNALS[0]
+</span><span class="boring">        if buf.len() &gt; 0 &amp;&amp; buf[0] == 'a' as u8 {
+</span><span class="boring">            signals_set(1); // set SIGNALS[1]
+</span><span class="boring">            if buf.len() &gt; 1 &amp;&amp; buf[1] == 'b' as u8 {
+</span><span class="boring">                signals_set(2); // set SIGNALS[2]
+</span><span class="boring">                if buf.len() &gt; 2 &amp;&amp; buf[2] == 'c' as u8 {
+</span><span class="boring">                    panic!(&quot;=)&quot;);
+</span><span class="boring">                }
+</span><span class="boring">            }
+</span><span class="boring">        }
+</span><span class="boring">        ExitKind::Ok
+</span><span class="boring">    };
+</span><span class="boring">    // To test the panic:
+</span><span class="boring">    let input = BytesInput::new(Vec::from(&quot;abc&quot;));
+</span><span class="boring">    #[cfg(feature = &quot;panic&quot;)]
+</span><span class="boring">    harness(&amp;input);
+</span><span class="boring">
+</span><span class="boring">    // Create an observation channel using the signals map
+</span><span class="boring">    let observer = unsafe { StdMapObserver::new(&quot;signals&quot;, &amp;mut SIGNALS) };
+</span><span class="boring">
+</span><span class="boring">    // Feedback to rate the interestingness of an input
+</span><span class="boring">    let mut feedback = MaxMapFeedback::new(&amp;observer);
+</span><span class="boring">
+</span><span class="boring">    // A feedback to choose if an input is a solution or not
+</span><span class="boring">    let mut objective = CrashFeedback::new();
+</span><span class="boring">
+</span><span class="boring">    // create a State from scratch
+</span><span class="boring">    let mut state = StdState::new(
+</span><span class="boring">        // RNG
+</span><span class="boring">        StdRand::with_seed(current_nanos()),
+</span><span class="boring">        // Corpus that will be evolved, we keep it in memory for performance
+</span><span class="boring">        InMemoryCorpus::new(),
+</span><span class="boring">        // Corpus in which we store solutions (crashes in this example),
+</span><span class="boring">        // on disk so the user can get them after stopping the fuzzer
+</span><span class="boring">        OnDiskCorpus::new(PathBuf::from(&quot;./crashes&quot;)).unwrap(),
+</span><span class="boring">        &amp;mut feedback,
+</span><span class="boring">        &amp;mut objective,
+</span><span class="boring">    )
+</span><span class="boring">    .unwrap();
+</span><span class="boring">
+</span><span class="boring">    // The Monitor trait defines how the fuzzer stats are displayed to the user
+</span><span class="boring">    let mon = SimpleMonitor::new(|s| println!(&quot;{s}&quot;));
+</span><span class="boring">
+</span><span class="boring">    // The event manager handles the various events generated during the fuzzing loop
+</span><span class="boring">    // such as the notification of the addition of a new item to the corpus
+</span><span class="boring">    let mut mgr = SimpleEventManager::new(mon);
+</span><span class="boring">
+</span><span class="boring">    // A queue policy to get testcasess from the corpus
+</span><span class="boring">    let scheduler = QueueScheduler::new();
+</span><span class="boring">
+</span><span class="boring">    // A fuzzer with feedbacks and a corpus scheduler
+</span><span class="boring">    let mut fuzzer = StdFuzzer::new(scheduler, feedback, objective);
+</span><span class="boring">
+</span><span class="boring">    // Create the executor for an in-process function with just one observer
+</span><span class="boring">    let mut executor = InProcessExecutor::new(
+</span><span class="boring">        &amp;mut harness,
+</span><span class="boring">        tuple_list!(observer),
+</span><span class="boring">        &amp;mut fuzzer,
+</span><span class="boring">        &amp;mut state,
+</span><span class="boring">        &amp;mut mgr,
+</span><span class="boring">    )
+</span><span class="boring">    .expect(&quot;Failed to create the Executor&quot;);
+</span><span class="boring">
+</span><span class="boring">    // Generator of printable bytearrays of max size 32
+</span><span class="boring">    let mut generator = RandPrintablesGenerator::new(32);
+</span><span class="boring">
+</span><span class="boring">    // Generate 8 initial inputs
+</span><span class="boring">    state
+</span><span class="boring">        .generate_initial_inputs(&amp;mut fuzzer, &amp;mut executor, &amp;mut generator, &amp;mut mgr, 8)
+</span><span class="boring">        .expect(&quot;Failed to generate the initial corpus&quot;);
+</span><span class="boring">}
+</span></code></pre></pre>
 <h2 id="the-actual-fuzzing"><a class="header" href="#the-actual-fuzzing">The actual fuzzing</a></h2>
-<p>Now, after including the correct <code>use</code>, we can run the program, but the outcome is not so different from the previous one as the random generator does not take into account what we save as interesting in the corpus. To do that, we need to plug a Mutator.</p>
+<p>Now, we can run the program, but the outcome is not so different from the previous one as the random generator does not take into account what we save as interesting in the corpus. To do that, we need to plug a Mutator.</p>
 <p><strong>Stages</strong> perform actions on individual inputs, taken from the corpus.
 For instance, the <code>MutationalStage</code> executes the harness several times in a row, every time with mutated inputs.</p>
 <p>As the last step, we create a MutationalStage that uses a mutator inspired by the havoc mutator of AFL.</p>
-<pre><code class="language-rust ignore">use libafl::{
-    mutators::scheduled::{havoc_mutations, StdScheduledMutator},
-    stages::mutational::StdMutationalStage,
-    fuzzer::Fuzzer,
-};
+<pre><code class="language-rust ignore"><span class="boring">extern crate libafl;
+</span><span class="boring">
+</span><span class="boring">use libafl::{
+</span><span class="boring">    bolts::{current_nanos, rands::StdRand, tuples::tuple_list, AsSlice},
+</span><span class="boring">    corpus::{InMemoryCorpus, OnDiskCorpus},
+</span><span class="boring">    events::SimpleEventManager,
+</span><span class="boring">    executors::{inprocess::InProcessExecutor, ExitKind},
+</span><span class="boring">    feedbacks::{CrashFeedback, MaxMapFeedback},
+</span><span class="boring">    fuzzer::{Fuzzer, StdFuzzer},
+</span><span class="boring">    generators::RandPrintablesGenerator,
+</span><span class="boring">    inputs::{BytesInput, HasTargetBytes},
+</span><span class="boring">    monitors::SimpleMonitor,
+</span><span class="boring">    mutators::scheduled::{havoc_mutations, StdScheduledMutator},
+</span><span class="boring">    observers::StdMapObserver,
+</span><span class="boring">    schedulers::QueueScheduler,
+</span><span class="boring">    stages::mutational::StdMutationalStage,
+</span><span class="boring">    state::StdState,
+</span><span class="boring">};
+</span><span class="boring">use std::path::PathBuf;
+</span><span class="boring">
+</span><span class="boring">// Coverage map with explicit assignments due to the lack of instrumentation
+</span><span class="boring">static mut SIGNALS: [u8; 16] = [0; 16];
+</span><span class="boring">
+</span><span class="boring">fn signals_set(idx: usize) {
+</span><span class="boring">    unsafe { SIGNALS[idx] = 1 };
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn main() {
+</span><span class="boring">    // The closure that we want to fuzz
+</span><span class="boring">    let mut harness = |input: &amp;BytesInput| {
+</span><span class="boring">        let target = input.target_bytes();
+</span><span class="boring">        let buf = target.as_slice();
+</span><span class="boring">        signals_set(0); // set SIGNALS[0]
+</span><span class="boring">        if buf.len() &gt; 0 &amp;&amp; buf[0] == 'a' as u8 {
+</span><span class="boring">            signals_set(1); // set SIGNALS[1]
+</span><span class="boring">            if buf.len() &gt; 1 &amp;&amp; buf[1] == 'b' as u8 {
+</span><span class="boring">                signals_set(2); // set SIGNALS[2]
+</span><span class="boring">                if buf.len() &gt; 2 &amp;&amp; buf[2] == 'c' as u8 {
+</span><span class="boring">                    panic!(&quot;=)&quot;);
+</span><span class="boring">                }
+</span><span class="boring">            }
+</span><span class="boring">        }
+</span><span class="boring">        ExitKind::Ok
+</span><span class="boring">    };
+</span><span class="boring">    // To test the panic:
+</span><span class="boring">    let input = BytesInput::new(Vec::from(&quot;abc&quot;));
+</span><span class="boring">    #[cfg(feature = &quot;panic&quot;)]
+</span><span class="boring">    harness(&amp;input);
+</span><span class="boring">
+</span><span class="boring">    // Create an observation channel using the signals map
+</span><span class="boring">    let observer = unsafe { StdMapObserver::new(&quot;signals&quot;, &amp;mut SIGNALS) };
+</span><span class="boring">
+</span><span class="boring">    // Feedback to rate the interestingness of an input
+</span><span class="boring">    let mut feedback = MaxMapFeedback::new(&amp;observer);
+</span><span class="boring">
+</span><span class="boring">    // A feedback to choose if an input is a solution or not
+</span><span class="boring">    let mut objective = CrashFeedback::new();
+</span><span class="boring">
+</span><span class="boring">    // create a State from scratch
+</span><span class="boring">    let mut state = StdState::new(
+</span><span class="boring">        // RNG
+</span><span class="boring">        StdRand::with_seed(current_nanos()),
+</span><span class="boring">        // Corpus that will be evolved, we keep it in memory for performance
+</span><span class="boring">        InMemoryCorpus::new(),
+</span><span class="boring">        // Corpus in which we store solutions (crashes in this example),
+</span><span class="boring">        // on disk so the user can get them after stopping the fuzzer
+</span><span class="boring">        OnDiskCorpus::new(PathBuf::from(&quot;./crashes&quot;)).unwrap(),
+</span><span class="boring">        &amp;mut feedback,
+</span><span class="boring">        &amp;mut objective,
+</span><span class="boring">    )
+</span><span class="boring">    .unwrap();
+</span><span class="boring">
+</span><span class="boring">    // The Monitor trait defines how the fuzzer stats are displayed to the user
+</span><span class="boring">    let mon = SimpleMonitor::new(|s| println!(&quot;{s}&quot;));
+</span><span class="boring">
+</span><span class="boring">    // The event manager handles the various events generated during the fuzzing loop
+</span><span class="boring">    // such as the notification of the addition of a new item to the corpus
+</span><span class="boring">    let mut mgr = SimpleEventManager::new(mon);
+</span><span class="boring">
+</span><span class="boring">    // A queue policy to get testcasess from the corpus
+</span><span class="boring">    let scheduler = QueueScheduler::new();
+</span><span class="boring">
+</span><span class="boring">    // A fuzzer with feedbacks and a corpus scheduler
+</span><span class="boring">    let mut fuzzer = StdFuzzer::new(scheduler, feedback, objective);
+</span><span class="boring">
+</span><span class="boring">    // Create the executor for an in-process function with just one observer
+</span><span class="boring">    let mut executor = InProcessExecutor::new(
+</span><span class="boring">        &amp;mut harness,
+</span><span class="boring">        tuple_list!(observer),
+</span><span class="boring">        &amp;mut fuzzer,
+</span><span class="boring">        &amp;mut state,
+</span><span class="boring">        &amp;mut mgr,
+</span><span class="boring">    )
+</span><span class="boring">    .expect(&quot;Failed to create the Executor&quot;);
+</span><span class="boring">
+</span><span class="boring">    // Generator of printable bytearrays of max size 32
+</span><span class="boring">    let mut generator = RandPrintablesGenerator::new(32);
+</span><span class="boring">
+</span><span class="boring">    // Generate 8 initial inputs
+</span><span class="boring">    state
+</span><span class="boring">        .generate_initial_inputs(&amp;mut fuzzer, &amp;mut executor, &amp;mut generator, &amp;mut mgr, 8)
+</span><span class="boring">        .expect(&quot;Failed to generate the initial corpus&quot;);
+</span><span class="boring">
+</span>    // Setup a mutational stage with a basic bytes mutator
+    let mutator = StdScheduledMutator::new(havoc_mutations());
+    let mut stages = tuple_list!(StdMutationalStage::new(mutator));
 
-// ...
-
-// Setup a mutational stage with a basic bytes mutator
-let mutator = StdScheduledMutator::new(havoc_mutations());
-let mut stages = tuple_list!(StdMutationalStage::new(mutator));
-
-fuzzer
-    .fuzz_loop(&amp;mut stages, &amp;mut executor, &amp;mut state, &amp;mut mgr)
-    .expect(&quot;Error in the fuzzing loop&quot;);
-</code></pre>
+    fuzzer
+        .fuzz_loop(&amp;mut stages, &amp;mut executor, &amp;mut state, &amp;mut mgr)
+        .expect(&quot;Error in the fuzzing loop&quot;);
+<span class="boring">}
+</span></code></pre>
 <p><code>fuzz_loop</code> will request a testcase for each iteration to the fuzzer using the scheduler and then it will invoke the stage.</p>
-<p>After adding this code, we have a proper fuzzer, that can run a find the input that panics the function in less than a second.</p>
-<pre><code class="language-text">$ cargo run
+<p>Again, we need to add the new <code>use</code> directives:</p>
+<pre><code class="language-rust ignore">extern crate libafl;
+
+use libafl::{
+    bolts::{current_nanos, rands::StdRand, tuples::tuple_list, AsSlice},
+    corpus::{InMemoryCorpus, OnDiskCorpus},
+    events::SimpleEventManager,
+    executors::{inprocess::InProcessExecutor, ExitKind},
+    feedbacks::{CrashFeedback, MaxMapFeedback},
+    fuzzer::{Fuzzer, StdFuzzer},
+    generators::RandPrintablesGenerator,
+    inputs::{BytesInput, HasTargetBytes},
+    monitors::SimpleMonitor,
+    mutators::scheduled::{havoc_mutations, StdScheduledMutator},
+    observers::StdMapObserver,
+    schedulers::QueueScheduler,
+    stages::mutational::StdMutationalStage,
+    state::StdState,
+};
+use std::path::PathBuf;
+<span class="boring">
+</span><span class="boring">// Coverage map with explicit assignments due to the lack of instrumentation
+</span><span class="boring">static mut SIGNALS: [u8; 16] = [0; 16];
+</span><span class="boring">
+</span><span class="boring">fn signals_set(idx: usize) {
+</span><span class="boring">    unsafe { SIGNALS[idx] = 1 };
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn main() {
+</span><span class="boring">    // The closure that we want to fuzz
+</span><span class="boring">    let mut harness = |input: &amp;BytesInput| {
+</span><span class="boring">        let target = input.target_bytes();
+</span><span class="boring">        let buf = target.as_slice();
+</span><span class="boring">        signals_set(0); // set SIGNALS[0]
+</span><span class="boring">        if buf.len() &gt; 0 &amp;&amp; buf[0] == 'a' as u8 {
+</span><span class="boring">            signals_set(1); // set SIGNALS[1]
+</span><span class="boring">            if buf.len() &gt; 1 &amp;&amp; buf[1] == 'b' as u8 {
+</span><span class="boring">                signals_set(2); // set SIGNALS[2]
+</span><span class="boring">                if buf.len() &gt; 2 &amp;&amp; buf[2] == 'c' as u8 {
+</span><span class="boring">                    panic!(&quot;=)&quot;);
+</span><span class="boring">                }
+</span><span class="boring">            }
+</span><span class="boring">        }
+</span><span class="boring">        ExitKind::Ok
+</span><span class="boring">    };
+</span><span class="boring">    // To test the panic:
+</span><span class="boring">    let input = BytesInput::new(Vec::from(&quot;abc&quot;));
+</span><span class="boring">    #[cfg(feature = &quot;panic&quot;)]
+</span><span class="boring">    harness(&amp;input);
+</span><span class="boring">
+</span><span class="boring">    // Create an observation channel using the signals map
+</span><span class="boring">    let observer = unsafe { StdMapObserver::new(&quot;signals&quot;, &amp;mut SIGNALS) };
+</span><span class="boring">
+</span><span class="boring">    // Feedback to rate the interestingness of an input
+</span><span class="boring">    let mut feedback = MaxMapFeedback::new(&amp;observer);
+</span><span class="boring">
+</span><span class="boring">    // A feedback to choose if an input is a solution or not
+</span><span class="boring">    let mut objective = CrashFeedback::new();
+</span><span class="boring">
+</span><span class="boring">    // create a State from scratch
+</span><span class="boring">    let mut state = StdState::new(
+</span><span class="boring">        // RNG
+</span><span class="boring">        StdRand::with_seed(current_nanos()),
+</span><span class="boring">        // Corpus that will be evolved, we keep it in memory for performance
+</span><span class="boring">        InMemoryCorpus::new(),
+</span><span class="boring">        // Corpus in which we store solutions (crashes in this example),
+</span><span class="boring">        // on disk so the user can get them after stopping the fuzzer
+</span><span class="boring">        OnDiskCorpus::new(PathBuf::from(&quot;./crashes&quot;)).unwrap(),
+</span><span class="boring">        &amp;mut feedback,
+</span><span class="boring">        &amp;mut objective,
+</span><span class="boring">    )
+</span><span class="boring">    .unwrap();
+</span><span class="boring">
+</span><span class="boring">    // The Monitor trait defines how the fuzzer stats are displayed to the user
+</span><span class="boring">    let mon = SimpleMonitor::new(|s| println!(&quot;{s}&quot;));
+</span><span class="boring">
+</span><span class="boring">    // The event manager handles the various events generated during the fuzzing loop
+</span><span class="boring">    // such as the notification of the addition of a new item to the corpus
+</span><span class="boring">    let mut mgr = SimpleEventManager::new(mon);
+</span><span class="boring">
+</span><span class="boring">    // A queue policy to get testcasess from the corpus
+</span><span class="boring">    let scheduler = QueueScheduler::new();
+</span><span class="boring">
+</span><span class="boring">    // A fuzzer with feedbacks and a corpus scheduler
+</span><span class="boring">    let mut fuzzer = StdFuzzer::new(scheduler, feedback, objective);
+</span><span class="boring">
+</span><span class="boring">    // Create the executor for an in-process function with just one observer
+</span><span class="boring">    let mut executor = InProcessExecutor::new(
+</span><span class="boring">        &amp;mut harness,
+</span><span class="boring">        tuple_list!(observer),
+</span><span class="boring">        &amp;mut fuzzer,
+</span><span class="boring">        &amp;mut state,
+</span><span class="boring">        &amp;mut mgr,
+</span><span class="boring">    )
+</span><span class="boring">    .expect(&quot;Failed to create the Executor&quot;);
+</span><span class="boring">
+</span><span class="boring">    // Generator of printable bytearrays of max size 32
+</span><span class="boring">    let mut generator = RandPrintablesGenerator::new(32);
+</span><span class="boring">
+</span><span class="boring">    // Generate 8 initial inputs
+</span><span class="boring">    state
+</span><span class="boring">        .generate_initial_inputs(&amp;mut fuzzer, &amp;mut executor, &amp;mut generator, &amp;mut mgr, 8)
+</span><span class="boring">        .expect(&quot;Failed to generate the initial corpus&quot;);
+</span><span class="boring">
+</span><span class="boring">    // Setup a mutational stage with a basic bytes mutator
+</span><span class="boring">    let mutator = StdScheduledMutator::new(havoc_mutations());
+</span><span class="boring">    let mut stages = tuple_list!(StdMutationalStage::new(mutator));
+</span><span class="boring">
+</span><span class="boring">    fuzzer
+</span><span class="boring">        .fuzz_loop(&amp;mut stages, &amp;mut executor, &amp;mut state, &amp;mut mgr)
+</span><span class="boring">        .expect(&quot;Error in the fuzzing loop&quot;);
+</span><span class="boring">}
+</span></code></pre>
+<p>After adding this code, we have a proper fuzzer, that can run and find the input that panics the function in less than a second.</p>
+<pre><code class="language-console">$ cargo run
    Compiling baby_fuzzer v0.1.0 (/home/andrea/Desktop/baby_fuzzer)
     Finished dev [unoptimized + debuginfo] target(s) in 1.56s
      Running `target/debug/baby_fuzzer`
@@ -459,38 +1513,67 @@ Bye!
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                        
                             <a rel="prev" href="../getting_started/crates.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
+                        
+
+                        
                             <a rel="next" href="../baby_fuzzer/more_examples.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
+                        
+
                         <div style="clear: both"></div>
                     </nav>
                 </div>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
                     <a rel="prev" href="../getting_started/crates.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
+                
+
+                
                     <a rel="next" href="../baby_fuzzer/more_examples.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
+                
             </nav>
 
         </div>
 
+        
+
+        
+
+        
+
+        
         <script type="text/javascript">
             window.playground_copyable = true;
         </script>
+        
+
+        
+
+        
         <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
         <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
         <script src="../book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
+        
+
+        
+
     </body>
 </html>
