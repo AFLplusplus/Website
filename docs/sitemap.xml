@@ -1,56 +1,106 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
   <url>
     <loc>https://aflplus.plus/building/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/afl-fuzz_approach/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/best_practices/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/changelog/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/custom_mutators/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/env_variables/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/faq/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/features/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/fuzzing_binary-only_targets/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/fuzzing_in_depth/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/ideas/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/important_changes/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/install/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/readme/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/rpc_statsd/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/third_party_tools/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/tutorials/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/features/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/papers/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/aflpp_fuzzing_framework_proposal/</loc>
     <priority>0</priority>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/docs/tutorials/libxml2_tutorial/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/categories/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/tags/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://aflplus.plus/</loc>
   </url>
+  
 </urlset>

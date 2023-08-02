@@ -5,7 +5,11 @@
     <link>https://aflplus.plus/</link>
     <description>Recent content in The AFL&#43;&#43; fuzzing framework on AFLplusplus</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://aflplus.plus/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    
+	<atom:link href="https://aflplus.plus/index.xml" rel="self" type="application/rss+xml" />
+    
+    
     <item>
       <title></title>
       <link>https://aflplus.plus/building/</link>
@@ -47,7 +51,7 @@ Fuzzing a target with dlopen instrumented libraries If a source code based fuzzi
       
       <guid>https://aflplus.plus/docs/changelog/</guid>
       <description>Changelog This is the list of all noteworthy changes made in every public release of the tool. See README.md for the general instruction manual.
-Version ++4.07a (dev)  afl-fuzz:  reverse reading the seeds only on restarts (increases performance) new env AFL_POST_PROCESS_KEEP_ORIGINAL to keep the orignal data before post process on finds (for atnwalk custom mutator) new env AFL_IGNORE_PROBLEMS_COVERAGE to ignore coverage from loaded libs after forkserver initialization (required by Mozilla)   afl-cc:  added @responsefile support new env AFL_LLVM_LTO_SKIPINIT to support the AFL++ based WASM (https://github.</description>
+Version ++4.08a (dev)  afl-fuzz:  new mutation engine: mutations that favor discovery more paths are prefered until no new finds for 10 minutes then switching to mutations that favor triggering crashes. Modes and switch time can be configured with -P. Also input mode for the target can be defined with -a to be text or binary (defaults to generic) new custom mutator that has the new afl++ engine (so it can easily incorporated into new custom mutators), and also comes with a standalone command line tool!</description>
     </item>
     
     <item>
@@ -145,7 +149,7 @@ From version 3.00 onwards With AFL++ 4.00, we introduced the following changes f
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aflplus.plus/docs/install/</guid>
-      <description>Building and installing AFL++ Linux on x86 An easy way to install AFL++ with everything compiled is available via docker: You can use the Dockerfile (which has gcc-10 and clang-12 - hence afl-clang-lto is available) or just pull directly from the Docker Hub (for x86_64 and arm64):
+      <description>Building and installing AFL++ Linux on x86 An easy way to install AFL++ with everything compiled is available via docker: You can use the Dockerfile or just pull directly from the Docker Hub (for x86_64 and arm64):
 docker pull aflplusplus/aflplusplus: docker run -ti -v /location/of/your/target:/src aflplusplus/aflplusplus This image is automatically generated when a push to the stable branch happens. You will find your target source code in /src in the container.</description>
     </item>
     
@@ -189,9 +193,8 @@ This enables you to create nice and readable dashboards containing all the infor
       <guid>https://aflplus.plus/docs/tutorials/</guid>
       <description>Tutorials If you are a total newbie, try this guide:
  https://github.com/alex-maleno/Fuzzing-Module  Here are some good write-ups to show how to effectively use AFL++:
- https://aflplus.plus/docs/tutorials/libxml2_tutorial/ https://bananamafia.dev/post/gb-fuzz/ https://securitylab.github.com/research/fuzzing-challenges-solutions-1 https://securitylab.github.com/research/fuzzing-software-2 https://securitylab.github.com/research/fuzzing-sockets-FTP https://securitylab.github.com/research/fuzzing-sockets-FreeRDP https://securitylab.github.com/research/fuzzing-apache-1 https://mmmds.pl/fuzzing-map-parser-part-1-teeworlds/  If you do not want to follow a tutorial but rather try an exercise type of training, then we can highly recommend the following:
- https://github.com/antonio-morales/Fuzzing101  Here is good workflow description for frida_mode:
- https://blog.</description>
+ https://aflplus.plus/docs/tutorials/libxml2_tutorial/ https://bananamafia.dev/post/gb-fuzz/ https://bushido-sec.com/index.php/2023/06/19/the-art-of-fuzzing/ https://securitylab.github.com/research/fuzzing-challenges-solutions-1 https://securitylab.github.com/research/fuzzing-software-2 https://securitylab.github.com/research/fuzzing-sockets-FTP https://securitylab.github.com/research/fuzzing-sockets-FreeRDP https://securitylab.github.com/research/fuzzing-apache-1 https://mmmds.pl/fuzzing-map-parser-part-1-teeworlds/  If you do not want to follow a tutorial but rather try an exercise type of training, then we can highly recommend the following:
+ https://github.com/antonio-morales/Fuzzing101  Here is a good forkflow description (and tutorial) for qemu_mode:</description>
     </item>
     
     <item>

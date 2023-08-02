@@ -33,10 +33,10 @@
 
 
 
-<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
+<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.797b113984428b9ffe575a30e67d0ba5620b4dcb425630e44a01b24df323efe9.js" integrity="sha256-eXsROYRCi5/&#43;V1ow5n0LpWILTctCVjDkSgGyTfMj7&#43;k="></script>
+<script defer src="/en.search.min.57cbb588c1dd84950a43117dbfbea77e9d7d79734e473d9f3bfa8530d3d7ec36.js" integrity="sha256-V8u1iMHdhJUKQxF9v76nfp19eXNORz2fO/qFMNPX7DY="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.05c">Release 4.05c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.07c">Release 4.07c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -144,7 +144,8 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#version-407a-dev">Version ++4.07a (dev)</a></li>
+        <li><a href="#version-408a-dev">Version ++4.08a (dev)</a></li>
+        <li><a href="#version-407c-release">Version ++4.07c (release)</a></li>
         <li><a href="#version-406c-release">Version ++4.06c (release)</a></li>
         <li><a href="#version-405c-release">Version ++4.05c (release)</a></li>
         <li><a href="#version-404c-release">Version ++4.04c (release)</a></li>
@@ -418,7 +419,52 @@ https://github.com/alex-shpak/hugo-book
 <article class="markdown"><h1 id="changelog">Changelog</h1>
 <p>This is the list of all noteworthy changes made in every public
 release of the tool. See README.md for the general instruction manual.</p>
-<h3 id="version-407a-dev">Version ++4.07a (dev)</h3>
+<h3 id="version-408a-dev">Version ++4.08a (dev)</h3>
+<ul>
+<li>afl-fuzz:
+<ul>
+<li>new mutation engine: mutations that favor discovery more paths are
+prefered until no new finds for 10 minutes then switching to mutations
+that favor triggering crashes. Modes and switch time can be configured
+with <code>-P</code>. Also input mode for the target can be defined with <code>-a</code> to
+be <code>text</code> or <code>binary</code> (defaults to <code>generic</code>)</li>
+<li>new custom mutator that has the new afl++ engine (so it can easily
+incorporated into new custom mutators), and also comes with a standalone
+command line tool! See custom_mutators/aflpp/standalone/</li>
+<li>display the state of the fuzzing run in the UI :-)</li>
+<li>fix timeout setting if &lsquo;+&rsquo; is used or a session is restarted</li>
+</ul>
+</li>
+<li>afl-cmin/afl-cmin.bash:
+<ul>
+<li>fixed a bug inherited from vanilla AFL where a coverage of
+map[123] = 11 would be the same as map[1123] = 1</li>
+<li>warn on crashing inputs</li>
+<li>adjust threads if less inputs than threads specified</li>
+</ul>
+</li>
+<li>afl-cc:
+<ul>
+<li>fixed an off-by-one instrumentation of iselect, hurting coverage a bit.
+Thanks to @amykweon for spotting and fixing!</li>
+<li>@toka fixed a bug in laf-intel signed integer comparison splitting,
+thanks a lot!!</li>
+<li>more LLVM compatability</li>
+</ul>
+</li>
+<li>frida_mode:
+<ul>
+<li>support for long form instrumentation on x86_x64 and arm64</li>
+<li>renamed utils/get_symbol_addr.sh to utils/frida_get_symbol_addr.sh</li>
+</ul>
+</li>
+<li>qemu_mode:
+<ul>
+<li>added qemu_mode/utils/qemu_get_symbol_addr.sh</li>
+</ul>
+</li>
+</ul>
+<h3 id="version-407c-release">Version ++4.07c (release)</h3>
 <ul>
 <li>afl-fuzz:
 <ul>
@@ -435,6 +481,10 @@ loaded libs after forkserver initialization (required by Mozilla)</li>
 <li>new env <code>AFL_LLVM_LTO_SKIPINIT</code> to support the AFL++ based WASM
 (<a href="https://github.com/fgsect/WAFL">https://github.com/fgsect/WAFL</a>) project</li>
 <li>error and print help if afl-clan-lto is used with lto=thin</li>
+<li>rewrote our PCGUARD pass to be compatible with LLVM 15+ shenanigans,
+requires LLVM 13+ now instead of 10.0.1+</li>
+<li>fallback to native LLVM PCGUARD if our PCGUARD is unavailable</li>
+<li>fixed a crash in GCC CMPLOG</li>
 </ul>
 </li>
 <li>afl-showmap:
@@ -450,7 +500,7 @@ loaded libs after forkserver initialization (required by Mozilla)</li>
 </li>
 <li>qemu_mode:
 <ul>
-<li>Persistent mode +QASAN support for ppc32 tragets by @worksbutnottested</li>
+<li>Persistent mode + QASAN support for ppc32 targets by @worksbutnottested</li>
 </ul>
 </li>
 <li>a new grammar custom mutator atnwalk was submitted by @voidptr127 !</li>
@@ -1446,7 +1496,7 @@ easier: DEFAULT, CFG (INSTRIM), LTO, CTX, NGRAM-x (x=2-16)</li>
 <li>LTO collision free instrumented added in llvm_mode with afl-clang-lto -
 this mode is amazing but requires you to build llvm 11 yourself</li>
 <li>Added llvm_mode NGRAM prev_loc coverage by Adrean Herrera
-(<a href="https://github.com/adrianherrera/afl-ngram-pass/)">https://github.com/adrianherrera/afl-ngram-pass/)</a>, activate by setting
+(<a href="https://github.com/adrianherrera/afl-ngram-pass/),">https://github.com/adrianherrera/afl-ngram-pass/),</a> activate by setting
 AFL_LLVM_INSTRUMENT=NGRAM-<!-- raw HTML omitted --> or AFL_LLVM_NGRAM_SIZE=<!-- raw HTML omitted --></li>
 <li>Added llvm_mode context sensitive branch coverage, activated by setting
 AFL_LLVM_INSTRUMENT=CTX or AFL_LLVM_CTX=1</li>
@@ -4763,7 +4813,8 @@ the environment variable AFL_CUSTOM_MUTATOR_LIBRARY.</p>
   <ul>
     <li>
       <ul>
-        <li><a href="#version-407a-dev">Version ++4.07a (dev)</a></li>
+        <li><a href="#version-408a-dev">Version ++4.08a (dev)</a></li>
+        <li><a href="#version-407c-release">Version ++4.07c (release)</a></li>
         <li><a href="#version-406c-release">Version ++4.06c (release)</a></li>
         <li><a href="#version-405c-release">Version ++4.05c (release)</a></li>
         <li><a href="#version-404c-release">Version ++4.04c (release)</a></li>

@@ -9,7 +9,37 @@ type: docs
   This is the list of all noteworthy changes made in every public
   release of the tool. See README.md for the general instruction manual.
 
-### Version ++4.07a (dev)
+### Version ++4.08a (dev)
+  - afl-fuzz:
+    - new mutation engine: mutations that favor discovery more paths are
+      prefered until no new finds for 10 minutes then switching to mutations
+      that favor triggering crashes. Modes and switch time can be configured
+      with `-P`. Also input mode for the target can be defined with `-a` to
+      be `text` or `binary` (defaults to `generic`)
+    - new custom mutator that has the new afl++ engine (so it can easily
+      incorporated into new custom mutators), and also comes with a standalone
+      command line tool! See custom_mutators/aflpp/standalone/
+    - display the state of the fuzzing run in the UI :-)
+    - fix timeout setting if '+' is used or a session is restarted
+  - afl-cmin/afl-cmin.bash:
+    - fixed a bug inherited from vanilla AFL where a coverage of
+      map[123] = 11 would be the same as map[1123] = 1
+    - warn on crashing inputs
+    - adjust threads if less inputs than threads specified
+  - afl-cc:
+    - fixed an off-by-one instrumentation of iselect, hurting coverage a bit.
+      Thanks to @amykweon for spotting and fixing!
+    - @toka fixed a bug in laf-intel signed integer comparison splitting,
+      thanks a lot!!
+    - more LLVM compatability
+  - frida_mode:
+    - support for long form instrumentation on x86_x64 and arm64
+    - renamed utils/get_symbol_addr.sh to utils/frida_get_symbol_addr.sh
+  - qemu_mode:
+    - added qemu_mode/utils/qemu_get_symbol_addr.sh
+
+
+### Version ++4.07c (release)
   - afl-fuzz:
     - reverse reading the seeds only on restarts (increases performance)
     - new env `AFL_POST_PROCESS_KEEP_ORIGINAL` to keep the orignal
@@ -21,13 +51,17 @@ type: docs
     - new env `AFL_LLVM_LTO_SKIPINIT` to support the AFL++ based WASM
       (https://github.com/fgsect/WAFL) project
     - error and print help if afl-clan-lto is used with lto=thin
+    - rewrote our PCGUARD pass to be compatible with LLVM 15+ shenanigans,
+      requires LLVM 13+ now instead of 10.0.1+
+    - fallback to native LLVM PCGUARD if our PCGUARD is unavailable
+    - fixed a crash in GCC CMPLOG
   - afl-showmap:
     - added custom mutator post_process and send support
     - add `-I filelist` option, an alternative to `-i in_dir`
   - afl-cmin + afl-cmin.bash:
     - `-T threads` parallel task support, can be a huge speedup!
   - qemu_mode:
-    - Persistent mode +QASAN support for ppc32 tragets by @worksbutnottested
+    - Persistent mode + QASAN support for ppc32 targets by @worksbutnottested
   - a new grammar custom mutator atnwalk was submitted by @voidptr127 !
   - two new custom mutators are now available:
     - TritonDSE in custom_mutators/aflpp_tritondse

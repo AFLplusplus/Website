@@ -33,10 +33,10 @@
 
 
 
-<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
+<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.797b113984428b9ffe575a30e67d0ba5620b4dcb425630e44a01b24df323efe9.js" integrity="sha256-eXsROYRCi5/&#43;V1ow5n0LpWILTctCVjDkSgGyTfMj7&#43;k="></script>
+<script defer src="/en.search.min.57cbb588c1dd84950a43117dbfbea77e9d7d79734e473d9f3bfa8530d3d7ec36.js" integrity="sha256-V8u1iMHdhJUKQxF9v76nfp19eXNORz2fO/qFMNPX7DY="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.05c">Release 4.05c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.07c">Release 4.07c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -203,7 +203,7 @@ cross-platform binaries.</p>
 <p>For linux programs and its libraries, this is accomplished with a version of
 QEMU running in the lesser-known &ldquo;user space emulation&rdquo; mode. QEMU is a project
 separate from AFL++, but you can conveniently build the feature by doing:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd qemu_mode
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd qemu_mode
 ./build_qemu_support.sh
 </code></pre></div><p>The following setup to use QEMU mode is recommended:</p>
 <ul>
@@ -255,7 +255,7 @@ FRIDA mode is most of the times slightly faster than QEMU mode. It is also
 newer, lacks COMPCOV, and has the advantage that it works on MacOS (both intel
 and M1).</p>
 <p>To build FRIDA mode:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd frida_mode
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd frida_mode
 gmake
 </code></pre></div><p>For additional instructions and caveats, see
 <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../frida_mode/README.md">frida_mode/README.md</a>.</p>
@@ -287,10 +287,10 @@ contrast to QEMU, Unicorn does not offer a full system or even userland
 emulation. Runtime environment and/or loaders have to be written from scratch,
 if needed. On top, block chaining has been removed. This means the speed boost
 introduced in the patched QEMU Mode of AFL++ cannot be ported over to Unicorn.</p>
-<p>For non-Linux binaries, you can use AFL++&rsquo;s unicorn_mode which can emulate
+<p>For non-Linux binaries, you can use AFL++'s unicorn_mode which can emulate
 anything you want - for the price of speed and user written scripts.</p>
 <p>To build unicorn_mode:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd unicorn_mode
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd unicorn_mode
 ./build_unicorn_support.sh
 </code></pre></div><p>For further information, check out
 <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../unicorn_mode/README.md">unicorn_mode/README.md</a>.</p>
@@ -337,7 +337,7 @@ However, whereas Pintool and DynamoRIO work at runtime, Dyninst instruments the
 target at load time and then let it run - or save the binary with the changes.
 This is great for some things, e.g., fuzzing, and not so effective for others,
 e.g., malware analysis.</p>
-<p>So, what you can do with Dyninst is taking every basic block and putting AFL++&rsquo;s
+<p>So, what you can do with Dyninst is taking every basic block and putting AFL++'s
 instrumentation code in there - and then save the binary. Afterwards, just fuzz
 the newly saved target binary with afl-fuzz. Sounds great? It is. The issue
 though - it is a non-trivial problem to insert instructions, which change
