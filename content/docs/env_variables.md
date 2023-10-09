@@ -333,6 +333,9 @@ checks or alter some of the more exotic semantics of the tool:
     (`-i in`). This is an important feature to set when resuming a fuzzing
     session.
 
+  - `AFL_IGNORE_SEED_PROBLEMS` will skip over crashes and timeouts in the seeds
+    instead of exiting.
+
   - Setting `AFL_CRASH_EXITCODE` sets the exit code AFL++ treats as crash. For
     example, if `AFL_CRASH_EXITCODE='-1'` is set, each input resulting in a `-1`
     return code (i.e. `exit(-1)` got called), will be treated as if a crash had
@@ -370,6 +373,9 @@ checks or alter some of the more exotic semantics of the tool:
 
   - `AFL_EXIT_ON_SEED_ISSUES` will restore the vanilla afl-fuzz behavior which
     does not allow crashes or timeout seeds in the initial -i corpus.
+
+  - `AFL_CRASHING_SEEDS_AS_NEW_CRASH` will treat crashing seeds as new crash. these 
+    crashes will be written to crashes folder as op:dry_run, and orig:<seed_file_name>.
 
   - `AFL_EXIT_ON_TIME` causes afl-fuzz to terminate if no new paths were found
     within a specified period of time (in seconds). May be convenient for some
@@ -415,10 +421,15 @@ checks or alter some of the more exotic semantics of the tool:
     set `AFL_IGNORE_PROBLEMS`. If you additionally want to also ignore coverage
     from late loaded libraries, you can set `AFL_IGNORE_PROBLEMS_COVERAGE`.
 
-  - When running in the `-M` or `-S` mode, setting `AFL_IMPORT_FIRST` causes the
-    fuzzer to import test cases from other instances before doing anything else.
-    This makes the "own finds" counter in the UI more accurate. Beyond counter
-    aesthetics, not much else should change.
+  - When running with multiple afl-fuzz or with `-F`,  setting `AFL_IMPORT_FIRST`
+    causes the fuzzer to import test cases from other instances before doing
+    anything else. This makes the "own finds" counter in the UI more accurate.
+
+  - When running with multiple afl-fuzz or with `-F`,  setting `AFL_FINAL_SYNC`
+    will cause the fuzzer to perform a final import of test cases when
+    terminating. This is beneficial for `-M` main fuzzers to ensure it has all
+    unique test cases and hence you only need to `afl-cmin` this single
+    queue.
 
   - Setting `AFL_INPUT_LEN_MIN` and `AFL_INPUT_LEN_MAX` are an alternative to
     the afl-fuzz -g/-G command line option to control the minimum/maximum
@@ -591,7 +602,8 @@ checks or alter some of the more exotic semantics of the tool:
     Note that this is not a compile time option but a runtime option :-)
 
   - Set `AFL_PIZZA_MODE` to 1 to enable the April 1st stats menu, set to -1
-    to disable although it is 1st of April.
+    to disable although it is 1st of April. 0 is the default and means enable
+    on the 1st of April automatically.
 
   - If you need a specific interval to update fuzzer_stats file, you can
     set `AFL_FUZZER_STATS_UPDATE_INTERVAL` to the interval in seconds you'd

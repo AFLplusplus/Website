@@ -40,7 +40,7 @@ Fuzzing a target with dlopen instrumented libraries If a source code based fuzzi
       
       <guid>https://aflplus.plus/docs/changelog/</guid>
       <description>Changelog This is the list of all noteworthy changes made in every public release of the tool. See README.md for the general instruction manual.
-Version ++4.08a (dev)  afl-fuzz:  new mutation engine: mutations that favor discovery more paths are prefered until no new finds for 10 minutes then switching to mutations that favor triggering crashes. Modes and switch time can be configured with -P. Also input mode for the target can be defined with -a to be text or binary (defaults to generic) new custom mutator that has the new afl++ engine (so it can easily incorporated into new custom mutators), and also comes with a standalone command line tool!</description>
+Version ++4.09a (dev)  afl-fuzz:  added AFL_FINAL_SYNC which forces a final fuzzer sync (also for -F) before terminating. added AFL_IGNORE_SEED_PROBLEMS to skip over seeds that time out instead of exiting with an error message allow -S/-M naming up to 50 characters (from 24)   afl-whatsup:  detect instanced that are starting up and show them as such as not dead now also shows coverage reached option -m shows only very relevant stats option -n will not use color in the output   instrumentation:  fix for a few string compare transform functions for LAF   frida_mode:  fixes support for large map offsets   added new tool afl-addseeds that adds new seeds to a running campaign added benchmark/benchmark.</description>
     </item>
     
     <item>

@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.57cbb588c1dd84950a43117dbfbea77e9d7d79734e473d9f3bfa8530d3d7ec36.js" integrity="sha256-V8u1iMHdhJUKQxF9v76nfp19eXNORz2fO/qFMNPX7DY="></script>
+<script defer src="/en.search.min.2121dd144f56093f39999e12ac94e2894ddc6fba97b269735113a9d4958a1a25.js" integrity="sha256-ISHdFE9WCT85mZ4SrJTiiU3cb7qXsmlzUROp1JWKGiU="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.07c">Release 4.07c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.08c">Release 4.08c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -672,32 +672,40 @@ of the test cases. Depending on the average test case size (and those found
 during fuzzing) and their number, a value between 50-500MB is recommended. You
 can set the cache size (in MB) by setting the environment variable
 <code>AFL_TESTCACHE_SIZE</code>.</p>
-<p>There should be one main fuzzer (<code>-M main-$HOSTNAME</code> option) and as many
-secondary fuzzers (e.g., <code>-S variant1</code>) as you have cores that you use. Every
-<code>-M</code>/<code>-S</code> entry needs a unique name (that can be whatever), however, the same
-<code>-o</code> output directory location has to be used for all instances.</p>
+<p>There should be one main fuzzer (<code>-M main-$HOSTNAME</code> option - set also
+<code>AFL_FINAL_SYNC=1</code>) and as many secondary fuzzers (e.g., <code>-S variant1</code>) as you
+have cores that you use. Every <code>-M</code>/<code>-S</code> entry needs a unique name (that can be
+whatever), however, the same <code>-o</code> output directory location has to be used for
+all instances.</p>
 <p>For every secondary fuzzer there should be a variation, e.g.:</p>
 <ul>
-<li>one should fuzz the target that was compiled differently: with sanitizers
-activated (<code>export AFL_USE_ASAN=1 ; export AFL_USE_UBSAN=1 ; export AFL_USE_CFISAN=1</code>)</li>
+<li>one should fuzz the target that was compiled with sanitizers activated
+(<code>export AFL_USE_ASAN=1 ; export AFL_USE_UBSAN=1 ; export AFL_USE_CFISAN=1</code>)</li>
 <li>one or two should fuzz the target with CMPLOG/redqueen (see above), at least
-one cmplog instance should follow transformations (<code>-l AT</code>)</li>
+one cmplog instance should follow transformations (<code>-l 2AT</code>)</li>
 <li>one to three fuzzers should fuzz a target compiled with laf-intel/COMPCOV (see
 above). Important note: If you run more than one laf-intel/COMPCOV fuzzer and
 you want them to share their intermediate results, the main fuzzer (<code>-M</code>) must
-be one of them! (Although this is not really recommended.)</li>
+be one of them (although this is not really recommended).</li>
 </ul>
-<p>All other secondaries should be used like this:</p>
+<p>The other secondaries should be run like this:</p>
 <ul>
-<li>a quarter to a third with the MOpt mutator enabled: <code>-L 0</code></li>
-<li>run with a different power schedule, recommended are: <code>fast</code> (default),
+<li>10% with the MOpt mutator enabled: <code>-L 0</code></li>
+<li>10% should use the old queue cycling with <code>-Z</code></li>
+<li>50-70% should run with <code>AFL_DISABLE_TRIM</code></li>
+<li>40% should run with <code>-P explore</code> and 20% with <code>-P exploit</code></li>
+<li>If you use <code>-a</code> then set 30% of the instances to not use <code>-a</code>; if you did
+not set <code>-a</code> (why??), then set 30% to <code>-a ascii</code> and 30% to <code>-a binary</code>.</li>
+<li>run each with a different power schedule, recommended are: <code>fast</code> (default),
 <code>explore</code>, <code>coe</code>, <code>lin</code>, <code>quad</code>, <code>exploit</code>, and <code>rare</code> which you can set with
 the <code>-p</code> option, e.g., <code>-p explore</code>. See the
 <a href="/docs/faq/#what-are-power-schedules">FAQ</a> for details.</li>
-<li>a few instances should use the old queue cycling with <code>-Z</code></li>
 </ul>
+<p>It can be useful to set <code>AFL_IGNORE_SEED_PROBLEMS=1</code> to skip over seeds that
+crash or timeout during startup.</p>
 <p>Also, it is recommended to set <code>export AFL_IMPORT_FIRST=1</code> to load test cases
-from other fuzzers in the campaign first.</p>
+from other fuzzers in the campaign first. But note that can slow down the start
+of the first fuzz by quite a lot of you have many fuzzers and/or many seeds.</p>
 <p>If you have a large corpus, a corpus from a previous run or are fuzzing in a CI,
 then also set <code>export AFL_CMPLOG_ONLY_NEW=1</code> and <code>export AFL_FAST_CAL=1</code>.
 If the queue in the CI is huge and/or the execution time is slow then you can
@@ -967,7 +975,7 @@ corpus as this very likely has been done for them already.</li>
 <li>65% for <code>AFL_DISABLE_TRIM</code></li>
 <li>50% for <code>AFL_KEEP_TIMEOUTS</code></li>
 <li>50% use a dictionary generated by <code>AFL_LLVM_DICT2FILE</code> + <code>AFL_LLVM_DICT2FILE_NO_MAIN=1</code></li>
-<li>40% use MOpt (<code>-L 0</code>)</li>
+<li>10% use MOpt (<code>-L 0</code>)</li>
 <li>40% for <code>AFL_EXPAND_HAVOC_NOW</code></li>
 <li>20% for old queue processing (<code>-Z</code>)</li>
 <li>for CMPLOG targets, 70% for <code>-l 2</code>, 10% for <code>-l 3</code>, 20% for <code>-l 2AT</code></li>

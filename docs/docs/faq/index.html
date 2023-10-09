@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.57cbb588c1dd84950a43117dbfbea77e9d7d79734e473d9f3bfa8530d3d7ec36.js" integrity="sha256-V8u1iMHdhJUKQxF9v76nfp19eXNORz2fO/qFMNPX7DY="></script>
+<script defer src="/en.search.min.2121dd144f56093f39999e12ac94e2894ddc6fba97b269735113a9d4958a1a25.js" integrity="sha256-ISHdFE9WCT85mZ4SrJTiiU3cb7qXsmlzUROp1JWKGiU="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.07c">Release 4.07c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.08c">Release 4.08c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -178,8 +178,8 @@ AFL.</p>
 which then implemented their own research and features, making it now by far
 the most flexible and feature rich guided fuzzer available as open source. And
 in independent fuzzing benchmarks it is one of the best fuzzers available,
-e.g., <a href="https://www.fuzzbench.com/reports/2020-08-03/index.html">Fuzzbench
-Report</a>.</p>
+e.g.,
+<a href="https://www.fuzzbench.com/reports/2020-08-03/index.html">Fuzzbench Report</a>.</p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <p>The definition of the terms whitebox, graybox, and blackbox fuzzing varies
@@ -230,6 +230,29 @@ other addresses</strong> (except at the end).</p>
               Block E
 </code></pre><p>Every line between two blocks is an <code>edge</code>. Note that a few basic block loop
 to itself, this too would be an edge.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>To stop afl-fuzz, minimize it&rsquo;s corpus and restart you would usually do:</p>
+<pre><code>Control-C  # to terminate afl-fuzz
+$ afl-cmin -T nproc -i out/default/queue -o minimized_queue -- ./target
+$ AFL_FAST_CAL=1 AFL_CMPLOG_ONLY_NEW=1 afl-fuzz -i minimized_queue -o out2 [other options] -- ./target
+</code></pre><p>If this improves fuzzing or not is debated and no consensus has been reached
+or in-depth analysis been performed.</p>
+<p>On the pro side:
+* The queue/corpus is reduced (up to 20%) by removing intermediate paths
+that are maybe not needed anymore.</p>
+<p>On the con side:
+* Fuzzing time is lost for the time the fuzzing is stopped, minimized and
+restarted.</p>
+<p>The the big question:
+* Does a minimized queue/corpus improve finding new coverage or does it
+hinder it?</p>
+<p>The AFL++ team&rsquo;s own limited analysis seem to to show that keeping
+intermediate paths help to find more coverage, at least for afl-fuzz.</p>
+<p>For honggfuzz in comparison it is a good idea to restart it from time to
+time if you have other fuzzers (e.g: AFL++) running in parallel to sync
+the finds of other fuzzers to honggfuzz as it has no syncing feature like
+AFL++ or libfuzzer.</p>
 <!-- raw HTML omitted -->
 <h2 id="targets">Targets</h2>
 <!-- raw HTML omitted -->

@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
 
 
-<script defer src="/en.search.min.57cbb588c1dd84950a43117dbfbea77e9d7d79734e473d9f3bfa8530d3d7ec36.js" integrity="sha256-V8u1iMHdhJUKQxF9v76nfp19eXNORz2fO/qFMNPX7DY="></script>
+<script defer src="/en.search.min.2121dd144f56093f39999e12ac94e2894ddc6fba97b269735113a9d4958a1a25.js" integrity="sha256-ISHdFE9WCT85mZ4SrJTiiU3cb7qXsmlzUROp1JWKGiU="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.07c">Release 4.07c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.08c">Release 4.08c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -510,6 +510,10 @@ newly found test cases and not for test cases that are loaded on startup
 session.</p>
 </li>
 <li>
+<p><code>AFL_IGNORE_SEED_PROBLEMS</code> will skip over crashes and timeouts in the seeds
+instead of exiting.</p>
+</li>
+<li>
 <p>Setting <code>AFL_CRASH_EXITCODE</code> sets the exit code AFL++ treats as crash. For
 example, if <code>AFL_CRASH_EXITCODE='-1'</code> is set, each input resulting in a <code>-1</code>
 return code (i.e. <code>exit(-1)</code> got called), will be treated as if a crash had
@@ -554,6 +558,10 @@ new coverage</p>
 <li>
 <p><code>AFL_EXIT_ON_SEED_ISSUES</code> will restore the vanilla afl-fuzz behavior which
 does not allow crashes or timeout seeds in the initial -i corpus.</p>
+</li>
+<li>
+<p><code>AFL_CRASHING_SEEDS_AS_NEW_CRASH</code> will treat crashing seeds as new crash. these
+crashes will be written to crashes folder as op:dry_run, and orig:&lt;seed_file_name&gt;.</p>
 </li>
 <li>
 <p><code>AFL_EXIT_ON_TIME</code> causes afl-fuzz to terminate if no new paths were found
@@ -609,10 +617,16 @@ set <code>AFL_IGNORE_PROBLEMS</code>. If you additionally want to also ignore co
 from late loaded libraries, you can set <code>AFL_IGNORE_PROBLEMS_COVERAGE</code>.</p>
 </li>
 <li>
-<p>When running in the <code>-M</code> or <code>-S</code> mode, setting <code>AFL_IMPORT_FIRST</code> causes the
-fuzzer to import test cases from other instances before doing anything else.
-This makes the &ldquo;own finds&rdquo; counter in the UI more accurate. Beyond counter
-aesthetics, not much else should change.</p>
+<p>When running with multiple afl-fuzz or with <code>-F</code>,  setting <code>AFL_IMPORT_FIRST</code>
+causes the fuzzer to import test cases from other instances before doing
+anything else. This makes the &ldquo;own finds&rdquo; counter in the UI more accurate.</p>
+</li>
+<li>
+<p>When running with multiple afl-fuzz or with <code>-F</code>,  setting <code>AFL_FINAL_SYNC</code>
+will cause the fuzzer to perform a final import of test cases when
+terminating. This is beneficial for <code>-M</code> main fuzzers to ensure it has all
+unique test cases and hence you only need to <code>afl-cmin</code> this single
+queue.</p>
 </li>
 <li>
 <p>Setting <code>AFL_INPUT_LEN_MIN</code> and <code>AFL_INPUT_LEN_MAX</code> are an alternative to
@@ -816,7 +830,8 @@ Note that this is not a compile time option but a runtime option :-)</p>
 </li>
 <li>
 <p>Set <code>AFL_PIZZA_MODE</code> to 1 to enable the April 1st stats menu, set to -1
-to disable although it is 1st of April.</p>
+to disable although it is 1st of April. 0 is the default and means enable
+on the 1st of April automatically.</p>
 </li>
 <li>
 <p>If you need a specific interval to update fuzzer_stats file, you can
