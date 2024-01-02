@@ -5,11 +5,7 @@
     <link>https://aflplus.plus/docs/</link>
     <description>Recent content on AFLplusplus</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    
-	<atom:link href="https://aflplus.plus/docs/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en-us</language><atom:link href="https://aflplus.plus/docs/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title></title>
       <link>https://aflplus.plus/docs/afl-fuzz_approach/</link>
@@ -17,10 +13,8 @@
       
       <guid>https://aflplus.plus/docs/afl-fuzz_approach/</guid>
       <description>The afl-fuzz approach AFL++ is a brute-force fuzzer coupled with an exceedingly simple but rock-solid instrumentation-guided genetic algorithm. It uses a modified form of edge coverage to effortlessly pick up subtle, local-scale changes to program control flow.
-Simplifying a bit, the overall algorithm can be summed up as:
-  Load user-supplied initial test cases into the queue.
-  Take the next input file from the queue.
-  Attempt to trim the test case to the smallest size that doesn&amp;rsquo;t alter the measured behavior of the program.</description>
+Note: If you are interested in a more current up-to-date deep dive how AFL++ works then we commend this blog post: https://blog.ritsec.club/posts/afl-under-hood/
+Simplifying a bit, the overall algorithm can be summed up as:</description>
     </item>
     
     <item>
@@ -40,7 +34,7 @@ Fuzzing a target with dlopen instrumented libraries If a source code based fuzzi
       
       <guid>https://aflplus.plus/docs/changelog/</guid>
       <description>Changelog This is the list of all noteworthy changes made in every public release of the tool. See README.md for the general instruction manual.
-Version ++4.09a (dev)  afl-fuzz:  added AFL_FINAL_SYNC which forces a final fuzzer sync (also for -F) before terminating. added AFL_IGNORE_SEED_PROBLEMS to skip over seeds that time out instead of exiting with an error message allow -S/-M naming up to 50 characters (from 24)   afl-whatsup:  detect instanced that are starting up and show them as such as not dead now also shows coverage reached option -m shows only very relevant stats option -n will not use color in the output   instrumentation:  fix for a few string compare transform functions for LAF   frida_mode:  fixes support for large map offsets   added new tool afl-addseeds that adds new seeds to a running campaign added benchmark/benchmark.</description>
+Version ++4.10a (dev)  afl-fuzz:  default power schedule is now EXPLORE, due a fix in fast schedules explore is slightly better now. fixed minor issues in the mutation engine, thanks to @futhewo for reporting!   instrumentation:  LLVM 18 support, thanks to @devnexen! Injection (SQL, LDAP, XSS) feature now available, see instrumentation/README.</description>
     </item>
     
     <item>
@@ -139,7 +133,7 @@ From version 3.00 onwards With AFL++ 4.00, we introduced the following changes f
       
       <guid>https://aflplus.plus/docs/install/</guid>
       <description>Building and installing AFL++ Linux on x86 An easy way to install AFL++ with everything compiled is available via docker: You can use the Dockerfile or just pull directly from the Docker Hub (for x86_64 and arm64):
-docker pull aflplusplus/aflplusplus: docker run -ti -v /location/of/your/target:/src aflplusplus/aflplusplus This image is automatically generated when a push to the stable branch happens. You will find your target source code in /src in the container.</description>
+docker pull aflplusplus/aflplusplus:latest docker run -ti -v /location/of/your/target:/src aflplusplus/aflplusplus This image is automatically generated when a push to the stable branch happens. You will find your target source code in /src in the container.</description>
     </item>
     
     <item>
@@ -183,7 +177,7 @@ This enables you to create nice and readable dashboards containing all the infor
       <description>Tutorials If you are a total newbie, try this guide:
  https://github.com/alex-maleno/Fuzzing-Module  Here are some good write-ups to show how to effectively use AFL++:
  https://aflplus.plus/docs/tutorials/libxml2_tutorial/ https://bananamafia.dev/post/gb-fuzz/ https://bushido-sec.com/index.php/2023/06/19/the-art-of-fuzzing/ https://securitylab.github.com/research/fuzzing-challenges-solutions-1 https://securitylab.github.com/research/fuzzing-software-2 https://securitylab.github.com/research/fuzzing-sockets-FTP https://securitylab.github.com/research/fuzzing-sockets-FreeRDP https://securitylab.github.com/research/fuzzing-apache-1 https://mmmds.pl/fuzzing-map-parser-part-1-teeworlds/  If you do not want to follow a tutorial but rather try an exercise type of training, then we can highly recommend the following:
- https://github.com/antonio-morales/Fuzzing101  Here is a good forkflow description (and tutorial) for qemu_mode:</description>
+ https://github.com/antonio-morales/Fuzzing101  Here is a good workflow description (and tutorial) for qemu_mode:</description>
     </item>
     
     <item>

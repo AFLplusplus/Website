@@ -131,8 +131,9 @@ def deinit():  # optional for Python
 
 - `queue_get` (optional):
 
-    This method determines whether the custom fuzzer should fuzz the current
-    queue entry or not
+    This method determines whether AFL++ should fuzz the current
+    queue entry or not: all defined custom mutators as well as
+    all AFL++'s mutators.
 
 - `fuzz_count` (optional):
 
@@ -203,7 +204,7 @@ def deinit():  # optional for Python
     This method can be used if you want to send data to the target yourself,
     e.g. via IPC. This replaces some usage of utils/afl_proxy but requires
     that you start the target with afl-fuzz.
-    Example: [https://github.com/AFLplusplus/AFLplusplus/blob/stable/custom_mutators/examples/custom_send.c](https://github.com/AFLplusplus/AFLplusplus/blob/stable/custom_mutators/examples/custom_send.c)
+    Example: [custom_mutators/examples/custom_send.c](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../custom_mutators/examples/custom_send.c)
 
 - `queue_new_entry` (optional):
 

@@ -141,6 +141,12 @@ subset of the settings discussed in section 1, with the exception of:
   - `TMPDIR` and `AFL_KEEP_ASSEMBLY`, since no temporary assembly files are
     created.
 
+  - LLVM modes compiling C++ will normally set rpath in the binary if LLVM is
+    not in a usual location (/usr or /lib). Setting `AFL_LLVM_NO_RPATH=1`
+    disables this behaviour in case it isn't desired. For example, the compiling
+    toolchain might be in a custom location, but the target machine has LLVM
+    runtime libs in the search path.
+
 Then there are a few specific features that are only available in
 instrumentation mode:
 
@@ -195,6 +201,19 @@ in the specified file.
 
 For more information, see
 [instrumentation/README.instrument_list.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.instrument_list.md).
+
+#### INJECTIONS
+
+This feature is able to find simple injection vulnerabilities in insecure
+calls to mysql/mariadb/nosql/postgresql/ldap and XSS in libxml2.
+
+  - Setting `AFL_LLVM_INJECTIONS_ALL` will enable all injection hooking
+
+  - Setting `AFL_LLVM_INJECTIONS_SQL` will enable SQL injection hooking
+
+  - Setting `AFL_LLVM_INJECTIONS_LDAP` will enable LDAP injection hooking
+
+  - Setting `AFL_LLVM_INJECTIONS_XSS` will enable XSS injection hooking
 
 #### LAF-INTEL
 

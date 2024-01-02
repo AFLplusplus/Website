@@ -33,10 +33,10 @@
 
 
 
-<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.2121dd144f56093f39999e12ac94e2894ddc6fba97b269735113a9d4958a1a25.js" integrity="sha256-ISHdFE9WCT85mZ4SrJTiiU3cb7qXsmlzUROp1JWKGiU="></script>
+<script defer src="/en.search.min.68ec47fd1cbb1cf747325b658b3fa46a968dbe271a29a651694735aa6eaf02f3.js" integrity="sha256-aOxH/Ry7HPdHMltliz&#43;kapaNvicaKaZRaUc1qm6vAvM="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.08c">Release 4.08c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.09c">Release 4.09c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -244,78 +244,78 @@ so on).</p>
 required. The
 <a href="https://registry.hub.docker.com/r/prom/statsd-exporter">statsd exporter</a>
 converts the StatsD metrics to Prometheus. If you are using a provider that
-supports StatsD directly, you can skip this part of the setup.&rdquo;</p>
+supports StatsD directly, you can skip this part of the setup.&quot;</p>
 <p>You can create and move the infrastructure files into a directory of your
 choice. The directory will store all the required configuration files.</p>
 <p>To install and set up Prometheus and Grafana:</p>
 <ol>
 <li>
 <p>Install Docker and Docker Compose:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">curl -fsSL https://get.docker.com -o get-docker.sh
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
 </code></pre></div></li>
 <li>
 <p>Create a <code>docker-compose.yml</code> containing the following:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">version</span>: <span style="color:#e6db74">&#39;3&#39;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#39;3&#39;</span>
 
-<span style="color:#66d9ef">networks</span>:
-  <span style="color:#66d9ef">statsd-net</span>:
-    <span style="color:#66d9ef">driver</span>: bridge
+<span style="color:#f92672">networks</span>:
+  <span style="color:#f92672">statsd-net</span>:
+    <span style="color:#f92672">driver</span>: <span style="color:#ae81ff">bridge</span>
 
-<span style="color:#66d9ef">services</span>:
-  <span style="color:#66d9ef">prometheus</span>:
-    <span style="color:#66d9ef">image</span>: prom/prometheus
-    <span style="color:#66d9ef">container_name</span>: prometheus
-    <span style="color:#66d9ef">volumes</span>:
-      - ./prometheus.yml:/prometheus.yml
-    <span style="color:#66d9ef">command</span>:
+<span style="color:#f92672">services</span>:
+  <span style="color:#f92672">prometheus</span>:
+    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">prom/prometheus</span>
+    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">prometheus</span>
+    <span style="color:#f92672">volumes</span>:
+      - <span style="color:#ae81ff">./prometheus.yml:/prometheus.yml</span>
+    <span style="color:#f92672">command</span>:
       - <span style="color:#e6db74">&#39;--config.file=/prometheus.yml&#39;</span>
-    <span style="color:#66d9ef">restart</span>: unless-stopped
-    <span style="color:#66d9ef">ports</span>:
+    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">unless-stopped</span>
+    <span style="color:#f92672">ports</span>:
       - <span style="color:#e6db74">&#34;9090:9090&#34;</span>
-    <span style="color:#66d9ef">networks</span>:
-      - statsd-net
+    <span style="color:#f92672">networks</span>:
+      - <span style="color:#ae81ff">statsd-net</span>
 
-  <span style="color:#66d9ef">statsd_exporter</span>:
-    <span style="color:#66d9ef">image</span>: prom/statsd-exporter
-    <span style="color:#66d9ef">container_name</span>: statsd_exporter
-    <span style="color:#66d9ef">volumes</span>:
-      - ./statsd_mapping.yml:/statsd_mapping.yml
-    <span style="color:#66d9ef">command</span>:
+  <span style="color:#f92672">statsd_exporter</span>:
+    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">prom/statsd-exporter</span>
+    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">statsd_exporter</span>
+    <span style="color:#f92672">volumes</span>:
+      - <span style="color:#ae81ff">./statsd_mapping.yml:/statsd_mapping.yml</span>
+    <span style="color:#f92672">command</span>:
       - <span style="color:#e6db74">&#34;--statsd.mapping-config=/statsd_mapping.yml&#34;</span>
-    <span style="color:#66d9ef">ports</span>:
+    <span style="color:#f92672">ports</span>:
       - <span style="color:#e6db74">&#34;9102:9102/tcp&#34;</span>
       - <span style="color:#e6db74">&#34;8125:9125/udp&#34;</span>
-    <span style="color:#66d9ef">networks</span>:
-      - statsd-net
+    <span style="color:#f92672">networks</span>:
+      - <span style="color:#ae81ff">statsd-net</span>
 
-  <span style="color:#66d9ef">grafana</span>:
-    <span style="color:#66d9ef">image</span>: grafana/grafana
-    <span style="color:#66d9ef">container_name</span>: grafana
-    <span style="color:#66d9ef">restart</span>: unless-stopped
-    <span style="color:#66d9ef">ports</span>:
+  <span style="color:#f92672">grafana</span>:
+    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">grafana/grafana</span>
+    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">grafana</span>
+    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">unless-stopped</span>
+    <span style="color:#f92672">ports</span>:
         - <span style="color:#e6db74">&#34;3000:3000&#34;</span>
-    <span style="color:#66d9ef">networks</span>:
-      - statsd-net
+    <span style="color:#f92672">networks</span>:
+      - <span style="color:#ae81ff">statsd-net</span>
 </code></pre></div></li>
 <li>
 <p>Create a <code>prometheus.yml</code> containing the following:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">global</span>:
-  <span style="color:#66d9ef">scrape_interval</span>:      15s
-  <span style="color:#66d9ef">evaluation_interval</span>:  15s
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">global</span>:
+  <span style="color:#f92672">scrape_interval</span>:      <span style="color:#ae81ff">15s</span>
+  <span style="color:#f92672">evaluation_interval</span>:  <span style="color:#ae81ff">15s</span>
 
-<span style="color:#66d9ef">scrape_configs</span>:
-  - <span style="color:#66d9ef">job_name</span>: <span style="color:#e6db74">&#39;fuzzing_metrics&#39;</span>
-    <span style="color:#66d9ef">static_configs</span>:
-      - <span style="color:#66d9ef">targets</span>: [<span style="color:#e6db74">&#39;statsd_exporter:9102&#39;</span>]
+<span style="color:#f92672">scrape_configs</span>:
+  - <span style="color:#f92672">job_name</span>: <span style="color:#e6db74">&#39;fuzzing_metrics&#39;</span>
+    <span style="color:#f92672">static_configs</span>:
+      - <span style="color:#f92672">targets</span>: [<span style="color:#e6db74">&#39;statsd_exporter:9102&#39;</span>]
 </code></pre></div></li>
 <li>
 <p>Create a <code>statsd_mapping.yml</code> containing the following:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">mappings</span>:
-- <span style="color:#66d9ef">match</span>: <span style="color:#e6db74">&#34;fuzzing.*&#34;</span>
-  <span style="color:#66d9ef">name</span>: <span style="color:#e6db74">&#34;fuzzing&#34;</span>
-  <span style="color:#66d9ef">labels</span>:
-      <span style="color:#66d9ef">type</span>: <span style="color:#e6db74">&#34;$1&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">mappings</span>:
+- <span style="color:#f92672">match</span>: <span style="color:#e6db74">&#34;fuzzing.*&#34;</span>
+  <span style="color:#f92672">name</span>: <span style="color:#e6db74">&#34;fuzzing&#34;</span>
+  <span style="color:#f92672">labels</span>:
+      <span style="color:#f92672">type</span>: <span style="color:#e6db74">&#34;$1&#34;</span>
 </code></pre></div></li>
 <li>
 <p>Run <code>docker-compose up -d</code>.</p>
@@ -323,7 +323,7 @@ sh get-docker.sh
 </ol>
 <h2 id="running-afl-with-statsd">Running AFL++ with StatsD</h2>
 <p>To run your fuzzing instances:</p>
-<pre><code>AFL_STATSD_TAGS_FLAVOR=dogstatsd AFL_STATSD=1 afl-fuzz -M test-fuzzer-1 -i i -o o [./bin/my-application] @@
+<pre tabindex="0"><code>AFL_STATSD_TAGS_FLAVOR=dogstatsd AFL_STATSD=1 afl-fuzz -M test-fuzzer-1 -i i -o o [./bin/my-application] @@
 AFL_STATSD_TAGS_FLAVOR=dogstatsd AFL_STATSD=1 afl-fuzz -S test-fuzzer-2 -i i -o o [./bin/my-application] @@
 ...
 </code></pre></article>

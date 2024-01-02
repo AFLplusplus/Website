@@ -33,10 +33,10 @@
 
 
 
-<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.2121dd144f56093f39999e12ac94e2894ddc6fba97b269735113a9d4958a1a25.js" integrity="sha256-ISHdFE9WCT85mZ4SrJTiiU3cb7qXsmlzUROp1JWKGiU="></script>
+<script defer src="/en.search.min.68ec47fd1cbb1cf747325b658b3fa46a968dbe271a29a651694735aa6eaf02f3.js" integrity="sha256-aOxH/Ry7HPdHMltliz&#43;kapaNvicaKaZRaUc1qm6vAvM="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.08c">Release 4.08c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.09c">Release 4.09c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -208,7 +208,7 @@ fairly broad use of environment variables instead:</p>
 <li>
 <p>Some build/configure scripts break with AFL++ compilers. To be able to pass
 them, do:</p>
-<pre><code>      export CC=afl-cc
+<pre tabindex="0"><code>      export CC=afl-cc
       export CXX=afl-c++
       export AFL_NOOPT=1
       ./configure --disable-shared --disabler-werror
@@ -310,7 +310,7 @@ all passes support this option though as it is an outdated feature.</p>
 <li>
 <p>LLVM modes support <code>AFL_LLVM_DICT2FILE=/absolute/path/file.txt</code> which will
 write all constant string comparisons to this file to be used later with
-afl-fuzz&rsquo; <code>-x</code> option.</p>
+afl-fuzz' <code>-x</code> option.</p>
 </li>
 <li>
 <p>An option to <code>AFL_LLVM_DICT2FILE</code> is <code>AFL_LLVM_DICT2FILE_NO_MAIN=1</code> which
@@ -319,6 +319,13 @@ skill not parse <code>main()</code>.</p>
 <li>
 <p><code>TMPDIR</code> and <code>AFL_KEEP_ASSEMBLY</code>, since no temporary assembly files are
 created.</p>
+</li>
+<li>
+<p>LLVM modes compiling C++ will normally set rpath in the binary if LLVM is
+not in a usual location (/usr or /lib). Setting <code>AFL_LLVM_NO_RPATH=1</code>
+disables this behaviour in case it isn&rsquo;t desired. For example, the compiling
+toolchain might be in a custom location, but the target machine has LLVM
+runtime libs in the search path.</p>
 </li>
 </ul>
 <p>Then there are a few specific features that are only available in
@@ -376,6 +383,23 @@ function will only instrument (or skip) those files that match the names listed
 in the specified file.</p>
 <p>For more information, see
 <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.instrument_list.md">instrumentation/README.instrument_list.md</a>.</p>
+<h4 id="injections">INJECTIONS</h4>
+<p>This feature is able to find simple injection vulnerabilities in insecure
+calls to mysql/mariadb/nosql/postgresql/ldap and XSS in libxml2.</p>
+<ul>
+<li>
+<p>Setting <code>AFL_LLVM_INJECTIONS_ALL</code> will enable all injection hooking</p>
+</li>
+<li>
+<p>Setting <code>AFL_LLVM_INJECTIONS_SQL</code> will enable SQL injection hooking</p>
+</li>
+<li>
+<p>Setting <code>AFL_LLVM_INJECTIONS_LDAP</code> will enable LDAP injection hooking</p>
+</li>
+<li>
+<p>Setting <code>AFL_LLVM_INJECTIONS_XSS</code> will enable XSS injection hooking</p>
+</li>
+</ul>
 <h4 id="laf-intel">LAF-INTEL</h4>
 <p>This great feature will split compares into series of single byte comparisons to
 allow afl-fuzz to find otherwise rather impossible paths. It is not restricted
@@ -469,7 +493,7 @@ mode.</p>
 instrumented assembly files. Useful for troubleshooting problems or
 understanding how the tool works.</p>
 <p>To get them in a predictable place, try something like:</p>
-<pre><code>mkdir assembly_here
+<pre tabindex="0"><code>mkdir assembly_here
 TMPDIR=$PWD/assembly_here AFL_KEEP_ASSEMBLY=1 make clean all
 </code></pre></li>
 <li>
@@ -1085,7 +1109,7 @@ optimal values if not already present in the environment:</p>
 <ul>
 <li>
 <p>By default, <code>ASAN_OPTIONS</code> are set to (among others):</p>
-<pre><code>abort_on_error=1
+<pre tabindex="0"><code>abort_on_error=1
 detect_leaks=0
 malloc_context_size=0
 symbolize=0
@@ -1097,7 +1121,7 @@ difficulty telling crashes and hangs apart.</p>
 </li>
 <li>
 <p>Similarly, the default <code>LSAN_OPTIONS</code> are set to:</p>
-<pre><code>exit_code=23
+<pre tabindex="0"><code>exit_code=23
 fast_unwind_on_malloc=0
 symbolize=0
 print_suppressions=0
@@ -1107,7 +1131,7 @@ and we need a way to detect faults.</p>
 </li>
 <li>
 <p>In the same vein, by default, <code>MSAN_OPTIONS</code> are set to:</p>
-<pre><code>exit_code=86 (required for legacy reasons)
+<pre tabindex="0"><code>exit_code=86 (required for legacy reasons)
 abort_on_error=1
 symbolize=0
 msan_track_origins=0

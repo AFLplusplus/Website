@@ -13,7 +13,7 @@ You can use the [Dockerfile](https://github.com/AFLplusplus/AFLplusplus/blob/sta
 Docker Hub (for x86_64 and arm64):
 
 ```shell
-docker pull aflplusplus/aflplusplus:
+docker pull aflplusplus/aflplusplus:latest
 docker run -ti -v /location/of/your/target:/src aflplusplus/aflplusplus
 ```
 

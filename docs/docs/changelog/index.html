@@ -33,10 +33,10 @@
 
 
 
-<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.2121dd144f56093f39999e12ac94e2894ddc6fba97b269735113a9d4958a1a25.js" integrity="sha256-ISHdFE9WCT85mZ4SrJTiiU3cb7qXsmlzUROp1JWKGiU="></script>
+<script defer src="/en.search.min.68ec47fd1cbb1cf747325b658b3fa46a968dbe271a29a651694735aa6eaf02f3.js" integrity="sha256-aOxH/Ry7HPdHMltliz&#43;kapaNvicaKaZRaUc1qm6vAvM="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.08c">Release 4.08c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.09c">Release 4.09c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -144,7 +144,8 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     <li>
       <ul>
-        <li><a href="#version-409a-dev">Version ++4.09a (dev)</a></li>
+        <li><a href="#version-410a-dev">Version ++4.10a (dev)</a></li>
+        <li><a href="#version-409c-release">Version ++4.09c (release)</a></li>
         <li><a href="#version-408c-release">Version ++4.08c (release)</a></li>
         <li><a href="#version-407c-release">Version ++4.07c (release)</a></li>
         <li><a href="#version-406c-release">Version ++4.06c (release)</a></li>
@@ -420,15 +421,51 @@ https://github.com/alex-shpak/hugo-book
 <article class="markdown"><h1 id="changelog">Changelog</h1>
 <p>This is the list of all noteworthy changes made in every public
 release of the tool. See README.md for the general instruction manual.</p>
-<h3 id="version-409a-dev">Version ++4.09a (dev)</h3>
+<h3 id="version-410a-dev">Version ++4.10a (dev)</h3>
 <ul>
 <li>afl-fuzz:
 <ul>
+<li>default power schedule is now EXPLORE, due a fix in fast schedules
+explore is slightly better now.</li>
+<li>fixed minor issues in the mutation engine, thanks to @futhewo for
+reporting!</li>
+</ul>
+</li>
+<li>instrumentation:
+<ul>
+<li>LLVM 18 support, thanks to @devnexen!</li>
+<li>Injection (SQL, LDAP, XSS) feature now available, see
+<code>instrumentation/README.injections.md</code> how to activate/use/expand.</li>
+<li>compcov/LAF-intel:
+<ul>
+<li>floating point splitting bug fix by @hexcoder</li>
+<li>due a bug in LLVM 17 integer splitting is disabled!</li>
+<li>when splitting floats was selected, integers were always split as well,
+fixed to require AFL_LLVM_LAF_SPLIT_COMPARES as it should</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="version-409c-release">Version ++4.09c (release)</h3>
+<ul>
+<li>afl-fuzz:
+<ul>
+<li>fixed the new mutation implementation for two bugs</li>
 <li>added <code>AFL_FINAL_SYNC</code> which forces a final fuzzer sync (also for <code>-F</code>)
 before terminating.</li>
 <li>added AFL_IGNORE_SEED_PROBLEMS to skip over seeds that time out instead
 of exiting with an error message</li>
 <li>allow -S/-M naming up to 50 characters (from 24)</li>
+<li>CMPLOG:
+<ul>
+<li>added scale support (-l S)</li>
+<li>skip unhelpful insertions (u8)</li>
+</ul>
+</li>
+<li>added &ndash;version and &ndash;help command line parameters</li>
+<li>fixed endless loop when reading malformed dictionaries</li>
+<li>new custom mutator function: post_run - thanks to yangzao!</li>
 </ul>
 </li>
 <li>afl-whatsup:
@@ -442,6 +479,8 @@ of exiting with an error message</li>
 <li>instrumentation:
 <ul>
 <li>fix for a few string compare transform functions for LAF</li>
+<li>we are instrumenting __cxx internal functions again. this might break
+a few targets, please report if so.</li>
 </ul>
 </li>
 <li>frida_mode:
@@ -449,8 +488,10 @@ of exiting with an error message</li>
 <li>fixes support for large map offsets</li>
 </ul>
 </li>
+<li>support for AFL_FUZZER_LOOPCOUNT for afl.rs and LLVMFuzzerTestOneInput</li>
+<li>afl-cmin/afl-cmin.bash: prevent unneeded file errors</li>
 <li>added new tool afl-addseeds that adds new seeds to a running campaign</li>
-<li>added benchmark/benchmark.sh if you want to see how good your fuzzing
+<li>added benchmark/benchmark.py if you want to see how good your fuzzing
 speed is in comparison to other setups.</li>
 </ul>
 <h3 id="version-408c-release">Version ++4.08c (release)</h3>
@@ -1533,7 +1574,7 @@ easier: DEFAULT, CFG (INSTRIM), LTO, CTX, NGRAM-x (x=2-16)</li>
 <li>LTO collision free instrumented added in llvm_mode with afl-clang-lto -
 this mode is amazing but requires you to build llvm 11 yourself</li>
 <li>Added llvm_mode NGRAM prev_loc coverage by Adrean Herrera
-(<a href="https://github.com/adrianherrera/afl-ngram-pass/),">https://github.com/adrianherrera/afl-ngram-pass/),</a> activate by setting
+(<a href="https://github.com/adrianherrera/afl-ngram-pass/)">https://github.com/adrianherrera/afl-ngram-pass/)</a>, activate by setting
 AFL_LLVM_INSTRUMENT=NGRAM-<!-- raw HTML omitted --> or AFL_LLVM_NGRAM_SIZE=<!-- raw HTML omitted --></li>
 <li>Added llvm_mode context sensitive branch coverage, activated by setting
 AFL_LLVM_INSTRUMENT=CTX or AFL_LLVM_CTX=1</li>
@@ -4850,7 +4891,8 @@ the environment variable AFL_CUSTOM_MUTATOR_LIBRARY.</p>
   <ul>
     <li>
       <ul>
-        <li><a href="#version-409a-dev">Version ++4.09a (dev)</a></li>
+        <li><a href="#version-410a-dev">Version ++4.10a (dev)</a></li>
+        <li><a href="#version-409c-release">Version ++4.09c (release)</a></li>
         <li><a href="#version-408c-release">Version ++4.08c (release)</a></li>
         <li><a href="#version-407c-release">Version ++4.07c (release)</a></li>
         <li><a href="#version-406c-release">Version ++4.06c (release)</a></li>

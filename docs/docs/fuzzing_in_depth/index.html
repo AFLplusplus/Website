@@ -33,10 +33,10 @@
 
 
 
-<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.2121dd144f56093f39999e12ac94e2894ddc6fba97b269735113a9d4958a1a25.js" integrity="sha256-ISHdFE9WCT85mZ4SrJTiiU3cb7qXsmlzUROp1JWKGiU="></script>
+<script defer src="/en.search.min.68ec47fd1cbb1cf747325b658b3fa46a968dbe271a29a651694735aa6eaf02f3.js" integrity="sha256-aOxH/Ry7HPdHMltliz&#43;kapaNvicaKaZRaUc1qm6vAvM="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.08c">Release 4.08c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.09c">Release 4.09c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -228,11 +228,11 @@ systems, this will be usually heavily cached, resulting in fairly modest
 is your responsibility to monitor for potential trouble; with very heavy I/O,
 the lifespan of many HDDs and SSDs may be reduced.</p>
 <p>A good way to monitor disk I/O on Linux is the <code>iostat</code> command:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ iostat -d <span style="color:#ae81ff">3</span> -x -k <span style="color:#f92672">[</span>...optional disk ID...<span style="color:#f92672">]</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ iostat -d <span style="color:#ae81ff">3</span> -x -k <span style="color:#f92672">[</span>...optional disk ID...<span style="color:#f92672">]</span>
 </code></pre></div><p>Using the <code>AFL_TMPDIR</code> environment variable and a RAM-disk, you can have the
 heavy writing done in RAM to prevent the aforementioned wear and tear. For
 example, the following line will run a Docker container with all this preset:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># docker run -ti --mount type=tmpfs,destination=/ramdisk -e AFL_TMPDIR=/ramdisk aflplusplus/aflplusplus</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># docker run -ti --mount type=tmpfs,destination=/ramdisk -e AFL_TMPDIR=/ramdisk aflplusplus/aflplusplus</span>
 </code></pre></div></li>
 </ul>
 <h2 id="1-instrumenting-the-target">1. Instrumenting the target</h2>
@@ -242,7 +242,7 @@ kinds of compiler targets and instrumentation options. The following
 evaluation flow will help you to select the best possible.</p>
 <p>It is highly recommended to have the newest llvm version possible installed,
 anything below 9 is not recommended.</p>
-<pre><code>+--------------------------------+
+<pre tabindex="0"><code>+--------------------------------+
 | clang/clang++ 11+ is available | --&gt; use LTO mode (afl-clang-lto/afl-clang-lto++)
 +--------------------------------+     see [https://github.com/AFLplusplus/AFLplusplus/blob/stable/instrumentation/README.lto.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/instrumentation/README.lto.md)
     |
@@ -333,7 +333,7 @@ instrumented and then:</p>
 <p>Just put one filename or function (prefixing with <code>fun: </code>) per line (no
 directory information necessary for filenames) in the file <code>allowlist.txt</code>.</p>
 <p>Example:</p>
-<pre><code>foo.cpp        # will match foo/foo.cpp, bar/foo.cpp, barfoo.cpp etc.
+<pre tabindex="0"><code>foo.cpp        # will match foo/foo.cpp, bar/foo.cpp, barfoo.cpp etc.
 fun: foo_func  # will match the function foo_func
 </code></pre></li>
 <li>
@@ -422,7 +422,7 @@ is more effective).</p>
 HMAC, etc., then modify the source code so that checks for these values are
 removed. This can even be done safely for source code used in operational
 products by eliminating these checks within these AFL++ specific blocks:</p>
-<pre><code>#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+<pre tabindex="0"><code>#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
   // say that the checksum or HMAC was fine - or whatever is required
   // to eliminate the need for the fuzzer to guess the right checksum
   return 0;
@@ -453,7 +453,7 @@ reporting via <code>export AFL_QUIET=1</code>.</p>
 disabled (e.g., <code>--disable-werror</code> for some configure scripts).</p>
 </li>
 <li>
-<p>In case the configure/build system complains about AFL++'s compiler and
+<p>In case the configure/build system complains about AFL++&rsquo;s compiler and
 aborts, then set <code>export AFL_NOOPT=1</code> which will then just behave like the
 real compiler and run the configure step separately. For building the target
 afterwards this option has to be unset again!</p>
@@ -461,20 +461,20 @@ afterwards this option has to be unset again!</p>
 </ol>
 <h4 id="configure">configure</h4>
 <p>For <code>configure</code> build systems, this is usually done by:</p>
-<pre><code>CC=afl-clang-fast CXX=afl-clang-fast++ ./configure --disable-shared
+<pre tabindex="0"><code>CC=afl-clang-fast CXX=afl-clang-fast++ ./configure --disable-shared
 </code></pre><p>Note that if you are using the (better) afl-clang-lto compiler, you also have to
 set <code>AR</code> to llvm-ar[-VERSION] and <code>RANLIB</code> to llvm-ranlib[-VERSION] - as is
 described in <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.lto.md">instrumentation/README.lto.md</a>.</p>
 <h4 id="cmake">CMake</h4>
 <p>For CMake build systems, this is usually done by:</p>
-<pre><code>mkdir build; cd build; cmake -DCMAKE_C_COMPILER=afl-cc -DCMAKE_CXX_COMPILER=afl-c++ ..
+<pre tabindex="0"><code>mkdir build; cd build; cmake -DCMAKE_C_COMPILER=afl-cc -DCMAKE_CXX_COMPILER=afl-c++ ..
 </code></pre><p>Note that if you are using the (better) afl-clang-lto compiler you also have to
 set AR to llvm-ar[-VERSION] and RANLIB to llvm-ranlib[-VERSION] - as is
 described in <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.lto.md">instrumentation/README.lto.md</a>.</p>
 <h4 id="meson-build-system">Meson Build System</h4>
 <p>For the Meson Build System, you have to set the AFL++ compiler with the very
 first command!</p>
-<pre><code>CC=afl-cc CXX=afl-c++ meson
+<pre tabindex="0"><code>CC=afl-cc CXX=afl-c++ meson
 </code></pre><h4 id="other-build-systems-or-if-configurecmake-didnt-work">Other build systems or if configure/cmake didn&rsquo;t work</h4>
 <p>Sometimes <code>cmake</code> and <code>configure</code> do not pick up the AFL++ compiler or the
 <code>RANLIB</code>/<code>AR</code> that is needed - because this was just not foreseen by the
@@ -487,9 +487,9 @@ compiler (and/or <code>RANLIB</code> and <code>AR</code>).</p>
 <h4 id="linker-scripts">Linker scripts</h4>
 <p>If the project uses linker scripts to hide the symbols exported by the
 binary, then you may see errors such as:</p>
-<pre><code>undefined symbol: __afl_area_ptr
+<pre tabindex="0"><code>undefined symbol: __afl_area_ptr
 </code></pre><p>The solution is to modify the linker script to add:</p>
-<pre><code>{
+<pre tabindex="0"><code>{
   global:
     __afl_*;
 }
@@ -509,7 +509,7 @@ doing it for a hobby and not professionally :-).</p>
 <p>libfuzzer <code>LLVMFuzzerTestOneInput()</code> harnesses are the defacto standard for
 fuzzing, and they can be used with AFL++ (and honggfuzz) as well!</p>
 <p>Compiling them is as simple as:</p>
-<pre><code>afl-clang-fast++ -fsanitize=fuzzer -o harness harness.cpp targetlib.a
+<pre tabindex="0"><code>afl-clang-fast++ -fsanitize=fuzzer -o harness harness.cpp targetlib.a
 </code></pre><p>You can even use advanced libfuzzer features like <code>FuzzedDataProvider</code>,
 <code>LLVMFuzzerInitialize()</code> etc. and they will work!</p>
 <p>The generated binary is fuzzed with afl-fuzz like any other fuzz target.</p>
@@ -544,12 +544,12 @@ produce a new path/coverage in the target:</p>
 <p>If the target program is to be called by fuzzing as <code>bin/target INPUTFILE</code>,
 replace the INPUTFILE argument that the target program would read from with
 <code>@@</code>:</p>
-<pre><code>afl-cmin -i INPUTS -o INPUTS_UNIQUE -- bin/target -someopt @@
+<pre tabindex="0"><code>afl-cmin -i INPUTS -o INPUTS_UNIQUE -- bin/target -someopt @@
 </code></pre></li>
 <li>
 <p>If the target reads from stdin (standard input) instead, just omit the <code>@@</code>
 as this is the default:</p>
-<pre><code>afl-cmin -i INPUTS -o INPUTS_UNIQUE -- bin/target -someopt
+<pre tabindex="0"><code>afl-cmin -i INPUTS -o INPUTS_UNIQUE -- bin/target -someopt
 </code></pre></li>
 </ul>
 </li>
@@ -560,7 +560,7 @@ bloated with duplicates anymore, which would slow down the fuzzing progress!</p>
 <p>The shorter the input files that still traverse the same path within the target,
 the better the fuzzing will be. This minimization is done with <code>afl-tmin</code>,
 however, it is a long process as this has to be done for every file:</p>
-<pre><code>mkdir input
+<pre tabindex="0"><code>mkdir input
 cd INPUTS_UNIQUE
 for i in *; do
   afl-tmin -i &quot;$i&quot; -o &quot;../input/$i&quot; -- bin/target -someopt @@
@@ -598,7 +598,7 @@ directory and create a file with any content as test data in there.</p>
 <p>If you do not want anything special, the defaults are already usually best,
 hence all you need is to specify the seed input directory with the result of
 step <a href="#a-collecting-inputs">2a) Collecting inputs</a>:</p>
-<pre><code>afl-fuzz -i input -o output -- bin/target -someopt @@
+<pre tabindex="0"><code>afl-fuzz -i input -o output -- bin/target -someopt @@
 </code></pre><p>Note that the directory specified with <code>-o</code> will be created if it does not
 exist.</p>
 <p>It can be valuable to run afl-fuzz in a <code>screen</code> or <code>tmux</code> shell so you can log
@@ -611,7 +611,7 @@ information on screen or tmux, check their documentation.</p>
 <p>If you need to stop and re-start the fuzzing, use the same command line options
 (or even change them by selecting a different power schedule or another mutation
 mode!) and switch the input directory with a dash (<code>-</code>):</p>
-<pre><code>afl-fuzz -i - -o output -- bin/target -someopt @@
+<pre tabindex="0"><code>afl-fuzz -i - -o output -- bin/target -someopt @@
 </code></pre><p>Adding a dictionary is helpful. You have the following options:</p>
 <ul>
 <li>See the directory
@@ -754,7 +754,7 @@ this directory to the other machines.</p>
 <p>Let&rsquo;s say all servers have the <code>-o out</code> directory in /target/foo/out, and you
 created a file <code>servers.txt</code> which contains the hostnames of all participating
 servers, plus you have an ssh key deployed to all of them, then run:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#66d9ef">for</span> FROM in <span style="color:#e6db74">`</span>cat servers.txt<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#66d9ef">for</span> FROM in <span style="color:#e6db74">`</span>cat servers.txt<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
   <span style="color:#66d9ef">for</span> TO in <span style="color:#e6db74">`</span>cat servers.txt<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
     rsync -rlpogtz --rsh<span style="color:#f92672">=</span>ssh $FROM:/target/foo/out/main-$FROM $TO:target/foo/out/
   <span style="color:#66d9ef">done</span>
@@ -780,14 +780,14 @@ e.g., <code>afl-plot out/default /srv/www/htdocs/plot</code>.</p>
 <p>If you want to add new seeds to a fuzzing campaign, you can run a temporary
 fuzzing instance, e.g., when your main fuzzer is using <code>-o out</code> and the new
 seeds are in <code>newseeds/</code> directory:</p>
-<pre><code>AFL_BENCH_JUST_ONE=1 AFL_FAST_CAL=1 afl-fuzz -i newseeds -o out -S newseeds -- ./target
+<pre tabindex="0"><code>AFL_BENCH_JUST_ONE=1 AFL_FAST_CAL=1 afl-fuzz -i newseeds -o out -S newseeds -- ./target
 </code></pre><h3 id="g-checking-the-coverage-of-the-fuzzing">g) Checking the coverage of the fuzzing</h3>
 <p>The <code>corpus count</code> value is a bad indicator for checking how good the coverage
 is.</p>
 <p>A better indicator - if you use default llvm instrumentation with at least
 version 9 - is to use <code>afl-showmap</code> with the collect coverage option <code>-C</code> on the
 output directory:</p>
-<pre><code>$ afl-showmap -C -i out -o /dev/null -- ./target -params @@
+<pre tabindex="0"><code>$ afl-showmap -C -i out -o /dev/null -- ./target -params @@
 ...
 [*] Using SHARED MEMORY FUZZING feature.
 [*] Target map size: 9960
@@ -923,7 +923,7 @@ is possible to get past an initial out-of-bounds read - and see what lies
 beneath.</p>
 <p>Oh, one more thing: for test case minimization, give afl-tmin a try. The tool
 can be operated in a very simple way:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./afl-tmin -i test_case -o minimized_result -- /path/to/program <span style="color:#f92672">[</span>...<span style="color:#f92672">]</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./afl-tmin -i test_case -o minimized_result -- /path/to/program <span style="color:#f92672">[</span>...<span style="color:#f92672">]</span>
 </code></pre></div><p>The tool works with crashing and non-crashing test cases alike. In the crash
 mode, it will happily accept instrumented and non-instrumented binaries. In the
 non-crashing mode, the minimizer relies on standard AFL++ instrumentation to
@@ -938,7 +938,7 @@ complex file formats.</p>
 <p><code>casr-afl</code> from <a href="https://github.com/ispras/casr">CASR</a> tools provides
 comfortable triaging for crashes found by AFL++. Reports are clustered and
 contain severity and other information.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">casr-afl -i /path/to/afl/out/dir -o /path/to/casr/out/dir
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">casr-afl -i /path/to/afl/out/dir -o /path/to/casr/out/dir
 </code></pre></div><h2 id="5-ci-fuzzing">5. CI fuzzing</h2>
 <p>Some notes on continuous integration (CI) fuzzing - this fuzzing is different to
 normal fuzzing campaigns as these are much shorter runnings.</p>
@@ -987,7 +987,7 @@ fuzzing. <code>-M</code> enables old queue handling etc. which is good for a fuz
 campaign but not good for short CI runs.</p>
 </li>
 </ol>
-<p>How this can look like can, e.g., be seen at AFL++'s setup in Google&rsquo;s
+<p>How this can look like can, e.g., be seen at AFL++&rsquo;s setup in Google&rsquo;s
 <a href="https://github.com/google/oss-fuzz/blob/master/infra/base-images/base-builder/compile_afl">oss-fuzz</a>
 and
 <a href="https://github.com/google/clusterfuzz/blob/master/src/clusterfuzz/_internal/bot/fuzzers/afl/launcher.py">clusterfuzz</a>.</p>

@@ -9,13 +9,37 @@ type: docs
   This is the list of all noteworthy changes made in every public
   release of the tool. See README.md for the general instruction manual.
 
-### Version ++4.09a (dev)
+### Version ++4.10a (dev)
   - afl-fuzz:
+    - default power schedule is now EXPLORE, due a fix in fast schedules
+      explore is slightly better now.
+    - fixed minor issues in the mutation engine, thanks to @futhewo for
+      reporting!
+  - instrumentation:
+    - LLVM 18 support, thanks to @devnexen!
+    - Injection (SQL, LDAP, XSS) feature now available, see
+      `instrumentation/README.injections.md` how to activate/use/expand.
+    - compcov/LAF-intel:
+      - floating point splitting bug fix by @hexcoder
+      - due a bug in LLVM 17 integer splitting is disabled!
+      - when splitting floats was selected, integers were always split as well,
+        fixed to require AFL_LLVM_LAF_SPLIT_COMPARES as it should
+
+
+### Version ++4.09c (release)
+  - afl-fuzz:
+    - fixed the new mutation implementation for two bugs
     - added `AFL_FINAL_SYNC` which forces a final fuzzer sync (also for `-F`)
       before terminating.
     - added AFL_IGNORE_SEED_PROBLEMS to skip over seeds that time out instead
       of exiting with an error message
     - allow -S/-M naming up to 50 characters (from 24)
+    - CMPLOG:
+      - added scale support (-l S)
+      - skip unhelpful insertions (u8)
+    - added --version and --help command line parameters
+    - fixed endless loop when reading malformed dictionaries
+    - new custom mutator function: post_run - thanks to yangzao!
   - afl-whatsup:
     - detect instanced that are starting up and show them as such as not dead
     - now also shows coverage reached
@@ -23,12 +47,15 @@ type: docs
     - option -n will not use color in the output
   - instrumentation:
     - fix for a few string compare transform functions for LAF
+    - we are instrumenting __cxx internal functions again. this might break
+      a few targets, please report if so.
   - frida_mode:
     - fixes support for large map offsets
+  - support for AFL_FUZZER_LOOPCOUNT for afl.rs and LLVMFuzzerTestOneInput
+  - afl-cmin/afl-cmin.bash: prevent unneeded file errors
   - added new tool afl-addseeds that adds new seeds to a running campaign
-  - added benchmark/benchmark.sh if you want to see how good your fuzzing
+  - added benchmark/benchmark.py if you want to see how good your fuzzing
     speed is in comparison to other setups.
-
 
 ### Version ++4.08c (release)
   - afl-fuzz:

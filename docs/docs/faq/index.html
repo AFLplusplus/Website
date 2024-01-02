@@ -5,13 +5,13 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>F a Q | AFLplusplus</title>
+<title>Faq | AFLplusplus</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
-<meta property="og:title" content="F a Q | AFLplusplus" />
-<meta name="twitter:title" content="F a Q | AFLplusplus" />
-<meta itemprop="name" content="F a Q | AFLplusplus" />
-<meta name="application-name" content="F a Q | AFLplusplus" />
+<meta property="og:title" content="Faq | AFLplusplus" />
+<meta name="twitter:title" content="Faq | AFLplusplus" />
+<meta itemprop="name" content="Faq | AFLplusplus" />
+<meta name="application-name" content="Faq | AFLplusplus" />
 <meta property="og:site_name" content="AFLplusplus" />
 
 <meta name="description" content="The AFLplusplus website" />
@@ -33,10 +33,10 @@
 
 
 
-<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.2121dd144f56093f39999e12ac94e2894ddc6fba97b269735113a9d4958a1a25.js" integrity="sha256-ISHdFE9WCT85mZ4SrJTiiU3cb7qXsmlzUROp1JWKGiU="></script>
+<script defer src="/en.search.min.68ec47fd1cbb1cf747325b658b3fa46a968dbe271a29a651694735aa6eaf02f3.js" integrity="sha256-aOxH/Ry7HPdHMltliz&#43;kapaNvicaKaZRaUc1qm6vAvM="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.08c">Release 4.08c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.09c">Release 4.09c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -128,7 +128,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <strong>F a Q</strong>
+  <strong>Faq</strong>
 
   <label for="toc-control">
     <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
@@ -200,7 +200,7 @@ The compiled machine code in a <code>function</code> can be in a single or many 
 code instructions</strong> that has <strong>exactly one entry point</strong> (which can be be entered by
 multiple other basic blocks) and runs linearly <strong>without branching or jumping to
 other addresses</strong> (except at the end).</p>
-<pre><code>function() {
+<pre tabindex="0"><code>function() {
   A:
     some
     code
@@ -218,7 +218,7 @@ other addresses</strong> (except at the end).</p>
 </code></pre><p>Every code block between two jump locations is a <code>basic block</code>.</p>
 <p>An <code>edge</code> is then the unique relationship between two directly connected
 <code>basic blocks</code> (from the code example above):</p>
-<pre><code>              Block A
+<pre tabindex="0"><code>              Block A
                 |
                 v
               Block B  &lt;------+
@@ -233,7 +233,7 @@ to itself, this too would be an edge.</p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <p>To stop afl-fuzz, minimize it&rsquo;s corpus and restart you would usually do:</p>
-<pre><code>Control-C  # to terminate afl-fuzz
+<pre tabindex="0"><code>Control-C  # to terminate afl-fuzz
 $ afl-cmin -T nproc -i out/default/queue -o minimized_queue -- ./target
 $ AFL_FAST_CAL=1 AFL_CMPLOG_ONLY_NEW=1 afl-fuzz -i minimized_queue -o out2 [other options] -- ./target
 </code></pre><p>If this improves fuzzing or not is debated and no consensus has been reached
@@ -329,7 +329,7 @@ code and the AFLFast paper.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <!-- raw HTML omitted -->
 <p>It can happen that you see this error on startup when fuzzing a target:</p>
-<pre><code>[-] FATAL: forkserver is already up, but an instrumented dlopen() library
+<pre tabindex="0"><code>[-] FATAL: forkserver is already up, but an instrumented dlopen() library
            loaded afterwards. You must AFL_PRELOAD such libraries to be able
            to fuzz them or LD_PRELOAD to run outside of afl-fuzz.
            To ignore this set AFL_IGNORE_PROBLEMS=1.
@@ -349,7 +349,7 @@ additionally tell AFL++ to ignore any coverage from the late loaded libaries.</p
 <!-- raw HTML omitted -->
 <p>If you see this kind of error when trying to instrument a target with
 afl-cc/afl-clang-fast/afl-clang-lto:</p>
-<pre><code>/prg/tmp/llvm-project/build/bin/clang-13: symbol lookup error: /usr/local/bin/../lib/afl//cmplog-instructions-pass.so: undefined symbol: _ZNK4llvm8TypeSizecvmEv
+<pre tabindex="0"><code>/prg/tmp/llvm-project/build/bin/clang-13: symbol lookup error: /usr/local/bin/../lib/afl//cmplog-instructions-pass.so: undefined symbol: _ZNK4llvm8TypeSizecvmEv
 clang-13: error: unable to execute command: No such file or directory
 clang-13: error: clang frontend command failed due to signal (use -v to see invocation)
 clang version 13.0.0 (https://github.com/llvm/llvm-project 1d7cf550721c51030144f3cd295c5789d51c4aad)
@@ -365,20 +365,20 @@ package and because of that the AFL++ llvm plugins do not match anymore.</p>
 <!-- raw HTML omitted -->
 <p>When you run a large instrumented program stand-alone or via afl-showmap
 you might see a warning like the following:</p>
-<pre><code>Warning: AFL++ tools might need to set AFL_MAP_SIZE to 223723 to be able to run this instrumented program if this crashes!
+<pre tabindex="0"><code>Warning: AFL++ tools might need to set AFL_MAP_SIZE to 223723 to be able to run this instrumented program if this crashes!
 </code></pre><p>Depending how the target works it might also crash afterwards.</p>
 <p>Solution: just do an <code>export AFL_MAP_SIZE=(the value in the warning)</code>.</p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <p>If you compile C++ harnesses and see <code>undefined reference</code> errors for
 variables named <code>__afl_...</code>, e.g.:</p>
-<pre><code>/usr/bin/ld: /tmp/test-d3085f.o: in function `foo::test()':
+<pre tabindex="0"><code>/usr/bin/ld: /tmp/test-d3085f.o: in function `foo::test()':
 test.cpp:(.text._ZN3fooL4testEv[_ZN3fooL4testEv]+0x35): undefined reference to `foo::__afl_connected'
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 </code></pre><p>Then you use AFL++ macros like <code>__AFL_LOOP</code> within a namespace and this
 will not work.</p>
 <p>Solution: Move that harness portion to the global namespace, e.g. before:</p>
-<pre><code>#include &lt;cstdio&gt;
+<pre tabindex="0"><code>#include &lt;cstdio&gt;
 namespace foo {
   static void test() {
     while(__AFL_LOOP(1000)) {
@@ -392,7 +392,7 @@ int main(int argc, char** argv) {
   return 0;
 }
 </code></pre><p>after:</p>
-<pre><code>#include &lt;cstdio&gt;
+<pre tabindex="0"><code>#include &lt;cstdio&gt;
 static void mytest() {
   while(__AFL_LOOP(1000)) {
     foo::function();
