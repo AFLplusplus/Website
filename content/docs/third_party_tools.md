@@ -6,6 +6,11 @@ type: docs
 
 # Tools that help fuzzing with AFL++
 
+## AFL++ and other development languages
+
+* [afl-rs](https://github.com/rust-fuzz/afl.rs) - AFL++ for RUST
+* [WASM](https://github.com/fgsect/WAFL) - AFL++ for WASM
+
 ## Speeding up fuzzing
 
 * [libfiowrapper](https://github.com/marekzmyslowski/libfiowrapper) - if the
@@ -68,3 +73,5 @@ type: docs
   generates builds of debian packages suitable for AFL.
 * [afl-fid](https://github.com/FoRTE-Research/afl-fid) - a set of tools for
   working with input data.
+* [CASR](https://github.com/ispras/casr) - a set of tools for crash triage and
+  analysis.

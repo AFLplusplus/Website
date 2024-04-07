@@ -4,27 +4,47 @@
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Spawning Instances - The LibAFL Fuzzing Library</title>
+        
+        
+
+
         <!-- Custom HTML head -->
+        
+
+
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
+        
         <link rel="icon" href="../favicon.svg">
+        
+        
         <link rel="shortcut icon" href="../favicon.png">
+        
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
+        
         <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
         <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="../highlight.css">
         <link rel="stylesheet" href="../tomorrow-night.css">
         <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        
+
+        
     </head>
     <body>
         <!-- Provide site root to javascript -->
@@ -75,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../libafl.html">The LibAFL Fuzzing Library</a></li><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="../getting_started/getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../getting_started/setup.html"><strong aria-hidden="true">1.1.</strong> Setup</a></li><li class="chapter-item expanded "><a href="../getting_started/build.html"><strong aria-hidden="true">1.2.</strong> Build</a></li><li class="chapter-item expanded "><a href="../getting_started/crates.html"><strong aria-hidden="true">1.3.</strong> Crates</a></li></ol></li><li class="chapter-item expanded "><a href="../baby_fuzzer/baby_fuzzer.html"><strong aria-hidden="true">2.</strong> Baby Fuzzer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../baby_fuzzer/more_examples.html"><strong aria-hidden="true">2.1.</strong> More Examples</a></li></ol></li><li class="chapter-item expanded "><a href="../core_concepts/core_concepts.html"><strong aria-hidden="true">3.</strong> Core Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../core_concepts/observer.html"><strong aria-hidden="true">3.1.</strong> Observer</a></li><li class="chapter-item expanded "><a href="../core_concepts/executor.html"><strong aria-hidden="true">3.2.</strong> Executor</a></li><li class="chapter-item expanded "><a href="../core_concepts/feedback.html"><strong aria-hidden="true">3.3.</strong> Feedback</a></li><li class="chapter-item expanded "><a href="../core_concepts/input.html"><strong aria-hidden="true">3.4.</strong> Input</a></li><li class="chapter-item expanded "><a href="../core_concepts/corpus.html"><strong aria-hidden="true">3.5.</strong> Corpus</a></li><li class="chapter-item expanded "><a href="../core_concepts/mutator.html"><strong aria-hidden="true">3.6.</strong> Mutator</a></li><li class="chapter-item expanded "><a href="../core_concepts/generator.html"><strong aria-hidden="true">3.7.</strong> Generator</a></li><li class="chapter-item expanded "><a href="../core_concepts/stage.html"><strong aria-hidden="true">3.8.</strong> Stage</a></li></ol></li><li class="chapter-item expanded "><a href="../design/design.html"><strong aria-hidden="true">4.</strong> Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design/architecture.html"><strong aria-hidden="true">4.1.</strong> Architecture</a></li><li class="chapter-item expanded "><a href="../design/metadata.html"><strong aria-hidden="true">4.2.</strong> Metadata</a></li><li class="chapter-item expanded "><a href="../design/migration-0.9.html"><strong aria-hidden="true">4.3.</strong> Migrating from LibAFL &lt;0.9 to 0.9</a></li></ol></li><li class="chapter-item expanded "><a href="../message_passing/message_passing.html"><strong aria-hidden="true">5.</strong> Message Passing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../message_passing/spawn_instances.html" class="active"><strong aria-hidden="true">5.1.</strong> Spawning Instances</a></li><li class="chapter-item expanded "><a href="../message_passing/configurations.html"><strong aria-hidden="true">5.2.</strong> Configurations</a></li></ol></li><li class="chapter-item expanded "><a href="../tutorial/tutorial.html"><strong aria-hidden="true">6.</strong> Tutorial</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tutorial/intro.html"><strong aria-hidden="true">6.1.</strong> Introduction</a></li></ol></li><li class="chapter-item expanded "><a href="../advanced_features/advanced_features.html"><strong aria-hidden="true">7.</strong> Advanced Features</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../advanced_features/frida.html"><strong aria-hidden="true">7.1.</strong> Binary-Only Fuzzing with Frida</a></li><li class="chapter-item expanded "><a href="../advanced_features/concolic.html"><strong aria-hidden="true">7.2.</strong> Concolic Tracing &amp; Hybrid Fuzzing</a></li><li class="chapter-item expanded "><a href="../advanced_features/no_std.html"><strong aria-hidden="true">7.3.</strong> LibAFL in no_std environments (Kernels, Hypervisors, ...)</a></li><li class="chapter-item expanded "><a href="../advanced_features/nyx.html"><strong aria-hidden="true">7.4.</strong> Snapshot Fuzzing in Nyx</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../libafl.html">The LibAFL Fuzzing Library</a></li><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="../getting_started/getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../getting_started/setup.html"><strong aria-hidden="true">1.1.</strong> Setup</a></li><li class="chapter-item expanded "><a href="../getting_started/build.html"><strong aria-hidden="true">1.2.</strong> Build</a></li><li class="chapter-item expanded "><a href="../getting_started/crates.html"><strong aria-hidden="true">1.3.</strong> Crates</a></li></ol></li><li class="chapter-item expanded "><a href="../baby_fuzzer/baby_fuzzer.html"><strong aria-hidden="true">2.</strong> Baby Fuzzer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../baby_fuzzer/more_examples.html"><strong aria-hidden="true">2.1.</strong> More Examples</a></li></ol></li><li class="chapter-item expanded "><a href="../core_concepts/core_concepts.html"><strong aria-hidden="true">3.</strong> Core Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../core_concepts/observer.html"><strong aria-hidden="true">3.1.</strong> Observer</a></li><li class="chapter-item expanded "><a href="../core_concepts/executor.html"><strong aria-hidden="true">3.2.</strong> Executor</a></li><li class="chapter-item expanded "><a href="../core_concepts/feedback.html"><strong aria-hidden="true">3.3.</strong> Feedback</a></li><li class="chapter-item expanded "><a href="../core_concepts/input.html"><strong aria-hidden="true">3.4.</strong> Input</a></li><li class="chapter-item expanded "><a href="../core_concepts/corpus.html"><strong aria-hidden="true">3.5.</strong> Corpus</a></li><li class="chapter-item expanded "><a href="../core_concepts/mutator.html"><strong aria-hidden="true">3.6.</strong> Mutator</a></li><li class="chapter-item expanded "><a href="../core_concepts/generator.html"><strong aria-hidden="true">3.7.</strong> Generator</a></li><li class="chapter-item expanded "><a href="../core_concepts/stage.html"><strong aria-hidden="true">3.8.</strong> Stage</a></li></ol></li><li class="chapter-item expanded "><a href="../design/design.html"><strong aria-hidden="true">4.</strong> Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design/architecture.html"><strong aria-hidden="true">4.1.</strong> Architecture</a></li><li class="chapter-item expanded "><a href="../design/metadata.html"><strong aria-hidden="true">4.2.</strong> Metadata</a></li><li class="chapter-item expanded "><a href="../design/migration-0.9.html"><strong aria-hidden="true">4.3.</strong> Migrating from LibAFL &lt;0.9 to 0.9</a></li><li class="chapter-item expanded "><a href="../design/migration-0.11.html"><strong aria-hidden="true">4.4.</strong> Migrating from LibAFL &lt;0.11 to 0.11</a></li></ol></li><li class="chapter-item expanded "><a href="../message_passing/message_passing.html"><strong aria-hidden="true">5.</strong> Message Passing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../message_passing/spawn_instances.html" class="active"><strong aria-hidden="true">5.1.</strong> Spawning Instances</a></li><li class="chapter-item expanded "><a href="../message_passing/configurations.html"><strong aria-hidden="true">5.2.</strong> Configurations</a></li></ol></li><li class="chapter-item expanded "><a href="../tutorial/tutorial.html"><strong aria-hidden="true">6.</strong> Tutorial</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tutorial/intro.html"><strong aria-hidden="true">6.1.</strong> Introduction</a></li></ol></li><li class="chapter-item expanded "><a href="../advanced_features/advanced_features.html"><strong aria-hidden="true">7.</strong> Advanced Features</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../advanced_features/frida.html"><strong aria-hidden="true">7.1.</strong> Binary-Only Fuzzing with Frida</a></li><li class="chapter-item expanded "><a href="../advanced_features/concolic.html"><strong aria-hidden="true">7.2.</strong> Concolic Tracing &amp; Hybrid Fuzzing</a></li><li class="chapter-item expanded "><a href="../advanced_features/no_std.html"><strong aria-hidden="true">7.3.</strong> LibAFL in no_std environments (Kernels, Hypervisors, ...)</a></li><li class="chapter-item expanded "><a href="../advanced_features/nyx.html"><strong aria-hidden="true">7.4.</strong> Snapshot Fuzzing in Nyx</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -83,6 +103,7 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
+                
                 <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
@@ -99,23 +120,29 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
+                        
                         <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
+                        
                     </div>
 
                     <h1 class="menu-title">The LibAFL Fuzzing Library</h1>
 
                     <div class="right-buttons">
+                        
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+                        
+                        
                     </div>
                 </div>
 
+                
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -123,6 +150,8 @@
                         </ul>
                     </div>
                 </div>
+                
+
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script type="text/javascript">
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
@@ -137,18 +166,18 @@
                         <h1 id="spawning-instances"><a class="header" href="#spawning-instances">Spawning Instances</a></h1>
 <p>Multiple fuzzer instances can be spawned using different ways.</p>
 <h2 id="manually-via-a-tcp-port"><a class="header" href="#manually-via-a-tcp-port">Manually, via a TCP port</a></h2>
-<p>The straightforward way to do Multi-Threading is to use the <code>LlmpRestartingEventManager</code>, specifically to use <code>setup_restarting_mgr_std</code>.
+<p>The straightforward way to do Multi-Threading is to use the <a href="https://docs.rs/libafl/latest/libafl/events/llmp/struct.LlmpRestartingEventManager.html"><code>LlmpRestartingEventManager</code></a>, specifically to use <a href="https://docs.rs/libafl/latest/libafl/events/llmp/fn.setup_restarting_mgr_std.html"><code>setup_restarting_mgr_std</code></a>.
 It abstracts away all the pesky details about restarts on crash handling (for in-memory fuzzers) and multi-threading.
 With it, every instance you launch manually tries to connect to a TCP port on the local machine.</p>
-<p>If the port is not yet bound, this instance becomes the broker, itself binding to the port to await new clients.</p>
+<p>If the port is not yet bound, this instance becomes the broker, binding itself to the port to await new clients.</p>
 <p>If the port is already bound, the EventManager will try to connect to it.
 The instance becomes a client and can now communicate with all other nodes.</p>
-<p>Launching nodes manually has the benefit that you can have multiple nodes with different configurations, such as clients fuzzing with and without ASAN.</p>
-<p>While it's called &quot;restarting&quot; manager, it uses <code>fork</code> on Unix operating systems as optimization and only actually restarts from scratch on Windows.</p>
+<p>Launching nodes manually has the benefit that you can have multiple nodes with different configurations, such as clients fuzzing with and without <code>ASan</code>.</p>
+<p>While it's called &quot;restarting&quot; manager, it uses <code>fork</code> on Unix-like operating systems as optimization and only actually restarts from scratch on Windows.</p>
 <h2 id="automated-with-launcher"><a class="header" href="#automated-with-launcher">Automated, with Launcher</a></h2>
 <p>The Launcher is the lazy way to do multiprocessing.
 You can use the Launcher builder to create a fuzzer that spawns multiple nodes with one click, all using restarting event managers and the same configuration.</p>
-<p>To use launcher, first you need to write an anonymous function <code>let mut run_client = |state: Option&lt;_&gt;, mut mgr, _core_id|{}</code>, which uses three parameters to create individual fuzzer. Then you can specify the <code>shmem_provider</code>,<code>broker_port</code>,<code>monitor</code>,<code>cores</code> and other stuff through <code>Launcher::builder()</code>:</p>
+<p>To use launcher, first you need to write an anonymous function <code>let mut run_client = |state: Option&lt;_&gt;, mut mgr, _core_id|{}</code>, which uses three parameters to create an individual fuzzer. Then you can specify the <code>shmem_provider</code>,<code>broker_port</code>,<code>monitor</code>,<code>cores</code> and other stuff through <code>Launcher::builder()</code>:</p>
 <pre><code class="language-rust ignore">    Launcher::builder()
         .configuration(EventConfig::from_name(&amp;configuration))
         .shmem_provider(shmem_provider)
@@ -164,12 +193,16 @@ You can use the Launcher builder to create a fuzzer that spawns multiple nodes w
 <p>This first starts a broker, then spawns <code>n</code> clients, according to the value passed to <code>cores</code>.
 The value is a string indicating the cores to bind to, for example, <code>0,2,5</code> or <code>0-3</code>.
 For each client, <code>run_client</code> will be called.
-On Windows, the Launcher will restart each client, while on Unix, it will use <code>fork</code>.</p>
+If the launcher uses <code>fork</code>, it will hide child output, unless the settings indicate otherwise, or the <code>LIBAFL_DEBUG_OUTPUT</code> env variable is set.
+On Windows, the Launcher will restart each client, while on Unix-alikes, it will use <code>fork</code>.</p>
 <p>Advanced use-cases:</p>
 <ol>
 <li>To connect multiple nodes together via TCP, you can use the <code>remote_broker_addr</code>. this requires the <code>llmp_bind_public</code> compile-time feature for <code>LibAFL</code>.</li>
-<li>To use multiple launchers for individual configurations, you can set <code>spawn_broker</code> to <code>false</code> on all but one.</li>
+<li>To use multiple launchers for individual configurations, you can set <code>spawn_broker</code> to <code>false</code> on all instances but one.</li>
 <li>Launcher will not select the cores automatically, so you need to specify the <code>cores</code> that you want.</li>
+<li>On <code>Unix</code>, you can chose between a forking and non-forking version of Launcher by setting the <code>fork</code> feature in LibAFL. Some targets may not like forking, but it is faster than restarting processes from scratch. Windows will never fork.</li>
+<li>For simple debugging, first set the <code>LIBAFL_DEBUG_OUTPUT</code> env variable to see if a child process printed anything.</li>
+<li>For further debugging of fuzzer failures, it may make sense to replace <code>Launcher</code> temporarily with a <a href="https://docs.rs/libafl/latest/libafl/events/simple/struct.SimpleEventManager.html#method.new"><code>SimpleEventManager</code></a> and call your harness fn (<code>run_client(None, mgr, 0);</code>) directly, so that fuzzing runs in the same thread and is easier to debug, before moving back to <code>Launcher</code> after the bugfix.</li>
 </ol>
 <p>For more examples, you can check out <code>qemu_launcher</code> and <code>libfuzzer_libpng_launcher</code> in <a href="https://github.com/AFLplusplus/LibAFL/tree/main/fuzzers"><code>./fuzzers/</code></a>.</p>
 <h2 id="other-ways"><a class="header" href="#other-ways">Other ways</a></h2>
@@ -181,38 +214,67 @@ If you are in this situation, please either read through the current implementat
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                        
                             <a rel="prev" href="../message_passing/message_passing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
+                        
+
+                        
                             <a rel="next" href="../message_passing/configurations.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
+                        
+
                         <div style="clear: both"></div>
                     </nav>
                 </div>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
                     <a rel="prev" href="../message_passing/message_passing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
+                
+
+                
                     <a rel="next" href="../message_passing/configurations.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
+                
             </nav>
 
         </div>
 
+        
+
+        
+
+        
+
+        
         <script type="text/javascript">
             window.playground_copyable = true;
         </script>
+        
+
+        
+
+        
         <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
         <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
         <script src="../book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
+        
+
+        
+
     </body>
 </html>

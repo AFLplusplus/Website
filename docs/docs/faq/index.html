@@ -33,10 +33,10 @@
 
 
 
-<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.edc04666d2c37aab6ad3c6877c502a3f40eb1198ec0bd0b7da7f7185459f347a.js" integrity="sha256-7cBGZtLDeqtq08aHfFAqP0DrEZjsC9C32n9xhUWfNHo="></script>
+<script defer src="/en.search.min.68ec47fd1cbb1cf747325b658b3fa46a968dbe271a29a651694735aa6eaf02f3.js" integrity="sha256-aOxH/Ry7HPdHMltliz&#43;kapaNvicaKaZRaUc1qm6vAvM="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.04c">Release 4.04c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.09c">Release 4.09c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -178,8 +178,8 @@ AFL.</p>
 which then implemented their own research and features, making it now by far
 the most flexible and feature rich guided fuzzer available as open source. And
 in independent fuzzing benchmarks it is one of the best fuzzers available,
-e.g., <a href="https://www.fuzzbench.com/reports/2020-08-03/index.html">Fuzzbench
-Report</a>.</p>
+e.g.,
+<a href="https://www.fuzzbench.com/reports/2020-08-03/index.html">Fuzzbench Report</a>.</p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <p>The definition of the terms whitebox, graybox, and blackbox fuzzing varies
@@ -231,6 +231,29 @@ other addresses</strong> (except at the end).</p>
 </code></pre><p>Every line between two blocks is an <code>edge</code>. Note that a few basic block loop
 to itself, this too would be an edge.</p>
 <!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>To stop afl-fuzz, minimize it&rsquo;s corpus and restart you would usually do:</p>
+<pre tabindex="0"><code>Control-C  # to terminate afl-fuzz
+$ afl-cmin -T nproc -i out/default/queue -o minimized_queue -- ./target
+$ AFL_FAST_CAL=1 AFL_CMPLOG_ONLY_NEW=1 afl-fuzz -i minimized_queue -o out2 [other options] -- ./target
+</code></pre><p>If this improves fuzzing or not is debated and no consensus has been reached
+or in-depth analysis been performed.</p>
+<p>On the pro side:
+* The queue/corpus is reduced (up to 20%) by removing intermediate paths
+that are maybe not needed anymore.</p>
+<p>On the con side:
+* Fuzzing time is lost for the time the fuzzing is stopped, minimized and
+restarted.</p>
+<p>The the big question:
+* Does a minimized queue/corpus improve finding new coverage or does it
+hinder it?</p>
+<p>The AFL++ team&rsquo;s own limited analysis seem to to show that keeping
+intermediate paths help to find more coverage, at least for afl-fuzz.</p>
+<p>For honggfuzz in comparison it is a good idea to restart it from time to
+time if you have other fuzzers (e.g: AFL++) running in parallel to sync
+the finds of other fuzzers to honggfuzz as it has no syncing feature like
+AFL++ or libfuzzer.</p>
+<!-- raw HTML omitted -->
 <h2 id="targets">Targets</h2>
 <!-- raw HTML omitted -->
 <p>AFL++ is a great fuzzer if you have the source code available.</p>
@@ -273,6 +296,13 @@ the edge coverage result will be different across runs. Those edges that
 change are then flagged &ldquo;unstable&rdquo;.</p>
 <p>The more &ldquo;unstable&rdquo; edges there are, the harder it is for AFL++ to identify
 valid new paths.</p>
+<p>If you fuzz in persistent mode (<code>AFL_LOOP</code> or <code>LLVMFuzzerTestOneInput()</code>
+harnesses, a large number of unstable edges can mean that the target keeps
+internal state and therefore it is possible that crashes cannot be replayed.
+In such a case do either <strong>not</strong> fuzz in persistent mode (remove <code>AFL_LOOP()</code>
+from your harness or call <code>LLVMFuzzerTestOneInput()</code> harnesses with <code>@@</code>),
+or set a low  <code>AFL_LOOP</code> value, e.g. 100, and enable <code>AFL_PERSISTENT_RECORD</code>
+in <code>config.h</code> with the same value.</p>
 <p>A value above 90% is usually fine and a value above 80% is also still ok, and
 even a value above 20% can still result in successful finds of bugs. However,
 it is recommended that for values below 90% or 80% you should take
@@ -313,7 +343,8 @@ after the final dlopen().</p>
 <p>If this is not a viable option, you can set <code>AFL_IGNORE_PROBLEMS=1</code> but then
 the existing map will be used also for the newly loaded libraries, which
 allows it to work, however, the efficiency of the fuzzing will be partially
-degraded.</p>
+degraded. Note that there is additionally <code>AFL_IGNORE_PROBLEMS_COVERAGE</code> to
+additionally tell AFL++ to ignore any coverage from the late loaded libaries.</p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <p>If you see this kind of error when trying to instrument a target with
@@ -338,6 +369,45 @@ you might see a warning like the following:</p>
 </code></pre><p>Depending how the target works it might also crash afterwards.</p>
 <p>Solution: just do an <code>export AFL_MAP_SIZE=(the value in the warning)</code>.</p>
 <!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>If you compile C++ harnesses and see <code>undefined reference</code> errors for
+variables named <code>__afl_...</code>, e.g.:</p>
+<pre tabindex="0"><code>/usr/bin/ld: /tmp/test-d3085f.o: in function `foo::test()':
+test.cpp:(.text._ZN3fooL4testEv[_ZN3fooL4testEv]+0x35): undefined reference to `foo::__afl_connected'
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+</code></pre><p>Then you use AFL++ macros like <code>__AFL_LOOP</code> within a namespace and this
+will not work.</p>
+<p>Solution: Move that harness portion to the global namespace, e.g. before:</p>
+<pre tabindex="0"><code>#include &lt;cstdio&gt;
+namespace foo {
+  static void test() {
+    while(__AFL_LOOP(1000)) {
+      foo::function();
+    }
+  }
+}
+
+int main(int argc, char** argv) {
+  foo::test();
+  return 0;
+}
+</code></pre><p>after:</p>
+<pre tabindex="0"><code>#include &lt;cstdio&gt;
+static void mytest() {
+  while(__AFL_LOOP(1000)) {
+    foo::function();
+  }
+}
+namespace foo {
+  static void test() {
+    mytest();
+  }
+}
+int main(int argc, char** argv) {
+  foo::test();
+  return 0;
+}
+</code></pre><!-- raw HTML omitted -->
 </article>
  
 

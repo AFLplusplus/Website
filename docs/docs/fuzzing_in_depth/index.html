@@ -33,10 +33,10 @@
 
 
 
-<link rel="stylesheet" href="/book.min.5f6934428064085210d9b92c20af9b09c67cef71f93fa65ebbc5af315512573d.css" integrity="sha256-X2k0QoBkCFIQ2bksIK&#43;bCcZ873H5P6Zeu8WvMVUSVz0=">
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.edc04666d2c37aab6ad3c6877c502a3f40eb1198ec0bd0b7da7f7185459f347a.js" integrity="sha256-7cBGZtLDeqtq08aHfFAqP0DrEZjsC9C32n9xhUWfNHo="></script>
+<script defer src="/en.search.min.68ec47fd1cbb1cf747325b658b3fa46a968dbe271a29a651694735aa6eaf02f3.js" integrity="sha256-aOxH/Ry7HPdHMltliz&#43;kapaNvicaKaZRaUc1qm6vAvM="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/4.04c">Release 4.04c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.09c">Release 4.09c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -228,12 +228,12 @@ systems, this will be usually heavily cached, resulting in fairly modest
 is your responsibility to monitor for potential trouble; with very heavy I/O,
 the lifespan of many HDDs and SSDs may be reduced.</p>
 <p>A good way to monitor disk I/O on Linux is the <code>iostat</code> command:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ iostat -d <span style="color:#ae81ff">3</span> -x -k <span style="color:#f92672">[</span>...optional disk ID...<span style="color:#f92672">]</span>
-</span></span></code></pre></div><p>Using the <code>AFL_TMPDIR</code> environment variable and a RAM-disk, you can have the
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ iostat -d <span style="color:#ae81ff">3</span> -x -k <span style="color:#f92672">[</span>...optional disk ID...<span style="color:#f92672">]</span>
+</code></pre></div><p>Using the <code>AFL_TMPDIR</code> environment variable and a RAM-disk, you can have the
 heavy writing done in RAM to prevent the aforementioned wear and tear. For
 example, the following line will run a Docker container with all this preset:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># docker run -ti --mount type=tmpfs,destination=/ramdisk -e AFL_TMPDIR=/ramdisk aflplusplus/aflplusplus</span>
-</span></span></code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># docker run -ti --mount type=tmpfs,destination=/ramdisk -e AFL_TMPDIR=/ramdisk aflplusplus/aflplusplus</span>
+</code></pre></div></li>
 </ul>
 <h2 id="1-instrumenting-the-target">1. Instrumenting the target</h2>
 <h3 id="a-selecting-the-best-afl-compiler-for-instrumenting-the-target">a) Selecting the best AFL++ compiler for instrumenting the target</h3>
@@ -563,7 +563,7 @@ however, it is a long process as this has to be done for every file:</p>
 <pre tabindex="0"><code>mkdir input
 cd INPUTS_UNIQUE
 for i in *; do
-  afl-tmin -i &#34;$i&#34; -o &#34;../input/$i&#34; -- bin/target -someopt @@
+  afl-tmin -i &quot;$i&quot; -o &quot;../input/$i&quot; -- bin/target -someopt @@
 done
 </code></pre><p>This step can also be parallelized, e.g., with <code>parallel</code>.</p>
 <p>Note that this step is rather optional though.</p>
@@ -621,7 +621,9 @@ data format, and tell afl-fuzz to load that dictionary by adding <code>-x dictio
 to do nothing except to use afl-clang-lto as the compiler.</li>
 <li>With <code>afl-clang-fast</code>, you can set
 <code>AFL_LLVM_DICT2FILE=/full/path/to/new/file.dic</code> to automatically generate a
-dictionary during target compilation.</li>
+dictionary during target compilation.
+Adding <code>AFL_LLVM_DICT2FILE_NO_MAIN=1</code> to not parse main (usually command line
+parameter parsing) is often a good idea too.</li>
 <li>You also have the option to generate a dictionary yourself during an
 independent run of the target, see
 <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../utils/libtokencap/README.md">utils/libtokencap/README.md</a>.</li>
@@ -670,37 +672,46 @@ of the test cases. Depending on the average test case size (and those found
 during fuzzing) and their number, a value between 50-500MB is recommended. You
 can set the cache size (in MB) by setting the environment variable
 <code>AFL_TESTCACHE_SIZE</code>.</p>
-<p>There should be one main fuzzer (<code>-M main-$HOSTNAME</code> option) and as many
-secondary fuzzers (e.g., <code>-S variant1</code>) as you have cores that you use. Every
-<code>-M</code>/<code>-S</code> entry needs a unique name (that can be whatever), however, the same
-<code>-o</code> output directory location has to be used for all instances.</p>
+<p>There should be one main fuzzer (<code>-M main-$HOSTNAME</code> option - set also
+<code>AFL_FINAL_SYNC=1</code>) and as many secondary fuzzers (e.g., <code>-S variant1</code>) as you
+have cores that you use. Every <code>-M</code>/<code>-S</code> entry needs a unique name (that can be
+whatever), however, the same <code>-o</code> output directory location has to be used for
+all instances.</p>
 <p>For every secondary fuzzer there should be a variation, e.g.:</p>
 <ul>
-<li>one should fuzz the target that was compiled differently: with sanitizers
-activated (<code>export AFL_USE_ASAN=1 ; export AFL_USE_UBSAN=1 ; export AFL_USE_CFISAN=1</code>)</li>
+<li>one should fuzz the target that was compiled with sanitizers activated
+(<code>export AFL_USE_ASAN=1 ; export AFL_USE_UBSAN=1 ; export AFL_USE_CFISAN=1</code>)</li>
 <li>one or two should fuzz the target with CMPLOG/redqueen (see above), at least
-one cmplog instance should follow transformations (<code>-l AT</code>)</li>
+one cmplog instance should follow transformations (<code>-l 2AT</code>)</li>
 <li>one to three fuzzers should fuzz a target compiled with laf-intel/COMPCOV (see
 above). Important note: If you run more than one laf-intel/COMPCOV fuzzer and
 you want them to share their intermediate results, the main fuzzer (<code>-M</code>) must
-be one of them! (Although this is not really recommended.)</li>
+be one of them (although this is not really recommended).</li>
 </ul>
-<p>All other secondaries should be used like this:</p>
+<p>The other secondaries should be run like this:</p>
 <ul>
-<li>a quarter to a third with the MOpt mutator enabled: <code>-L 0</code></li>
-<li>run with a different power schedule, recommended are: <code>fast</code> (default),
+<li>10% with the MOpt mutator enabled: <code>-L 0</code></li>
+<li>10% should use the old queue cycling with <code>-Z</code></li>
+<li>50-70% should run with <code>AFL_DISABLE_TRIM</code></li>
+<li>40% should run with <code>-P explore</code> and 20% with <code>-P exploit</code></li>
+<li>If you use <code>-a</code> then set 30% of the instances to not use <code>-a</code>; if you did
+not set <code>-a</code> (why??), then set 30% to <code>-a ascii</code> and 30% to <code>-a binary</code>.</li>
+<li>run each with a different power schedule, recommended are: <code>fast</code> (default),
 <code>explore</code>, <code>coe</code>, <code>lin</code>, <code>quad</code>, <code>exploit</code>, and <code>rare</code> which you can set with
 the <code>-p</code> option, e.g., <code>-p explore</code>. See the
 <a href="/docs/faq/#what-are-power-schedules">FAQ</a> for details.</li>
-<li>a few instances should use the old queue cycling with <code>-Z</code></li>
 </ul>
+<p>It can be useful to set <code>AFL_IGNORE_SEED_PROBLEMS=1</code> to skip over seeds that
+crash or timeout during startup.</p>
 <p>Also, it is recommended to set <code>export AFL_IMPORT_FIRST=1</code> to load test cases
-from other fuzzers in the campaign first.</p>
+from other fuzzers in the campaign first. But note that can slow down the start
+of the first fuzz by quite a lot of you have many fuzzers and/or many seeds.</p>
 <p>If you have a large corpus, a corpus from a previous run or are fuzzing in a CI,
 then also set <code>export AFL_CMPLOG_ONLY_NEW=1</code> and <code>export AFL_FAST_CAL=1</code>.
 If the queue in the CI is huge and/or the execution time is slow then you can
 also add <code>AFL_NO_STARTUP_CALIBRATION=1</code> to skip the initial queue calibration
-phase and start fuzzing at once.</p>
+phase and start fuzzing at once - but only do this if the calibration phase
+would be too long for your fuzz run time.</p>
 <p>You can also use different fuzzers. If you are using AFL spinoffs or AFL
 conforming fuzzers, then just use the same -o directory and give it a unique
 <code>-S</code> name. Examples are:</p>
@@ -743,12 +754,12 @@ this directory to the other machines.</p>
 <p>Let&rsquo;s say all servers have the <code>-o out</code> directory in /target/foo/out, and you
 created a file <code>servers.txt</code> which contains the hostnames of all participating
 servers, plus you have an ssh key deployed to all of them, then run:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> FROM in <span style="color:#e6db74">`</span>cat servers.txt<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> TO in <span style="color:#e6db74">`</span>cat servers.txt<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
-</span></span><span style="display:flex;"><span>    rsync -rlpogtz --rsh<span style="color:#f92672">=</span>ssh $FROM:/target/foo/out/main-$FROM $TO:target/foo/out/
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">done</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
-</span></span></code></pre></div><p>You can run this manually, per cron job - as you need it. There is a more
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#66d9ef">for</span> FROM in <span style="color:#e6db74">`</span>cat servers.txt<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
+  <span style="color:#66d9ef">for</span> TO in <span style="color:#e6db74">`</span>cat servers.txt<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
+    rsync -rlpogtz --rsh<span style="color:#f92672">=</span>ssh $FROM:/target/foo/out/main-$FROM $TO:target/foo/out/
+  <span style="color:#66d9ef">done</span>
+<span style="color:#66d9ef">done</span>
+</code></pre></div><p>You can run this manually, per cron job - as you need it. There is a more
 complex and configurable script in
 <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../utils/distributed_fuzzing">utils/distributed_fuzzing</a>.</p>
 <h3 id="e-the-status-of-the-fuzz-campaign">e) The status of the fuzz campaign</h3>
@@ -781,8 +792,8 @@ output directory:</p>
 [*] Using SHARED MEMORY FUZZING feature.
 [*] Target map size: 9960
 [+] Processed 7849 input files.
-[+] Captured 4331 tuples (highest value 255, total values 67130596) in &#39;/dev/nul
-l&#39;.
+[+] Captured 4331 tuples (highest value 255, total values 67130596) in '/dev/nul
+l'.
 [+] A coverage of 4331 edges were achieved out of 9960 existing (43.48%) with 7849 input files.
 </code></pre><p>It is even better to check out the exact lines of code that have been reached -
 and which have not been found so far.</p>
@@ -912,8 +923,8 @@ is possible to get past an initial out-of-bounds read - and see what lies
 beneath.</p>
 <p>Oh, one more thing: for test case minimization, give afl-tmin a try. The tool
 can be operated in a very simple way:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>./afl-tmin -i test_case -o minimized_result -- /path/to/program <span style="color:#f92672">[</span>...<span style="color:#f92672">]</span>
-</span></span></code></pre></div><p>The tool works with crashing and non-crashing test cases alike. In the crash
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./afl-tmin -i test_case -o minimized_result -- /path/to/program <span style="color:#f92672">[</span>...<span style="color:#f92672">]</span>
+</code></pre></div><p>The tool works with crashing and non-crashing test cases alike. In the crash
 mode, it will happily accept instrumented and non-instrumented binaries. In the
 non-crashing mode, the minimizer relies on standard AFL++ instrumentation to
 make the file simpler without altering the execution path.</p>
@@ -924,12 +935,17 @@ to sequentially flip bytes and observes the behavior of the tested program. It
 then color-codes the input based on which sections appear to be critical and
 which are not; while not bulletproof, it can often offer quick insights into
 complex file formats.</p>
-<h2 id="5-ci-fuzzing">5. CI fuzzing</h2>
+<p><code>casr-afl</code> from <a href="https://github.com/ispras/casr">CASR</a> tools provides
+comfortable triaging for crashes found by AFL++. Reports are clustered and
+contain severity and other information.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">casr-afl -i /path/to/afl/out/dir -o /path/to/casr/out/dir
+</code></pre></div><h2 id="5-ci-fuzzing">5. CI fuzzing</h2>
 <p>Some notes on continuous integration (CI) fuzzing - this fuzzing is different to
 normal fuzzing campaigns as these are much shorter runnings.</p>
 <p>If the queue in the CI is huge and/or the execution time is slow then you can
 also add <code>AFL_NO_STARTUP_CALIBRATION=1</code> to skip the initial queue calibration
-phase and start fuzzing at once.</p>
+phase and start fuzzing at once. But only do that if the calibration time is
+too long for your overall available fuzz run time.</p>
 <ol>
 <li>
 <p>Always:</p>
@@ -958,8 +974,8 @@ corpus as this very likely has been done for them already.</li>
 <ul>
 <li>65% for <code>AFL_DISABLE_TRIM</code></li>
 <li>50% for <code>AFL_KEEP_TIMEOUTS</code></li>
-<li>50% use a dictionary generated by <code>AFL_LLVM_DICT2FILE</code></li>
-<li>40% use MOpt (<code>-L 0</code>)</li>
+<li>50% use a dictionary generated by <code>AFL_LLVM_DICT2FILE</code> + <code>AFL_LLVM_DICT2FILE_NO_MAIN=1</code></li>
+<li>10% use MOpt (<code>-L 0</code>)</li>
 <li>40% for <code>AFL_EXPAND_HAVOC_NOW</code></li>
 <li>20% for old queue processing (<code>-Z</code>)</li>
 <li>for CMPLOG targets, 70% for <code>-l 2</code>, 10% for <code>-l 3</code>, 20% for <code>-l 2AT</code></li>

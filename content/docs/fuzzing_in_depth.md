@@ -540,6 +540,8 @@ dictionaries/FORMAT.dict`.
 * With `afl-clang-fast`, you can set
   `AFL_LLVM_DICT2FILE=/full/path/to/new/file.dic` to automatically generate a
   dictionary during target compilation.
+  Adding `AFL_LLVM_DICT2FILE_NO_MAIN=1` to not parse main (usually command line
+  parameter parsing) is often a good idea too.
 * You also have the option to generate a dictionary yourself during an
   independent run of the target, see
   [utils/libtokencap/README.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../utils/libtokencap/README.md).
@@ -603,38 +605,47 @@ during fuzzing) and their number, a value between 50-500MB is recommended. You
 can set the cache size (in MB) by setting the environment variable
 `AFL_TESTCACHE_SIZE`.
 
-There should be one main fuzzer (`-M main-$HOSTNAME` option) and as many
-secondary fuzzers (e.g., `-S variant1`) as you have cores that you use. Every
-`-M`/`-S` entry needs a unique name (that can be whatever), however, the same
-`-o` output directory location has to be used for all instances.
+There should be one main fuzzer (`-M main-$HOSTNAME` option - set also
+`AFL_FINAL_SYNC=1`) and as many secondary fuzzers (e.g., `-S variant1`) as you
+have cores that you use. Every `-M`/`-S` entry needs a unique name (that can be
+whatever), however, the same `-o` output directory location has to be used for
+all instances.
 
 For every secondary fuzzer there should be a variation, e.g.:
-* one should fuzz the target that was compiled differently: with sanitizers
-  activated (`export AFL_USE_ASAN=1 ; export AFL_USE_UBSAN=1 ; export
-  AFL_USE_CFISAN=1`)
+* one should fuzz the target that was compiled with sanitizers activated
+  (`export AFL_USE_ASAN=1 ; export AFL_USE_UBSAN=1 ; export AFL_USE_CFISAN=1`)
 * one or two should fuzz the target with CMPLOG/redqueen (see above), at least
-  one cmplog instance should follow transformations (`-l AT`)
+  one cmplog instance should follow transformations (`-l 2AT`)
 * one to three fuzzers should fuzz a target compiled with laf-intel/COMPCOV (see
   above). Important note: If you run more than one laf-intel/COMPCOV fuzzer and
   you want them to share their intermediate results, the main fuzzer (`-M`) must
-  be one of them! (Although this is not really recommended.)
+  be one of them (although this is not really recommended).
 
-All other secondaries should be used like this:
-* a quarter to a third with the MOpt mutator enabled: `-L 0`
-* run with a different power schedule, recommended are: `fast` (default),
+The other secondaries should be run like this:
+* 10% with the MOpt mutator enabled: `-L 0`
+* 10% should use the old queue cycling with `-Z`
+* 50-70% should run with `AFL_DISABLE_TRIM`
+* 40% should run with `-P explore` and 20% with `-P exploit`
+* If you use `-a` then set 30% of the instances to not use `-a`; if you did
+  not set `-a` (why??), then set 30% to `-a ascii` and 30% to `-a binary`.
+* run each with a different power schedule, recommended are: `fast` (default),
   `explore`, `coe`, `lin`, `quad`, `exploit`, and `rare` which you can set with
   the `-p` option, e.g., `-p explore`. See the
   [FAQ]({{< relref "FAQ.md#what-are-power-schedules" >}}) for details.
-* a few instances should use the old queue cycling with `-Z`
+
+It can be useful to set `AFL_IGNORE_SEED_PROBLEMS=1` to skip over seeds that
+crash or timeout during startup.
 
 Also, it is recommended to set `export AFL_IMPORT_FIRST=1` to load test cases
-from other fuzzers in the campaign first.
+from other fuzzers in the campaign first. But note that can slow down the start
+of the first fuzz by quite a lot of you have many fuzzers and/or many seeds.
 
 If you have a large corpus, a corpus from a previous run or are fuzzing in a CI,
 then also set `export AFL_CMPLOG_ONLY_NEW=1` and `export AFL_FAST_CAL=1`.
 If the queue in the CI is huge and/or the execution time is slow then you can
 also add `AFL_NO_STARTUP_CALIBRATION=1` to skip the initial queue calibration
-phase and start fuzzing at once.
+phase and start fuzzing at once - but only do this if the calibration phase
+would be too long for your fuzz run time.
 
 You can also use different fuzzers. If you are using AFL spinoffs or AFL
 conforming fuzzers, then just use the same -o directory and give it a unique
@@ -906,6 +917,13 @@ then color-codes the input based on which sections appear to be critical and
 which are not; while not bulletproof, it can often offer quick insights into
 complex file formats.
 
+`casr-afl` from [CASR](https://github.com/ispras/casr) tools provides
+comfortable triaging for crashes found by AFL++. Reports are clustered and
+contain severity and other information.
+```shell
+casr-afl -i /path/to/afl/out/dir -o /path/to/casr/out/dir
+```
+
 ## 5. CI fuzzing
 
 Some notes on continuous integration (CI) fuzzing - this fuzzing is different to
@@ -913,7 +931,8 @@ normal fuzzing campaigns as these are much shorter runnings.
 
 If the queue in the CI is huge and/or the execution time is slow then you can
 also add `AFL_NO_STARTUP_CALIBRATION=1` to skip the initial queue calibration
-phase and start fuzzing at once.
+phase and start fuzzing at once. But only do that if the calibration time is
+too long for your overall available fuzz run time.
 
 1. Always:
     * LTO has a much longer compile time which is diametrical to short fuzzing -
@@ -934,8 +953,8 @@ phase and start fuzzing at once.
 3. Also randomize the afl-fuzz runtime options, e.g.:
     * 65% for `AFL_DISABLE_TRIM`
     * 50% for `AFL_KEEP_TIMEOUTS`
-    * 50% use a dictionary generated by `AFL_LLVM_DICT2FILE`
-    * 40% use MOpt (`-L 0`)
+    * 50% use a dictionary generated by `AFL_LLVM_DICT2FILE` + `AFL_LLVM_DICT2FILE_NO_MAIN=1`
+    * 10% use MOpt (`-L 0`)
     * 40% for `AFL_EXPAND_HAVOC_NOW`
     * 20% for old queue processing (`-Z`)
     * for CMPLOG targets, 70% for `-l 2`, 10% for `-l 3`, 20% for `-l 2AT`
