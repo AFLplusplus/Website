@@ -62,13 +62,17 @@ Check out the GitHub repository [here](https://github.com/AFLplusplus/AFLplusplu
 + GNU coreutils
   * [Bug 1919775](https://bugzilla.redhat.com/show_bug.cgi?id=1919775) by Qiuhao Li
 + PostgreSQL
-  * [Crash while parsing zero-symbols in jsonb string](https://www.postgresql.org/message-id/7332649.x5DLKWyVIX%40thinkpad-pgpro) by Nikolay Shaplov (Postgres Professional)
+  * [Crash while parsing zero-symbols in jsonb string](https://www.postgresql.org/message-id/7332649.x5DLKWyVIX%40thinkpad-pgpro) by [Nikolay Shaplov](https://gitlab.com/dhyannataraj) (Postgres Professional)
+  * [Bug #18214](https://www.postgresql.org/message-id/flat/18214-891f77caa80a35cc%40postgresql.org), [Bug #17962](https://www.postgresql.org/message-id/17962-4f00b6f26724858d%40postgresql.org) `poly_contain` operation works almost forever (using [LibBlobStamper](https://github.com/postgrespro/libblobstamper)) by [Nikolay Shaplov](https://gitlab.com/dhyannataraj) (Postgres Professional)
 + Node.js
-  * [Bug #41949](https://github.com/nodejs/node/issues/41949), [Bug #46223](https://github.com/nodejs/node/issues/46223) by Alexander Shvedov
+  * [Bug #41949](https://github.com/nodejs/node/issues/41949), [Bug #46223](https://github.com/nodejs/node/issues/46223) by [Alexander Shvedov](https://github.com/a-shvedov)
 + libjxl
-  * [Bug #2100](https://github.com/libjxl/libjxl/issues/2100) by Alexander Shvedov
+  * [Bug #2100](https://github.com/libjxl/libjxl/issues/2100) by [Alexander Shvedov](https://github.com/a-shvedov)
 + Perl
-  * [Bug #20733](https://github.com/Perl/perl5/issues/20733) by Alexander Shvedov
+  * [Bug #20733](https://github.com/Perl/perl5/issues/20733) by [Alexander Shvedov](https://github.com/a-shvedov)
++ zlog
+  * [CVE-2024-22857](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-22857) ([Details](https://www.ebryx.com/blogs/arbitrary-code-execution-in-zlog-cve-2024-22857)) by [Faran Abdullah](https://github.com/faran1512)
+
 
 ## Sponsoring
 
