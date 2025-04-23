@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sand | AFLplusplus</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+<meta property="og:title" content="Sand | AFLplusplus" />
+<meta name="twitter:title" content="Sand | AFLplusplus" />
+<meta itemprop="name" content="Sand | AFLplusplus" />
+<meta name="application-name" content="Sand | AFLplusplus" />
+<meta property="og:site_name" content="AFLplusplus" />
+
+<meta name="description" content="The AFLplusplus website" />
+<meta itemprop="description" content="The AFLplusplus website" />
+<meta property="og:description" content="The AFLplusplus website" />
+<meta name="twitter:description" content="The AFLplusplus website" />
+
+<base href="https://aflplus.plus/docs/sand/">
+<link rel="canonical" href="https://aflplus.plus/docs/sand/" itemprop="url" /> 
+<meta name="url" content="https://aflplus.plus/docs/sand/" />
+<meta name="twitter:url" content="https://aflplus.plus/docs/sand/" /> 
+<meta property="og:url" content="https://aflplus.plus/docs/sand/" />
+
+ 
+  <meta itemprop="image" content="https://aflplus.plus/ogimage.png" />
+  <meta property="og:image" content="https://aflplus.plus/ogimage.png" /> 
+  <meta name="twitter:image" content="https://aflplus.plus/ogimage.png" />
+  <meta name="twitter:image:src" content="https://aflplus.plus/ogimage.png" /> 
+
+
+
+<link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
+
+
+<script defer src="/en.search.min.0260174065725853f7d3176b0f7e20cf9186e9ae402adf08b5b9258128893e9d.js" integrity="sha256-AmAXQGVyWFP30xdrD34gz5GG6a5AKt8ItbklgSiJPp0="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><img src="/aflpp_logo_256x256_w.png" alt="Logo" /><span>AFLplusplus</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+  <ul>
+<li><strong>Site map</strong>
+<ul>
+<li><a href="/features/">Features</a></li>
+<li><a href="/building/">Build &amp; Install</a></li>
+<li><a href="/docs/">Documentation</a></li>
+<li><a href="/docs/tutorials/">Tutorials</a></li>
+<li><a href="/papers/">Papers</a></li>
+<li><a href="https://aflplus.plus/libafl-book/">LibAFL Book</a></li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li><strong>Downloads</strong>
+<ul>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.31c">Release v4.31c</a>
+</li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
+<li><a href="https://raw.githubusercontent.com/AFLplusplus/AFLplusplus/master/docs/COPYING">License</a></li>
+</ul>
+</li>
+<li><strong>Links</strong>
+<ul>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus">Repo (GitHub)</a></li>
+<li><a href="https://opencollective.com/AFLplusplusEU">Donations</a></li>
+<li><a href="https://groups.google.com/group/afl-users">Mailing list</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Sand</strong>
+
+  <label for="toc-control">
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#motivation">Motivation</a></li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#example-workflow">Example Workflow</a></li>
+    <li><a href="#tips">Tips</a>
+      <ul>
+        <li><a href="#alternative-execution-patterns">Alternative execution patterns</a></li>
+        <li><a href="#run-as-many-sanitizers-as-possible">Run as many sanitizers as possible</a></li>
+        <li><a href="#bugs-types">Bugs types</a></li>
+        <li><a href="#my-throughput-is-greatly-impacted">My throughput is greatly impacted</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+    </aside>
+  
+ 
+      </header>
+
+      
+<article class="markdown"><h1 id="sand-decoupling-sanitization-from-fuzzing-for-low-overhead">SAND: Decoupling Sanitization from Fuzzing for Low Overhead</h1>
+<ul>
+<li>Authors: Ziqiao Kong, Shaohua Li, Heqing Huang, Zhendong Su</li>
+<li>Maintainer: <a href="https://github.com/wtdcode">Ziqiao Kong</a></li>
+<li>Preprint: <a href="https://arxiv.org/abs/2402.16497">arXiv</a>, accepted by ICSE 2025</li>
+<li>Main repo (for paper, reproduction, reference or cite): <a href="https://github.com/wtdcode/sand-aflpp">https://github.com/wtdcode/sand-aflpp</a></li>
+</ul>
+<h2 id="motivation">Motivation</h2>
+<p>SAND introduces a new fuzzing workflow that can greatly reduce (or even eliminate) sanitizer overhead and combine different sanitizers in one fuzzing campaign.</p>
+<p>The key point of SAND is that: sanitizing all inputs is wasting fuzzing power, because bug-triggering inputs are extremely rare (~1%). Obviously, not all inputs worth going through sanitizers. Therefore, if we can somehow &ldquo;predict&rdquo; if an input could trigger bugs (defined as &ldquo;execution pattern&rdquo;), we could greatly save fuzzing power by only sanitizing a small proportion of all inputs. That&rsquo;s exactly how SAND works.</p>
+<h2 id="usage">Usage</h2>
+<p>For a normal fuzzing workflow, we have:</p>
+<ol>
+<li>Build target project with AFL_USE_ASAN=1 to get <code>target_asan</code></li>
+<li>Fuzz the target with <code>afl-fuzz -i seeds -o out -- ./target_asan</code></li>
+</ol>
+<p>For SAND fuzzing workflow, this is slightly different:</p>
+<ol>
+<li>Build target project <em>without</em> any sanitizers to get <code>target_native</code>, which we will define as a &ldquo;native binary&rdquo;. It is usually done by using <code>afl-clang-fast/lto(++)</code> to compile your project <em>without</em> <code>AFL_USE_ASAN/UBSAN/MSAN</code>.</li>
+<li>Build target project with AFL_USE_ASAN=1 AFL_SAN_NO_INST=1 to get <code>target_asan</code>. Do note this step can be repeated for multiple sanitizers, like MSAN, UBSAN etc. It is also possible to have ASAN and UBSAN to build together.</li>
+<li>Fuzz the target with <code>afl-fuzz -i seeds -o out -w ./target_asan -- ./target_native</code>. Note <code>-w</code> can be specified multiple times.</li>
+</ol>
+<p>Then you get:</p>
+<ul>
+<li>almost the same performance as <code>afl-fuzz -i seeds -o out -- ./target_native</code></li>
+<li>and the same bug-finding capability as <code>afl-fuzz -i seeds -o out -- ./target_asan</code></li>
+</ul>
+<h2 id="example-workflow">Example Workflow</h2>
+<p>Take <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../test-instr.c">test-instr.c</a> as an example.</p>
+<ol>
+<li>Build the native binary</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">afl-clang-fast test-instr.c -o ./native
+</code></pre></div><p>Just like the normal building process, except using <code>afl-clang-fast</code></p>
+<ol start="2">
+<li>Build the sanitizers-enabled binaries.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">AFL_SAN_NO_INST<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> AFL_USE_UBSAN<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> AFL_USE_ASAN<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> afl-clang-fast test-instr.c -o ./asanubsan
+AFL_SAN_NO_INST<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> AFL_USE_MSAN<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> afl-clang-fast test-instr.c -o ./msan
+</code></pre></div><p>Do note <code>AFL_SAN_NO_INST=1</code> is crucial, this enables forkservers but disables pc instrumentation. Do not reuse sanitizers-enabled binaries built <em>without</em> <code>AFL_SAN_NO_INST=1</code>. This will mess up SAND execution pattern.</p>
+<ol start="3">
+<li>Start fuzzing</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mkdir /tmp/test
+echo <span style="color:#e6db74">&#34;a&#34;</span> &gt; /tmp/test/a
+AFL_NO_UI<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> AFL_SKIP_CPUFREQ<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> afl-fuzz -i /tmp/test -o /tmp/out -w ./asanubsan -w ./msan -- ./native @@
+</code></pre></div><p>That&rsquo;s it!</p>
+<h2 id="tips">Tips</h2>
+<h3 id="alternative-execution-patterns">Alternative execution patterns</h3>
+<p>By default, SAND uses the hash value of the simplified coverage map as execution pattern, i.e. if an input has a unique simplefied coverage map, it will be sent to sanitizers for inspection. This shall work for most cases. However, if you are strongly worried about missing bugs, try <code>AFL_SAN_ABSTRACTION=unique_trace afl-fuzz ...</code>, which filters inputs having a <em>unique coverage map</em>. Do note this significantly increases the number of inputs by 4-10 times, leading to much lower throughput. Alternatively, SAND also supports <code>AFL_SAN_ABSTRACTION=coverage_increase</code>, which essentially equals to running sanitizers on the corpus and thus having almost zero overhead, but at a cost of missing ~15% bugs in our evaluation.</p>
+<h3 id="run-as-many-sanitizers-as-possible">Run as many sanitizers as possible</h3>
+<p>Though we just used ASAN as an example, SAND works best if you provide more sanitizers, for example, UBSAN and MSAN.</p>
+<p>You might do it via <code>afl-fuzz -i seeds -o out -w ./target_asan -w ./target_msan -w ./target_ubsan -- ./target_native</code>. Don&rsquo;t worry about the slow sanitizers like MSAN, SAND could still run very fast because only rather a few inputs are sanitized.</p>
+<h3 id="bugs-types">Bugs types</h3>
+<p>The execution pattern evaluated in our papers is targeting the common bugs, as ASAN/MSAN/UBSAN catches. For other bug types, you probably need to define new execution patterns and re-evaluate.</p>
+<h3 id="my-throughput-is-greatly-impacted">My throughput is greatly impacted</h3>
+<p>Generally, this is due to too many inputs going through sanitizers, for example, because of unstable targets. You could check stats from <code>plot_file</code> to confirm this. Try to switch execution patterns as stated above.</p>
+</article>
+ 
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+      </footer>
+      
+    </div>
+
+    
+    <aside class="book-toc">
+      
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#motivation">Motivation</a></li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#example-workflow">Example Workflow</a></li>
+    <li><a href="#tips">Tips</a>
+      <ul>
+        <li><a href="#alternative-execution-patterns">Alternative execution patterns</a></li>
+        <li><a href="#run-as-many-sanitizers-as-possible">Run as many sanitizers as possible</a></li>
+        <li><a href="#bugs-types">Bugs types</a></li>
+        <li><a href="#my-throughput-is-greatly-impacted">My throughput is greatly impacted</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+ 
+    </aside>
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

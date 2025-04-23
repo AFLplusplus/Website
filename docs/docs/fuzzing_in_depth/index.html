@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.68ec47fd1cbb1cf747325b658b3fa46a968dbe271a29a651694735aa6eaf02f3.js" integrity="sha256-aOxH/Ry7HPdHMltliz&#43;kapaNvicaKaZRaUc1qm6vAvM="></script>
+<script defer src="/en.search.min.0260174065725853f7d3176b0f7e20cf9186e9ae402adf08b5b9258128893e9d.js" integrity="sha256-AmAXQGVyWFP30xdrD34gz5GG6a5AKt8ItbklgSiJPp0="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.09c">Release 4.09c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.31c">Release v4.31c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -242,6 +242,7 @@ kinds of compiler targets and instrumentation options. The following
 evaluation flow will help you to select the best possible.</p>
 <p>It is highly recommended to have the newest llvm version possible installed,
 anything below 9 is not recommended.</p>
+<p>IMPORTANT NOTICE: afl-gcc/afl-clang have been removed from AFL++ as they are obsolete.</p>
 <pre tabindex="0"><code>+--------------------------------+
 | clang/clang++ 11+ is available | --&gt; use LTO mode (afl-clang-lto/afl-clang-lto++)
 +--------------------------------+     see [https://github.com/AFLplusplus/AFLplusplus/blob/stable/instrumentation/README.lto.md](https://github.com/AFLplusplus/AFLplusplus/blob/stable/instrumentation/README.lto.md)
@@ -264,20 +265,18 @@ anything below 9 is not recommended.</p>
     | if not, or if you do not have a gcc with plugin support
     |
     v
-   use GCC mode (afl-gcc/afl-g++) (or afl-clang/afl-clang++ for clang)
+   GAME OVER! Install gcc-VERSION-plugin-dev or llvm-VERSION-dev
 </code></pre><p>Clickable README links for the chosen compiler:</p>
 <ul>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.lto.md">LTO mode - afl-clang-lto</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md">LLVM mode - afl-clang-fast</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.gcc_plugin.md">GCC_PLUGIN mode - afl-gcc-fast</a></li>
-<li>GCC/CLANG modes (afl-gcc/afl-clang) have no README as they have no own
-features</li>
 </ul>
 <p>You can select the mode for the afl-cc compiler by one of the following methods:</p>
 <ul>
-<li>Using a symlink to afl-cc: afl-gcc, afl-g++, afl-clang, afl-clang++,
+<li>Using a symlink to afl-cc:
 afl-clang-fast, afl-clang-fast++, afl-clang-lto, afl-clang-lto++,
-afl-gcc-fast, afl-g++-fast (recommended!).</li>
+afl-gcc-fast, afl-g++-fast.</li>
 <li>Using the environment variable <code>AFL_CC_COMPILER</code> with <code>MODE</code>.</li>
 <li>Passing &ndash;afl-<code>MODE</code> command line options to the compiler via
 <code>CFLAGS</code>/<code>CXXFLAGS</code>/<code>CPPFLAGS</code>.</li>
@@ -286,8 +285,7 @@ afl-gcc-fast, afl-g++-fast (recommended!).</li>
 <ul>
 <li>LTO (afl-clang-lto*)</li>
 <li>LLVM (afl-clang-fast*)</li>
-<li>GCC_PLUGIN (afl-g*-fast) or GCC (afl-gcc/afl-g++)</li>
-<li>CLANG(afl-clang/afl-clang++)</li>
+<li>GCC_PLUGIN (afl-g*-fast)</li>
 </ul>
 <p>Because no AFL++ specific command-line options are accepted (beside the
 &ndash;afl-MODE command), the compile-time tools make fairly broad use of environment
@@ -380,6 +378,10 @@ and RAM usage. Also, you should only run one afl-fuzz instance per sanitizer
 type. This is enough because e.g. a use-after-free bug will be picked up by ASAN
 (address sanitizer) anyway after syncing test cases from other fuzzing
 instances, so running more than one address sanitized target would be a waste.</p>
+<p><em>IF</em> you are running a saturated corpus, then you can run up to half of the
+instances with sanitizers.</p>
+<p>An alternative but more effective approach is to use <a href="/docs/sand/">SAND</a> which could
+combine different sanitizers at a much higher throughput.</p>
 <p>The following sanitizers have built-in support in AFL++:</p>
 <ul>
 <li>ASAN = Address SANitizer, finds memory corruption vulnerabilities like
@@ -417,6 +419,11 @@ others often cannot work together because of target weirdness, e.g., ASAN and
 CFISAN. You might need to experiment which sanitizers you can combine in a
 target (which means more instances can be run without a sanitized target, which
 is more effective).</p>
+<p>Note that some sanitizers (MSAN and LSAN) exit with a particular exit code
+instead of aborting. afl-fuzz treats these exit codes as a crash when these
+sanitizers are enabled. If the target uses these exit codes there could be false
+positives among the saved crashes. LSAN uses exit code 23 and MSAN uses exit
+code 86.</p>
 <h3 id="d-modifying-the-target">d) Modifying the target</h3>
 <p>If the target has features that make fuzzing more difficult, e.g., checksums,
 HMAC, etc., then modify the source code so that checks for these values are
@@ -592,6 +599,7 @@ boot options for a much better fuzzing performance.</li>
 protection against attacks! So set strong firewall rules and only expose SSH
 as a network service if you use these (which is highly recommended).</li>
 </ul>
+<p>If you execute afl-fuzz in a Docker container, it is recommended to pass <a href="https://docs.docker.com/engine/containers/resource_constraints/#configure-the-default-cfs-scheduler"><code>--cpuset-cpus</code></a> option with free CPU cores to docker daemon when starting the container, or pass <code>AFL_NO_AFFINITY</code> to afl-fuzz. This is due to the fact that AFL++ will bind to a free CPU core by default, while Docker container will prevent AFL++ instance from seeing processes in other containers or host, which leads to all AFL++ instances trying to bind the same CPU core.</p>
 <p>If you have an input corpus from <a href="#2-preparing-the-fuzzing-campaign">step 2</a>,
 then specify this directory with the <code>-i</code> option. Otherwise, create a new
 directory and create a file with any content as test data in there.</p>
@@ -696,8 +704,8 @@ be one of them (although this is not really recommended).</li>
 <li>40% should run with <code>-P explore</code> and 20% with <code>-P exploit</code></li>
 <li>If you use <code>-a</code> then set 30% of the instances to not use <code>-a</code>; if you did
 not set <code>-a</code> (why??), then set 30% to <code>-a ascii</code> and 30% to <code>-a binary</code>.</li>
-<li>run each with a different power schedule, recommended are: <code>fast</code> (default),
-<code>explore</code>, <code>coe</code>, <code>lin</code>, <code>quad</code>, <code>exploit</code>, and <code>rare</code> which you can set with
+<li>run each with a different power schedule, recommended are: <code>explore</code> (default),
+<code>fast</code>, <code>coe</code>, <code>lin</code>, <code>quad</code>, <code>exploit</code>, and <code>rare</code> which you can set with
 the <code>-p</code> option, e.g., <code>-p explore</code>. See the
 <a href="/docs/faq/#what-are-power-schedules">FAQ</a> for details.</li>
 </ul>
@@ -705,7 +713,7 @@ the <code>-p</code> option, e.g., <code>-p explore</code>. See the
 crash or timeout during startup.</p>
 <p>Also, it is recommended to set <code>export AFL_IMPORT_FIRST=1</code> to load test cases
 from other fuzzers in the campaign first. But note that can slow down the start
-of the first fuzz by quite a lot of you have many fuzzers and/or many seeds.</p>
+of the first fuzz by quite a lot if you have many fuzzers and/or many seeds.</p>
 <p>If you have a large corpus, a corpus from a previous run or are fuzzing in a CI,
 then also set <code>export AFL_CMPLOG_ONLY_NEW=1</code> and <code>export AFL_FAST_CAL=1</code>.
 If the queue in the CI is huge and/or the execution time is slow then you can
@@ -988,7 +996,7 @@ campaign but not good for short CI runs.</p>
 </li>
 </ol>
 <p>How this can look like can, e.g., be seen at AFL++&rsquo;s setup in Google&rsquo;s
-<a href="https://github.com/google/oss-fuzz/blob/master/infra/base-images/base-builder/compile_afl">oss-fuzz</a>
+<a href="https://github.com/google/oss-fuzz/blob/3e2c5312417d1a6f9564472f3df1fd27759b289d/infra/base-images/base-builder/compile_afl">previous oss-fuzz version</a>
 and
 <a href="https://github.com/google/clusterfuzz/blob/master/src/clusterfuzz/_internal/bot/fuzzers/afl/launcher.py">clusterfuzz</a>.</p>
 <h2 id="the-end">The End</h2>

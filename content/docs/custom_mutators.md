@@ -79,7 +79,7 @@ def init(seed):
 def fuzz_count(buf):
     return cnt
 
-def splice_optout()
+def splice_optout():
     pass
 
 def fuzz(buf, add_buf, max_size):
@@ -157,7 +157,7 @@ def deinit():  # optional for Python
     splicing - or anything else - and can also be ignored. If you are not
     using this additional data then define `splice_optout` (see above).
     This function is optional.
-    Returing a length of 0 is valid and is interpreted as skipping this
+    Returning a length of 0 is valid and is interpreted as skipping this
     one mutation result.
     For non-Python: the returned output buffer is under **your** memory
     management!
@@ -204,6 +204,11 @@ def deinit():  # optional for Python
     This method can be used if you want to send data to the target yourself,
     e.g. via IPC. This replaces some usage of utils/afl_proxy but requires
     that you start the target with afl-fuzz.
+
+    Setting `AFL_CUSTOM_MUTATOR_LATE_SEND` will call the afl_custom_fuzz_send()
+    function after the target has been restarted. (This is needed for e.g. TCP
+    services.)
+
     Example: [custom_mutators/examples/custom_send.c](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../custom_mutators/examples/custom_send.c)
 
 - `queue_new_entry` (optional):
@@ -271,6 +276,11 @@ trimmed input. Here's a quick API description:
 
 Omitting any of three trimming methods will cause the trimming to be disabled
 and trigger a fallback to the built-in default trimming routine.
+
+**IMPORTANT** If you have a custom post process mutator that needs to be run
+after trimming, you must call it yourself at the end of your successful
+trimming!
+
 
 ### Environment Variables
 

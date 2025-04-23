@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.68ec47fd1cbb1cf747325b658b3fa46a968dbe271a29a651694735aa6eaf02f3.js" integrity="sha256-aOxH/Ry7HPdHMltliz&#43;kapaNvicaKaZRaUc1qm6vAvM="></script>
+<script defer src="/en.search.min.0260174065725853f7d3176b0f7e20cf9186e9ae402adf08b5b9258128893e9d.js" integrity="sha256-AmAXQGVyWFP30xdrD34gz5GG6a5AKt8ItbklgSiJPp0="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.09c">Release 4.09c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.31c">Release v4.31c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -143,7 +143,8 @@ https://github.com/alex-shpak/hugo-book
   <nav id="TableOfContents">
   <ul>
     <li><a href="#linux-on-x86">Linux on x86</a></li>
-    <li><a href="#macos-x-on-x86-and-arm64-m1">MacOS X on x86 and arm64 (M1)</a></li>
+    <li><a href="#macos-on-x86_64-and-arm64">macOS on x86_64 and arm64</a></li>
+    <li><a href="#ios-on-arm64-and-arm64e">iOS on arm64 and arm64e</a></li>
   </ul>
 </nav>
 
@@ -168,13 +169,16 @@ development state of AFL++.</p>
 <p>If you want to build AFL++ yourself, you have many options. The easiest choice
 is to build and install everything:</p>
 <p>NOTE: depending on your Debian/Ubuntu/Kali/&hellip; release, replace <code>-14</code> with
-whatever llvm version is available. We recommend llvm 13, 14, 15 or 16.</p>
+whatever llvm version is available. We recommend llvm 13 or newer.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt-get update
 sudo apt-get install -y build-essential python3-dev automake cmake git flex bison libglib2.0-dev libpixman-1-dev python3-setuptools cargo libgtk-3-dev
 <span style="color:#75715e"># try to install llvm 14 and install the distro default if that fails</span>
 sudo apt-get install -y lld-14 llvm-14 llvm-14-dev clang-14 <span style="color:#f92672">||</span> sudo apt-get install -y lld llvm llvm-dev clang
 sudo apt-get install -y gcc-<span style="color:#66d9ef">$(</span>gcc --version|head -n1|sed <span style="color:#e6db74">&#39;s/\..*//&#39;</span>|sed <span style="color:#e6db74">&#39;s/.* //&#39;</span><span style="color:#66d9ef">)</span>-plugin-dev libstdc++-<span style="color:#66d9ef">$(</span>gcc --version|head -n1|sed <span style="color:#e6db74">&#39;s/\..*//&#39;</span>|sed <span style="color:#e6db74">&#39;s/.* //&#39;</span><span style="color:#66d9ef">)</span>-dev
 sudo apt-get install -y ninja-build <span style="color:#75715e"># for QEMU mode</span>
+sudo apt-get install -y cpio libcapstone-dev <span style="color:#75715e"># for Nyx mode</span>
+sudo apt-get install -y wget curl <span style="color:#75715e"># for Frida mode</span>
+sudo apt-get install -y python3-pip <span style="color:#75715e"># for Unicorn mode</span>
 git clone https://github.com/AFLplusplus/AFLplusplus
 cd AFLplusplus
 make distrib
@@ -205,95 +209,92 @@ should</li>
 <li>unit: perform unit tests (based on cmocka)</li>
 <li>help: shows these build options</li>
 </ul>
-<p><a href="https://developer.apple.com/library/archive/qa/qa1118/_index.html">Unless you are on Mac OS X</a>,
+<p><a href="https://developer.apple.com/library/archive/qa/qa1118/_index.html">Unless you are on macOS</a>,
 you can also build statically linked versions of the AFL++ binaries by passing
-the <code>STATIC=1</code> argument to make:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">make STATIC<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+the <code>PERFORMANCE=1</code> argument to make:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">make PERFORMANCE<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
 </code></pre></div><p>These build options exist:</p>
 <ul>
-<li>STATIC - compile AFL++ static</li>
-<li>CODE_COVERAGE - compile the target for code coverage (see docs/instrumentation/README.llvm.md)</li>
-<li>ASAN_BUILD - compiles AFL++ with memory sanitizer for debug purposes</li>
+<li>PERFORMANCE - compile with performance options that make the binary not transferable to other systems. Recommended (except on macOS)!</li>
+<li>STATIC - compile AFL++ static (does not work on macOS)</li>
+<li>CODE_COVERAGE - compile the target for code coverage (see <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../instrumentation/README.llvm.md">README.llvm.md</a>)</li>
+<li>ASAN_BUILD - compiles AFL++ with address sanitizer for debug purposes</li>
 <li>UBSAN_BUILD - compiles AFL++ tools with undefined behaviour sanitizer for debug purposes</li>
 <li>DEBUG - no optimization, -ggdb3, all warnings and -Werror</li>
 <li>LLVM_DEBUG - shows llvm deprecation warnings</li>
 <li>PROFILING - compile afl-fuzz with profiling information</li>
 <li>INTROSPECTION - compile afl-fuzz with mutation introspection</li>
 <li>NO_PYTHON - disable python support</li>
-<li>NO_SPLICING - disables splicing mutation in afl-fuzz, not recommended for normal fuzzing</li>
 <li>NO_UTF - do not use UTF-8 for line rendering in status screen (fallback to G1 box drawing, of vanilla AFL)</li>
 <li>NO_NYX - disable building nyx mode dependencies</li>
 <li>NO_CORESIGHT - disable building coresight (arm64 only)</li>
 <li>NO_UNICORN_ARM64 - disable building unicorn on arm64</li>
-<li>AFL_NO_X86 - if compiling on non-intel/amd platforms</li>
+<li>AFL_NO_X86 - if compiling on non-Intel/AMD platforms</li>
 <li>LLVM_CONFIG - if your distro doesn&rsquo;t use the standard name for llvm-config (e.g., Debian)</li>
 </ul>
 <p>e.g.: <code>make LLVM_CONFIG=llvm-config-14</code></p>
-<h2 id="macos-x-on-x86-and-arm64-m1">MacOS X on x86 and arm64 (M1)</h2>
-<p>MacOS has some gotchas due to the idiosyncrasies of the platform.</p>
-<p>To build AFL, install llvm (and perhaps gcc) from brew and follow the general
-instructions for Linux. If possible, avoid Xcode at all cost.</p>
+<h2 id="macos-on-x86_64-and-arm64">macOS on x86_64 and arm64</h2>
+<p>macOS has some gotchas due to the idiosyncrasies of the platform.</p>
+<p>macOS supports SYSV shared memory used by AFL++&rsquo;s instrumentation, but the
+default settings aren&rsquo;t sufficient. Before even building, increase
+them by running the provided script:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo afl-system-config
+</code></pre></div><p>See
+<a href="https://www.spy-hill.com/help/apple/SharedMemory.html">https://www.spy-hill.com/help/apple/SharedMemory.html</a>
+for documentation for the shared memory settings and how to make them permanent.</p>
+<p>Next, to build AFL++, install the following packages from brew:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">brew install wget git make cmake llvm gdb coreutils
-</code></pre></div><p>Be sure to setup <code>PATH</code> to point to the correct clang binaries and use the
-freshly installed clang, clang++, llvm-config, gmake and coreutils, e.g.:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># Depending on your MacOS system + brew version it is either</span>
-export PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/opt/homebrew/opt/llvm/bin:</span>$PATH<span style="color:#e6db74">&#34;</span>
-<span style="color:#75715e"># or</span>
-export PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/usr/local/opt/llvm/bin:</span>$PATH<span style="color:#e6db74">&#34;</span>
-<span style="color:#75715e"># you can check with &#34;brew info llvm&#34;</span>
-
-export PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:</span>$PATH<span style="color:#e6db74">&#34;</span>
+</code></pre></div><p>Depending on your macOS system + brew version, brew may be installed in different places.
+You can check with <code>brew info llvm</code> to know where, then create a variable for it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export HOMEBREW_BASE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/opt/homebrew/opt&#34;</span>
+</code></pre></div><p>or</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export HOMEBREW_BASE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/usr/local/opt&#34;</span>
+</code></pre></div><p>Set <code>PATH</code> to point to the brew clang, clang++, llvm-config, gmake and coreutils.
+Also use the brew clang compiler; the Xcode clang compiler must not be used.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOMEBREW_BASE<span style="color:#e6db74">/coreutils/libexec/gnubin:/usr/local/bin:</span>$HOMEBREW_BASE<span style="color:#e6db74">/llvm/bin:</span>$PATH<span style="color:#e6db74">&#34;</span>
 export CC<span style="color:#f92672">=</span>clang
 export CXX<span style="color:#f92672">=</span>clang++
-gmake
-cd frida_mode
-gmake
-cd ..
-sudo gmake install
-</code></pre></div><p><code>afl-gcc</code> will fail unless you have GCC installed, but that is using outdated
-instrumentation anyway. <code>afl-clang</code> might fail too depending on your PATH setup.
-But you don&rsquo;t want neither, you want <code>afl-clang-fast</code> anyway :) Note that
-<code>afl-clang-lto</code>, <code>afl-gcc-fast</code> and <code>qemu_mode</code> are not working on MacOS.</p>
-<p>The crash reporting daemon that comes by default with MacOS X will cause
-problems with fuzzing. You need to turn it off:</p>
-<pre tabindex="0"><code>launchctl unload -w /System/Library/LaunchAgents/com.apple.ReportCrash.plist
-sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.ReportCrash.Root.plist
-</code></pre><p>The <code>fork()</code> semantics on OS X are a bit unusual compared to other unix systems
+</code></pre></div><p>Then build following the general Linux instructions.</p>
+<p>If everything worked, you should then have <code>afl-clang-fast</code> installed, which you can check with:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">which afl-clang-fast
+</code></pre></div><p>Note that <code>afl-clang-lto</code>, <code>afl-gcc-fast</code> and <code>qemu_mode</code> are not working on macOS.</p>
+<p>The crash reporting daemon that comes by default with macOS will cause
+problems with fuzzing. You need to turn it off, which you can do with <code>afl-system-config</code>.</p>
+<p>The <code>fork()</code> semantics on macOS are a bit unusual compared to other unix systems
 and definitely don&rsquo;t look POSIX-compliant. This means two things:</p>
 <ul>
 <li>Fuzzing will be probably slower than on Linux. In fact, some folks report
 considerable performance gains by running the jobs inside a Linux VM on
-MacOS X.</li>
+macOS.</li>
 <li>Some non-portable, platform-specific code may be incompatible with the AFL++
 forkserver. If you run into any problems, set <code>AFL_NO_FORKSRV=1</code> in the
 environment before starting afl-fuzz.</li>
 </ul>
-<p>User emulation mode of QEMU does not appear to be supported on MacOS X, so
+<p>User emulation mode of QEMU does not appear to be supported on macOS, so
 black-box instrumentation mode (<code>-Q</code>) will not work. However, FRIDA mode (<code>-O</code>)
-works on both x86 and arm64 MacOS boxes.</p>
-<p>MacOS X supports SYSV shared memory used by AFL&rsquo;s instrumentation, but the
-default settings aren&rsquo;t usable with AFL++. The default settings on 10.14 seem to
-be:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ipcs -M
-IPC status from &lt;running system&gt; as of XXX
-shminfo:
-        shmmax: <span style="color:#ae81ff">4194304</span> <span style="color:#f92672">(</span>max shared memory segment size<span style="color:#f92672">)</span>
-        shmmin:       <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>min shared memory segment size<span style="color:#f92672">)</span>
-        shmmni:      <span style="color:#ae81ff">32</span> <span style="color:#f92672">(</span>max number of shared memory identifiers<span style="color:#f92672">)</span>
-        shmseg:       <span style="color:#ae81ff">8</span> <span style="color:#f92672">(</span>max shared memory segments per process<span style="color:#f92672">)</span>
-        shmall:    <span style="color:#ae81ff">1024</span> <span style="color:#f92672">(</span>max amount of shared memory in pages<span style="color:#f92672">)</span>
-</code></pre></div><p>To temporarily change your settings to something minimally usable with AFL++,
-run these commands as root:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sysctl kern.sysv.shmmax<span style="color:#f92672">=</span><span style="color:#ae81ff">8388608</span>
-sysctl kern.sysv.shmall<span style="color:#f92672">=</span><span style="color:#ae81ff">4096</span>
-</code></pre></div><p>If you&rsquo;re running more than one instance of AFL, you likely want to make
-<code>shmall</code> bigger and increase <code>shmseg</code> as well:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sysctl kern.sysv.shmmax<span style="color:#f92672">=</span><span style="color:#ae81ff">8388608</span>
-sysctl kern.sysv.shmseg<span style="color:#f92672">=</span><span style="color:#ae81ff">48</span>
-sysctl kern.sysv.shmall<span style="color:#f92672">=</span><span style="color:#ae81ff">98304</span>
-</code></pre></div><p>See
-<a href="http://www.spy-hill.com/help/apple/SharedMemory.html">http://www.spy-hill.com/help/apple/SharedMemory.html</a>
-for documentation for these settings and how to make them permanent.</p>
+works on both x86 and arm64 macOS boxes.</p>
+<h2 id="ios-on-arm64-and-arm64e">iOS on arm64 and arm64e</h2>
+<p><strong>Option 1: Compilation on jailbroken iOS (recommended)</strong></p>
+<p>To compile directly on a jailbroken iOS device, it is recommended to use a jailbreak that supports Procursus,
+as Procursus provides up-to-date pre-built packages for the required tools.</p>
+<p>Ensure <code>openssh</code> is installed on your iOS device, then SSH into it.
+Install the following packages:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt install wget git make cmake clang gawk llvm ldid coreutils build-essential xz-utils
+</code></pre></div><p>Configure the environment for compilation:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export IOS_SDK_PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/usr/share/SDKs/iPhoneOS.sdk&#34;</span>
+export CC<span style="color:#f92672">=</span>clang
+export CXX<span style="color:#f92672">=</span>clang++
+</code></pre></div><p>Then build following the general Linux instructions.</p>
+<p><strong>Option 2: Cross-Compilation on macOS for Jailbroken iOS</strong></p>
+<p>In addition to the packages required for a macOS build, install <code>ldid</code> for signing binaries:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">brew install ldid-procursus
+</code></pre></div><p>Configure the environment for compilation:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export IOS_SDK_PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>xcrun --sdk iphoneos --show-sdk-path<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+export CC<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>xcrun --sdk iphoneos -f clang<span style="color:#66d9ef">)</span><span style="color:#e6db74"> -target arm64-apple-ios14.0&#34;</span>
+export CXX<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>xcrun --sdk iphoneos -f clang++<span style="color:#66d9ef">)</span><span style="color:#e6db74"> -target arm64-apple-ios14.0&#34;</span>
+export HOST_CC<span style="color:#f92672">=</span>cc
+</code></pre></div><p>Then build following the general Linux instructions.
+Finally, transfer the binaries to your iOS device.</p>
 </article>
  
 
@@ -325,7 +326,8 @@ for documentation for these settings and how to make them permanent.</p>
   <nav id="TableOfContents">
   <ul>
     <li><a href="#linux-on-x86">Linux on x86</a></li>
-    <li><a href="#macos-x-on-x86-and-arm64-m1">MacOS X on x86 and arm64 (M1)</a></li>
+    <li><a href="#macos-on-x86_64-and-arm64">macOS on x86_64 and arm64</a></li>
+    <li><a href="#ios-on-arm64-and-arm64e">iOS on arm64 and arm64e</a></li>
   </ul>
 </nav>
 

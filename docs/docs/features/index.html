@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.68ec47fd1cbb1cf747325b658b3fa46a968dbe271a29a651694735aa6eaf02f3.js" integrity="sha256-aOxH/Ry7HPdHMltliz&#43;kapaNvicaKaZRaUc1qm6vAvM="></script>
+<script defer src="/en.search.min.0260174065725853f7d3176b0f7e20cf9186e9ae402adf08b5b9258128893e9d.js" integrity="sha256-AmAXQGVyWFP30xdrD34gz5GG6a5AKt8ItbklgSiJPp0="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.09c">Release 4.09c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.31c">Release v4.31c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -161,11 +161,11 @@ https://github.com/alex-shpak/hugo-book
 QEMU 5.1 with laf-intel and Redqueen, FRIDA mode, unicorn mode, gcc plugin, full
 *BSD, Mac OS, Solaris and Android support and much, much, much more.</p>
 <h2 id="features-and-instrumentation">Features and instrumentation</h2>
+<p>Note that afl-gcc and afl-clang have been removed because their instrumentation is absolutely outdated.</p>
 <table>
 <thead>
 <tr>
 <th>Feature/Instrumentation</th>
-<th style="text-align:center">afl-gcc</th>
 <th style="text-align:center">llvm</th>
 <th style="text-align:center">gcc_plugin</th>
 <th style="text-align:center">FRIDA mode(9)</th>
@@ -178,7 +178,6 @@ QEMU 5.1 with laf-intel and Redqueen, FRIDA mode, unicorn mode, gcc plugin, full
 <tbody>
 <tr>
 <td>Threadsafe counters [A]</td>
-<td style="text-align:center"></td>
 <td style="text-align:center">x(3)</td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
@@ -189,7 +188,6 @@ QEMU 5.1 with laf-intel and Redqueen, FRIDA mode, unicorn mode, gcc plugin, full
 </tr>
 <tr>
 <td>NeverZero           [B]</td>
-<td style="text-align:center">x86[_64]</td>
 <td style="text-align:center">x(1)</td>
 <td style="text-align:center">x</td>
 <td style="text-align:center">x</td>
@@ -200,7 +198,6 @@ QEMU 5.1 with laf-intel and Redqueen, FRIDA mode, unicorn mode, gcc plugin, full
 </tr>
 <tr>
 <td>Persistent Mode     [C]</td>
-<td style="text-align:center"></td>
 <td style="text-align:center">x</td>
 <td style="text-align:center">x</td>
 <td style="text-align:center">x86[_64]/arm64</td>
@@ -211,7 +208,6 @@ QEMU 5.1 with laf-intel and Redqueen, FRIDA mode, unicorn mode, gcc plugin, full
 </tr>
 <tr>
 <td>LAF-Intel / CompCov [D]</td>
-<td style="text-align:center"></td>
 <td style="text-align:center">x</td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
@@ -222,7 +218,6 @@ QEMU 5.1 with laf-intel and Redqueen, FRIDA mode, unicorn mode, gcc plugin, full
 </tr>
 <tr>
 <td>CmpLog              [E]</td>
-<td style="text-align:center"></td>
 <td style="text-align:center">x</td>
 <td style="text-align:center">x</td>
 <td style="text-align:center">x86[_64]/arm64</td>
@@ -233,7 +228,6 @@ QEMU 5.1 with laf-intel and Redqueen, FRIDA mode, unicorn mode, gcc plugin, full
 </tr>
 <tr>
 <td>Selective Instrumentation [F]</td>
-<td style="text-align:center"></td>
 <td style="text-align:center">x</td>
 <td style="text-align:center">x</td>
 <td style="text-align:center">x</td>
@@ -244,7 +238,6 @@ QEMU 5.1 with laf-intel and Redqueen, FRIDA mode, unicorn mode, gcc plugin, full
 </tr>
 <tr>
 <td>Non-Colliding Coverage    [G]</td>
-<td style="text-align:center"></td>
 <td style="text-align:center">x(4)</td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
@@ -255,7 +248,6 @@ QEMU 5.1 with laf-intel and Redqueen, FRIDA mode, unicorn mode, gcc plugin, full
 </tr>
 <tr>
 <td>Ngram prev_loc Coverage   [H]</td>
-<td style="text-align:center"></td>
 <td style="text-align:center">x(6)</td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
@@ -266,7 +258,6 @@ QEMU 5.1 with laf-intel and Redqueen, FRIDA mode, unicorn mode, gcc plugin, full
 </tr>
 <tr>
 <td>Context Coverage    [I]</td>
-<td style="text-align:center"></td>
 <td style="text-align:center">x(6)</td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
@@ -277,7 +268,6 @@ QEMU 5.1 with laf-intel and Redqueen, FRIDA mode, unicorn mode, gcc plugin, full
 </tr>
 <tr>
 <td>Auto Dictionary     [J]</td>
-<td style="text-align:center"></td>
 <td style="text-align:center">x(7)</td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
@@ -288,7 +278,6 @@ QEMU 5.1 with laf-intel and Redqueen, FRIDA mode, unicorn mode, gcc plugin, full
 </tr>
 <tr>
 <td>Snapshot Support    [K]</td>
-<td style="text-align:center"></td>
 <td style="text-align:center">(x)(8)</td>
 <td style="text-align:center">(x)(8)</td>
 <td style="text-align:center"></td>
@@ -299,7 +288,6 @@ QEMU 5.1 with laf-intel and Redqueen, FRIDA mode, unicorn mode, gcc plugin, full
 </tr>
 <tr>
 <td>Shared Memory Test cases  [L]</td>
-<td style="text-align:center"></td>
 <td style="text-align:center">x</td>
 <td style="text-align:center">x</td>
 <td style="text-align:center">x86[_64]/arm64</td>
@@ -370,7 +358,7 @@ extension</li>
 <h2 id="integrated-features-and-patches">Integrated features and patches</h2>
 <p>Among others, the following features and patches have been integrated:</p>
 <ul>
-<li>NeverZero patch for afl-gcc, instrumentation, QEMU mode and unicorn_mode which
+<li>NeverZero for llvm/gcc instrumentation, QEMU mode and unicorn_mode which
 prevents a wrapping map value to zero, increases coverage</li>
 <li>Persistent mode, deferred forkserver and in-memory fuzzing for QEMU mode</li>
 <li>Unicorn mode which allows fuzzing of binaries from completely different
@@ -380,6 +368,7 @@ platforms (integration provided by domenukk)</li>
 <li>Win32 PE binary-only fuzzing with QEMU and Wine</li>
 <li>AFLfast&rsquo;s power schedules by Marcel Böhme:
 <a href="https://github.com/mboehme/aflfast">https://github.com/mboehme/aflfast</a></li>
+<li>The fast deterministic stage by Han Zheng: <a href="https://github.com/hexhive/mendelFuzz-Artifact/">https://github.com/hexhive/mendelFuzz-Artifact/</a></li>
 <li>The MOpt mutator:
 <a href="https://github.com/puppet-meteor/MOpt-AFL">https://github.com/puppet-meteor/MOpt-AFL</a></li>
 <li>LLVM mode Ngram coverage by Adrian Herrera

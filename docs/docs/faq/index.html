@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.68ec47fd1cbb1cf747325b658b3fa46a968dbe271a29a651694735aa6eaf02f3.js" integrity="sha256-aOxH/Ry7HPdHMltliz&#43;kapaNvicaKaZRaUc1qm6vAvM="></script>
+<script defer src="/en.search.min.0260174065725853f7d3176b0f7e20cf9186e9ae402adf08b5b9258128893e9d.js" integrity="sha256-AmAXQGVyWFP30xdrD34gz5GG6a5AKt8ItbklgSiJPp0="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.09c">Release 4.09c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.31c">Release v4.31c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -232,7 +232,7 @@ other addresses</strong> (except at the end).</p>
 to itself, this too would be an edge.</p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
-<p>To stop afl-fuzz, minimize it&rsquo;s corpus and restart you would usually do:</p>
+<p>To stop afl-fuzz, minimize its corpus and restart you would usually do:</p>
 <pre tabindex="0"><code>Control-C  # to terminate afl-fuzz
 $ afl-cmin -T nproc -i out/default/queue -o minimized_queue -- ./target
 $ AFL_FAST_CAL=1 AFL_CMPLOG_ONLY_NEW=1 afl-fuzz -i minimized_queue -o out2 [other options] -- ./target
@@ -318,7 +318,7 @@ the calculated value spends more or less time mutating it.</p>
 <p>AFL++ comes with several power schedules, initially ported from
 <a href="https://github.com/mboehme/aflfast">AFLFast</a>, however, modified to be more
 effective and several more modes added.</p>
-<p>The most effective modes are <code>-p fast</code> (default) and <code>-p explore</code>.</p>
+<p>The most effective modes are <code>-p explore</code> (default) and <code>-p fast</code>.</p>
 <p>If you fuzz with several parallel afl-fuzz instances, then it is beneficial
 to assign a different schedule to each instance, however the majority should
 be <code>fast</code> and <code>explore</code>.</p>
@@ -344,7 +344,7 @@ after the final dlopen().</p>
 the existing map will be used also for the newly loaded libraries, which
 allows it to work, however, the efficiency of the fuzzing will be partially
 degraded. Note that there is additionally <code>AFL_IGNORE_PROBLEMS_COVERAGE</code> to
-additionally tell AFL++ to ignore any coverage from the late loaded libaries.</p>
+additionally tell AFL++ to ignore any coverage from the late loaded libraries.</p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <p>If you see this kind of error when trying to instrument a target with

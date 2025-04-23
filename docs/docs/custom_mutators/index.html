@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="/book.min.690047aa613e46fbad517188866019d4fcac4dbaa45c6085656a6b8af77ba46b.css" integrity="sha256-aQBHqmE&#43;RvutUXGIhmAZ1PysTbqkXGCFZWprivd7pGs=">
 
 
-<script defer src="/en.search.min.68ec47fd1cbb1cf747325b658b3fa46a968dbe271a29a651694735aa6eaf02f3.js" integrity="sha256-aOxH/Ry7HPdHMltliz&#43;kapaNvicaKaZRaUc1qm6vAvM="></script>
+<script defer src="/en.search.min.0260174065725853f7d3176b0f7e20cf9186e9ae402adf08b5b9258128893e9d.js" integrity="sha256-AmAXQGVyWFP30xdrD34gz5GG6a5AKt8ItbklgSiJPp0="></script>
 
 <!--
 Made with Book Theme
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><strong>Downloads</strong>
 <ul>
-<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.09c">Release 4.09c</a>
+<li><a href="https://github.com/AFLplusplus/AFLplusplus/releases/tag/v4.31c">Release v4.31c</a>
 </li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/releases">All releases</a></li>
 <li><a href="https://github.com/AFLplusplus/AFLplusplus/archive/master.zip">Current devel</a></li>
@@ -226,7 +226,7 @@ u8 <span style="color:#a6e22e">afl_custom_queue_new_entry</span>(<span style="co
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fuzz_count</span>(buf):
     <span style="color:#66d9ef">return</span> cnt
 
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">splice_optout</span>()
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">splice_optout</span>():
     <span style="color:#66d9ef">pass</span>
 
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fuzz</span>(buf, add_buf, max_size):
@@ -302,7 +302,7 @@ The add_buf is the contents of another queue item that can be used for
 splicing - or anything else - and can also be ignored. If you are not
 using this additional data then define <code>splice_optout</code> (see above).
 This function is optional.
-Returing a length of 0 is valid and is interpreted as skipping this
+Returning a length of 0 is valid and is interpreted as skipping this
 one mutation result.
 For non-Python: the returned output buffer is under <strong>your</strong> memory
 management!</p>
@@ -344,8 +344,11 @@ the <code>*data</code> directly, and return it as <code>*outbuf = data</code>.</
 <p><code>fuzz_send</code> (optional):</p>
 <p>This method can be used if you want to send data to the target yourself,
 e.g. via IPC. This replaces some usage of utils/afl_proxy but requires
-that you start the target with afl-fuzz.
-Example: <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../custom_mutators/examples/custom_send.c">custom_mutators/examples/custom_send.c</a></p>
+that you start the target with afl-fuzz.</p>
+<p>Setting <code>AFL_CUSTOM_MUTATOR_LATE_SEND</code> will call the afl_custom_fuzz_send()
+function after the target has been restarted. (This is needed for e.g. TCP
+services.)</p>
+<p>Example: <a href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/../custom_mutators/examples/custom_send.c">custom_mutators/examples/custom_send.c</a></p>
 </li>
 <li>
 <p><code>queue_new_entry</code> (optional):</p>
@@ -410,6 +413,9 @@ the maximum amount of steps you returned in <code>init_trim</code>).</p>
 </ul>
 <p>Omitting any of three trimming methods will cause the trimming to be disabled
 and trigger a fallback to the built-in default trimming routine.</p>
+<p><strong>IMPORTANT</strong> If you have a custom post process mutator that needs to be run
+after trimming, you must call it yourself at the end of your successful
+trimming!</p>
 <h3 id="environment-variables">Environment Variables</h3>
 <p>Optionally, the following environment variables are supported:</p>
 <ul>
