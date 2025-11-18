@@ -35,7 +35,7 @@ better *BSD and Android support and much, much more.
   
   * Win32 PE binary-only fuzzing with QEMU and Wine
 
-  * Radamsa mutator (enable with `-R` to add or `-RR` to run it exclusively).
+  * Radamsa mutator (enable with `AFL_CUSTOM_MUTATOR_LIBRARY=custom_mutators/radamsa/radamsa-mutator.so` to add and use `AFL_CUSTOM_MUTATOR_ONLY=1` to run it exclusively).
 
   * QBDI mode to fuzz android native libraries via QBDI framework
 
